@@ -1,13 +1,16 @@
 {
   "id": "declan-homebrew-classes",
   "title": "Declan's Homebrew Classes (D&D 5e)",
-  "description": "Homebrew classes for the dnd5e system, generated from source PDFs with the dnd5e-pdf-importer. Currently includes The Vessel and its six Sealed Spirit subclasses. This is an auto-generated draft — verify feature mechanics against the source before play (see README).",
+  "description": "Homebrew classes for the dnd5e system, generated from source PDFs with the dnd5e-pdf-importer. Currently includes The Vessel and its six Sealed Spirit subclasses. This is an auto-generated draft \u2014 verify feature mechanics against the source before play (see README).",
   "version": "1.0.0",
   "authors": [
-    { "name": "declan34", "url": "https://github.com/declan34" }
+    {
+      "name": "declan34",
+      "url": "https://github.com/declan34"
+    }
   ],
   "url": "https://github.com/declan34/declan-homebrew-classes",
-  "manifest": "https://github.com/declan34/declan-homebrew-classes/releases/latest/download/module.json",
+  "manifest": "https://raw.githubusercontent.com/declan34/declan-homebrew-classes/main/module.json",
   "download": "https://github.com/declan34/declan-homebrew-classes/releases/latest/download/module.zip",
   "readme": "https://github.com/declan34/declan-homebrew-classes/blob/main/README.md",
   "compatibility": {
@@ -19,7 +22,9 @@
       {
         "id": "dnd5e",
         "type": "system",
-        "compatibility": { "minimum": "5.3.3" }
+        "compatibility": {
+          "minimum": "5.3.3"
+        }
       }
     ]
   },
@@ -30,7 +35,10 @@
       "path": "packs/homebrew-classes",
       "type": "Item",
       "system": "dnd5e",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ]
 }
