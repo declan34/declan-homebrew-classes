@@ -68,7 +68,8 @@ system:
         units: inst
         concentration: true
         override: false
-      effects: []
+      effects:
+        - _id: T7BNvrONfts5aGDx
       range:
         override: false
       target:
@@ -110,7 +111,34 @@ system:
 _id: X5S20oaIjrMJtwIp
 type: spell
 img: icons/magic/unholy/strike-hand-glow-pink.webp
-effects: []
+effects:
+  - name: Blinded
+    img: icons/magic/unholy/strike-hand-glow-pink.webp
+    origin: null
+    transfer: false
+    _id: T7BNvrONfts5aGDx
+    type: base
+    system: {}
+    changes: []
+    disabled: false
+    duration:
+      startTime: null
+      combat: null
+      seconds: 60
+      rounds: 10
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Blinded while within the Hunger of Hadar area.</p>
+    tint: '#ffffff'
+    statuses:
+      - blinded
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+    _key: '!items.effects!X5S20oaIjrMJtwIp.T7BNvrONfts5aGDx'
 folder: QlBiHWGXk36O0c1s
 sort: 1900000
 ownership:

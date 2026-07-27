@@ -1,7 +1,7 @@
 name: Otherworldly Grasp (LL)
 system:
   description:
-    value: '<p>You channel necrotic spiritual power to your hand, changing it into a withered specter of itself. Make a melee spell attack against one creature within your reach. On hit, it takes 1d8 necrotic damage, and you can choose to gain temporary hit points equal to half the necrotic damage dealt.</p><p>At Higher Levels. The damage of this spell increases by 1d8 at 5th (2d8), 11th (3d8), and 17th level (4d8).</p>'
+    value: <p>You channel necrotic spiritual power to your hand, changing it into a withered specter of itself. Make a melee spell attack against one creature within your reach. On hit, it takes 1d8 necrotic damage, and you can choose to gain temporary hit points equal to half the necrotic damage dealt.</p><p>At Higher Levels. The damage of this spell increases by 1d8 at 5th (2d8), 11th (3d8), and 17th level (4d8).</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -65,8 +65,7 @@ system:
         units: inst
         concentration: false
         override: false
-      effects:
-      - _id: zwks0mAqBHGZC1Pk
+      effects: []
       range:
         override: false
       target:
@@ -119,40 +118,7 @@ system:
 _id: 4wQ4j5YcYIf300pr
 type: spell
 img: icons/magic/air/wind-gust-blue.webp
-effects:
-- name: Temporary Hit Points
-  img: icons/magic/air/wind-gust-blue.webp
-  origin: Compendium.dnd5e.spells24.Item.hbrvesOtherworldlyGraspLL
-  transfer: false
-  _id: zwks0mAqBHGZC1Pk
-  type: base
-  system: {}
-  changes: []
-  disabled: false
-  duration:
-    startTime: null
-    seconds: null
-    combat: null
-    rounds: 1
-    turns: null
-    startRound: null
-    startTurn: null
-  description: <p>Gain temporary hit points equal to half the necrotic damage dealt.</p>
-  tint: '#ffffff'
-  statuses: []
-  sort: 0
-  flags: {}
-  _stats:
-    compendiumSource: null
-    duplicateSource: null
-    coreVersion: '13.344'
-    systemId: dnd5e
-    systemVersion: 4.0.0
-    createdTime: 1725396574015
-    modifiedTime: 1726578770586
-    lastModifiedBy: dnd5ebuilder0000
-    exportSource: null
-  _key: '!items.effects!hbrvesOtherworldlyGraspLL.zwks0mAqBHGZC1Pk'
+effects: []
 folder: RglnEx4U7chK1Mp2
 sort: 1900000
 ownership:

@@ -67,7 +67,8 @@ system:
         units: inst
         concentration: true
         override: false
-      effects: []
+      effects:
+        - _id: zwks0mAqBHGZC1Pk
       range:
         override: false
       target:
@@ -127,17 +128,21 @@ effects:
   disabled: false
   duration:
     startTime: null
-    seconds: null
+    seconds: 600
     combat: null
-    rounds: 1
+    rounds: 100
     turns: null
     startRound: null
     startTurn: null
-  description: <p>The creature takes fire damage at the start of each turn and can be freed by a Strength check.</p>
+  description: <p>Grappled by the Flame Whip. Takes fire damage at the start of each turn; can use its action to make a Strength check against the spell save DC to escape.</p>
   tint: '#ffffff'
-  statuses: []
+  statuses:
+    - grappled
   sort: 0
-  flags: {}
+  flags:
+    dnd5e:
+      riders:
+        statuses: []
   _stats:
     compendiumSource: null
     duplicateSource: null
@@ -148,7 +153,7 @@ effects:
     modifiedTime: 1726578770586
     lastModifiedBy: dnd5ebuilder0000
     exportSource: null
-  _key: '!items.effects!hbrvesFlameWhipLL.zwks0mAqBHGZC1Pk'
+  _key: '!items.effects!AvzLl3qCkrQC9Tw3.zwks0mAqBHGZC1Pk'
 folder: DAcd8HSYZZMNR1LQ
 sort: 1900000
 ownership:

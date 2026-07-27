@@ -66,7 +66,12 @@ system:
         units: inst
         concentration: false
         override: false
-      effects: []
+      effects:
+        - _id: 6Bvjh5htFepCgbHT
+          onSave: false
+          level:
+            min: null
+            max: null
       range:
         override: false
       target:
@@ -108,7 +113,53 @@ system:
 _id: 33jMK0vh7XBnELQ7
 type: spell
 img: icons/magic/control/fear-frightened-demon.webp
-effects: []
+effects:
+- name: Bane
+  img: icons/magic/control/fear-frightened-demon.webp
+  origin: null
+  transfer: false
+  _id: 6Bvjh5htFepCgbHT
+  type: base
+  system: {}
+  changes:
+    - key: system.bonuses.abilities.save
+      mode: 2
+      value: '-1d4'
+      priority: null
+    - key: system.bonuses.mwak.attack
+      mode: 2
+      value: '-1d4'
+      priority: null
+    - key: system.bonuses.msak.attack
+      mode: 2
+      value: '-1d4'
+      priority: null
+    - key: system.bonuses.rsak.attack
+      mode: 2
+      value: '-1d4'
+      priority: null
+    - key: system.bonuses.rwak.attack
+      mode: 2
+      value: '-1d4'
+      priority: null
+  disabled: false
+  duration:
+    startTime: null
+    combat: null
+    seconds: 60
+    rounds: 10
+    turns: null
+    startRound: null
+    startTurn: null
+  description: <p>You have disadvantage on attack rolls, ability checks, and saving throws.</p>
+  tint: '#ffffff'
+  statuses: []
+  sort: 0
+  flags:
+    dnd5e:
+      riders:
+        statuses: []
+  _key: '!items.effects!33jMK0vh7XBnELQ7.6Bvjh5htFepCgbHT'
 folder: 6T9YOOVVGI6qkGQM
 sort: 1900000
 ownership:

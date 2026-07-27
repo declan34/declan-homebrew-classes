@@ -68,8 +68,7 @@ system:
         units: inst
         concentration: false
         override: false
-      effects:
-      - _id: zwks0mAqBHGZC1Pk
+      effects: []
       range:
         override: false
       target:
@@ -114,40 +113,7 @@ system:
 _id: vnqJMpf1EGL8Xt4J
 type: spell
 img: icons/magic/frost/ice-shard-slash-blue.webp
-effects:
-- name: Frostbite Damage
-  img: icons/magic/frost/ice-shard-slash-blue.webp
-  origin: Compendium.dnd5e.spells24.Item.hbrvesFrostbite
-  transfer: false
-  _id: zwks0mAqBHGZC1Pk
-  type: base
-  system: {}
-  changes: []
-  disabled: false
-  duration:
-    startTime: null
-    seconds: null
-    combat: null
-    rounds: 1
-    turns: null
-    startRound: null
-    startTurn: null
-  description: <p>The target takes 1d8 Cold damage.</p>
-  tint: '#ffffff'
-  statuses: []
-  sort: 0
-  flags: {}
-  _stats:
-    compendiumSource: null
-    duplicateSource: null
-    coreVersion: '13.344'
-    systemId: dnd5e
-    systemVersion: 4.0.0
-    createdTime: 1725396574015
-    modifiedTime: 1726578770586
-    lastModifiedBy: dnd5ebuilder0000
-    exportSource: null
-  _key: '!items.effects!hbrvesFrostbite.zwks0mAqBHGZC1Pk'
+effects: []
 folder: RglnEx4U7chK1Mp2
 sort: 1900000
 ownership:

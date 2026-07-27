@@ -65,7 +65,8 @@ system:
         units: inst
         concentration: false
         override: false
-      effects: []
+      effects:
+        - _id: 3R8w8r6PF7NbUU7N
       range:
         override: false
       target:
@@ -107,7 +108,34 @@ system:
 _id: yY7rRzdV8bVHTsOm
 type: spell
 img: icons/magic/unholy/strike-hand-glow-pink.webp
-effects: []
+effects:
+  - name: Deafened
+    img: icons/magic/unholy/strike-hand-glow-pink.webp
+    origin: null
+    transfer: false
+    _id: 3R8w8r6PF7NbUU7N
+    type: base
+    system: {}
+    changes: []
+    disabled: false
+    duration:
+      startTime: null
+      combat: null
+      seconds: 60
+      rounds: 10
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Deafened by Dire Wail.</p>
+    tint: '#ffffff'
+    statuses:
+      - deafened
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+    _key: '!items.effects!yY7rRzdV8bVHTsOm.3R8w8r6PF7NbUU7N'
 folder: QlBiHWGXk36O0c1s
 sort: 1900000
 ownership:

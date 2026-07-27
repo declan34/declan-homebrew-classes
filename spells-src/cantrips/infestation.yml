@@ -69,7 +69,8 @@ system:
         units: inst
         concentration: false
         override: false
-      effects: []
+      effects:
+      - _id: b5svF9dNPo3sDCFy
       range:
         override: false
       target:
@@ -108,7 +109,34 @@ system:
 _id: vVtNFhGhJqJbYNOT
 type: spell
 img: icons/magic/nature/insect-swarm-yellow.webp
-effects: []
+effects:
+- name: Poisoned
+  img: icons/magic/nature/insect-swarm-yellow.webp
+  origin: null
+  transfer: false
+  _id: b5svF9dNPo3sDCFy
+  type: base
+  system: {}
+  changes: []
+  disabled: false
+  duration:
+    startTime: null
+    combat: null
+    seconds: null
+    rounds: 1
+    turns: null
+    startRound: null
+    startTurn: null
+  description: <p>Poisoned by the spell.</p>
+  tint: '#ffffff'
+  statuses:
+  - poisoned
+  sort: 0
+  flags:
+    dnd5e:
+      riders:
+        statuses: []
+  _key: '!items.effects!vVtNFhGhJqJbYNOT.b5svF9dNPo3sDCFy'
 folder: RglnEx4U7chK1Mp2
 sort: 1900000
 ownership:

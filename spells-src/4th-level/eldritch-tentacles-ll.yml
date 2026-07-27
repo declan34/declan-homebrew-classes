@@ -69,7 +69,8 @@ system:
         units: inst
         concentration: true
         override: false
-      effects: []
+      effects:
+        - _id: cbmClEZiLM274MAW
       range:
         override: false
       target:
@@ -111,7 +112,34 @@ system:
 _id: fRfTJdxhhNoem2XO
 type: spell
 img: icons/magic/unholy/strike-hand-glow-pink.webp
-effects: []
+effects:
+  - name: Restrained
+    img: icons/magic/unholy/strike-hand-glow-pink.webp
+    origin: null
+    transfer: false
+    _id: cbmClEZiLM274MAW
+    type: base
+    system: {}
+    changes: []
+    disabled: false
+    duration:
+      startTime: null
+      combat: null
+      seconds: 60
+      rounds: 10
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Restrained by the Eldritch Tentacles until the spell ends.</p>
+    tint: '#ffffff'
+    statuses:
+      - restrained
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+    _key: '!items.effects!fRfTJdxhhNoem2XO.cbmClEZiLM274MAW'
 folder: YcTkda5HcE9nftx3
 sort: 1900000
 ownership:

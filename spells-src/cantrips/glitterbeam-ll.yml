@@ -69,8 +69,7 @@ system:
         units: inst
         concentration: false
         override: false
-      effects:
-      - _id: zwks0mAqBHGZC1Pk
+      effects: []
       range:
         override: false
       target:
@@ -115,40 +114,7 @@ system:
 _id: t4mk0dFLZkZBI3yS
 type: spell
 img: icons/magic/light/beam-radiance-blue.webp
-effects:
-- name: Emitting Bright Light
-  img: icons/magic/light/beam-radiance-blue.webp
-  origin: Compendium.dnd5e.spells24.Item.hbrvesGlitterbeamLL
-  transfer: false
-  _id: zwks0mAqBHGZC1Pk
-  type: base
-  system: {}
-  changes: []
-  disabled: false
-  duration:
-    startTime: null
-    seconds: null
-    combat: null
-    rounds: 1
-    turns: null
-    startRound: null
-    startTurn: null
-  description: <p>The creature emits bright light in a 10-foot radius and has disadvantage on Stealth checks to Hide.</p>
-  tint: '#ffffff'
-  statuses: []
-  sort: 0
-  flags: {}
-  _stats:
-    compendiumSource: null
-    duplicateSource: null
-    coreVersion: '13.344'
-    systemId: dnd5e
-    systemVersion: 4.0.0
-    createdTime: 1725396574015
-    modifiedTime: 1726578770586
-    lastModifiedBy: dnd5ebuilder0000
-    exportSource: null
-  _key: '!items.effects!hbrvesGlitterbeamLL.zwks0mAqBHGZC1Pk'
+effects: []
 folder: RglnEx4U7chK1Mp2
 sort: 1900000
 ownership:

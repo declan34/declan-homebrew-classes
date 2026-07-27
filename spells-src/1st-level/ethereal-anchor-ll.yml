@@ -68,12 +68,7 @@ system:
         units: inst
         concentration: true
         override: false
-      effects:
-        - _id: zwks0mAqBHGZC1Pk
-          onSave: false
-          level:
-            min: null
-            max: null
+      effects: []
       range:
         override: false
       target:
@@ -121,40 +116,7 @@ system:
 _id: cvMqEfV9CpGdYybm
 type: spell
 img: icons/magic/air/wind-gust-blue.webp
-effects:
-- name: Speed Reduced to 0
-  img: icons/magic/air/wind-gust-blue.webp
-  origin: Compendium.dnd5e.spells24.Item.hbrvesEtherealAnchorLL
-  transfer: false
-  _id: zwks0mAqBHGZC1Pk
-  type: base
-  system: {}
-  changes: []
-  disabled: false
-  duration:
-    startTime: null
-    seconds: null
-    combat: null
-    rounds: 1
-    turns: null
-    startRound: null
-    startTurn: null
-  description: <p>The creature's speed is reduced to 0 and it is pinned in place.</p>
-  tint: '#ffffff'
-  statuses: []
-  sort: 0
-  flags: {}
-  _stats:
-    compendiumSource: null
-    duplicateSource: null
-    coreVersion: '13.344'
-    systemId: dnd5e
-    systemVersion: 4.0.0
-    createdTime: 1725396574015
-    modifiedTime: 1726578770586
-    lastModifiedBy: dnd5ebuilder0000
-    exportSource: null
-  _key: '!items.effects!hbrvesEtherealAnchorLL.zwks0mAqBHGZC1Pk'
+effects: []
 folder: 6T9YOOVVGI6qkGQM
 sort: 1900000
 ownership:
