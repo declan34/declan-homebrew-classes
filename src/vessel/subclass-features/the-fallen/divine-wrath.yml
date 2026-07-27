@@ -1,0 +1,49 @@
+_id: hbrvesQdu3j2S7ev
+name: Divine Wrath
+type: feat
+folder: XFSvxG8fKsG1mZyi
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>3rd-level Fallen Spirit feature When you make a melee weapon attack while cloaked in your Spirit Mantle, you can infuse it with Divine Wrath. When you do, you use Charisma for its attack and damage rolls, it deals radiant damage on hit, and it counts as an Iridescent Strike. F        AA allen    rchon Medium Celestial (Shapechanger) Speed 30 ft. Resistances necrotic, radiant Languages Celestial, any languages you know Senses Darkvision 60 ft. Skills Intimidation, Religion Traits raits Divine Ward. As a bonus action, the Archon can grant a creature it can see within 30 feet temporary hit points equal to your Charisma modifier, which last 1 minute. Wings of Wrath. When the Archon uses Divine Wrath, it gains the Thrown (20/60) property, and after the attack, the weapon instantly returns to the Archon''s hand. Fallen Magic 3rd-level Fallen Spirit feature You learn certain spells at the Vessel levels noted in the table below. They do not count against your total number of Spells Known and cannot be replaced when you gain a level. Vessel LevelSpells ll             ll 3rd     divine favor , ethereal anchor l 5th     branding smite , spiritual weapon 9th     crusader''s mantle, revivify 13th     banishment, guardian of faith 17th     circle of power, flame strike Condemnation 6th-level Fallen Spirit feature When you hit a creature with a Divine Wrath attack while in Archon Form, you can Condemn it. A Condemned creature must spend two feet of movement for every foot it wishes to move away from you, and your Divine Wrath attacks against it score a critical hit on a roll of 19 or 20 on the d20. You can only Condemn a single creature per Archon Form transformation, and it lasts until you revert to normal form. Heavenly Zeal AC Bonus +2 15th-level Fallen Spirit feature You unlock the Aether Wings Unsealed Aspect, or another if you have already unlocked it. It does not count against your Unsealed Aspects, and Aether Wings cannot be replaced. Your Divine Wrath attacks against Condemned creatures also now score a critical hit on a roll of 18-20 on the d20. Divine Avenger 20th-level Fallen Spirit feature You can fully channel the divinity of the Spirit bound to your mortal flesh. Your Archon Form gains the following benefits: You assume the true appearance of your Fallen Spirit. When you miss a target with a weapon attack, the next attack you make against that creature has advantage. The Formless Before the world was shaped, horrible things slithered about the darkness. Formless monsters with only one desire; consume. These shapeless entities of hunger are known as Formless, and even now, they gnaw the roots of the world, trapped below the material plane.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: divine-wrath
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesQdu3j2S7ev'

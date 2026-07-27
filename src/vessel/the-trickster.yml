@@ -1,0 +1,38 @@
+_id: hbrvesSjvSUB5luo
+name: The Trickster
+type: subclass
+folder: zMeVHWGKnwMncHUb
+img: systems/dnd5e/icons/classes/the-trickster.webp
+system:
+  description:
+    value: ''
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  identifier: the-trickster
+  classIdentifier: vessel
+  advancement: []
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 300000
+ownership:
+  default: 0
+_key: '!items!hbrvesSjvSUB5luo'

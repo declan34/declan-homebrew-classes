@@ -1,0 +1,51 @@
+_id: hbrvesnmpXyN7pCZ
+name: Archon Form
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>Beginning at 3rd level, when you cloak yourself in your Spirit Mantle, you can draw upon even more of your Spirit''s power and transform into your Archon Form, using the stat block in your Sealed Spirit description. This Archon Form uses your Proficiency Bonus (PB) and your Vessel Spell save DC. You can maintain your Archon Form for 10 minutes. You then revert to your normal form unless you expend a Vessel Magic spell slot to extend the transformation by 10 minutes. You also revert if you become Unconscious, you are reduced to 0 hit points, or you use a bonus action to revert. While in your Archon Form, use the following rules: Statistics. Your statistics are replaced with those in your Archon Form''s stat block. You do retain your alignment, personality, ability scores, and hit points. You also retain skill and saving throw proficiencies, and gain those of your Archon From. Spirit Mantle. In Archon Form, you are considered cloaked in your Spirit Mantle and gain all its benefits and features, such as Ethereal Armor and Iridescent Strikes. Armor Class Bonus. Some Archon Forms grant you a bonus to your Armor Class. This AC Bonus only applies to your Ethereal Armor from your Spirit Mantle. Temporary Hit Points. When you transform, you gain temporary hit points equal to twice your Vessel level. All temporary hit points you gain in Archon Form are lost when you return to your normal form. Features. You retain all features from your class, race, or other sources that your Archon is capable of using. This includes the ability to cast spells with Vessel Magic. Equipment. When you transform, you must decide if your equipment falls to the ground, merges with your Archon, or is worn by it. Worn equipment functions normally, but your DM decides if your Archon can use it. Any equipment that merges with your Archon has no effect during your transformation. Uses. You can transform into Archon Form once, and you regain the ability to transform again when you finish a short or long rest. If you have no uses left, you can expend a Vessel Magic spell slot to transform into your Archon Form again.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: '2'
+    spent: 0
+    recovery:
+      - period: sr
+        type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: archon-form
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesnmpXyN7pCZ'

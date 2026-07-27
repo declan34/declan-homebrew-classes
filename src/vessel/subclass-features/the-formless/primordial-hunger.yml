@@ -1,0 +1,49 @@
+_id: hbrvesSAXUD5l0wH
+name: Primordial Hunger
+type: feat
+folder: BuEf3ZQMIULKPwhg
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>pseudopod limbs equal to your Charisma modifier. They have a reach of 10 ft., and they can be attacked as part of 20th-level Formless Spirit feature the Archon. These pseudopods can only be used to make You and the Formless Spirit bound to you have become one melee Iridescent Strike attacks, Grapple, and Shove. hunger. Your Archon Form gains the following benefits: Sticky Slime. When the Archon hits a creature equal to its You assume the true appearance of your Formless Spirit. size or smaller with a melee Iridescent Strike, it can force You gain Immunity to acid damage, and whenever you it to make a Dexterity saving throw or become Grappled. deal acid damage, you ignore Resistance to acid damage To escape this Grapple, a creature must use its action to and you treat Immunity to acid damage as Resistance. make a Strength saving throw, escaping on a success. As an action on your turn, you can make one Iridescent The Trickster T           AA rickster    rchon The beings of the Feywild are known for their whimsical and ephemeral ways, often unpredictable to mortals. Most of the faerie are content to follow these self-imposed rules and only interfere with mortals when they are approached. However, the Fey known as Tricksters cannot help but spread discord and need to be sealed away to limit the chaos they spread.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 20
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: primordial-hunger
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesSAXUD5l0wH'

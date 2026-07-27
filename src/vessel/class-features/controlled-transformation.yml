@@ -1,0 +1,49 @@
+_id: hbrveserDFPbI8Gu
+name: Controlled Transformation
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Beginning at 7th level, you can channel and maintain control over more power from your Sealed Spirit. Your Archon Form transformation can now last for up to 1 hour, and it only ends early if you are reduced to 0 hit points or you use your bonus action to end it. You cannot rest in Archon Form.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 7
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: controlled-transformation
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrveserDFPbI8Gu'

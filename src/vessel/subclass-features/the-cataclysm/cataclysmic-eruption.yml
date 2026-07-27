@@ -1,0 +1,51 @@
+_id: hbrvesLGlYzPTrpS
+name: Cataclysmic Eruption
+type: feat
+folder: WlkBzHy6spqIPVPU
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>15th-level Cataclysm Spirit feature Vessel LevelAir Spells       Earth Spells You can briefly manifest the raw destructive elements of your ll                ll beckon air mold earth Spirit. As an action, you can cause a 15-foot diameter, 60-foot 3rd thunderwave earth tremor * high, pillar of elemental power to erupt from a surface you 5th     dust devil *     spike growth can see within 30 feet, forcing creatures to make a Dexterity saving throw, then it disappears. Creatures take 9d6 Affinity l 9th     sonic wave       erupting earth * damage on a failure, and half as much on a success. l 13th     storm sphere *   pillars of earth You can use this feature a number of times equal to your Charisma modifier (a minimum of once). You regain all uses 17th     control winds *  wall of stone when you finish a long rest. If you have no uses left, you can expend a Vessel Magic spell slot to use this feature again. Vessel LevelFire Spells      Water Spells</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: '1'
+    spent: 0
+    recovery:
+      - period: lr
+        type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 15
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: cataclysmic-eruption
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesLGlYzPTrpS'

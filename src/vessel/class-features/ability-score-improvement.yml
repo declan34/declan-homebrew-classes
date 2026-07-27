@@ -1,0 +1,49 @@
+_id: hbrves23bN4QofBc
+name: Ability Score Improvement
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>When you reach 4th level, you can increase one of your ability scores by 2, or two of your ability scores by 1. You cannot use this feature to increase your ability scores above 20. You gain this feature again at 8th, 12th, 16th, and 19th level.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: ability-score-improvement
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrves23bN4QofBc'

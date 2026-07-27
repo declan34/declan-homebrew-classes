@@ -1,0 +1,51 @@
+_id: hbrvesIGApzDpQ6K
+name: Hellfire
+type: feat
+folder: AlFm0o5GDMAKD9KT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>6th-level Cursed Spirit feature You can access the true power of the dark Spirit imprisoned within, conjuring cursed infernal flames. Whenever you deal fire damage to a target, you ignore Resistance to fire damage and treat Immunity to fire as Resistance. Also, if you deal fire damage to a creature it cannot regain hit points until the start of your next turn. C        AA ursed    rchon Medium Fiend (Shapechanger) Speed 40 ft., climb 40 ft. Resistances fire, poison Languages Infernal, any languages you know Senses Darkvision 60 ft. Skills Intimidation, Stealth T raits raits Frenzy. When it takes the Attack action, the Archon can enter a Frenzy which lasts until the start of its next turn. For the duraiton all of its attacks, and all attacks targeting the Archon, are made with advantage. Infernal Drain. Once per turn when the Archon deals fire damage with an Iridescent Strike, its temporary hit points increase by your Charisma modifier. Your total temporary hit points cannot exceed twice your Vessel level. Dark Sacrifice 15th-level Cursed Spirit feature l You can sacrifice your vitality to your Spirit in return for its power. As a bonus action, you can reduce both your current and maximum hit points by 10 to regain one Vessel Magic spell slot. This reduction cannot be lessened in any way. l At the end of your next long rest any reduction to your hit point maximum from this feature returns to normal. Lord of Darkness 20th-level Cursed Spirit feature Your power allows your Spirit to walk in the material world once again. Your Archon Form gains the following benefits: You assume the true appearance of your Cursed Spirit. You gain Immunity to the Charmed, Frightened, and Poisoned conditions, and to poison and fire damage. When you take the Attack action on your turn you can make one bonus Iridescent Strike as part of your action. Once per turn when you deal fire damage to a creature with an Iridescent Strike you can cause it to be Frightened of you until the beginning of your next turn. AC Bonus +1 The Fallen Not all denizens of the upper planes serve the will of those who created them. Some stray from their divinely ordained purpose and draw wrath. These wayward celestial beings are branded as Fallen Spirits and hurled from the heavens to be imprisoned in mortals to atone for their sins. Some swear revenge upon the heavens while others seek reconciliation.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: '2'
+    spent: 0
+    recovery:
+      - period: lr
+        type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: hellfire
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesIGApzDpQ6K'

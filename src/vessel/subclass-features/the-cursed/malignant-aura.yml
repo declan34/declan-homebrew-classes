@@ -1,0 +1,49 @@
+_id: hbrves8fHpRrqnjG
+name: Malignant Aura
+type: feat
+folder: AlFm0o5GDMAKD9KT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>3rd-level Cursed Spirit feature The aura of the Cursed Spirit sealed within your soul bleeds into yours. You gain the Striking Presence Aspect. It does not count against your Unsealed Aspects and cannot be replaced. If you already unlocked this Unsealed Aspect, you unlock another of your choice, or you can unlock Striking Presence again, but must choose a different skill to gain its benefits.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: malignant-aura
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrves8fHpRrqnjG'

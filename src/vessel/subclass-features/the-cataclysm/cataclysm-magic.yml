@@ -1,0 +1,49 @@
+_id: hbrvesSArH7aSN2K
+name: Cataclysm Magic
+type: feat
+folder: WlkBzHy6spqIPVPU
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>3rd-level Cataclysm Spirit feature You learn certain spells at the Vessel levels noted in the table below. They do not count against your total number of Spells Known and cannot be replaced when you gain a level. Spells on the first table are shared by Cataclysm Vessels of all Elemental Affinities. The second spell you gain at the Vessel levels listed below is determined by your Elemental Affinity, and are listed by Element on the lower tables. Finally, you can choose for your Iridescent Strikes to deal your Affinity damage type on hit, which is always magical.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: cataclysm-magic
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesSArH7aSN2K'

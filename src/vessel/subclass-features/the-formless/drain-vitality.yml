@@ -1,0 +1,49 @@
+_id: hbrveshZhemFHFD0
+name: Drain Vitality
+type: feat
+folder: BuEf3ZQMIULKPwhg
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>3rd     caustic brew **, entangle 6th-level Formless Spirit feature 5th     hold person, web The Spirit bound within you drives you to consume. When in Archon Form, you can use a bonus action to force creatures l 9th     grasping vine , slow under the effect of your Formless Magic spells, or Grappled l 13th     eldritch tentacles , vitriolic sphere * by you, to make a Constitution saving throw. They take 2d8 acid damage on a failed save, and your temporary hit points 17th     contagion, hold monster increase by half the acid damage dealt. Your temporary hit points cannot exceed twice your Vessel level. F          AA This acid damage increases at certain Vessel levels: at ormless     rchon 9th (3d8), 13th (4d8), 17th (5d8), and 20th level (6d8). Medium Ooze (Shapechanger)</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: drain-vitality
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrveshZhemFHFD0'

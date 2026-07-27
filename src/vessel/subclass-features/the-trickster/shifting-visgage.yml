@@ -1,0 +1,49 @@
+_id: hbrves58mwmPxiOL
+name: Shifting Visgage
+type: feat
+folder: uBdqLQs9CNNIbiP6
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>3rd-level Trickster Spirit feature You can change your appearance to better sow chaos. When cloaked in your Spirit Mantle, you can cast the disguise self spell without expending a spell slot, and you can unerringly mimic any sounds or voices you have heard before.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: shifting-visgage
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrves58mwmPxiOL'

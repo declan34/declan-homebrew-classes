@@ -1,0 +1,49 @@
+_id: hbrvesu3hUYUQYnq
+name: Unchained Power
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>You and the Spirit bound to your soul merge and become an entirely new and distinct creature. Upon reaching 18th level, Sealed Spirit Choose the Sealed Spirit that best represents the entity that has been bound within you and is the source of your power: The Ascended              The Fallen The Cataclysm            The Formless The Cursed              The Trickster The Ascended When mortals attain heights of arcane power that allow them to ascend beyond their physical forms, they make themselves vulnerable to being sealed away. Often, these great sorcerers and archmages are punished by the deities of magic, and are imprisoned where they can no longer violate arcane laws.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 18
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: unchained-power
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesu3hUYUQYnq'

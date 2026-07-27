@@ -1,0 +1,49 @@
+_id: hbrvesdHWu37NnqH
+name: Dire Preservation
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>At 14th level, the Spirit bound to you will unleash its power to defend its Vessel. When you would be reduced to 0 hit points, but not killed outright, you can transform into Archon Form, expending resources as normal, and fall to 1 hit point instead.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: dire-preservation
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesdHWu37NnqH'

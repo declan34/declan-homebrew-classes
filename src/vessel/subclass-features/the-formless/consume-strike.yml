@@ -1,0 +1,49 @@
+_id: hbrves64z4GSl6Eh
+name: Consume Strike
+type: feat
+folder: BuEf3ZQMIULKPwhg
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>AC Bonus +1 Speed 30 ft., climb 30 ft. 15th-level Formless Spirit feature You can even consume the techniques of others. When your Resistances acid, poison Archon Form is hit by an attack, you can use your reaction to Immunities Grappled, Restrained temporarily consume the memory of that attack. Languages Primordial, any languages you know The first Iridescent Strike you make before the end of your Senses Blindsight 60 ft. (blind beyond this radius) next turn morphs into a gelatinous mockery of the attack you Traits consumed. On hit, it applies the damage and effects from the raits attack you consumed instead of a normal Iridescent Strike. Pseudopods. The Archon sprouts a number of additional</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 15
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: consume-strike
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrves64z4GSl6Eh'

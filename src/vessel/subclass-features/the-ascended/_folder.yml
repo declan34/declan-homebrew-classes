@@ -1,0 +1,18 @@
+name: The Ascended
+sorting: a
+folder: 2aK2MaVmxdsInFfD
+type: Item
+_id: wtdIJdEpCr54EqxW
+description: ''
+sort: 0
+color: null
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+_key: '!folders!wtdIJdEpCr54EqxW'

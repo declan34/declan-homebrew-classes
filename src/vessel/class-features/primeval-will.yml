@@ -1,0 +1,51 @@
+_id: hbrvesRPVdeXGFjR
+name: Primeval Will
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Beginning at 10th level, your Spirit can lend you its willpower. If you fail an Intelligence, Wisdom, or Charisma saving throw, or a saving throw to maintain concentration you can add your Charisma modifier (minimum of +1) to your roll. You can do so a number of times equal to your Charisma modifier (a minimum of once), and you regain all expended uses of this feature when you complete a long rest.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: '1'
+    spent: 0
+    recovery:
+      - period: lr
+        type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 10
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: primeval-will
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesRPVdeXGFjR'

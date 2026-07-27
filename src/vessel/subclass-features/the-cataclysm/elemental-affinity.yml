@@ -1,0 +1,49 @@
+_id: hbrvesMGIGKa9G4L
+name: Elemental Affinity
+type: feat
+folder: WlkBzHy6spqIPVPU
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>3rd-level Cataclysm Spirit feature Within you is bound an elder elemental Spirit of great power. Choose the element from the list below that best represents that of your Spirit. This choice grants you Affinity with, and Resistance to a certain damage type, as shown on the table: Air          Earth         Fire     Water thunder     bludgeoning        fire      cold Your Elemental Affinity also determines the stat block you use for your Archon Form, which are found on the next page.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: elemental-affinity
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesMGIGKa9G4L'

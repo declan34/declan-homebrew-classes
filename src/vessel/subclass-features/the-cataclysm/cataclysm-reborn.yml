@@ -1,0 +1,49 @@
+_id: hbrvesqtGEi5hSNM
+name: Cataclysm Reborn
+type: feat
+folder: WlkBzHy6spqIPVPU
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>ll              ll control flame shape water 3rd l hellish rebuke torrent 20th-level Cataclysm Spirit feature You wield the full power of your primordial Cataclysm. When 5th     flaming sphere   misty step you are in your Archon Form you gain the following benefits: 9th     fireball         tidal wave * You assume the true appearance of your Cataclysm. 13th     wall of fire     watery sphere * The weather in a 1-mile radius surrounding you subtly A    AA F     AA ir  rchon ire   rchon Medium Elemental (Shapechanger) Speed 20 ft., fly 30 ft. (hover) Resistances thunder, lightning Resistances fire, radiant Languages Auran, any languages you know Languages Ignan, any languages you know Skills Acrobatics, Stealth Skills Acrobatics, Intimidation Traits raits Bluster. When the Archon deals thunder damage to a Elder Elemental. When the Archon deals Affinity damage, creature with an Iridescent Strike, its target is knocked it ignores Resistance and treats Immunity as Resistance. back 10 feet in a straight line. This distance is halved for Searing Flame. Whenever the Archon deals fire damage, each size the target is above the Archon. it rolls its damage twice and chooses which total to use. Elder Elemental. When the Archon deals Affinity damage, Illumination. The Archon sheds bright light in a 30-foot it ignores Resistance and treats Immunity as Resistance. radius from itself, and dim light 30 feet beyond that. Gaseous. The Archon can move through gaps as narrow as 1 inch without squeezing, and while using its flying speed, opportunity attacks have disadvantage against it. W        AA ater   rchon E       AA arth    rchon Medium Elemental (Shapechanger) Resistances acid, cold Languages Aquan, any languages you know Speed 30 ft., climb 30 ft., burrow 10 ft. Senses Darkvision 120 ft. Resistances acid, poison Skills Acrobatics, Stealth Languages Terran, any languages you know Senses Tremmorsense 10 ft. Skills Athletics, Intimidation Aqueous. The Archon can breathe normally in both air and water, and it can move through gaps as narrow as Traits raits 1 inch without having to squeeze. Elder Elemental. When the Archon deals Affinity damage, Elder Elemental. When the Archon deals Affinity damage, it ignores Resistance and treats Immunity as Resistance. it ignores Resistance and treats Immunity as Resistance. Rock Solid. When the Archon deals bludgeoning damage Fluid Resilience. When the Archon takes damage, it can to a creature with an Iridescent Strike, the target''s speed use its reaction to reduce that damage by your Charisma is halved until the start of the Archon''s following turn. modifier, and then move up to 15 ft. without provoking Siege Monster. The Archon deals maximum bludgeoning opportunity attacks. It cannot use this reaction when it damage to non-magical objects and structures. takes force or psychic damage. Medium Elemental (Shapechanger) AC Bonus +0 Speed 40 ft. T raits raits Medium Elemental (Shapechanger) Speed 30 ft., swim 50 ft. AC Bonus +2 T raits raits AC Bonus +0 AC Bonus +0 The Cursed Condemned by the heavens for transgressions at the dawn of time, Cursed Spirits were wielders of overwhelming sinister power. Counted among these Spirits are demons, devils, and other vile spirits of the lower planes. Cursed pose a threat to the multiverse, and are sealed to prevent untold calamity.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 20
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: cataclysm-reborn
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesqtGEi5hSNM'

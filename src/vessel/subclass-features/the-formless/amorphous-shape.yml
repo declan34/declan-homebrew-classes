@@ -1,0 +1,49 @@
+_id: hbrveskqMRY9o4dk
+name: Amorphous Shape
+type: feat
+folder: BuEf3ZQMIULKPwhg
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>3rd-level Formless Spirit feature The oozing Spirit bound to your soul allows you to reshape yourself in unnatural ways. While cloaked in your Spirit Mantle, you can move through gaps as narrow as 1-inch without squeezing. This has no effect on what you are wearing or carrying. You also gain the Ethereal Tendril Aspect. It does not count against your total number of Unsealed Aspects and it cannot be replaced with another Unsealed Aspect. If you already unlocked Ethereal Tendril, you unlock another Unsealed Aspect of your choice.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: amorphous-shape
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrveskqMRY9o4dk'

@@ -1,0 +1,49 @@
+_id: hbrves1VJNtDxjKv
+name: Trickster Magic
+type: feat
+folder: uBdqLQs9CNNIbiP6
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>3rd-level Trickster Spirit feature You learn certain spells at the Vessel levels noted in the table below. They do not count against your total number of Spells Known and cannot be replaced when you gain a level. Your Iridescent Strikes can also deal psychic damage. Vessel LevelSpells 3rd     charm person, disguise self Stolen Memory. Once per turn when the Archon deals psychic damage with an Iridescent Strike, it can force its 5th     invisibility, misty step target to make an Intelligence saving throw. On a failure, 9th     enemies abound, hypnotic pattern it cannot see, hear, smell, sense, or target the Archon in any way until the start of the Archon's next turn. 13th     charm monster *, dimension door 17th     dream, mislead</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: trickster-magic
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrves1VJNtDxjKv'

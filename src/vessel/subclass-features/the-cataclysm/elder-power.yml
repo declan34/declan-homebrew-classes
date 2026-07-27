@@ -1,0 +1,49 @@
+_id: hbrves9SKpVpZfKR
+name: Elder Power
+type: feat
+folder: WlkBzHy6spqIPVPU
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Vessel Level   Spells 6th-level Cataclysm Spirit feature 3rd         absorb elements * Your Spirit infuses you with its elder elemental power. While l 5th         elemental blade cloaked in your Spirit Mantle, you gain Immunity to Affinity l damage you inflict with Vessel spells and other abilities. 9th         elemental bane Moreover, when you deal Affinity damage in Archon Form, 13th        resilient sphere you treat a roll of 1 or 2 on any of your damage dice as a 3. 17th        far step *</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: elder-power
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrves9SKpVpZfKR'

@@ -1,0 +1,51 @@
+_id: hbrvesQew98IFyCJ
+name: Ancient Knowledge
+type: feat
+folder: wtdIJdEpCr54EqxW
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>3rd-level Ascended Spirit feature Your Spirit grants you access to its vast esoteric knowledge. During a long rest, you now prepare a number of spells from the Vessel or Wizard spell list equal to your Spells Known, in place of your Spells Known. The spells you prepare must be equal to your Slot level or lower. In addition, you can cast the Ritual version of any spell you prepare. A           AA scended     rchon Medium Humanoid (Shapechanger) AC Bonus +0 Speed 30 ft., fly 10 ft. (hover) Resistances all damage from spells Languages Primordial, any languages you know Skills Arcana, History, Religion T raits raits Arcane Blast. Once on its turn, the Archon can forgo one attack to cause a burst of raw magic at a point it can see within 60 ft. All creatures within 5 ft. of that point must succeed on a Dexterity saving throw or take damage as if they were hit by one of your Iridescent Strikes. Astral Step. After the Archon casts a spell, it can teleport a number of feet equal to 10 times the level of that spell (minimum of 10 ft.) to an unoccupied space it can see. Ascended Magic 3rd-level Ascended Spirit feature You always have certain spells prepared at the Vessel levels noted in the table below. They count as Vessel spells for you, but do not count against the spells you prepare each day: Your Iridescent Strikes can also deal the damage type of any spell you have prepared, which you can choose on hit. Vessel LevelSpells l 3rd     identify, shield l 5th     locate creature , invisibility l 9th     counterspell , minute meteors * 13th     divination, resilient sphere 17th     arcane hand, commune Potent Spellcasting 6th-level Ascended Spirit feature The mage imprisoned within your soul empowers your spells. When you deal damage with a Vessel or Wizard spell, you add your Charisma modifier (minimum of +1) to one damage roll. Ascended Arcanum 15th-level Ascended Spirit feature You wrest even greater magics from the Ascended within you. You learn a single 5th-level Wizard spell of your choice, which you can cast once per long rest without spending a spell slot. At 20th level, you learn a 6th-level Wizard spell that you can also cast once per long rest without expending a spell slot. Archmage Reborn 20th-level Ascended Spirit feature Your soul allows your Ascended Spirit to manifest itself once again. Your Archon Form gains the following benefits: You assume the appearance your Ascended had in life. Your flying speed increases to 30 feet. The distance you can teleport with Astral Step is doubled. As a bonus action on each of your turns, you can teleport The Cataclysm At the dawn of time, elemental forces ran wild. Elder beings of pure air, earth, fire, and water rampaged across the world, shaping it by their destruction. These primordial elementals and elder genies were banished from the material plane, but always seek to return. When they threaten the mortal realm, great forces bind these elder elemental Cataclysms to hosts.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: '1'
+    spent: 0
+    recovery:
+      - period: lr
+        type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: ancient-knowledge
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesQew98IFyCJ'

@@ -1,0 +1,49 @@
+_id: hbrveskFvBKj91na
+name: Illusory Strikes
+type: feat
+folder: uBdqLQs9CNNIbiP6
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Trickster Spirit feature Your Spirit projects potent illusions to attack your enemies. Whenever you would make an Iridescent Strike during your turn, you can forgo that attack to conjure one illusory copy of yourself in an unoccupied space you can see within 30 feet of you. This illusory copy of you makes one Iridescent Strike against a target within range and disappears.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: illusory-strikes
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrveskFvBKj91na'

@@ -1,0 +1,51 @@
+_id: hbrvesWFw2j3uYrA
+name: Vessel Magic
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>Starting at 2nd level, you can draw upon the immense power of the Sealed Spirit bound within your soul to produce spells: Cantrips You learn two Cantrips of your choice from the Vessel Spell List. You learn another Vessel Cantrip at 4th and 11th level, as shown in the Cantrips Known column of the Vessel table. Spell Slots The Vessel table above shows how many spell slots you have to cast your Vessel spells and the level of those spell slots. All of your spell slots are the same level. To cast a Vessel spell of 1st-level or higher, you must expend a spell slot. You regain all of your spell slots when you finish a short or long rest. Spells Known of 1st-Level and Higher At 2nd level, you learn two 1st-level spells of your choice from the Vessel Spell List, which is found at the end of this class. The Spells Known column of the Vessel table shows when you learn additional Vessel spells of 1st-level and up. Vessel spells you learn must all be of a level equal to, or lower than, your Slot Level, as shown on the Vessel table. When you gain a Vessel level, you can replace one Vessel Spellcasting Ability Charisma is your spellcasting ability for your Vessel spells, as you are using your willpower to draw on the magic of the Spirit within. You use Charisma when a spell refers to your spellcasting ability, when setting a saving throw DC for a spell, and when making a spell attack roll. Spell save DC = 8 + your Proficiency Bonus + your Charisma modifier Spell attack modifier = your Proficiency Bonus + your Charisma modifier Spellcasting Focus Your Spirit Mantle is your Spellcasting Focus for your Vessel spells, and you must be cloaked in it to cast these spells. You must have a free hand to cast a spell that requires a somatic or a material component, and you must still provide material components that are consumed or have a gold cost. Sealed Spirit You have unlocked the true power of the entity bound to your soul. At 3rd level, choose one of the following Sealed Spirits The Ascended              The Fallen The Cataclysm            The Formless The Cursed             The Trickster Your Sealed Spirit grants you features at 3rd level, and again when you reach 6th, 15th, and 20th level in this class. All Sealed Spirit features use your Vessel Spell save DC. Sealed Magic Each Sealed Spirit has a list of Sealed Magic spells you learn at the Vessel levels listed in its description. They are Vessel spells for you, but do not count against your number of Spells Known. You can''t replace these spells when you gain a level.</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: '1'
+    spent: 0
+    recovery:
+      - period: sr
+        type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: vessel-magic
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesWFw2j3uYrA'

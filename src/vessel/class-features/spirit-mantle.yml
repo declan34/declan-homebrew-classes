@@ -1,0 +1,49 @@
+_id: hbrvespnPw2Da1c3
+name: Spirit Mantle
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>At 1st level, you can use a bonus action to cloak yourself with (or dismiss) your Spirit Mantle, an ethereal cloak of spiritual power. It marks a dramatic change in your appearance which causes you to resemble the Spirit bound to your soul. While cloaked in your Mantle, you gain the features here: Ethereal Armor The power of your Mantle wards you from harm. When you are not wearing armor or a shield, your Armor Class is equal to 10 + your Constitution modifier + your Charisma modifier. Iridescent Strikes Spiritual energies empower you. You can use your Charisma, in place of Strength, for your unarmed strike attack rolls. On hit, these unarmed strikes deal radiant damage equal to 1d6 + your Charisma modifier. Also, whenever you take the Attack action, you can make an unarmed strike as a bonus action. At certain Vessel levels, the damage die of these Iridescent Strikes increases: at 5th (d8), 11th (d10), and 17th level (d12). Your Sealed Spirit &amp; You! To some Vessels, the nature of their Sealed Spirit is a mystery, while others are aware of its true nature. Though Vessels do not select their Sealed Spirit until 3rd level, if you know the nature of your Spirit,</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 1
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: spirit-mantle
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvespnPw2Da1c3'

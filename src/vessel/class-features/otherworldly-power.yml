@@ -1,0 +1,49 @@
+_id: hbrvesvOTzUVjGZG
+name: Otherworldly Power
+type: feat
+folder: mtTG296Rg5dmybKM
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Within every Vessel is bound an extraplanar being of strange and wondrous power. No matter their origin, these immortal Spirits cannot be killed by conventional means. Instead, they are often bound to mortal flesh, forced to dwell within a body on the material plane. While many such Spirits are bound to their Vessel against their will, some choose to dwell within a mortal, lending them power in causes that align with theirs. No matter the reason, these otherworldly beings are the source of the power for the adventurers known as Vessels.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 1
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: otherworldly-power
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesvOTzUVjGZG'

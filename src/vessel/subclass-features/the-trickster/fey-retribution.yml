@@ -1,0 +1,49 @@
+_id: hbrvesbRZBOt1ket
+name: Fey Retribution
+type: feat
+folder: uBdqLQs9CNNIbiP6
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>15th-level Trickster Spirit feature The power of the Trickster can reflect magic back upon foes. If you succeed on a saving throw against a spell, you can use your reaction to force the caster to make a Wisdom saving throw. On a failure, it suffers the effects of either charm person or charm monster. Once a creature is Charmed by you in this way, it can''t be Charmed by this feature again until the next dawn. Medium Fey (Shapechanger) Speed 30 ft. Immunities Charmed, Frightened Languages Sylvan, any languages you know Senses Darkvision 60 ft. Skills Deception, Stealth T raits raits Juxtapose. As a bonus action, the Archon can force one creature that it can see within 60 ft. to make a Charisma saving throw. On a failure, the Archon instantly switches places with the creature. The creature can choose to fail. l Lord of Mischief 20th-level Trickster Spirit feature You can channel the whimsical and terrifying power of The Trickster. Your Archon Form gains the following benefits: You assume the true appearance of your Trickster Spirit. When you use Illusory Strikes the range becomes 60 feet. Once per turn when you use Illusory Strikes you can create two illusory copies of yourself within range. When you hit a creature with an Iridescent Strike it has disadvantage on its next Wisdom saving throw. AC Bonus +0</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 15
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: fey-retribution
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder00000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesbRZBOt1ket'
