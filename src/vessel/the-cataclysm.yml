@@ -15,7 +15,53 @@ system:
     book: ''
   identifier: the-cataclysm
   classIdentifier: vessel
-  advancement: []
+  advancement:
+    - _id: hbrvesPjc1kyIhsQ
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesMGIGKa9G4L
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesSArH7aSN2K
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrvespyB8Ae2qaX
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrves9SKpVpZfKR
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrvesWavXNZkQrG
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesLGlYzPTrpS
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 15
+      title: Features
+    - _id: hbrvesJxXvYYv246
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesqtGEi5hSNM
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 20
+      title: Features
   spellcasting:
     progression: none
     ability: ''
@@ -23,6 +69,15 @@ system:
       formula: ''
 effects: []
 flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
 sort: 300000
 ownership:
   default: 0

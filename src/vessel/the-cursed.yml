@@ -15,7 +15,31 @@ system:
     book: ''
   identifier: the-cursed
   classIdentifier: vessel
-  advancement: []
+  advancement:
+    - _id: hbrvesSJJTFX0C5n
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrves8fHpRrqnjG
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesTIDM1HF9MT
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrves3BENNPojIO
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesIGApzDpQ6K
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
   spellcasting:
     progression: none
     ability: ''
@@ -23,6 +47,15 @@ system:
       formula: ''
 effects: []
 flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
 sort: 300000
 ownership:
   default: 0

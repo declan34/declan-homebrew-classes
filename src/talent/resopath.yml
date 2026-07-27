@@ -15,7 +15,53 @@ system:
     book: ''
   identifier: resopath
   classIdentifier: talent
-  advancement: []
+  advancement:
+    - _id: hbrtalMW6oDPyGNG
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalDfNKUHtsuM
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtal3o7KomrTbT
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 2
+      title: Features
+    - _id: hbrtal39XkgtBdCY
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtal9f39pKBPks
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrtalOTMmyJk95Q
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalIx6mUnmabT
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 10
+      title: Features
+    - _id: hbrtaliE7ujRPVsS
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtaljwlCRMPpkW
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
   spellcasting:
     progression: none
     ability: ''

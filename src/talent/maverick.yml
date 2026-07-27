@@ -15,7 +15,53 @@ system:
     book: ''
   identifier: maverick
   classIdentifier: talent
-  advancement: []
+  advancement:
+    - _id: hbrtalHnbhoNgJiU
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtal5cxQ4tKCq3
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalBPqOhknmog
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 2
+      title: Features
+    - _id: hbrtalTzgsZyZr3y
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtal9uZ3owDcLU
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrtalPNhbpnFwK5
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalTNHlztcJpr
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 10
+      title: Features
+    - _id: hbrtalUEh3BJp56d
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalgkJAO645wJ
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
   spellcasting:
     progression: none
     ability: ''

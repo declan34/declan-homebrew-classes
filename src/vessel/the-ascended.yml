@@ -15,7 +15,18 @@ system:
     book: ''
   identifier: the-ascended
   classIdentifier: vessel
-  advancement: []
+  advancement:
+    - _id: hbrvesB0MKvQPrEo
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesQew98IFyCJ
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
   spellcasting:
     progression: none
     ability: ''
@@ -23,6 +34,15 @@ system:
       formula: ''
 effects: []
 flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
 sort: 300000
 ownership:
   default: 0

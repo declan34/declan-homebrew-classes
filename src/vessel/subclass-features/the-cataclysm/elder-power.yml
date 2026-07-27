@@ -34,6 +34,15 @@ flags:
     riders:
       activity: []
       effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
 sort: 0
 ownership:
   default: 0

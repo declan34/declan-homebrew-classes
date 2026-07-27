@@ -15,7 +15,53 @@ system:
     book: ''
   identifier: the-formless
   classIdentifier: vessel
-  advancement: []
+  advancement:
+    - _id: hbrvesK9NOZ5BpNC
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrveskqMRY9o4dk
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesVodp93U327
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrvesD0xFVMNMOi
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrveshZhemFHFD0
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrvesrX8kDn2uxJ
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrves64z4GSl6Eh
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 15
+      title: Features
+    - _id: hbrvesUjEWKJwNlk
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesSAXUD5l0wH
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 20
+      title: Features
   spellcasting:
     progression: none
     ability: ''
@@ -23,6 +69,15 @@ system:
       formula: ''
 effects: []
 flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
 sort: 300000
 ownership:
   default: 0

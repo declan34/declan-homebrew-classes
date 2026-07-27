@@ -15,7 +15,55 @@ system:
     book: ''
   identifier: metamorph
   classIdentifier: talent
-  advancement: []
+  advancement:
+    - _id: hbrtalyagWDFBbSm
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalcK9EJzrpXY
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalXiDxbMaQox
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 2
+      title: Features
+    - _id: hbrtalXSRjq3NqZZ
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalEPifDsrfnJ
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalMUDlX13sJ8
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrtalqvcDzQOPh0
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtaluf85a21JdZ
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 10
+      title: Features
+    - _id: hbrtaly1HoiwahwM
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalS6PQ87NM6v
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
   spellcasting:
     progression: none
     ability: ''

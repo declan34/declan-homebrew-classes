@@ -15,7 +15,53 @@ system:
     book: ''
   identifier: pyrokinetic
   classIdentifier: talent
-  advancement: []
+  advancement:
+    - _id: hbrtaljqHc0MckNC
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalvGyabCxMBY
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalQIYEdmrxgV
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 2
+      title: Features
+    - _id: hbrtal4mXxjw5pwz
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalYRmw6iykzb
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrtalI7dsnm84t5
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalDb11jBWSRt
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 10
+      title: Features
+    - _id: hbrtalfMvUe4MCRo
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtal6kGO1HQpf8
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
   spellcasting:
     progression: none
     ability: ''

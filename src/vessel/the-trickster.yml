@@ -15,7 +15,42 @@ system:
     book: ''
   identifier: the-trickster
   classIdentifier: vessel
-  advancement: []
+  advancement:
+    - _id: hbrvesUDgeZn3gF5
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrves1VJNtDxjKv
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrves58mwmPxiOL
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrvesQPnnGvmkPv
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrveskFvBKj91na
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrvesWknz0K8uzI
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesbRZBOt1ket
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 15
+      title: Features
   spellcasting:
     progression: none
     ability: ''
@@ -23,6 +58,15 @@ system:
       formula: ''
 effects: []
 flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
 sort: 300000
 ownership:
   default: 0
