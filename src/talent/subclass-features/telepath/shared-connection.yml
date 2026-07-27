@@ -1,0 +1,49 @@
+_id: hbrtalm7UBrxcXDn
+name: Shared Connection
+type: feat
+folder: NbuL8pyU1ly2lc9J
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>10th-level Telepath Feature</p><p>You can facilitate an incredible psychic connection between yourself and other creatures. When you forge a telepathic link with your Greater Telepathy feature, each linked creature gains the following benefits:</p><p>¢ ‘The creature can choose to hear, smell, and see what any other linked creature experiences.</p><p>¢ Each creature can take the Help action as a bonus action to aid another linked creature.</p><p>¢ A creature can use the Help action to grant advantage on another linked creature’s attack roll even if the creature taking the Help action isn’t within 5 feet of the target of the attack.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 10
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: shared-connection
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalm7UBrxcXDn'

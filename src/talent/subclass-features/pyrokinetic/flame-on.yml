@@ -1,0 +1,49 @@
+_id: hbrtalvGyabCxMBY
+name: Flame On
+type: feat
+folder: drHlP8zQD9WxWyX4
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Pyrokinetic Feature</p><p>As an action, you psionically create a ball of flame that appears on your body. ‘The flame harms neither you nor your equipment, and sheds bright light in a 20-foot radius and dim light for an additional 20 feet. You can create only one flame at a time this way.</p><p>As part of the action used to create the flame, or as an action if you created the flame previously, you can make a melee or ranged power attack with it. If you make a ranged attack, you can hurl the flame at a target up to 60 feet away from you. On a hit, the target takes fire damage equal to 1d6 + your Intelligence modifier (minimum +1). Any flammable object hit by the flame ignites if it isn’t being worn or carried.</p><p>The flame lasts until you make an attack with it or dismiss it (no action required). If you become incapacitated, the flame disappears.</p><p>As you reach higher levels in this class, this feature allows you to create more than one flame. When you attack while holding multiple flames, you do so with all of them at once, making separate attack rolls for each flame and directing them at one target or several. You can create two flames at 5th level, three flames at 11th level, and four flames at 17th level.</p><p>THE TALENT | THE TALENT</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: flame-on
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalvGyabCxMBY'

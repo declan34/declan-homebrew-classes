@@ -1,0 +1,49 @@
+_id: hbrtal43h9oUZ56d
+name: Rapid Manifestation
+type: feat
+folder: q5YXiecQsIufRtvW
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Chronopath Feature</p><p>You cause time around you to shift, speeding up the amount of time it takes to manifest a power. When you manifest a power, you can use this feature to shorten its manifestation time in any of the following ways:</p><p>¢ You manifest a power that normally requires a bonus action or a reaction (no action required). You can’t cast a spell or manifest another power during the same turn, except for a cantrip with a casting time of | action or a Ist-order power with a manifestation time of | action.</p><p>THE TALENT | THE TALENT</p><p>* You use a bonus action to manifest a power that normally requires an action.</p><p>* You use an action to manifest a power that normally requires | minute.</p><p>° Ifa power has a manifestation time greater than | minute, you can manifest it in half its normal time.</p><p>You can use this feature a number of times equal to your Intelligence modifier (minimum once), regaining all uses when you finish a long rest.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: rapid-manifestation
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtal43h9oUZ56d'

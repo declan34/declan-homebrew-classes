@@ -1,0 +1,49 @@
+_id: hbrtal6kGO1HQpf8
+name: Immolate
+type: feat
+folder: drHlP8zQD9WxWyX4
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>14th-level Pyrokinetic Feature</p><p>Channeling your pyrokinesis powers lets you set your enemies ablaze. Once per turn when you deal fire damage to a creature with a pyrokinesis power or your Flame On feature, you can make the target catch fire for 1 minute. While on fire, a target takes fire damage equal to twice your proficiency bonus at the start of each of their turns. At the end of each of their turns, a target can make a Dexterity saving throw against your talent power save DC, extinguishing the fire on themself on a success.</p><p>22 RESOPATH</p><p>Through sheer force of will, you create and reshape objects and creatures, literally making your dreams and your enemies’ nightmares come true. Resopaths are sometimes called makers, and those who enter the Resopath specialization do so at the Academy of Creation.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: immolate
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtal6kGO1HQpf8'

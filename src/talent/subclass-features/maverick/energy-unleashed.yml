@@ -1,0 +1,49 @@
+_id: hbrtal9uZ3owDcLU
+name: Energy Unleashed
+type: feat
+folder: hGjf5pMHvIZ5Y7IV
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Maverick Feature</p><p>When your powers tax you, you release some of that debilitating energy out into the world. Whenever you gain strain, you can choose a creature you can see within 60 feet of you. That creature must succeed on a Wisdom saving throw against your talent power save DC or take ld6 psychic damage for each strain you gain.</p><p>THE TALENT | THE TALENT</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: energy-unleashed
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtal9uZ3owDcLU'

@@ -1,0 +1,49 @@
+_id: hbrtalZP56KFKNiY
+name: Mind Wings
+type: feat
+folder: SXqV4rRtlgIknzpT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>14th-level Telekinetic Feature</p><p>The might of your mind allows you to move yourself and your allies with ease. You gain a flying speed of 60 feet.</p><p>In addition, as a bonus action, you can move a willing creature you can see within 60 feet of you up to 15 feet in any direction, including up. A creature moved up begins to fall as soon as that movement ends.</p><p>26 TELEPATH</p><p>Your psionic powers read and manipulate the minds</p><p>of others. With only a thought, you can communicate with people silently over great distances, uncover hidden secrets, and turn enemies into friends. ‘Telepaths are sometimes called readers, and those who make a</p><p>formal study of the ‘Telepath specialization do so at the Academy of Mind.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: mind-wings
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalZP56KFKNiY'

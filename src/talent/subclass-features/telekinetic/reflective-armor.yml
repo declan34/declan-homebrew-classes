@@ -1,0 +1,49 @@
+_id: hbrtalpycZxRtT5k
+name: Reflective Armor
+type: feat
+folder: SXqV4rRtlgIknzpT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>10th-level Telekinetic Feature</p><p>Enemies feel your power when their attacks are reflected back at them. When you use a reaction to activate Invisible Armor and the triggering attack misses, you can make a power attack roll against the creature that triggered the reaction. If your attack hits, the target is hit by the triggering attack and takes extra damage equal to your Intelligence modifier (minimum 1).</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 10
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: reflective-armor
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalpycZxRtT5k'

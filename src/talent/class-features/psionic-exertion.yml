@@ -1,0 +1,49 @@
+_id: hbrtalTK85Rytt58
+name: Psionic Exertion
+type: feat
+folder: MHFpYeQvpbMzmVZq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>3rd-Level Talent Feature</p><p>You can expend your energy to give your powers an extra effect. You gain one of the following Psionic Exertion options of your choice. You gain additional options at 7th, llth, and 15th level.</p><p>You can use only one Psionic Exertion option on a power when you manifest it.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: psionic-exertion
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalTK85Rytt58'

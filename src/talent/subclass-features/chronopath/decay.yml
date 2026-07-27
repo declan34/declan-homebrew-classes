@@ -1,0 +1,49 @@
+_id: hbrtaln3OcphuBHA
+name: Decay
+type: feat
+folder: q5YXiecQsIufRtvW
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Chronopath Feature</p><p>You rapidly advance the age of objects with your mind, causing them to turn to dust. You can use an action</p><p>to gain | strain while touching a mundane object not carried or worn by another creature. If the object is Medium or smaller, it disintegrates into a pile of dust.</p><p>If the object is Large or bigger, you disintegrate a 5-foot- cubic portion of the object.</p><p>Additionally, while touching a Construct, you can use an action to gain strain up to your proficiency bonus. The Construct must make a Wisdom saving throw against your talent power save DC, taking 2d10 necrotic damage for each strain you gain on a failed save, or half as much damage on a successful one.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: decay
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtaln3OcphuBHA'

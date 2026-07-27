@@ -1,0 +1,49 @@
+_id: hbrtaljrIsIHHwMP
+name: Invisible Armor
+type: feat
+folder: SXqV4rRtlgIknzpT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Telekinetic Feature</p><p>By altering the arc of incoming attacks, you ward yourself or your allies against those attacks. When you</p><p>or a creature you can see within 30 feet of you is hit by an attack, you can use a reaction to give the target of</p><p>the attack a bonus to AC. This bonus is equal to your Intelligence modifier (minimum 1), is effective against the triggering attack, and lasts until the start of your next turn. You can use this feature a number of times equal to your Intelligence modifier (minimum once), regaining all uses when you finish a long rest.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: invisible-armor
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtaljrIsIHHwMP'

@@ -1,0 +1,49 @@
+_id: hbrtalcK9EJzrpXY
+name: Metamorphosis Adept
+type: feat
+folder: hcmmXXswijsBF6e3
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Metamorph Feature</p><p>When you roll a manifestation die to learn a new metamorphosis power, you can roll the die twice and use either roll.</p><p>In addition, after you make a manifestation test to</p><p>manifest a metamorphosis power, you can reroll the manifestation die and use either roll. You can reroll a number of manifestation tests equal to your Intelligence modifier (minimum one test), regaining all uses when you finish a long rest. You can use this feature only once for a single manifestation test.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: metamorphosis-adept
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalcK9EJzrpXY'

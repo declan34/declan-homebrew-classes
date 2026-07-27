@@ -1,0 +1,49 @@
+_id: hbrtalSaE5RjnIik
+name: Shielded Mind
+type: feat
+folder: MHFpYeQvpbMzmVZq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>18th-Level Talent Feature</p><p>Your mind instinctively shields you from danger. You</p><p>have advantage on Intelligence, Wisdom, and Charisma saving throws, and you are immune to powers, spells, and other supernatural effects that allow other creatures to read your thoughts, determine whether you are lying, know your alignment, or know your creature type. Additionally, creatures can telepathically communicate with you only if you allow it.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 18
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: shielded-mind
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalSaE5RjnIik'

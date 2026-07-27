@@ -1,0 +1,49 @@
+_id: hbrtaljwlCRMPpkW
+name: Nightmare Terrain
+type: feat
+folder: Hk35jGRxneJVW4uy
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>14th-level Resopath Feature</p><p>Terrain you shape with your mind is capable of harming your enemies. At the start of each of your turns while your Manipulate Terrain feature is active, you can select up to three creatures you can see 1n the area affected</p><p>by that feature and shape the ground around them into attacking weapons (no action required). Each creature must succeed on a Dexterity saving throw against your talent power save DC or take bludgeoning, piercing, or slashing damage (your choice) equal to your talent level.</p><p>24 TELEKINETIC</p><p>Your psionic powers allow you to physically manipulate other objects and creatures. All the world is a puppet</p><p>show and you are the puppet master, pulling invisible strings that can send stones, people, and even buildings flying. ‘Telekinetics are sometimes called movers, and those who undertake the ‘Telekinetic specialization do so at the Academy of Motion.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: nightmare-terrain
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtaljwlCRMPpkW'

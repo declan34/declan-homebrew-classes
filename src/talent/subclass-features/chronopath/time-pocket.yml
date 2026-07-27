@@ -1,0 +1,49 @@
+_id: hbrtalM01YzyEe5V
+name: Time Pocket
+type: feat
+folder: q5YXiecQsIufRtvW
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>14th-level Chronopath Feature</p><p>You temporarily remove a creature from space and time with your mind. As an action, you gain 3 strain and focus your mind on bending time around a creature you can see within 120 feet of you, which must make a Charisma saving throw against your talent power save DC. On a failed save, the creature takes 6d10 psychic damage and disappears, reappearing at the end of your turn 1d4 + | rounds later. The creature reappears in the space it previously occupied, or the nearest unoccupied space. On a success, the creature takes half as much damage and their speed is halved until the end of their next turn.</p><p>18 METAMORPH</p><p>Your brain allows you to alter a creature’s body chemistry, letting you close wounds, grant superpowers, and even bring back the dead with a mere touch of the mind. Metamorphs are sometimes called changers, and those who make a formal study of the Metamorph specialization do so at the Academy of Body.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: time-pocket
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalM01YzyEe5V'

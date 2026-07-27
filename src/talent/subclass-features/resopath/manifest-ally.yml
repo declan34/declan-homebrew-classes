@@ -1,0 +1,49 @@
+_id: hbrtal9f39pKBPks
+name: Manifest Ally
+type: feat
+folder: Hk35jGRxneJVW4uy
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Resopath Feature</p><p>The power of your mind creates one or more living creatures that come to your aid. As a bonus action, you gain strain to create a soulless creature with the statistics of a Beast of your choice, whose challenge rating is no higher than your talent level divided by 3 (rounded down). The strain you gain equals the creature’s challenge rating (minimum 1).</p><p>The creature appears in an unoccupied space of your choice within 30 feet of you that you can see, and acts after you on your initiative count. The creature can understand any languages you speak and follows your commands to the best of their ability. If you don’t issue any commands to the creature, they defend themself from hostile creatures but otherwise take no actions. Your manifested ally disappears if they are reduced to 0 hit points, if you die, if you use this feature again to create another ally, or after 10 minutes.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: manifest-ally
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtal9f39pKBPks'

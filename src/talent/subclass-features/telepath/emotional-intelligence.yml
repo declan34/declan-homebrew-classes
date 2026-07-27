@@ -1,0 +1,49 @@
+_id: hbrtal282fgcI2Hr
+name: Emotional Intelligence
+type: feat
+folder: NbuL8pyU1ly2lc9J
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Telepath Feature</p><p>Your awakened mind 1s acutely sensitive to the emotions of others. Whenever you make an ability check that makes use of the Deception, Insight, Intimidation, or Persuasion skills, you gain a bonus to the check equal to your Intelligence modifier (minimum +1).</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: emotional-intelligence
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtal282fgcI2Hr'

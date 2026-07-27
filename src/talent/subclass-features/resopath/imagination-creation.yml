@@ -1,0 +1,49 @@
+_id: hbrtalIx6mUnmabT
+name: Imagination Creation
+type: feat
+folder: Hk35jGRxneJVW4uy
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>10th-level Resopath Feature</p><p>You make objects you need appear from nowhere.</p><p>As an action, you create any Large or smaller mundane object, which appears in an unoccupied space within</p><p>5 feet of you, with you touching the object. You can</p><p>use this feature to create a copy of any object you have touched, such as a key or a statue of a specific dragon. This feature can’t be used to make functional spell components.</p><p>The object you create disappears if you stop touching it for 5 minutes or until you use this feature again. You can use this feature a number of times equal to your Intelligence modifier (minimum once), regaining all uses when you finish a long rest.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 10
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: imagination-creation
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalIx6mUnmabT'

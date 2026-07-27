@@ -1,0 +1,49 @@
+_id: hbrtaloXMcWnltyT
+name: Ignore Strain
+type: feat
+folder: MHFpYeQvpbMzmVZq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>20th-Level Talent Feature</p><p>You use powers so frequently that your body has adapted to the strain put on them. Whenever you finish a long rest, choose body strain, mind strain, or soul strain.</p><p>You ignore the effects of the chosen type of strain until you finish a long rest.</p><p>16</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 20
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: ignore-strain
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtaloXMcWnltyT'

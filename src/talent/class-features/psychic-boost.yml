@@ -1,0 +1,49 @@
+_id: hbrtalKp0E40vW8e
+name: Psychic Boost
+type: feat
+folder: MHFpYeQvpbMzmVZq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>7th-Level Talent Feature</p><p>You learn to focus your mind and draw forth reserved</p><p>mental strength to replenish your body and brain. You can use a bonus action to remove strain equal to your proficiency bonus. Once you use this feature, you can’t use it again until you finish a long rest.</p><p>You can use this feature twice between long rests starting at 12th level, and three times between long rests starting at 17th level.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 7
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: psychic-boost
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalKp0E40vW8e'

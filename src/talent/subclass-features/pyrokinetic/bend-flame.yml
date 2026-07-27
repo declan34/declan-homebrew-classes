@@ -1,0 +1,49 @@
+_id: hbrtalYRmw6iykzb
+name: Bend Flame
+type: feat
+folder: drHlP8zQD9WxWyX4
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Pyrokinetic Feature</p><p>A mastery of pyrokinesis allows you to change flame</p><p>into raw energy and bend it to your will. Whenever you manifest a pyrokinesis power, you can pick one of the following options:</p><p>* You can change any fire damage dealt by the power to force damage.</p><p>¢ Choose a number of creatures affected by the power equal to the power’s order. ‘The chosen creatures automatically succeed on their saving throws against the power, and they take no damage if they would normally take half damage on a successful save.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: bend-flame
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalYRmw6iykzb'

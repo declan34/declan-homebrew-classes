@@ -1,0 +1,235 @@
+_id: hbrtaltKXDXwilCw
+name: The Talent
+type: class
+folder: rgjErZehDiH7G4r5
+img: systems/dnd5e/icons/classes/talent.webp
+system:
+  description:
+    value: ''
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  startingEquipment: []
+  identifier: talent
+  levels: 1
+  advancement:
+    - _id: hbrtalsTJ7CWM1X9
+      type: HitPoints
+      configuration: {}
+      value: {}
+    - _id: hbrtalcBBUlP4gtw
+      type: Subclass
+      configuration: {}
+      value:
+        document: null
+        uuid: null
+      level: 2
+      title: ''
+      hint: ''
+    - _id: hbrtal9PrdynwMqQ
+      type: AbilityScoreImprovement
+      configuration:
+        points: 2
+        fixed:
+          str: 0
+          dex: 0
+          con: 0
+          int: 0
+          wis: 0
+          cha: 0
+        cap: 2
+        locked: []
+        recommendation: null
+        max: null
+      value: {}
+      level: 4
+      title: ''
+      hint: ''
+    - _id: hbrtaliY4VFM0e3D
+      type: AbilityScoreImprovement
+      configuration:
+        points: 2
+        fixed:
+          str: 0
+          dex: 0
+          con: 0
+          int: 0
+          wis: 0
+          cha: 0
+        cap: 2
+        locked: []
+        recommendation: null
+        max: null
+      value: {}
+      level: 8
+      title: ''
+      hint: ''
+    - _id: hbrtalx4lZnBM8Wx
+      type: AbilityScoreImprovement
+      configuration:
+        points: 2
+        fixed:
+          str: 0
+          dex: 0
+          con: 0
+          int: 0
+          wis: 0
+          cha: 0
+        cap: 2
+        locked: []
+        recommendation: null
+        max: null
+      value: {}
+      level: 12
+      title: ''
+      hint: ''
+    - _id: hbrtalWbvepsAhW6
+      type: AbilityScoreImprovement
+      configuration:
+        points: 2
+        fixed:
+          str: 0
+          dex: 0
+          con: 0
+          int: 0
+          wis: 0
+          cha: 0
+        cap: 2
+        locked: []
+        recommendation: null
+        max: null
+      value: {}
+      level: 16
+      title: ''
+      hint: ''
+    - _id: hbrtalZiRwm3g4l7
+      type: AbilityScoreImprovement
+      configuration:
+        points: 2
+        fixed:
+          str: 0
+          dex: 0
+          con: 0
+          int: 0
+          wis: 0
+          cha: 0
+        cap: 2
+        locked: []
+        recommendation: null
+        max: null
+      value: {}
+      level: 19
+      title: ''
+      hint: ''
+    - _id: hbrtalPVtO8XNHCD
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalQehcoSoDX2
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalaACq5nidjR
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 1
+      title: Features
+    - _id: hbrtalQgJaEsM1ab
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalVtGDnMX3kP
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 2
+      title: Features
+    - _id: hbrtala1sDLwxiUn
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalTK85Rytt58
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrtal782lPj2G6X
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalKp0E40vW8e
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 7
+      title: Features
+    - _id: hbrtalYnBR4vAGE8
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtal482I0nNfDD
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 11
+      title: Features
+    - _id: hbrtalkAk4BYEsLG
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtalSaE5RjnIik
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 18
+      title: Features
+    - _id: hbrtale7Ap04UKc5
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrtaloXMcWnltyT
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 20
+      title: Features
+  spellcasting:
+    progression: full
+    ability: int
+    preparation:
+      formula: ''
+  wealth: ''
+  primaryAbility:
+    value:
+      - str
+    all: false
+  hd:
+    denomination: d6
+    spent: 0
+    additional: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtaltKXDXwilCw'

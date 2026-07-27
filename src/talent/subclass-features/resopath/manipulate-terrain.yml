@@ -1,0 +1,49 @@
+_id: hbrtalDfNKUHtsuM
+name: Manipulate Terrain
+type: feat
+folder: Hk35jGRxneJVW4uy
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Resopath Feature</p><p>You can shape the terrain around you, making it disadvantageous for your enemies by creating grasping hands, sentient vines, or other hindrances. As a bonus action, choose a point on the ground you can see within 60 feet of you. A 20-foot-square area centered on that point becomes difficult terrain for creatures of your choice. The effect remains in the area for | minute, or until you use this feature again.</p><p>Once the area 1s established, you can use a bonus action each round to move the area up to 20 feet, or to move one willing creature you can see within the area to any unoccupied space within the area.</p><p>You can use this feature a number of times equal to your Intelligence modifier (minimum once), regaining all uses when you finish a long rest.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: manipulate-terrain
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalDfNKUHtsuM'

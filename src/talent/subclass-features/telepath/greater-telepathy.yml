@@ -1,0 +1,49 @@
+_id: hbrtalmbVUMpu0mb
+name: Greater Telepathy
+type: feat
+folder: NbuL8pyU1ly2lc9J
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Telepath Feature</p><p>You gain the ability to telepathically communicate</p><p>at will. You can speak telepathically to any creature within 30 feet of you, which understands you whether</p><p>or not the two of you share a common language. You can communicate even with creatures that have a low Intelligence or that understand no languages, and can speak telepathically in this way to one creature at a time.</p><p>Additionally, as an action, you can forge a telepathic link with other willing creatures of your choice within 30 feet of you, up to a total number of creatures equal to your Intelligence modifier. ‘This link lasts for 1 hour. You and any of the targets can communicate telepathically with each other through the bond, whether or not you share a common language. Once this telepathic link is established, communication is possible over any distance, though it can’t extend to other planes of existence. If you are incapacitated or die, the telepathic link ends.</p><p>You can use this feature a number of times equal to your Intelligence modifier (minimum once), regaining all uses when you finish a long rest. If you create a telepathic link with this feature while an existing link 1s already active, the first link ends.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: greater-telepathy
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalmbVUMpu0mb'

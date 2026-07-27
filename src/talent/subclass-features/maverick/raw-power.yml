@@ -1,0 +1,49 @@
+_id: hbrtal5cxQ4tKCq3
+name: Raw Power
+type: feat
+folder: hGjf5pMHvIZ5Y7IV
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Maverick Feature</p><p>Your raw mental power hits your enemies harder. You can add your Intelligence modifier to one damage roll of any lst-order power you manifest.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: raw-power
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtal5cxQ4tKCq3'

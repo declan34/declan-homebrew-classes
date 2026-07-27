@@ -1,0 +1,49 @@
+_id: hbrtalgkJAO645wJ
+name: Full Force
+type: feat
+folder: hGjf5pMHvIZ5Y7IV
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>74 th-level Maverick Feature</p><p>With intense focus, you pour all your might into a manifested power. When you deal damage with a power, you can deal maximum damage instead of rolling damage dice. Once you use this feature, you can’t use it again until you finish a short or long rest.</p><p>30</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: full-force
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalgkJAO645wJ'

@@ -1,0 +1,49 @@
+_id: hbrtaluf85a21JdZ
+name: Death Foiled
+type: feat
+folder: hcmmXXswijsBF6e3
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>10th-level Metamorph Feature</p><p>By expending psionic energy, you return a dead creature to life. After spending | hour concentrating on and touching the remains of a creature that died within the last 8 hours, you gain 8 strain, and the creature returns to life with | hit point. Any poisons or diseases that affected the creature when they died are neutralized or cured when they return to life. ‘This power closes all mortal wounds and restores any missing body parts.</p><p>Additionally, if you die and can gain 8 strain without surpassing your strain maximum, you gain 8 strain and your remains reform | hour after your death. When your remains reform, you return to life as above.</p><p>You can use this feature to return a creature to life (including yourself) once, regaining the ability to do so when you finish a long rest.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 10
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: death-foiled
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtaluf85a21JdZ'

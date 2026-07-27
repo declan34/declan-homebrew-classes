@@ -1,0 +1,49 @@
+_id: hbrtaluWOD6jvhYh
+name: Fickle Readiness
+type: feat
+folder: q5YXiecQsIufRtvW
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>10th-level Chronopath Feature</p><p>At the beginning of a fight, you bend time to your advantage. If you are surprised at the start of combat and aren't incapacitated, you can act normally on your first turn. You can also gain | strain to allow a surprised creature within 90 feet of you that you can see to act normally on their first turn.</p><p>Additionally, whenever you roll initiative, you can switch the initiative count of two creatures you can see within 90 feet of you that rolled initiative at the same time as you.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 10
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: fickle-readiness
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtaluWOD6jvhYh'

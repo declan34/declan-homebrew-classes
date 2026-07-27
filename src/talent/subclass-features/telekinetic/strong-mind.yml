@@ -1,0 +1,49 @@
+_id: hbrtalhKL713H2ee
+name: Strong Mind
+type: feat
+folder: SXqV4rRtlgIknzpT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Telekinetic Feature</p><p>Whenever you manifest a power that allows you to move one or more creatures or objects, you can increase the distance the power allows you to move the targets by 10 feet.</p><p>Additionally, when you make a Strength or Dexterity saving throw, you can gain | strain to make an Intelligence saving throw instead.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: strong-mind
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalhKL713H2ee'

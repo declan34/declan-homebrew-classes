@@ -1,0 +1,49 @@
+_id: hbrtalS6PQ87NM6v
+name: Psionic Evolution
+type: feat
+folder: hcmmXXswijsBF6e3
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>14th-level Metamorph Feature</p><p>Any creature that benefits from your Psionic Toughness feature gains the following additional benefits for | hour:</p><p>¢ ‘The creature is immune to disease, poison damage, and the poisoned condition.</p><p>¢ ‘The creature’s speed increases by 10 feet.</p><p>¢ Once on each of the creature’s turns when they deal damage to a target with an attack, power, or spell, they can deal extra psychic damage to the target equal to your Intelligence modifier (minimum | damage).</p><p>20 PYROKINETIC</p><p>By interacting with the explosive energy found in</p><p>all things, you can create and manipulate fire with your mind. ‘To you, the flames you wield might be a beautiful work of art, a representation of your burning passion or rage, or simply a tool you use to do your job. Pyrokinetics are sometimes called burners, and those who take up the Pyrokinetic specialization do so at the Academy of Fire.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: psionic-evolution
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalS6PQ87NM6v'

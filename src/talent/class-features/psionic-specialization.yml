@@ -1,0 +1,49 @@
+_id: hbrtalVtGDnMX3kP
+name: Psionic Specialization
+type: feat
+folder: MHFpYeQvpbMzmVZq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-Level Talent Feature</p><p>You choose a psionic specialization based on the</p><p>specialty that is the focus of your academy. Each specialization—Chronopath, Metamorph, Pyrokinetic, Resopath, Telekinetic, or Telepath—grants you unique features that reflect your training. Alternatively, if your character has eschewed the focused training of an academy, you can choose the Maverick specialization. Your choice of specialization grants you features</p><p>when you choose it at 2nd level and again at 6th, 10th, and 14th level.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: psionic-specialization
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalVtGDnMX3kP'

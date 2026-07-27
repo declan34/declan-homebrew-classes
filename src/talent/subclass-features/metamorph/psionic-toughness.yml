@@ -1,0 +1,49 @@
+_id: hbrtalXiDxbMaQox
+name: Psionic Toughness
+type: feat
+folder: hcmmXXswijsBF6e3
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>2nd-level Metamorph Feature</p><p>Your touch enhances a creature’s toughness. As an action, you touch one creature (which can be yourself) and confer the following benefits to them for | hour:</p><p>° The creature’s hit point maximum and current hit points increase by a number equal to your Intelligence modifier + your talent level (minimum 1).</p><p>¢ The creature has advantage on death saving throws.</p><p>You can use this feature a number of times equal to your Intelligence modifier (minimum once), regaining all uses when you finish a long rest.</p><p>THE TALENT | THE TALENT</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: psionic-toughness
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalXiDxbMaQox'

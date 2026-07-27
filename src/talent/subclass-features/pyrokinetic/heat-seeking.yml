@@ -1,0 +1,49 @@
+_id: hbrtalDb11jBWSRt
+name: Heat Seeking
+type: feat
+folder: drHlP8zQD9WxWyX4
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>10th-level Pyrokinetic Feature</p><p>Your psionic fires can seek and destroy your targets. Ranged attacks you make with the flames created by your Flame On feature have a range of 120 feet. All attacks you make with your Flame On feature ignore half cover and three-quarters cover.</p><p>Additionally, the fire damage dealt by attacks made with your Flame On feature improves to 1d8 + your Intelligence modifier (minimum +1).</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 10
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: heat-seeking
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalDb11jBWSRt'

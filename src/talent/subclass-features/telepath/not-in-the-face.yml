@@ -1,0 +1,49 @@
+_id: hbrtalX2aMiVNk5I
+name: Not in the Face
+type: feat
+folder: NbuL8pyU1ly2lc9J
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>6th-level Telepath Feature</p><p>Your foes develop an overwhelming sympathy for you thanks to your telepathy powers. When a creature</p><p>fails a saving throw against a power you manifest, you can momentarily flood the creature with conflicting emotions that prevent them from attacking you until the start of your next turn. Creatures that can’t be charmed are immune to this effect.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: not-in-the-face
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtalX2aMiVNk5I'

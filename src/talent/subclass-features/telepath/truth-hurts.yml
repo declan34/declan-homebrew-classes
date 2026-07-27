@@ -1,0 +1,49 @@
+_id: hbrtal1OwfJVUqxC
+name: Truth Hurts
+type: feat
+folder: NbuL8pyU1ly2lc9J
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>14th-level Telepath Feature</p><p>As you open up the minds of your enemies, you cause their secrets to spill forth. Whenever a creature fails a saving throw against a telepathy power you manifest, you can choose one of the following options:</p><p>¢ You gain any amount of strain, then deal psychic damage to the creature equal to 2d8 for each strain you gain this way.</p><p>* You gain 2 strain to telepathically ask the creature one question, which they answer telepathically, honestly, and fully to the best of their ability. A creature that can’t be charmed is immune to this effect.</p><p>28 MAVERICK You don’t belong to a talent academy. Whether you</p><p>rejected the offer when it came your way, or you</p><p>don’t even know such places exist, you make no</p><p>special distinction between the powers you wield. By undertaking the Maverick specialization, you hone innate abilities that make any power you manifest more effective.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: truth-hurts
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrtal1OwfJVUqxC'
