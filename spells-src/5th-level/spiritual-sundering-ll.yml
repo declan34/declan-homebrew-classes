@@ -1,0 +1,72 @@
+name: Spiritual Sundering (LL)
+system:
+  description:
+    value: '<p>5th-level Enchantment</p><p>Classes: Cleric, Shaman, Warlock</p><p>Casting Time: 1 action</p><p>Range: 120 feet</p><p>Components: V, S</p><p>Duration: Instantaneous</p><p>Creatures in a 20-foot-radius sphere centered on a point of your choice within range have their soul rent, and must make a Charisma saving throw. On a failure, they take 8d6 necrotic damage, and for the next minute, they have a muddied sense of self and subtract 1d6 from any Intelligence, Wisdom, or Charisma saving throw they make. On a success, they take half damage and suffer no saving throw penalty.</p><p>Targets can make a Charisma saving throw at the end of each of their turns, ending the effect on a successful save.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama Original
+    rules: '2024'
+    license: proprietary
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: ''
+    units: inst
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: area
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: circle
+  range:
+    units: 120
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 5
+  school: enc
+  properties:
+  - vocal
+  - somatic
+  materials:
+    value: ''
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: spiritual-sundering-ll
+_id: jAFIFXMta2bdR7kJ
+type: spell
+img: icons/magic/unholy/strike-hand-glow-pink.webp
+effects: []
+folder: qEShFH4PHHZfRW7q
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!jAFIFXMta2bdR7kJ'

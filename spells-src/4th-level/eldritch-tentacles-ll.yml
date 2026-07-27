@@ -1,0 +1,73 @@
+name: Eldritch Tentacles (LL)
+system:
+  description:
+    value: '<p>4th-level Conjuration</p><p>Classes: Vessel, Warlock</p><p>Casting Time: 1 action</p><p>Range: 90 feet</p><p>Components: V, S, M (a piece of tentacle from a giant squid)</p><p>Duration: Concentration, up to 1 minute</p><p>Alien tentacles fill a 20-foot square on the ground you can see within range. For the duration, this area is difficult terrain.</p><p>When a creature enters this area for the first time on a turn or starts its turn there, it must succeed on a Dexterity saving throw or take 3d6 bludgeoning damage and be restrained by the tentacles until the spell ends. Any creature that begins its turn in the area and is restrained by the tentacles takes 3d6 bludgeoning damage at the start of its turn.</p><p>A creature restrained by the tentacles can use its action to make a Strength or Dexterity check (its choice) against your spell save DC. On a success, it frees itself from the tentacles.</p><p>At Higher Levels. When you cast this spell using a spell slot of 5th level or higher, both instances of damage from this spell increase by 1d6 for each slot level above 4th.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama Original
+    rules: '2024'
+    license: proprietary
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: area
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: square
+  range:
+    units: 90
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 4
+  school: con
+  properties:
+  - vocal
+  - somatic
+  - material
+  materials:
+    value: a piece of tentacle from a giant squid
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: eldritch-tentacles-ll
+_id: fRfTJdxhhNoem2XO
+type: spell
+img: icons/magic/unholy/strike-hand-glow-pink.webp
+effects: []
+folder: YcTkda5HcE9nftx3
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!fRfTJdxhhNoem2XO'

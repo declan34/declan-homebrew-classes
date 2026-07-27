@@ -1,0 +1,23 @@
+name: Cantrips
+type: Item
+img: icons/magic/light/flash-light-blue.webp
+folder: c6r16oR0HeechH9Y
+sort: 0
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!folders!RglnEx4U7chK1Mp2'
+_id: RglnEx4U7chK1Mp2

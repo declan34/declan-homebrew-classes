@@ -1,0 +1,71 @@
+name: Thunderclap
+system:
+  description:
+    value: <p>You create a thunderous clap of sound that fills a 10-foot-radius area. Each creature in the area must make a Constitution saving throw or take 1d8 thunder damage.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    license: CC-BY-4.0
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: ''
+    units: inst
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: area
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: circle
+  range:
+    units: 30
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 0
+  school: thun
+  properties:
+  - vocal
+  materials:
+    value: ''
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: always
+    prepared: false
+  activities: []
+  identifier: thunderclap
+_id: vdbDwOSIkq3JfuSW
+type: spell
+img: icons/magic/light/beam-radiance-blue.webp
+effects: []
+folder: RglnEx4U7chK1Mp2
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!vdbDwOSIkq3JfuSW'

@@ -1,0 +1,73 @@
+name: Polymorph (LL)
+system:
+  description:
+    value: '<p>4th-level Transmutation</p><p>Classes: Druid, Magus, Sorcerer, Vessel, Warlock, Wizard</p><p>Casting Time: 1 action</p><p>Range: 30 feet</p><p>Components: V, S, M (a caterpillar cocoon)</p><p>Duration: Concentration, up to 10 minutes</p><p>You attempt to transform a creature you can see within range into a Beast using the rules below. An unwilling target makes a Charisma saving throw to resist this effect. Shapechangers automatically succeed on this saving throw.</p><p>Form. The new form can be any living Beast you have seen before. Creatures can only be transformed into a Beast with a CR equal to (or lower then) half its level or CR.</p><p>Statistics. The creature''s game statistics are replaced by those of the Beast. However, while transformed, it retains its alignment, personality, its Hit Points, and Charisma score.</p><p>Actions. The creature can only take the actions that would be available to that Beast. It cannot speak, cast spells, or take any actions that require hands or speech.</p><p>Equipment. Its clothing, weapons, armor, and objects it is holding meld into the new form. However, it can''t activate, use, wield, or otherwise benefit from any of its equipment.</p><p>Reverting. The creature instantly reverts to its true form if it is reduced to 0 hit points. It can also repeat this Charisma saving throw at the end of each of its turns, reverting to its true form on a successful save.</p><p>At Higher Levels. When you cast this spell with a slot of 5th-level or higher, you can target one additional creature for each slot level above 4th. You can choose the Beast that you transform each target into individually.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama Original
+    rules: '2024'
+    license: proprietary
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '10'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: creature
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: ''
+  range:
+    units: 30
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 4
+  school: trn
+  properties:
+  - vocal
+  - somatic
+  - material
+  materials:
+    value: a caterpillar cocoon
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: polymorph-ll
+_id: CfrALZOCX4k2hCt9
+type: spell
+img: icons/magic/control/fear-frightened-demon.webp
+effects: []
+folder: YcTkda5HcE9nftx3
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!CfrALZOCX4k2hCt9'

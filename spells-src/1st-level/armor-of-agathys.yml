@@ -1,0 +1,73 @@
+name: Armor of Agathys
+system:
+  description:
+    value: <p>You conjure a protective aura around yourself that grants you temporary hit points and deals damage to creatures that attack you.</p><p>When a creature hits you with a melee attack, it takes 5 cold damage. You gain 5 temporary hit points for the duration.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    license: CC-BY-4.0
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: hr
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: self
+      special: ''
+    template:
+      units: ''
+      contiguous: false
+      type: ''
+  range:
+    units: self
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 1
+  school: abj
+  properties:
+  - vocal
+  - somatic
+  - material
+  materials:
+    value: a drop of water
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: armor-of-agathys
+_id: LrriddlfjsnUBiAq
+type: spell
+img: icons/magic/defensive/shield-glowing-blue.webp
+effects: []
+folder: 6T9YOOVVGI6qkGQM
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!LrriddlfjsnUBiAq'

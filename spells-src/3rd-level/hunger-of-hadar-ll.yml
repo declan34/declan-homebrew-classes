@@ -1,0 +1,73 @@
+name: Hunger of Hadar (LL)
+system:
+  description:
+    value: '<p>3rd-level Conjuration</p><p>Classes: Vessel, Warlock</p><p>Casting Time: 1 action</p><p>Range: 120 feet</p><p>Components: V, S, M (pickled octopus tentacle)</p><p>Duration: Concentration, up to 1 minute</p><p>You open a gateway to the dark between the stars, a region infested with unknown horrors. A 20-foot-radius sphere of blackness and bitter cold appears, centered on a point with range and lasting for the duration. This void is filled with a cacophony of soft whispers and slurping noises that can be heard up to 30 feet away. No light, magical or otherwise, can illuminate the area, and creatures in the area are blinded.</p><p>The void creates a warp in the fabric of space, and the area is difficult terrain. Any creature that starts its turn in the area takes 2d6 cold damage. Any creature that ends its turn in the area must succeed on a Dexterity saving throw or take 2d6 acid damage as milky, otherworldly tentacles rub against it.</p><p>At Higher Levels. When you cast this spell using a spell slot of 4th level or higher, the radius of the spell increases by 5 feet and both the cold and acid damage each increase by 1d6 for each slot level above 3rd.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama Original
+    rules: '2024'
+    license: proprietary
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: area
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: circle
+  range:
+    units: 120
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 3
+  school: con
+  properties:
+  - vocal
+  - somatic
+  - material
+  materials:
+    value: pickled octopus tentacle
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: hunger-of-hadar-ll
+_id: X5S20oaIjrMJtwIp
+type: spell
+img: icons/magic/unholy/strike-hand-glow-pink.webp
+effects: []
+folder: QlBiHWGXk36O0c1s
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!X5S20oaIjrMJtwIp'

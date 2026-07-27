@@ -1,0 +1,72 @@
+name: Thaumaturgy
+system:
+  description:
+    value: <p>You perform a minor miracle. Choose one of the following effects:</p><ul><li> Create a flame, no larger than a candle, that remains as long as you concentrate.</li> <li>Make a sound or an image at a point within range.</li> <li>Make something appear to be different from what it is, for 1 minute.</li></ul>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    license: CC-BY-4.0
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: area
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: circle
+  range:
+    units: 30
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 0
+  school: enc
+  properties:
+  - vocal
+  - somatic
+  materials:
+    value: ''
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: always
+    prepared: false
+  activities: []
+  identifier: thaumaturgy
+_id: D95qoeKCaW9Gs5nk
+type: spell
+img: icons/magic/air/wind-gust-blue.webp
+effects: []
+folder: RglnEx4U7chK1Mp2
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!D95qoeKCaW9Gs5nk'

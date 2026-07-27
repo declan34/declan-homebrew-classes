@@ -1,0 +1,72 @@
+name: Death Ward (LL)
+system:
+  description:
+    value: '<p>4th-level Abjuration</p><p>Classes: Cleric, Paladin</p><p>Casting Time: 1 action</p><p>Range: Touch</p><p>Components: V, S</p><p>Duration: 8 hours</p><p>You touch a creature and ward it against the touch of death. The first time the target starts its turn with 0 hit points, but is not dead, it can stand up with 1 hit point, and the spell ends. If the spell is still in effect when the target is subjected to an effect that would kill it instantly without dealing damage, that effect is negated against the target, and the spell ends.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama Original
+    rules: '2024'
+    license: proprietary
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '8'
+    units: hr
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: creature
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: ''
+  range:
+    units: touch
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 4
+  school: abj
+  properties:
+  - vocal
+  - somatic
+  materials:
+    value: ''
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: death-ward-ll
+_id: DYnT8DgELwcPsNNd
+type: spell
+img: icons/magic/defensive/shield-glowing-blue.webp
+effects: []
+folder: YcTkda5HcE9nftx3
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!DYnT8DgELwcPsNNd'

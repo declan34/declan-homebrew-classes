@@ -1,0 +1,72 @@
+name: Friends (LL)
+system:
+  description:
+    value: '<p>Enchantment Cantrip</p><p>Classes: Bard, Psion, Sorcerer, Vessel, Wizard</p><p>Casting Time: 1 action</p><p>Range: Self</p><p>Components: S, M (a small amount of makeup applied to the face as this spell is cast)</p><p>Duration: Concentration, up to 1 minute</p><p>You lace your words with soothing magic and force a creature of your choice that can hear and understand you to make a Wisdom saving throw. On a failure, you have advantage on all Charisma checks directed at that creature for the duration. On a successful save, the creature realizes that you used magic to attempt to influence it and becomes hostile toward you. A creature prone to violence might attack you, and other creatures might seek retribution against you in other ways.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama Original
+    rules: '2024'
+    license: proprietary
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: creature
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: ''
+  range:
+    units: self
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 0
+  school: enc
+  properties:
+  - vocal
+  - material
+  materials:
+    value: a small amount of makeup applied to the face as this spell is cast
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: always
+    prepared: false
+  activities: []
+  identifier: friends-ll
+_id: N18B72urKKWIfuBZ
+type: spell
+img: icons/magic/control/fear-frightened-demon.webp
+effects: []
+folder: RglnEx4U7chK1Mp2
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!N18B72urKKWIfuBZ'

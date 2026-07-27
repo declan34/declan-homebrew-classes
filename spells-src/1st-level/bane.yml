@@ -1,0 +1,72 @@
+name: Bane
+system:
+  description:
+    value: <p>You invoke a curse on a creature within range. The target must succeed on a Wisdom saving throw or take 1d4 necrotic damage and gain disadvantage on attack rolls, ability checks, and saving throws.</p><p>If the target is already affected by this spell, it takes an additional 1d4 necrotic damage and gains disadvantage on attack rolls, ability checks, and saving throws for 1 minute.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    license: CC-BY-4.0
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: creature
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: ''
+  range:
+    units: 30
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 1
+  school: enc
+  properties:
+  - vocal
+  - somatic
+  materials:
+    value: ''
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: bane
+_id: 33jMK0vh7XBnELQ7
+type: spell
+img: icons/magic/control/fear-frightened-demon.webp
+effects: []
+folder: 6T9YOOVVGI6qkGQM
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!33jMK0vh7XBnELQ7'

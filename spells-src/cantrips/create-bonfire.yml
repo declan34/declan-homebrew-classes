@@ -1,0 +1,72 @@
+name: Create Bonfire
+system:
+  description:
+    value: <p>You create a bonfire on the ground at a point within range. The bonfire fills a 5-foot-radius area and is heavily obscured. It lasts for 1 minute. The bonfire is a source of light, but it provides no warmth.</p><p>Any creature that starts its turn in the bonfire's area takes 1d8 Fire damage. A creature can take this damage only once per turn.</p>
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    license: CC-BY-4.0
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: area
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: circle
+  range:
+    units: 30
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 0
+  school: fir
+  properties:
+  - vocal
+  - somatic
+  materials:
+    value: ''
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: always
+    prepared: false
+  activities: []
+  identifier: create-bonfire
+_id: y4HEFS8kJW2HNhEe
+type: spell
+img: icons/magic/fire/blast-fireball-blue.webp
+effects: []
+folder: RglnEx4U7chK1Mp2
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!y4HEFS8kJW2HNhEe'

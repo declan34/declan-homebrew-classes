@@ -1,0 +1,73 @@
+name: Spectral Passage (LL)
+system:
+  description:
+    value: '<p>3rd-level Transmutation</p><p>Classes: Psion, Shaman, Sorcerer, Vessel, Warlock</p><p>Casting Time: 1 action</p><p>Range: Touch</p><p>Components: V, S, M (an object a spirit has passed through)</p><p>Duration: Concentration, up to 1 minute</p><p>You touch a willing creature. Until the spell ends, it becomes semi-incorporeal and can move through other creatures and objects as if they were difficult terrain. If the creature ends its movement inside another object or creature, it is immediately shunted to the nearest unoccupied space, taking 1d10 force damage for every 5 feet it was forced to travel.</p><p>At Higher Levels. When you cast this spell using a spell slot of 4th-level or higher, you can target one additional creature for each slot level above 3rd.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama Original
+    rules: '2024'
+    license: proprietary
+    book: ''
+  activation:
+    type: action
+    condition: ''
+    value: null
+  duration:
+    value: '1'
+    units: min
+  target:
+    affects:
+      choice: false
+      count: ''
+      type: creature
+      special: ''
+    template:
+      units: ft
+      contiguous: false
+      type: ''
+  range:
+    units: touch
+    special: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  level: 3
+  school: trn
+  properties:
+  - vocal
+  - somatic
+  - material
+  materials:
+    value: an object a spirit has passed through
+    consumed: false
+    cost: 0
+    supply: 0
+  preparation:
+    mode: prepared
+    prepared: true
+  activities: []
+  identifier: spectral-passage-ll
+_id: SGIf6Aw7kvpTb99J
+type: spell
+img: icons/magic/air/wind-gust-blue.webp
+effects: []
+folder: QlBiHWGXk36O0c1s
+sort: 1900000
+ownership:
+  default: 0
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: 1724425944733
+  modifiedTime: 1745256787780
+  lastModifiedBy: dnd5ebuilder0000
+  exportSource: null
+_key: '!items!SGIf6Aw7kvpTb99J'
