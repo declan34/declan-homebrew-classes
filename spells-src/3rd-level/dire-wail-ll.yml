@@ -1,7 +1,7 @@
 name: Dire Wail (LL)
 system:
   description:
-    value: '<p>3rd-level Necromancy</p><p>Classes: Bard, Shaman, Vessel</p><p>Casting Time: 1 action</p><p>Range: Self (30-foot radius)</p><p>Components: V</p><p>Duration: 1 minute</p><p>You let forth a wail filled with otherworldly power. Creatures of your choice within 30 feet must succeed on a Constitution saving throw or take 4d10 thunder damage and be deafened for the duration. At the end of each turn, targets can make a Constitution saving throw, ending the spell on a success. On a successful save, it takes half damage and is not deafened.</p><p>At Higher Levels. When you cast this spell using a spell slot of 4th-level or higher, the damage increases by 1d10 for each slot level above 3rd.</p>'
+    value: <p>You let forth a wail filled with otherworldly power. Creatures of your choice within 30 feet must succeed on a Constitution saving throw or take 4d10 thunder damage and be deafened for the duration. At the end of each turn, targets can make a Constitution saving throw, ending the spell on a success. On a successful save, it takes half damage and is not deafened.</p><p>At Higher Levels. When you cast this spell using a spell slot of 4th-level or higher, the damage increases by 1d10 for each slot level above 3rd.</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -14,7 +14,7 @@ system:
     value: null
   duration:
     value: '1'
-    units: min
+    units: minute
   target:
     affects:
       choice: false
@@ -24,9 +24,10 @@ system:
     template:
       units: ft
       contiguous: false
-      type: circle
+      type: radius
+      size: 30
   range:
-    units: 30
+    units: self
     special: ''
   uses:
     max: ''

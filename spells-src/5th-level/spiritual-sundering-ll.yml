@@ -1,7 +1,7 @@
 name: Spiritual Sundering (LL)
 system:
   description:
-    value: '<p>5th-level Enchantment</p><p>Classes: Cleric, Shaman, Warlock</p><p>Casting Time: 1 action</p><p>Range: 120 feet</p><p>Components: V, S</p><p>Duration: Instantaneous</p><p>Creatures in a 20-foot-radius sphere centered on a point of your choice within range have their soul rent, and must make a Charisma saving throw. On a failure, they take 8d6 necrotic damage, and for the next minute, they have a muddied sense of self and subtract 1d6 from any Intelligence, Wisdom, or Charisma saving throw they make. On a success, they take half damage and suffer no saving throw penalty.</p><p>Targets can make a Charisma saving throw at the end of each of their turns, ending the effect on a successful save.</p>'
+    value: '<p>Creatures in a 20-foot-radius sphere centered on a point of your choice within range have their soul rent, and must make a Charisma saving throw. On a failure, they take 8d6 necrotic damage, and for the next minute, they have a muddied sense of self and subtract 1d6 from any Intelligence, Wisdom, or Charisma saving throw they make. On a success, they take half damage and suffer no saving throw penalty.</p><p>Targets can make a Charisma saving throw at the end of each of their turns, ending the effect on a successful save.</p>'
     chat: ''
   source:
     custom: Laser Llama Original
@@ -24,9 +24,11 @@ system:
     template:
       units: ft
       contiguous: false
-      type: circle
+      type: sphere
+      size: 20
   range:
-    units: 120
+    units: ft
+    value: 120
     special: ''
   uses:
     max: ''

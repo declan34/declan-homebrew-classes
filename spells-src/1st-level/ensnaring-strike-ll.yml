@@ -1,7 +1,7 @@
 name: Ensnaring Strike (LL)
 system:
   description:
-    value: '<p>1st-level Conjuration</p><p>Classes: Artificer, Ranger</p><p>Casting Time: On hit</p><p>Range: Self</p><p>Components: V, M (a weapon worth at least 1 sp)</p><p>Duration: Concentration, up to 1 minute</p><p>When you hit a creature with a weapon attack, you can cause the point of impact to explode with a writhing mass of thorny vines. The target must succeed on a Strength saving throw or be restrained by the vines until the spell ends. Creatures that are Large or larger have advantage on this saving throw.</p><p>The restrained creature takes 1d6 piercing damage at the start of each of its turns. The restrained creature, or another creature within 5 feet, can use its action to make a Strength check against your Spell save DC, freeing it on a success.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd-level or higher, the damage it takes at the start of each turn increases by 1d6 for each slot level above 1st.</p>'
+    value: <p>When you hit a creature with a weapon attack, you can cause the point of impact to explode with a writhing mass of thorny vines. The target must succeed on a Strength saving throw or be restrained by the vines until the spell ends. Creatures that are Large or larger have advantage on this saving throw.</p><p>The restrained creature takes 1d6 piercing damage at the start of each of its turns. The restrained creature, or another creature within 5 feet, can use its action to make a Strength check against your Spell save DC, freeing it on a success.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd-level or higher, the damage it takes at the start of each turn increases by 1d6 for each slot level above 1st.</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -10,11 +10,11 @@ system:
     book: ''
   activation:
     type: reaction
-    condition: ''
+    condition: when you hit a creature with a weapon attack
     value: null
   duration:
     value: '1'
-    units: min
+    units: minute
   target:
     affects:
       choice: false
@@ -37,6 +37,7 @@ system:
   properties:
   - vocal
   - material
+  - concentration
   materials:
     value: a weapon worth at least 1 sp
     consumed: false

@@ -1,7 +1,7 @@
 name: Witch Bolt (LL)
 system:
   description:
-    value: '<p>1st-level Conjuration</p><p>Classes: Artificer, Magus, Shaman, Sorcerer, Vessel, Warlock, Wizard</p><p>Casting Time: 1 action</p><p>Range: 30 feet</p><p>Components: V, S, M (a piece of wood struck by lightning)</p><p>Duration: Concentration, up to 1 minute</p><p>A beam of crackling energy lances out toward a creature within range, forming a sustained arc of lightning between you and the target. Make a ranged spell attack against that creature. On a hit, the target takes 1d12 lightning damage, and neither you nor the target can move more than 30 feet away from each other while this spell lasts.</p><p>You can use an action on each subsequent turn to deal an additional 1d12 lighting damage to the creature. A creature can attempt to move beyond the range of the spell by using its action to make a Strength check against your Spell save DC. If another creature attempts to move the target of this spell beyond the range of this spell it can use its action to make a Strength check against your Spell save DC. Any attempts by the target or another creature (magical or mundane) to move the target beyond this range automatically fail.</p><p>The spell immediately ends if you are forced to move more than 30 feet away from the target of this spell.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd level or higher, both the initial and subsequent damage increases by 1d12 for each slot level above 1st.</p>'
+    value: <p>A beam of crackling energy lances out toward a creature within range, forming a sustained arc of lightning between you and the target. Make a ranged spell attack against that creature. On a hit, the target takes 1d12 lightning damage, and neither you nor the target can move more than 30 feet away from each other while this spell lasts.</p><p>You can use an action on each subsequent turn to deal an additional 1d12 lighting damage to the creature. A creature can attempt to move beyond the range of the spell by using its action to make a Strength check against your Spell save DC. If another creature attempts to move the target of this spell beyond the range of this spell it can use its action to make a Strength check against your Spell save DC. Any attempts by the target or another creature (magical or mundane) to move the target beyond this range automatically fail.</p><p>The spell immediately ends if you are forced to move more than 30 feet away from the target of this spell.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd level or higher, both the initial and subsequent damage increases by 1d12 for each slot level above 1st.</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -14,7 +14,7 @@ system:
     value: null
   duration:
     value: '1'
-    units: min
+    units: minute
   target:
     affects:
       choice: false
@@ -26,7 +26,8 @@ system:
       contiguous: false
       type: ''
   range:
-    units: 30
+    units: ft
+    value: 30
     special: ''
   uses:
     max: ''
@@ -38,6 +39,7 @@ system:
   - vocal
   - somatic
   - material
+  - concentration
   materials:
     value: a piece of wood struck by lightning
     consumed: false

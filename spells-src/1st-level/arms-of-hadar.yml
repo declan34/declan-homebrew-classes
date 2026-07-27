@@ -22,12 +22,14 @@ system:
       type: any
       special: ''
     template:
-      units: ''
+      units: ft
       contiguous: false
-      type: ''
+      type: radius
+      size: 10
   range:
-    units: 30
+    units: self
     special: ''
+    value: null
   uses:
     max: ''
     spent: 0

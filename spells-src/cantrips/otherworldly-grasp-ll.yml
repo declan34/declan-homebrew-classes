@@ -1,7 +1,7 @@
 name: Otherworldly Grasp (LL)
 system:
   description:
-    value: '<p>Necromancy Cantrip</p><p>Classes: Shaman, Sorcerer, Vessel, Warlock</p><p>Casting Time: 1 action</p><p>Range: Self</p><p>Components: S, M (an empty hand)</p><p>Duration: Instantaneous</p><p>You channel necrotic spiritual power to your hand, changing it into a withered specter of itself. Make a melee spell attack against one creature within your reach. On hit, it takes 1d8 necrotic damage, and you can choose to gain temporary hit points equal to half the necrotic damage dealt.</p><p>At Higher Levels. The damage of this spell increases by 1d8 at 5th (2d8), 11th (3d8), and 17th level (4d8).</p>'
+    value: '<p>You channel necrotic spiritual power to your hand, changing it into a withered specter of itself. Make a melee spell attack against one creature within your reach. On hit, it takes 1d8 necrotic damage, and you can choose to gain temporary hit points equal to half the necrotic damage dealt.</p><p>At Higher Levels. The damage of this spell increases by 1d8 at 5th (2d8), 11th (3d8), and 17th level (4d8).</p>'
     chat: ''
   source:
     custom: Laser Llama Original
@@ -26,7 +26,7 @@ system:
       contiguous: false
       type: ''
   range:
-    units: touch
+    units: self
     special: ''
   uses:
     max: ''

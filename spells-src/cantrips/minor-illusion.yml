@@ -14,7 +14,7 @@ system:
     value: null
   duration:
     value: '1'
-    units: min
+    units: minute
   target:
     affects:
       choice: false
@@ -26,8 +26,9 @@ system:
       contiguous: false
       type: circle
   range:
-    units: 30
+    units: ft
     special: ''
+    value: 30
   uses:
     max: ''
     spent: 0

@@ -1,7 +1,7 @@
 name: Jump (LL)
 system:
   description:
-    value: '<p>1st-level Transmutation</p><p>Classes: Artificer, Druid, Magus, Psion, Ranger, Sorcerer, Vessel, Warlock, Wizard</p><p>Casting Time: 1 bonus action</p><p>Range: Touch</p><p>Components: V S M (A grasshopper''s hind leg)</p><p>Duration: 1 minute</p><p>You touch a willing creature and greatly alter its buoyancy. Once on each of its turns until the spell ends, the target can spend 10 feet of its movement to jump up to 30 feet.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd-level or higher, the distance of this magical jump increases by 10 feet for each slot level above 1st.</p>'
+    value: <p>You touch a willing creature and greatly alter its buoyancy. Once on each of its turns until the spell ends, the target can spend 10 feet of its movement to jump up to 30 feet.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd-level or higher, the distance of this magical jump increases by 10 feet for each slot level above 1st.</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -14,7 +14,7 @@ system:
     value: null
   duration:
     value: '1'
-    units: min
+    units: minute
   target:
     affects:
       choice: false
@@ -33,7 +33,7 @@ system:
     spent: 0
     recovery: []
   level: 1
-  school: trn
+  school: trs
   properties:
   - vocal
   - somatic

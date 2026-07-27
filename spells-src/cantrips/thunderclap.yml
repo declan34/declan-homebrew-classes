@@ -24,16 +24,18 @@ system:
     template:
       units: ft
       contiguous: false
-      type: circle
+      type: radius
+      size: 5
   range:
-    units: 30
+    units: self
     special: ''
+    value: null
   uses:
     max: ''
     spent: 0
     recovery: []
   level: 0
-  school: thun
+  school: evo
   properties:
   - vocal
   materials:

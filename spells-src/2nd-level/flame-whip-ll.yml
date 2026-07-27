@@ -1,7 +1,7 @@
 name: Flame Whip (LL)
 system:
   description:
-    value: '<p>2nd-level Evocation</p><p>Classes: Vessel, Warlock</p><p>Casting Time: 1 attack</p><p>Range: Self</p><p>Components: V, S, M (a charred wooden hilt)</p><p>Duration: Concentration, up to 10 minutes</p><p>In place of an attack, you can evoke a whip of pure flame in a free hand. It lasts for the duration and sheds bright light out to a 10-foot radius. If you let go of the whip, it disappears, but you can evoke the Flame Whip again in place of an attack without expending a spell slot.</p><p>Whenever you could make an attack, you can instead make a melee spell attack with your Flame Whip against one target within 10 feet that you can see. On hit, it takes fire damage equal to 1d10 + your spellcasting modifier, and if the target is Large or smaller you can instantly grapple it with the Whip.</p><p>You cannot attack with the Whip while it is grappling a creature, but a grappled creature takes 1d10 fire damage at the start of its turns and can use its action to make a Strength check against your spell save DC, escaping on a success.</p><p>At Higher Levels. When you cast this spell using a spell slot of 4th level or higher, both instances of fire damage dealt increase by 1d10 for every two slot levels above 2nd.</p>'
+    value: <p>In place of an attack, you can evoke a whip of pure flame in a free hand. It lasts for the duration and sheds bright light out to a 10-foot radius. If you let go of the whip, it disappears, but you can evoke the Flame Whip again in place of an attack without expending a spell slot.</p><p>Whenever you could make an attack, you can instead make a melee spell attack with your Flame Whip against one target within 10 feet that you can see. On hit, it takes fire damage equal to 1d10 + your spellcasting modifier, and if the target is Large or smaller you can instantly grapple it with the Whip.</p><p>You cannot attack with the Whip while it is grappling a creature, but a grappled creature takes 1d10 fire damage at the start of its turns and can use its action to make a Strength check against your spell save DC, escaping on a success.</p><p>At Higher Levels. When you cast this spell using a spell slot of 4th level or higher, both instances of fire damage dealt increase by 1d10 for every two slot levels above 2nd.</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -14,7 +14,7 @@ system:
     value: null
   duration:
     value: '10'
-    units: min
+    units: minute
   target:
     affects:
       choice: false
@@ -33,11 +33,12 @@ system:
     spent: 0
     recovery: []
   level: 2
-  school: evi
+  school: evo
   properties:
   - vocal
   - somatic
   - material
+  - concentration
   materials:
     value: a charred wooden hilt
     consumed: false

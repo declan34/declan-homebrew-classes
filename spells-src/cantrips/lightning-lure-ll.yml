@@ -1,7 +1,7 @@
 name: Lightning Lure (LL)
 system:
   description:
-    value: '<p>Evocation Cantrip</p><p>Classes: Artificer, Magus, Sorcerer, Vessel, Warlock, Wizard</p><p>Casting Time: 1 attack</p><p>Range: self (15-foot-radius)</p><p>Components: V</p><p>Duration: Instantaneous</p><p>You create a lash of arcane lightning and strikes at a creature of your choice you can see within 15 feet. It must succeed on a Strength saving throw or take 1d8 lightning damage and be pulled in a straight line up to 10 feet toward you.</p><p>At Higher Levels. The range of this spell increases at 5th level (20 feet), 11th level (25 feet), and 17th level (30 feet).</p>'
+    value: '<p>You create a lash of arcane lightning and strikes at a creature of your choice you can see within 15 feet. It must succeed on a Strength saving throw or take 1d8 lightning damage and be pulled in a straight line up to 10 feet toward you.</p><p>At Higher Levels. The range of this spell increases at 5th level (20 feet), 11th level (25 feet), and 17th level (30 feet).</p>'
     chat: ''
   source:
     custom: Laser Llama Original
@@ -24,16 +24,17 @@ system:
     template:
       units: ft
       contiguous: false
-      type: ''
+      type: radius
+      size: 15
   range:
-    units: 15
+    units: self
     special: ''
   uses:
     max: ''
     spent: 0
     recovery: []
   level: 0
-  school: lig
+  school: evo
   properties:
   - vocal
   materials:

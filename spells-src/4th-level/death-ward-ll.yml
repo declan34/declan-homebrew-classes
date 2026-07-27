@@ -1,7 +1,7 @@
 name: Death Ward (LL)
 system:
   description:
-    value: '<p>4th-level Abjuration</p><p>Classes: Cleric, Paladin</p><p>Casting Time: 1 action</p><p>Range: Touch</p><p>Components: V, S</p><p>Duration: 8 hours</p><p>You touch a creature and ward it against the touch of death. The first time the target starts its turn with 0 hit points, but is not dead, it can stand up with 1 hit point, and the spell ends. If the spell is still in effect when the target is subjected to an effect that would kill it instantly without dealing damage, that effect is negated against the target, and the spell ends.</p>'
+    value: <p>You touch a creature and ward it against the touch of death. The first time the target starts its turn with 0 hit points, but is not dead, it can stand up with 1 hit point, and the spell ends. If the spell is still in effect when the target is subjected to an effect that would kill it instantly without dealing damage, that effect is negated against the target, and the spell ends.</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -14,7 +14,7 @@ system:
     value: null
   duration:
     value: '8'
-    units: hr
+    units: hour
   target:
     affects:
       choice: false

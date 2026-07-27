@@ -1,7 +1,7 @@
 name: Ethereal Anchor (LL)
 system:
   description:
-    value: '<p>1st-level Evocation</p><p>Classes: Paladin, Psion, Vessel</p><p>Casting Time: 1 action</p><p>Range: 60 feet</p><p>Components: V, S, M (a silver nail)</p><p>Duration: Concentration, up to 1 minute</p><p>You hurl a bolt of pure spirit at a creature within range. Make a ranged spell attack against your target. On hit, it takes 3d6 radiant damage and for the duration, its speed is reduced to 0 as it is pinned in place by the spiritual bolt. As an action, any creature can make a Strength ability check against your Spell save DC, ending this spell''s effects on a success.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd level or higher, the radiant damage increases by 1d6 for each slot level above 1st.</p>'
+    value: <p>You hurl a bolt of pure spirit at a creature within range. Make a ranged spell attack against your target. On hit, it takes 3d6 radiant damage and for the duration, its speed is reduced to 0 as it is pinned in place by the spiritual bolt. As an action, any creature can make a Strength ability check against your Spell save DC, ending this spell's effects on a success.</p><p>At Higher Levels. When you cast this spell using a spell slot of 2nd level or higher, the radiant damage increases by 1d6 for each slot level above 1st.</p>
     chat: ''
   source:
     custom: Laser Llama Original
@@ -14,7 +14,7 @@ system:
     value: null
   duration:
     value: '1'
-    units: min
+    units: minute
   target:
     affects:
       choice: false
@@ -26,18 +26,20 @@ system:
       contiguous: false
       type: ''
   range:
-    units: 60
+    units: ft
+    value: 60
     special: ''
   uses:
     max: ''
     spent: 0
     recovery: []
   level: 1
-  school: evi
+  school: evo
   properties:
   - vocal
   - somatic
   - material
+  - concentration
   materials:
     value: a silver nail
     consumed: false
