@@ -46,19 +46,19 @@ system:
     mode: always
     prepared: false
   activities:
-    mUy5EZouOr5kqvYN:
-      type: attack
-      _id: mUy5EZouOr5kqvYN
-      sort: 0
+    dnd5eactivity000:
+      _id: dnd5eactivity000
+      type: save
       activation:
         type: action
         value: null
         override: false
       consumption:
+        targets: []
         scaling:
           allowed: false
+          max: ''
         spellSlot: true
-        targets: []
       description:
         chatFlavor: ''
       duration:
@@ -70,45 +70,44 @@ system:
       range:
         override: false
       target:
+        prompt: true
         template:
           contiguous: false
           units: ft
         affects:
           choice: false
         override: false
-        prompt: true
-      uses:
-        spent: 0
-        recovery: []
-        max: ''
-      attack:
-        critical:
-          threshold: null
-        flat: false
-        type:
-          value: ranged
-          classification: ''
-        ability: ''
-        bonus: ''
       damage:
-        critical:
-          bonus: ''
-        includeBase: true
+        onSave: none
         parts:
-        - custom:
-            enabled: false
-            formula: ''
-          number: 1
-          denomination: '8'
+        - number: 1
+          denomination: 8
           bonus: ''
           types:
           - lightning
+          custom:
+            enabled: false
+            formula: ''
           scaling:
             mode: whole
             number: 1
             formula: ''
-      name: ''
+      save:
+        ability: str
+        dc:
+          calculation: spellcasting
+          formula: ''
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      sort: 0
+      name: Cast
       img: ''
+      visibility:
+        level:
+          min: null
+          max: null
       appliedEffects:
       - zwks0mAqBHGZC1Pk
   identifier: lightning-lure-ll

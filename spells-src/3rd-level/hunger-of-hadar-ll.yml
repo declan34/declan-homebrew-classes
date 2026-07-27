@@ -48,7 +48,64 @@ system:
   preparation:
     mode: prepared
     prepared: true
-  activities: []
+  activities:
+    dnd5eactivity000:
+      _id: dnd5eactivity000
+      type: save
+      activation:
+        type: action
+        value: null
+        override: false
+      consumption:
+        targets: []
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+      description:
+        chatFlavor: ''
+      duration:
+        units: inst
+        concentration: true
+        override: false
+      effects: []
+      range:
+        override: false
+      target:
+        prompt: true
+        template:
+          contiguous: false
+          units: ft
+        affects:
+          choice: false
+        override: false
+      damage:
+        onSave: none
+        parts:
+        - number: 2
+          denomination: 6
+          bonus: ''
+          types:
+          - acid
+          custom:
+            enabled: false
+            formula: ''
+          scaling:
+            mode: whole
+            number: 1
+            formula: ''
+      save:
+        ability: dex
+        dc:
+          calculation: spellcasting
+          formula: ''
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      sort: 0
+      name: Cast
+      img: ''
   identifier: hunger-of-hadar-ll
 _id: X5S20oaIjrMJtwIp
 type: spell

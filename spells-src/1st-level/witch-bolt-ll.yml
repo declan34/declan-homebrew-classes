@@ -49,71 +49,74 @@ system:
     mode: prepared
     prepared: true
   activities:
-    mUy5EZouOr5kqvYN:
+    dnd5eactivity000:
+      _id: dnd5eactivity000
       type: attack
-      _id: mUy5EZouOr5kqvYN
-      sort: 0
       activation:
         type: action
         value: null
         override: false
       consumption:
+        targets: []
         scaling:
           allowed: false
+          max: ''
         spellSlot: true
-        targets: []
       description:
         chatFlavor: ''
       duration:
         units: inst
-        concentration: false
+        concentration: true
         override: false
       effects:
-      - _id: zwks0mAqBHGZC1Pk
+        - _id: zwks0mAqBHGZC1Pk
+          onSave: false
+          level:
+            min: null
+            max: null
       range:
         override: false
       target:
+        prompt: true
         template:
           contiguous: false
           units: ft
         affects:
           choice: false
         override: false
-        prompt: true
-      uses:
-        spent: 0
-        recovery: []
-        max: ''
       attack:
+        ability: ''
+        bonus: ''
         critical:
           threshold: null
         flat: false
         type:
           value: ranged
           classification: ''
-        ability: ''
-        bonus: ''
       damage:
         critical:
           bonus: ''
         includeBase: true
         parts:
-        - custom:
-            enabled: false
-            formula: ''
-          number: 1
-          denomination: '12'
-          bonus: ''
-          types:
-          - lightning
-          scaling:
-            mode: whole
-            number: 1
-            formula: ''
-      name: ''
+          - number: 1
+            denomination: 12
+            bonus: ''
+            types:
+              - lightning
+            custom:
+              enabled: false
+              formula: ''
+            scaling:
+              mode: whole
+              number: 1
+              formula: ''
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      sort: 0
+      name: Cast
       img: ''
-      appliedEffects:
-      - zwks0mAqBHGZC1Pk
   identifier: witch-bolt-ll
 _id: rxPZ5P9lzqVW7Vry
 type: spell

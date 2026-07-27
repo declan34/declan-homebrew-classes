@@ -46,7 +46,49 @@ system:
   preparation:
     mode: always
     prepared: false
-  activities: []
+  activities:
+    dnd5eactivity000:
+      _id: dnd5eactivity000
+      type: utility
+      sort: 0
+      name: Cast
+      img: ''
+      activation:
+        type: action
+        value: null
+        override: false
+      consumption:
+        targets: []
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+      description:
+        chatFlavor: ''
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      range:
+        override: false
+      target:
+        prompt: true
+        template:
+          contiguous: false
+          units: ft
+        affects:
+          choice: false
+        override: false
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: ''
+        name: ''
+        prompt: false
+        visible: false
   identifier: dancing-lights
 _id: otu9JS4PvIN1v8Qp
 type: spell

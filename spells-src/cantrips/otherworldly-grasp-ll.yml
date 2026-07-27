@@ -46,9 +46,9 @@ system:
     mode: always
     prepared: false
   activities:
-    mUy5EZouOr5kqvYN:
+    dnd5eactivity000:
       type: attack
-      _id: mUy5EZouOr5kqvYN
+      _id: dnd5eactivity000
       sort: 0
       activation:
         type: action
@@ -107,8 +107,12 @@ system:
             mode: whole
             number: 1
             formula: ''
-      name: ''
+      name: Cast
       img: ''
+      visibility:
+        level:
+          min: null
+          max: null
       appliedEffects:
       - zwks0mAqBHGZC1Pk
   identifier: otherworldly-grasp-ll

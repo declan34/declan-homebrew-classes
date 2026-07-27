@@ -45,7 +45,64 @@ system:
   preparation:
     mode: prepared
     prepared: true
-  activities: []
+  activities:
+    dnd5eactivity000:
+      _id: dnd5eactivity000
+      type: save
+      activation:
+        type: action
+        value: null
+        override: false
+      consumption:
+        targets: []
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+      description:
+        chatFlavor: ''
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      range:
+        override: false
+      target:
+        prompt: true
+        template:
+          contiguous: false
+          units: ft
+        affects:
+          choice: false
+        override: false
+      damage:
+        onSave: half
+        parts:
+        - number: 4
+          denomination: 10
+          bonus: ''
+          types:
+          - thunder
+          custom:
+            enabled: false
+            formula: ''
+          scaling:
+            mode: whole
+            number: 1
+            formula: ''
+      save:
+        ability: con
+        dc:
+          calculation: spellcasting
+          formula: ''
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      sort: 0
+      name: Cast
+      img: ''
   identifier: dire-wail-ll
 _id: yY7rRzdV8bVHTsOm
 type: spell

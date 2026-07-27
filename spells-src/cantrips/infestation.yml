@@ -46,7 +46,64 @@ system:
   preparation:
     mode: always
     prepared: false
-  activities: []
+  activities:
+    dnd5eactivity000:
+      _id: dnd5eactivity000
+      type: save
+      sort: 0
+      name: Cast
+      img: ''
+      activation:
+        type: action
+        value: null
+        override: false
+      consumption:
+        targets: []
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+      description:
+        chatFlavor: ''
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      range:
+        override: false
+      target:
+        prompt: true
+        template:
+          contiguous: false
+          units: ft
+        affects:
+          choice: false
+        override: false
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      damage:
+        onSave: half
+        parts:
+        - number: 1
+          denomination: 6
+          bonus: ''
+          types:
+          - poison
+          custom:
+            enabled: false
+            formula: ''
+          scaling:
+            mode: whole
+            number: 1
+            formula: ''
+      save:
+        ability: con
+        dc:
+          calculation: spellcasting
+          formula: ''
   identifier: infestation
 _id: vVtNFhGhJqJbYNOT
 type: spell
