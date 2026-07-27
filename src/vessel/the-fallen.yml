@@ -23,15 +23,6 @@ system:
       formula: ''
 effects: []
 flags: {}
-_stats:
-  duplicateSource: null
-  coreVersion: '13.344'
-  systemId: dnd5e
-  systemVersion: 5.3.3
-  createdTime: null
-  modifiedTime: null
-  lastModifiedBy: hbrbuilder00000
-  exportSource: null
 sort: 300000
 ownership:
   default: 0

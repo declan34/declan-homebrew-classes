@@ -17,8 +17,8 @@ system:
     max: '1'
     spent: 0
     recovery:
-      - period: sr
-        type: recoverAll
+    - period: sr
+      type: recoverAll
   type:
     value: class
     subtype: ''
@@ -36,15 +36,6 @@ flags:
     riders:
       activity: []
       effect: []
-_stats:
-  duplicateSource: null
-  coreVersion: '13.344'
-  systemId: dnd5e
-  systemVersion: 5.3.3
-  createdTime: null
-  modifiedTime: null
-  lastModifiedBy: hbrbuilder00000
-  exportSource: null
 sort: 0
 ownership:
   default: 0
