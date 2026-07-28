@@ -28,6 +28,9 @@
       }
     ]
   },
+  "esmodules": [
+    "scripts/vessel-spellcasting.mjs"
+  ],
   "packs": [
     {
       "name": "homebrew-classes",
