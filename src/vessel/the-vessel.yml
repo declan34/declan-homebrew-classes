@@ -17,213 +17,228 @@ system:
   identifier: vessel
   levels: 1
   advancement:
-    - _id: hbrvesPrIj5ENRbk
-      type: HitPoints
-      configuration: {}
-      value: {}
-    - _id: hbrveslcXizIOlvd
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvespnPw2Da1c3
-            optional: false
+  - _id: 6FcT1xn5AWPRnR1m
+    type: Trait
+    configuration:
+      mode: default
+      allowReplacements: false
+      grants:
+      - saves:cha
+      - saves:con
+      choices: []
+    value:
+      chosen: []
+    level: 1
+    title: Saving Throw Proficiencies
+    hint: ''
+    classRestriction: primary
+  - _id: hbrvesPrIj5ENRbk
+    type: HitPoints
+    configuration: {}
+    value: {}
+  - _id: hbrveslcXizIOlvd
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvespnPw2Da1c3
         optional: false
-        spell: null
-      value: {}
-      level: 1
-      title: Class Features
-    - _id: hbrvesTwB0Xb1Nyr
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesWFw2j3uYrA
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 1
+    title: Class Features
+  - _id: hbrvesTwB0Xb1Nyr
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesWFw2j3uYrA
         optional: false
-        spell: null
-      value: {}
-      level: 2
-      title: Class Features
-    - _id: hbrvesitZX4Yo92F
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesnmpXyN7pCZ
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 2
+    title: Class Features
+  - _id: hbrvesitZX4Yo92F
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesnmpXyN7pCZ
         optional: false
-        spell: null
-      value: {}
-      level: 3
-      title: Class Features
-    - _id: hbrvesDE7UfZUqlW
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesUnf9Y7xv0w
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 3
+    title: Class Features
+  - _id: hbrvesDE7UfZUqlW
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesUnf9Y7xv0w
         optional: false
-        spell: null
-      value: {}
-      level: 5
-      title: Class Features
-    - _id: hbrveseRXJUQT0LL
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrveserDFPbI8Gu
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 5
+    title: Class Features
+  - _id: hbrveseRXJUQT0LL
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrveserDFPbI8Gu
         optional: false
-        spell: null
-      value: {}
-      level: 7
-      title: Class Features
-    - _id: hbrveszx62En6eI3
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesRPVdeXGFjR
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 7
+    title: Class Features
+  - _id: hbrveszx62En6eI3
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesRPVdeXGFjR
         optional: false
-        spell: null
-      value: {}
-      level: 10
-      title: Class Features
-    - _id: hbrvesLBpIwP05kW
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrveslD2xXyHN6u
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 10
+    title: Class Features
+  - _id: hbrvesLBpIwP05kW
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrveslD2xXyHN6u
         optional: false
-        spell: null
-      value: {}
-      level: 11
-      title: Class Features
-    - _id: hbrvesHarf1BGnkk
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesdHWu37NnqH
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 11
+    title: Class Features
+  - _id: hbrvesHarf1BGnkk
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesdHWu37NnqH
         optional: false
-        spell: null
-      value: {}
-      level: 14
-      title: Class Features
-    - _id: hbrvesYRKe8EnD10
-      type: ItemGrant
-      configuration:
-        items:
-          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesu3hUYUQYnq
-            optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 14
+    title: Class Features
+  - _id: hbrvesYRKe8EnD10
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesu3hUYUQYnq
         optional: false
-        spell: null
-      value: {}
-      level: 18
-      title: Class Features
-    - _id: hbrvesAWJXDND7Gf
-      type: Subclass
-      configuration: {}
-      value:
-        document: null
-        uuid: null
-      level: 3
-      title: ''
-      hint: ''
-    - _id: hbrvesc1Sx6GVQzZ
-      type: AbilityScoreImprovement
-      configuration:
-        points: 2
-        fixed:
-          str: 0
-          dex: 0
-          con: 0
-          int: 0
-          wis: 0
-          cha: 0
-        cap: 2
-        locked: []
-        recommendation: null
-        max: null
-      value: {}
-      level: 4
-      title: ''
-      hint: ''
-    - _id: hbrvesQ2gv2OnX8J
-      type: AbilityScoreImprovement
-      configuration:
-        points: 2
-        fixed:
-          str: 0
-          dex: 0
-          con: 0
-          int: 0
-          wis: 0
-          cha: 0
-        cap: 2
-        locked: []
-        recommendation: null
-        max: null
-      value: {}
-      level: 8
-      title: ''
-      hint: ''
-    - _id: hbrvesAzh0LxCnMY
-      type: AbilityScoreImprovement
-      configuration:
-        points: 2
-        fixed:
-          str: 0
-          dex: 0
-          con: 0
-          int: 0
-          wis: 0
-          cha: 0
-        cap: 2
-        locked: []
-        recommendation: null
-        max: null
-      value: {}
-      level: 12
-      title: ''
-      hint: ''
-    - _id: hbrvesrIkz301uAB
-      type: AbilityScoreImprovement
-      configuration:
-        points: 2
-        fixed:
-          str: 0
-          dex: 0
-          con: 0
-          int: 0
-          wis: 0
-          cha: 0
-        cap: 2
-        locked: []
-        recommendation: null
-        max: null
-      value: {}
-      level: 16
-      title: ''
-      hint: ''
-    - _id: hbrvestDOddVfVJK
-      type: AbilityScoreImprovement
-      configuration:
-        points: 2
-        fixed:
-          str: 0
-          dex: 0
-          con: 0
-          int: 0
-          wis: 0
-          cha: 0
-        cap: 2
-        locked: []
-        recommendation: null
-        max: null
-      value: {}
-      level: 19
-      title: ''
-      hint: ''
+      optional: false
+      spell: null
+    value: {}
+    level: 18
+    title: Class Features
+  - _id: hbrvesAWJXDND7Gf
+    type: Subclass
+    configuration: {}
+    value:
+      document: null
+      uuid: null
+    level: 3
+    title: ''
+    hint: ''
+  - _id: hbrvesc1Sx6GVQzZ
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 4
+    title: ''
+    hint: ''
+  - _id: hbrvesQ2gv2OnX8J
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 8
+    title: ''
+    hint: ''
+  - _id: hbrvesAzh0LxCnMY
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 12
+    title: ''
+    hint: ''
+  - _id: hbrvesrIkz301uAB
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 16
+    title: ''
+    hint: ''
+  - _id: hbrvestDOddVfVJK
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 19
+    title: ''
+    hint: ''
   spellcasting:
     progression: none
     ability: ''
@@ -232,7 +247,7 @@ system:
   wealth: ''
   primaryAbility:
     value:
-      - str
+    - str
     all: false
   hd:
     denomination: d10
