@@ -32,6 +32,28 @@ system:
     title: Saving Throw Proficiencies
     hint: ''
     classRestriction: primary
+  - _id: 7jTRVGWlMscb3PsL
+    type: Trait
+    configuration:
+      mode: default
+      allowReplacements: false
+      grants: []
+      choices:
+      - count: 2
+        pool:
+        - skills:acr
+        - skills:ath
+        - skills:ins
+        - skills:itm
+        - skills:prc
+        - skills:rel
+        - skills:sur
+    value:
+      chosen: []
+    level: 1
+    title: Skill Proficiencies
+    hint: ''
+    classRestriction: primary
   - _id: hbrvesPrIj5ENRbk
     type: HitPoints
     configuration: {}
