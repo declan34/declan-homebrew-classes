@@ -1,0 +1,88 @@
+_id: vVjSCkPreXke5Hnl
+name: Academy of Tactics
+type: subclass
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/classes/the-trickster.webp
+system:
+  description:
+    value: <p>Academy of Tactics, one of the Warlord's Academies of War.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  identifier: academy-of-tactics
+  classIdentifier: warlord
+  advancement:
+  - _id: O8SNZK733YfY4oEm
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.HLggCpe0x61yu5oq
+        optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.zrBQbmlMZSz5kA7s
+        optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.GfJWMiA96zcj3Z0u
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 3
+    title: Features
+  - _id: Kc2vDLfjquqiwC2k
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.DthofGJ72O7rFVNm
+        optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.8u2L8ImRaOnd0QL8
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 6
+    title: Features
+  - _id: WFD6vLIKLoJfCGEW
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.5daWAyrYvPnIffql
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 14
+    title: Features
+  - _id: BYafSpacPVZeQssg
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.eMmed3dnt9cNQqT9
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 18
+    title: Features
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!vVjSCkPreXke5Hnl'

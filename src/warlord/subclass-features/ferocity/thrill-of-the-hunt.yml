@@ -1,0 +1,48 @@
+_id: JMTWWF1x5GuIz8ja
+name: Thrill of the Hunt
+type: feat
+folder: ct2Ae54YtfM7mHTn
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>A successful hunt stokes your blood lust. When your Prey is killed, you can use your reaction to mark another creature in range, then you gain one of the following benefits: You gain temporary hit points equal to your Warlord level. You regain one expended use of Inspiring Word. You regain one expended Exploit Die.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: thrill-of-the-hunt
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!JMTWWF1x5GuIz8ja'

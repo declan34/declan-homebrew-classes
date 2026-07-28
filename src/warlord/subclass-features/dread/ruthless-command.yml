@@ -1,0 +1,48 @@
+_id: rv7URugO3QUiV0fl
+name: Ruthless Command
+type: feat
+folder: mLvuT1bas8tby7KT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You spread fear and desolation on the battlefield. Creatures that you target with an Inspiring Word or a Tactical Exploit have advantage on all attack rolls against creatures that are Frightened until the end of their next turn. Moreover, when you use your Dread Presence, the creature has disadvantage on its initial Wisdom saving throw if you or a creature under the effects of one of your Exploits has hit it with an attack since the end of your last turn.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: ruthless-command
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!rv7URugO3QUiV0fl'

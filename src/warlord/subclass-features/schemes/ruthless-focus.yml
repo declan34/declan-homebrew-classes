@@ -1,0 +1,48 @@
+_id: DxJlmjUXeSqGzu0A
+name: Ruthless Focus
+type: feat
+folder: k4KKpvtMYeSCVLGq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You direct your allies to prey upon the weak. When a creature fails its saving throw against your Cheap Shot, you can instantly issue an insightful order, but the creature only gains the benefits of your insightful order if it attacks the target of your Cheap Shot. Also, if you use a Tactical Exploit as part of your action, you can take the Disengage or Hide action as a bonus action.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: ruthless-focus
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!DxJlmjUXeSqGzu0A'

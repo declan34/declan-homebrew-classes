@@ -1,0 +1,50 @@
+_id: VYQXQblhCYLXLAiI
+name: Rallying Cry
+type: feat
+folder: BixkOnr8SRaN43lx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Starting at 9th level, when another creature that can hear you within 30 feet fails a saving throw, you can use your reaction to rally it. The creature rolls its saving throw again, and adds your Leadership modifier to its new result. You can use this reaction once per short or long rest. You gain a second use at 13th level and a third use at 17th level.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: '@scale.warlord.rallying-cry'
+    recovery:
+    - period: lr
+      type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: rallying-cry
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!VYQXQblhCYLXLAiI'

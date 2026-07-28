@@ -1,0 +1,48 @@
+_id: Sy4shPnhZmisd5Kd
+name: Dauntless
+type: feat
+folder: BixkOnr8SRaN43lx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You rival the great commanders and conquerors of legend. At 20th level, you can use Rallying Cry an unlimited number of times. Moreover, whenever you use Inspiring Word you treat the hit points restored as the maximum possible result.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: dauntless
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!Sy4shPnhZmisd5Kd'

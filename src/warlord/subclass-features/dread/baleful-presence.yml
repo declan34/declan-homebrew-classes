@@ -1,0 +1,48 @@
+_id: IVDuYhAJQYhD1uPk
+name: Baleful Presence
+type: feat
+folder: mLvuT1bas8tby7KT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You are a walking avatar of fear. When you force a creature within 30 feet of you to make a saving throw to resist being Frightened, it has disadvantage on its roll. Moreover, creatures within 30 feet that are Frightened of you have their speed reduced to 0 while they can see you.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: baleful-presence
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!IVDuYhAJQYhD1uPk'

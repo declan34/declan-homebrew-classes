@@ -1,0 +1,48 @@
+_id: gvY2TlpXUEWBQZuw
+name: Packleader
+type: feat
+folder: ct2Ae54YtfM7mHTn
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You lead your pack in the hunt. As a bonus action, you can mark a creature you can see within 30 feet as your Prey. It remains your Prey for 1 minute, but the effect ends early if your Prey is reduced to 0 hit points, you are Incapacitated, or you mark another creature as your Prey. Any creature you target with Inspiring Word or a Tactical Exploit adds your Exploit Die to the first attack roll it makes against your Prey before the start of your next turn. You can mark a creature as your Prey a number of times equal to your Leadership modifier (minimum of once). You regain one expended use when you finish a short rest, and all expended uses when you finish a long rest.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: packleader
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!gvY2TlpXUEWBQZuw'

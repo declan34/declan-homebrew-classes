@@ -1,0 +1,50 @@
+_id: GIQLBRE51hb1RDXH
+name: Inspiring Word
+type: feat
+folder: BixkOnr8SRaN43lx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your words encourage others to fight on. At 1st level, you can use a bonus action to shout at another creature within 30 feet that can hear you. Your target regains hit points equal to one roll of its Hit Die + your Leadership modifier, though it does not expend a Hit Die as part of this ability. You can use this feature the number of times indicated in the Inspiring Word column on the Warlord table. You regain all expended uses when you finish a short or long rest.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: '@scale.warlord.inspiring-word'
+    recovery:
+    - period: lr
+      type: recoverAll
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: inspiring-word
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!GIQLBRE51hb1RDXH'

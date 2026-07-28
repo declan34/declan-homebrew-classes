@@ -1,0 +1,86 @@
+_id: 2Ce6QQavKIz0h6oE
+name: Academy of Ferocity
+type: subclass
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/classes/the-trickster.webp
+system:
+  description:
+    value: <p>Academy of Ferocity, one of the Warlord's Academies of War.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  identifier: academy-of-ferocity
+  classIdentifier: warlord
+  advancement:
+  - _id: pdzYJ0GQOAdPpyBC
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.DCaUZBSqZhiXm1jF
+        optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.gvY2TlpXUEWBQZuw
+        optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.H4nMCGfzdpCUBSf2
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 3
+    title: Features
+  - _id: MOWvCPanNklBbbkz
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.DO5EsZXylBsc1EI6
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 6
+    title: Features
+  - _id: uJ98SYdDWkCpPLvC
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.JMTWWF1x5GuIz8ja
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 14
+    title: Features
+  - _id: 4obJswFX1ZQZ217u
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.4EZmIsEkJRTq3dRN
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 18
+    title: Features
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!2Ce6QQavKIz0h6oE'

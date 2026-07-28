@@ -1,0 +1,48 @@
+_id: k2KkKbOm888s3Iql
+name: Dreadlord
+type: feat
+folder: mLvuT1bas8tby7KT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You stand as a sinister monument to all those who have tried, and failed, to stop your iron conquest. You are immune to the Frightened condition, and you add your Leadership modifier (a minimum of +1) to any attack rolls that you make against creatures that are Frightened of you.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: dreadlord
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!k2KkKbOm888s3Iql'

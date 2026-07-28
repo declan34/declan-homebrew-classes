@@ -1,0 +1,48 @@
+_id: 6T5LapEXAjdyDBSV
+name: Mythic Voice
+type: feat
+folder: Erxaajz5MwdQiX4d
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your voice itself has been infused with the powerful magic you channel. Whenever you cast a 1st-level Gallantry spell, you can choose to expend a use of Inspiring Word instead of a spell slot. You must use a musical instrument as the spellcasting focus for the spell.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: mythic-voice
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!6T5LapEXAjdyDBSV'

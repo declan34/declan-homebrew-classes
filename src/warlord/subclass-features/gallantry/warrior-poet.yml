@@ -1,0 +1,48 @@
+_id: PGJ3TY4qXQbINNPg
+name: Warrior Poet
+type: feat
+folder: Erxaajz5MwdQiX4d
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You combine martial skill and musical talent to inspire your allies. You gain proficiency with two musical instruments of your choice, and in Performance. Moreover, whenever you make a Performance check that includes both a weapon and a musical instrument, you gain a bonus to your roll equal to your Warlord level.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: warrior-poet
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!PGJ3TY4qXQbINNPg'

@@ -1,0 +1,48 @@
+_id: GXohfg0SttLTW1AG
+name: Marked for Death
+type: feat
+folder: k4KKpvtMYeSCVLGq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You relentlessly pursue the destruction of your foes. When a creature fails its saving throw against Cheap Shot, you can choose to mark the creature for death. The first attack to hit that creature before the beginning of your next turn becomes an automatic critical hit. Once you mark a creature for death you must complete a short or long rest before you can use this feature again.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: marked-for-death
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!GXohfg0SttLTW1AG'

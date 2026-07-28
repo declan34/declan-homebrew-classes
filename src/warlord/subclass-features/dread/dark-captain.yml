@@ -1,0 +1,48 @@
+_id: 8MChml0TVOiYlsnw
+name: Dark Captain
+type: feat
+folder: mLvuT1bas8tby7KT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You exude an aura of intimidation that shakes all but the most stalwart warriors to their core. You gain proficiency with all martial weapons and in Intimidation. Moreover, whenever you make an Intimidation check, you can use your Leadership ability instead of Charisma. When you do, treat a roll of 7 or lower on the d20 as an 8.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: dark-captain
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!8MChml0TVOiYlsnw'

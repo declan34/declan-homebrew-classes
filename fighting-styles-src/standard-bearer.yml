@@ -1,0 +1,48 @@
+_id: xZm5h2F67c9FL66a
+name: Standard Bearer
+type: feat
+folder: HDG4WMrhAuWDbHh1
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>While holding a standard or banner aloft, and nothing else in that hand, you can rally allied creatures within a radius in feet equal to 5 times your Proficiency Bonus. When a creature within this radius makes a saving throw, you can use your reaction to grant it advantage on its roll.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: fightingStyle
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: Charisma of 13 or higher
+  activities: {}
+  enchant: {}
+  identifier: standard-bearer
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!xZm5h2F67c9FL66a'

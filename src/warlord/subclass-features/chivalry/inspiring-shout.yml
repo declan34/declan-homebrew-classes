@@ -1,0 +1,48 @@
+_id: omdBDCid1RtVXUQw
+name: Inspiring Shout
+type: feat
+folder: h2YaN3xSfTov9v8f
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your presence on the field of battle inspires those who fight beside you. When you roll initiative you can expend a use of Inspiring Word and choose a number of creatures within 30 feet that can hear you equal to your Leadership modifier to gain temporary hit points equal to your Exploit Die + your Leadership modifier.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: inspiring-shout
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!omdBDCid1RtVXUQw'

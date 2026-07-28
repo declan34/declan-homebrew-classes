@@ -1,0 +1,48 @@
+_id: 4EZmIsEkJRTq3dRN
+name: Apex Predator
+type: feat
+folder: ct2Ae54YtfM7mHTn
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your primal ferocity invigorates your packmates. Your speed increases by 10 feet, and your weapon attacks against your Prey deal bonus damage equal to your Exploit Die. Moreover, any creature you target with an Inspiring Word, Rallying Cry, or one of your Tactical Exploits also gains the benefits above until the beginning of your next turn.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: apex-predator
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!4EZmIsEkJRTq3dRN'

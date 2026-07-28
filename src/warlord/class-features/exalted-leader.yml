@@ -1,0 +1,48 @@
+_id: 3wUXS9X1Q16s9jAb
+name: Exalted Leader
+type: feat
+folder: BixkOnr8SRaN43lx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>You are an unflinching leader, even in dire circumstances. At 15th level, your Leadership Style grants you these benefits. Captain: Creatures that you target with Inspiring Word, Rallying Cry, or a Tactical Exploit gain temporary hit points equal to your Charisma modifier for 1 minute. Mentor: Your Inspiring Word can end one of the following conditions in place of restoring hit points: Blinded, Charmed, Deafened, Frightened, Poisoned, or Stunned. Strategist: When you use Inspiring Word, the target can choose to move up to its speed without provoking opportunity attacks.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: exalted-leader
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!3wUXS9X1Q16s9jAb'

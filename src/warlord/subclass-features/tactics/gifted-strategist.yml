@@ -1,0 +1,48 @@
+_id: 5daWAyrYvPnIffql
+name: Gifted Strategist
+type: feat
+folder: l6GAGm9Dty6FbWn2
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You are always one step ahead of your foes. You cannot be surprised while conscious, and when you roll initiative, you can use one Tactical Exploit or take the Ready action.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: gifted-strategist
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!5daWAyrYvPnIffql'

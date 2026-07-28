@@ -1,0 +1,48 @@
+_id: vWLaaCwnicbhvEoX
+name: Heroic Charge
+type: feat
+folder: Erxaajz5MwdQiX4d
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>When you roll initiative, you can expend a use of Inspiring Word to rally a heroic charge. You, and any creatures of your choice within 15 feet that can hear you gain the benefits of the Dash action during your first turn in combat. You cannot use this feature if you are surprised or Incapacitated. At 11th level, the range of this feature increases to 30 feet.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: heroic-charge
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!vWLaaCwnicbhvEoX'

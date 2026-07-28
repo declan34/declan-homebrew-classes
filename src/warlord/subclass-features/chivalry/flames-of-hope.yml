@@ -1,0 +1,48 @@
+_id: k76JOtebzH0HvxW0
+name: Flames of Hope
+type: feat
+folder: h2YaN3xSfTov9v8f
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>Once between each short or long rest you can use your action to let forth a heroic cry that inflames the hearts of your allies and inspires terror in your foes. Creatures that can hear you within 30 feet gain the corresponding effect below: Allies. Friendly creatures gain temporary hit points equal to your Exploit Die + your Leadership modifier. While these last, the creature cannot be Charmed or Frightened. Enemies. Hostile creatures must make a Wisdom saving throw or be Frightened of you. They repeat the saving throw at the end of each of their turns and when they take damage, ending the effect on a success.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: flames-of-hope
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!k76JOtebzH0HvxW0'

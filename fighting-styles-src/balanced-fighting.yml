@@ -1,0 +1,48 @@
+_id: hbrcInmfAaXPMRVr
+name: Balanced Fighting
+type: feat
+folder: HDG4WMrhAuWDbHh1
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>When wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to weapon damage rolls. You can use a shield and still gain this benefit.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: fightingStyle
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: balanced-fighting
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrcInmfAaXPMRVr'

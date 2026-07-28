@@ -1,0 +1,48 @@
+_id: HLggCpe0x61yu5oq
+name: Advanced Tactics
+type: feat
+folder: l6GAGm9Dty6FbWn2
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>Your ability to learn and execute strategies in combat exceeds most other commanders and even formally trained Warlords. You gain the following benefits to your Warlord features: Exploits. You learn two additional 1st-degree Tactical Exploits of your choice. These Exploits do not count against your number of Exploits Known, but they can be replaced. You learn additional Tactical Exploits following the same rules at certain levels: at 5th level you learn two 2nd-degree Exploits, and at 9th level you learn one 3rd-degree Exploit. Exploit Dice. Your total number of Exploit Dice increases by 1, and all of your Exploit Dice increase to become d6s. At certain Warlord levels your Exploit Dice increase again; at 5th level (d8), at 11th level (d10), and at 17th level (d12).</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: advanced-tactics
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!HLggCpe0x61yu5oq'

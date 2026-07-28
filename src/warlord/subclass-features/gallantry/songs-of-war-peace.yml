@@ -1,0 +1,48 @@
+_id: z6Z0QoHUac2acxCo
+name: Songs of War & Peace
+type: feat
+folder: Erxaajz5MwdQiX4d
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You conduct battle like a great symphony. When you expend a spell slot or Exploit Die as part of your action, you can make a single weapon attack as a bonus action on that turn. In addition, any creature that spends a short rest with you has advantage on Hit Die rolls to regain its hit points.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: songs-of-war-peace
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!z6Z0QoHUac2acxCo'

@@ -1,0 +1,527 @@
+_id: kuo71tTNo7d6mmLQ
+name: The Warlord
+type: class
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/classes/vessel.webp
+system:
+  description:
+    value: <p>Warlords are inspiring leaders and brilliant tacticians who empower their allies and command the battlefield.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  startingEquipment: []
+  identifier: warlord
+  levels: 1
+  advancement:
+  - _id: SnOwfV9iYaD2oj6w
+    type: HitPoints
+    configuration: {}
+    value: {}
+  - _id: 9mVPaNoSQ7UxHs1p
+    type: Trait
+    configuration:
+      mode: default
+      allowReplacements: false
+      grants:
+      - saves:wis
+      - saves:cha
+      choices: []
+    value:
+      chosen: []
+    level: 1
+    title: Saving Throw Proficiencies
+    hint: ''
+    classRestriction: primary
+  - _id: ybgWFXmjADnP69Rv
+    type: Trait
+    configuration:
+      mode: default
+      allowReplacements: false
+      grants: []
+      choices:
+      - count: 2
+        pool:
+        - skills:ath
+        - skills:dec
+        - skills:his
+        - skills:ins
+        - skills:itm
+        - skills:inv
+        - skills:per
+    value:
+      chosen: []
+    level: 1
+    title: Skill Proficiencies
+    hint: ''
+    classRestriction: primary
+  - _id: WYaiN2zPGODI6ohY
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 4
+    title: ''
+    hint: ''
+  - _id: dUnVKif6fPdNUmX1
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 8
+    title: ''
+    hint: ''
+  - _id: HlN7pP14w2XTiQNx
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 12
+    title: ''
+    hint: ''
+  - _id: 3xJZpIS1bSpVH1ps
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 16
+    title: ''
+    hint: ''
+  - _id: 6osjGb2EqHvzvJMX
+    type: AbilityScoreImprovement
+    configuration:
+      points: 2
+      fixed:
+        str: 0
+        dex: 0
+        con: 0
+        int: 0
+        wis: 0
+        cha: 0
+      cap: 2
+      locked: []
+      recommendation: null
+      max: null
+    value: {}
+    level: 19
+    title: ''
+    hint: ''
+  - _id: 1C474CnBWhQNivQe
+    type: Subclass
+    configuration: {}
+    value:
+      document: null
+      uuid: null
+    level: 3
+    title: ''
+    hint: ''
+  - _id: U1l3ABwnq5ikfIdu
+    type: ScaleValue
+    configuration:
+      identifier: inspiring-word
+      type: number
+      distance:
+        units: ''
+      scale:
+        '1':
+          value: 3
+        '4':
+          value: 4
+        '8':
+          value: 5
+        '13':
+          value: 6
+        '17':
+          value: 7
+    value: {}
+    level: 1
+    title: Inspiring Word
+  - _id: ePR7nffL8RBLnYOq
+    type: ScaleValue
+    configuration:
+      identifier: exploits-known
+      type: number
+      distance:
+        units: ''
+      scale:
+        '2':
+          value: 2
+        '3':
+          value: 3
+        '5':
+          value: 4
+        '7':
+          value: 5
+        '9':
+          value: 6
+        '11':
+          value: 7
+        '13':
+          value: 8
+        '15':
+          value: 9
+        '17':
+          value: 10
+    value: {}
+    level: 2
+    title: Exploits Known
+  - _id: VPNofzzgaQ2jWO3f
+    type: ScaleValue
+    configuration:
+      identifier: exploit-die
+      type: dice
+      distance:
+        units: ''
+      scale:
+        '2':
+          number: null
+          faces: 4
+          modifiers: []
+        '5':
+          number: null
+          faces: 6
+          modifiers: []
+        '11':
+          number: null
+          faces: 8
+          modifiers: []
+        '17':
+          number: null
+          faces: 10
+          modifiers: []
+    value: {}
+    level: 2
+    title: Exploit Die
+  - _id: 9QM8Ln2WwRYeEjRo
+    type: ScaleValue
+    configuration:
+      identifier: exploit-dice
+      type: number
+      distance:
+        units: ''
+      scale:
+        '2':
+          value: 2
+        '5':
+          value: 3
+        '11':
+          value: 4
+        '17':
+          value: 5
+    value: {}
+    level: 2
+    title: Exploit Dice
+  - _id: LDqoQ99SbBECtZup
+    type: ScaleValue
+    configuration:
+      identifier: rallying-cry
+      type: number
+      distance:
+        units: ''
+      scale:
+        '9':
+          value: 1
+        '13':
+          value: 2
+        '17':
+          value: 3
+    value: {}
+    level: 9
+    title: Rallying Cry
+  - _id: aiFroqM2Wc1sU6JV
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.RsYiNPYft9wtFUVC
+        optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.GIQLBRE51hb1RDXH
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 1
+    title: Features
+  - _id: M1QY79HfANBZnmYL
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.b8ftN7bjniFXs6NU
+        optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.pYK8FOsD6alUcqIu
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 2
+    title: Features
+  - _id: TJMtF9vg5bnzpWUz
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.pDoJ2zaWZzLXjKaY
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 3
+    title: Features
+  - _id: YRC13rY9LgjhaQ1S
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.1tCD2CJUdAo4riJB
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 5
+    title: Features
+  - _id: GzKJHbMqXEKlXSXp
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.pEAcSoZcDGzSycRo
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 7
+    title: Features
+  - _id: 4kzwnEC2IbH44i5n
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.VYQXQblhCYLXLAiI
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 9
+    title: Features
+  - _id: ZGspWDPSJi1chV7v
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.4RsplczBehvAKFmV
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 10
+    title: Features
+  - _id: nc2nrdtw3EjT0Y64
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.OT3zttV6GIbuCbPN
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 11
+    title: Features
+  - _id: 21RyrVurZkZM0VgF
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.3wUXS9X1Q16s9jAb
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 15
+    title: Features
+  - _id: ZnbBaJmRgsYBXXKL
+    type: ItemGrant
+    configuration:
+      items:
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.Sy4shPnhZmisd5Kd
+        optional: false
+      optional: false
+      spell: null
+    value: {}
+    level: 20
+    title: Features
+  - _id: EMbbLLxQVDiaoToY
+    type: ItemChoice
+    configuration:
+      choices:
+        '2':
+          count: 2
+          replacement: true
+        '3':
+          count: 1
+          replacement: true
+        '5':
+          count: 1
+          replacement: true
+        '7':
+          count: 1
+          replacement: true
+        '9':
+          count: 1
+          replacement: true
+        '11':
+          count: 1
+          replacement: true
+        '13':
+          count: 1
+          replacement: true
+        '15':
+          count: 1
+          replacement: true
+        '17':
+          count: 1
+          replacement: true
+      pool:
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RBFxIvOXz9johjAJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.N2csBFxiIl0c0u9a
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zlooIGfDtz42NWIs
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.yhAv4A4CpD07Gain
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.TOy5An5sMhtRIdIB
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.PO9APtQ4cTtPwvtz
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.WIrrBN4l50nCgBdL
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HJOcXS4it0adGIbv
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.bcPUNfP25GaeyTvD
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.IZCQ7cUCS8l1gELH
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.urXxeINM1ZnM4riX
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.VBeCvrfiKT6QetTh
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wiSLozxHrzdsrvu9
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.g7yNK6Cf6BXs0QJn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.xA53KDleiLGS5SSF
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.T2MRWGAB4uUaxaKe
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.i575rQP7v51emvt4
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.qRtU5DvOlFNfKTyM
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.9iv7b41kH201Ldc5
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HAcwuHHxUihe2k2w
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.KIiLuvP3Opcpwgxa
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.KcxDK77umpWdT4RV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zp61uUxzKpJZF5XP
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.QvGtff6iXp42wv7K
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wBXjcM7tb8Yy3e6Z
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.c31ADMDftmoKUKUV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.DzbRUzipwL9dxUJW
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.chjrpVUlaNKXGpFA
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.m1F1fM00KiYICnDT
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.hZ4LZVEbP7IwtfNC
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.4Gw8mF4MVs1ZR6re
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RrqB8UyaSfd24LQs
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.87LrHc6768aCvIzm
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.stoAbFTgVFzLuATn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.jcXtXlS0VhDhHxus
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.8MfvqHhpxw8h6ox7
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.YkNDVPjKkn3PvEb0
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.ZQUslj1EThk2u2XP
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.U8Y6gYT5EO72D5NJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.10WoGhD7FR3Cq7uq
+      type: feat
+      restriction:
+        type: feat
+        subtype: ''
+        list: []
+      spell: null
+      allowDrops: true
+    value: {}
+    level: 2
+    title: Tactical Exploits
+  - _id: 8d4fARQhXrTY5OGS
+    type: ItemChoice
+    configuration:
+      choices:
+        '2':
+          count: 1
+          replacement: true
+      pool:
+      - uuid: Compendium.declan-homebrew-classes.warlord-fighting-styles.Item.hbrcInmfAaXPMRVr
+      - uuid: Compendium.declan-homebrew-classes.warlord-fighting-styles.Item.t2H00Ym07D8pxiMA
+      - uuid: Compendium.declan-homebrew-classes.warlord-fighting-styles.Item.ZhP7bFygnQsXTIqz
+      - uuid: Compendium.declan-homebrew-classes.warlord-fighting-styles.Item.H7BeSma1Jfb3xK5s
+      - uuid: Compendium.declan-homebrew-classes.warlord-fighting-styles.Item.ijnfkL7L1FMdCbuy
+      - uuid: Compendium.declan-homebrew-classes.warlord-fighting-styles.Item.xZm5h2F67c9FL66a
+      - uuid: Compendium.declan-homebrew-classes.warlord-fighting-styles.Item.RNPIQL3LGBrSKrgj
+      type: feat
+      restriction:
+        type: feat
+        subtype: fightingStyle
+        list: []
+      spell: null
+      allowDrops: true
+    value: {}
+    level: 2
+    title: Fighting Style
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+  wealth: ''
+  primaryAbility:
+    value:
+    - str
+    all: false
+  hd:
+    denomination: d10
+    spent: 0
+    additional: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!kuo71tTNo7d6mmLQ'

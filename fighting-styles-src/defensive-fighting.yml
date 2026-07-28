@@ -1,0 +1,48 @@
+_id: ZhP7bFygnQsXTIqz
+name: Defensive Fighting
+type: feat
+folder: HDG4WMrhAuWDbHh1
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>When you are wearing medium armor, heavy armor, or a shield you gain a +1 bonus to your Armor Class.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: fightingStyle
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: defensive-fighting
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!ZhP7bFygnQsXTIqz'

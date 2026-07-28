@@ -1,0 +1,48 @@
+_id: RNPIQL3LGBrSKrgj
+name: Tactical Fighting
+type: feat
+folder: HDG4WMrhAuWDbHh1
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You can take the Help or the Search action as a bonus action. When you use the Help action to aid an attack, the target can be up to 30 feet away, so long as the attacker can hear you.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: fightingStyle
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: Intelligence of 13 or higher
+  activities: {}
+  enchant: {}
+  identifier: tactical-fighting
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!RNPIQL3LGBrSKrgj'

@@ -1,0 +1,48 @@
+_id: rIHXeHDO1hHruSgH
+name: Paragon of Chivalry
+type: feat
+folder: h2YaN3xSfTov9v8f
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You stand as an exemplar of chivalric virtue, a shining beacon for those who follow you. You are immune to the Frightened and Charmed conditions, and creatures of your choice within 30 feet that can see you have advantage on saving throws to resist or end the Charmed and Frightened condition.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: paragon-of-chivalry
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!rIHXeHDO1hHruSgH'

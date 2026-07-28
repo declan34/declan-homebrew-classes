@@ -1,0 +1,48 @@
+_id: pDoJ2zaWZzLXjKaY
+name: Academy of War
+type: feat
+folder: BixkOnr8SRaN43lx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>At 3rd level, choose the Academy of War from the list that best represents the training and tactics of your Warlord: Chivalry, Dread, Ferocity, Gallantry, Schemes, or Tactics. Your choice grants you features at 3rd level and again at 6th, 14th, and 18th level.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: academy-of-war
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!pDoJ2zaWZzLXjKaY'

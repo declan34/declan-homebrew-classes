@@ -1,0 +1,48 @@
+_id: WEoGMfjrINZi6UCB
+name: Cheap Shot
+type: feat
+folder: k4KKpvtMYeSCVLGq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You aren't above dishonorable tricks to secure victory. Once per turn when you hit a creature with a weapon attack, you can force it to make a Dexterity saving throw, along with the damage. On a failure, it cannot take reactions and its speed is halved until the start of your next turn. On its next turn, it can only take one action or bonus action, not both.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: cheap-shot
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!WEoGMfjrINZi6UCB'

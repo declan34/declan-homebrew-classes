@@ -1,0 +1,48 @@
+_id: bDPhEwEykl8l6oD4
+name: Gallant Spellcasting
+type: feat
+folder: Erxaajz5MwdQiX4d
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>Your talent in poetry and music allows you to produce spells, much like the Bard does. You gain the following benefits: Spell Slots. The Gallant Spellcasting table shows how many spell slots you have to cast your spells of 1st-level and higher. To cast a spell, you must expend a slot of that spell''s level or higher. You regain all expended spell slots when you finish a long rest. Spells Known of 1st-Level and Higher. You know three 1st-level spells of your choice from the Gallantry spell list. The Spells Known column of the Gallant Spellcasting table shows when you learn more spells. When you gain a level, you can replace one of your Spells Known with another spell from the Gallantry spell list. Spellcasting Focus. You can use any musical instrument you are proficient with as a spellcasting focus for your spells. Spellcasting Ability. Use your Leadership modifier when setting the saving throw DC or making a spell attack roll for any Gallantry spells you know through this feature: Spell save DC = 8 + your Proficiency Bonus + your Leadership modifier; Spell attack modifier = your Proficiency Bonus + your Leadership modifier.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: gallant-spellcasting
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!bDPhEwEykl8l6oD4'

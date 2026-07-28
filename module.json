@@ -1,8 +1,8 @@
 {
   "id": "declan-homebrew-classes",
   "title": "Declan's Homebrew Classes (D&D 5e)",
-  "description": "Homebrew classes for the dnd5e system, generated with dnd5e-pdf-importer. Includes The Vessel (+6 Sealed Spirit subclasses) and The Talent (+7 Psionic Specializations). Auto-generated draft \u2014 verify mechanics before play.",
-  "version": "1.3.3",
+  "description": "Homebrew classes for the dnd5e system, generated with dnd5e-pdf-importer. Includes The Vessel (+6 Sealed Spirit subclasses, Unsealed Aspects), The Talent (+7 Psionic Specializations), and The Warlord (+6 Academies of War, Tactical Exploits & Fighting Styles). Level-up prompts wired for Aspects, Exploits, and Fighting Styles. Auto-generated draft \u2014 verify mechanics before play.",
+  "version": "1.4.0",
   "authors": [
     {
       "name": "declan34",
@@ -51,9 +51,23 @@
       "system": "dnd5e"
     },
     {
-      "name": "homebrew-aspects",
+      "name": "vessel-aspects",
       "label": "Unsealed Aspects (Vessel)",
-      "path": "packs/homebrew-aspects",
+      "path": "packs/vessel-aspects",
+      "type": "Item",
+      "system": "dnd5e"
+    },
+    {
+      "name": "warlord-exploits",
+      "label": "Tactical Exploits (Warlord)",
+      "path": "packs/warlord-exploits",
+      "type": "Item",
+      "system": "dnd5e"
+    },
+    {
+      "name": "warlord-fighting-styles",
+      "label": "Fighting Styles (Warlord)",
+      "path": "packs/warlord-fighting-styles",
       "type": "Item",
       "system": "dnd5e"
     }

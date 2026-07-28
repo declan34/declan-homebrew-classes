@@ -1,0 +1,48 @@
+_id: RsYiNPYft9wtFUVC
+name: Leadership Style
+type: feat
+folder: BixkOnr8SRaN43lx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>At 1st level, you choose your Leadership Style. It determines your Leadership Ability Score and grants additional benefits. Captain: You lead with personality, bravery, and boldness. Charisma is your Leadership Score. You also gain proficiency in heavy armor and your choice of either Intimidation or Persuasion. Mentor: You lead through wise counsel. Wisdom is your Leadership Score. When another creature within 15 feet that can hear you misses an attack or fails an ability check, you can use your reaction to grant it a 1d4 bonus to its roll. Strategist: You lead with cunning tactical insight. Intelligence is your Leadership Score. After you roll initiative, you can switch places in initiative order with another willing creature.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: leadership-style
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!RsYiNPYft9wtFUVC'

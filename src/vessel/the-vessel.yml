@@ -261,6 +261,91 @@ system:
     level: 19
     title: ''
     hint: ''
+  - _id: hSpSfROzJH8oEqID
+    type: ScaleValue
+    configuration:
+      identifier: aspects-known
+      type: number
+      distance:
+        units: ''
+      scale:
+        '1':
+          value: 1
+        '2':
+          value: 2
+        '4':
+          value: 3
+        '7':
+          value: 4
+        '10':
+          value: 5
+        '14':
+          value: 6
+        '18':
+          value: 7
+    value: {}
+    level: 1
+    title: Aspects Known
+  - _id: xmcA1L3ifAnLtj3h
+    type: ItemChoice
+    configuration:
+      choices:
+        '1':
+          count: 1
+          replacement: true
+        '2':
+          count: 1
+          replacement: true
+        '4':
+          count: 1
+          replacement: true
+        '7':
+          count: 1
+          replacement: true
+        '10':
+          count: 1
+          replacement: true
+        '14':
+          count: 1
+          replacement: true
+        '18':
+          count: 1
+          replacement: true
+      pool:
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.oUmkQMBtbkjpGzhL
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.pisohQ64s5noajvj
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.wPQPAvQF3hX7DncV
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.d0jLTdstSCgBiLXH
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.Dk6lYMTS0Mpb2POh
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.mRokqloULTGQDKRl
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.qlyyH0zObJ6HD8GQ
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.lEKckgEYuaDcodYZ
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.Zx9lm2HwMQpqg3F3
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.5EUH2LZrqhfGXn5x
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.d1vaAmNenJ9Sfrxr
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.CquoRI5JHwQVMxh2
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.CpYrFMC1h6nw0fkk
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.mb56s5afeKP0P5xx
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.NK2t3LkvjtcZmrcF
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.mapiSUuotWsovQ9K
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.IXh8m5czq8ak3Iw2
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.oNQaG7C5qlSyRLve
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.j8snoenaXIEqrwzM
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.Qbh0xlOP0OKKyQqk
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.u1069fpl73SdiBic
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.R1Is4N2JEStH8LOs
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.igT40LQUSt17fe0g
+      - uuid: Compendium.declan-homebrew-classes.vessel-aspects.Item.r81LpnSWinmglc4u
+      type: feat
+      restriction:
+        type: feat
+        subtype: ''
+        list: []
+      spell: null
+      allowDrops: true
+    value: {}
+    level: 1
+    title: Unsealed Aspects
   spellcasting:
     progression: vessel
     ability: cha

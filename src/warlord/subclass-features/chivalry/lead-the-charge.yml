@@ -1,0 +1,48 @@
+_id: BPbJipRLC0jRUQbo
+name: Lead the Charge
+type: feat
+folder: h2YaN3xSfTov9v8f
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You lead best from the front lines. When you take the Attack action on your turn and make at least one melee attack, you can issue an attack order as a bonus action on that turn.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: lead-the-charge
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!BPbJipRLC0jRUQbo'

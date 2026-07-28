@@ -1,0 +1,48 @@
+_id: 8u2L8ImRaOnd0QL8
+name: Know your Enemy
+type: feat
+folder: l6GAGm9Dty6FbWn2
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>You have a gift for identifying weak points. When you take the Search action, you can focus on a creature you can see within 30 feet (DC = 8 + its Challenge Rating). If you have seen it get hit by an attack, add your Warlord level to this roll. On a success, you learn one characteristic of your choice from the list below. On a failure, you can''t use this feature on this creature again until you see it get hit by another attack: Armor Class; Highest Ability Score; Lowest Ability Score; All Special Senses; Resistances, Immunities, &amp; Vulnerabilities; One Trait or Action from its stat block.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: know-your-enemy
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!8u2L8ImRaOnd0QL8'

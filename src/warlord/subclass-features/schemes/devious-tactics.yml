@@ -1,0 +1,48 @@
+_id: ecnJIwI5DsTPo1Nh
+name: Devious Tactics
+type: feat
+folder: k4KKpvtMYeSCVLGq
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You have no qualms about leaving others in danger. When a creature you can see targets you with an attack or forces you to make a saving throw, you can use your reaction to force a creature within 5 feet of you (other than the attacker) to make a Dexterity saving throw. On a failure, you switch places, and it becomes the target of that attack or saving throw. The creature can choose to fail.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: devious-tactics
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!ecnJIwI5DsTPo1Nh'

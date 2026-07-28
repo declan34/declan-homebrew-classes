@@ -1,0 +1,48 @@
+_id: JC2rhpzd0uZW768X
+name: Dread Presence
+type: feat
+folder: mLvuT1bas8tby7KT
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your presence on the field of battle inspires fear in the hearts of your enemies. As a bonus action, you can expend a use of Inspiring Word to force one creature that can see you within 30 feet to make a Wisdom saving throw. On a failed save, it is Frightened of you for 1 minute. If this Frightened creature sees you take damage, the effect ends. If the creature flees and is no longer in your line of sight, it can use its action to automatically end this effect.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: dread-presence
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!JC2rhpzd0uZW768X'

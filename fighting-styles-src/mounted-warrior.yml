@@ -1,0 +1,48 @@
+_id: H7BeSma1Jfb3xK5s
+name: Mounted Warrior
+type: feat
+folder: HDG4WMrhAuWDbHh1
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>While you are riding a controlled mount, both you and your mount gain a +1 bonus to your Armor Class, and you can use a bonus action on each of your turns to command the mount to take one action from its stat block or another action.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: fightingStyle
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: proficiency in Animal Handling
+  activities: {}
+  enchant: {}
+  identifier: mounted-warrior
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!H7BeSma1Jfb3xK5s'
