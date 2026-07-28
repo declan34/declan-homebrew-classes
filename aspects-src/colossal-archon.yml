@@ -1,0 +1,48 @@
+_id: pisohQ64s5noajvj
+name: Colossal Archon
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>The appearance of your Archon Form inspires legends and myths. When you use Dire Stature, you can grow to become Huge in size so long as there is room for you to do so. You gain all the benefits of Dire Stature for your increased size.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 18th-level Vessel, Dire Stature
+  activities: {}
+  enchant: {}
+  identifier: colossal-archon
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!pisohQ64s5noajvj'

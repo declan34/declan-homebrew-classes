@@ -1,0 +1,48 @@
+_id: igT40LQUSt17fe0g
+name: Uncanny Strength
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>The entity bound within you increases your might. You gain proficiency in Athletics. While cloaked in your Spirit Mantle you can use Charisma, in place of Strength, for any Athletics checks you make, including Grapples and Shoves.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: uncanny-strength
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!igT40LQUSt17fe0g'

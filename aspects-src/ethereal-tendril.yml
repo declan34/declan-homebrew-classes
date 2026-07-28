@@ -1,0 +1,48 @@
+_id: mRokqloULTGQDKRl
+name: Ethereal Tendril
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>As an action, you can protrude (or retract) a single Ethereal Tendril, which resembles your Spirit Mantle, from any point on your body. It has a reach of 10 feet and its Strength score equals your Charisma score. You can only have one Tendril manifested at a time, and it can be attacked as part of you. When cloaked in your Spirit Mantle, its reach is doubled. This Tendril cannot manipulate fine tools or use weapons or shields. However, it can manipulate simple objects, and be used to make Iridescent Strikes, Shoves, or Grapples.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities: {}
+  enchant: {}
+  identifier: ethereal-tendril
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!mRokqloULTGQDKRl'
