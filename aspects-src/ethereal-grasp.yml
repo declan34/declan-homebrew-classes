@@ -1,0 +1,48 @@
+_id: Dk6lYMTS0Mpb2POh
+name: Ethereal Grasp
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>When you seize a creature you hold both physical and spiritual. When you Grapple a creature while cloaked in your Spirit Mantle, the creature must use its Charisma, in place of its Strength, for the ability check or saving throw it makes to escape.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 7th-level Vessel, Uncanny Strength
+  activities: {}
+  enchant: {}
+  identifier: ethereal-grasp
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!Dk6lYMTS0Mpb2POh'

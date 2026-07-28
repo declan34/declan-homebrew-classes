@@ -1,0 +1,48 @@
+_id: d1vaAmNenJ9Sfrxr
+name: Minor Magick
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You gain greater control over the power of your Spirit. Once per long rest, you can cast one of your Sealed Magic spells at its lowest level, without expending a Vessel Magic slot. You can gain this Aspect more than once, but it cannot be used to cast the same Sealed Magic spell more than once.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 7th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: minor-magick
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!d1vaAmNenJ9Sfrxr'

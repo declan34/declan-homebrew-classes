@@ -1,0 +1,48 @@
+_id: oUmkQMBtbkjpGzhL
+name: Aether Wings
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>When cloaked in your Spirit Mantle, you manifest ethereal wings that resemble the true nature of your Sealed Spirit. They grant you a flying speed of 60 feet and you can hover.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 14th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: aether-wings
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!oUmkQMBtbkjpGzhL'

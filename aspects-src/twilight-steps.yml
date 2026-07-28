@@ -1,0 +1,48 @@
+_id: R1Is4N2JEStH8LOs
+name: Twilight Steps
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You can draw on your Spirit's power to phase your physical body into the spirit world. You learn the spectral passage ll spell, but it does not count against your Spells Known. As a bonus action, you can cast spectral passage without expending a spell slot. However, when you do so, it only lasts until the end of your turn, but doesn't require concentration.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 14th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: twilight-steps
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!R1Is4N2JEStH8LOs'

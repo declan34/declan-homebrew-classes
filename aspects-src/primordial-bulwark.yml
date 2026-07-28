@@ -1,0 +1,48 @@
+_id: IXh8m5czq8ak3Iw2
+name: Primordial Bulwark
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You draw out the true primordial fortitude of the Spirit bound within you. Your Archon Form gains Resistance to all damage except for force, psychic, and radiant damage. As a bonus action, you can harden your Archon Form, and until the start of your next turn, whenever you take damage you reduce it by your Charisma modifier (minimum of 1).</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 18th-level Vessel, Opalescent Armor
+  activities: {}
+  enchant: {}
+  identifier: primordial-bulwark
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!IXh8m5czq8ak3Iw2'

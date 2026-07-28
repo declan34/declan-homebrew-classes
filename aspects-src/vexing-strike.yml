@@ -1,0 +1,48 @@
+_id: r81LpnSWinmglc4u
+name: Vexing Strike
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>The power of the entity within you compels foes to stand and fight. When you hit a creature with a melee Iridescent Strike, it has disadvantage on attacks against targets other than you until the start of your next turn. Creatures with Immunity to the Charmed condition are also immune to this effect.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 2nd-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: vexing-strike
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!r81LpnSWinmglc4u'

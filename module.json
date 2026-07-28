@@ -2,7 +2,7 @@
   "id": "declan-homebrew-classes",
   "title": "Declan's Homebrew Classes (D&D 5e)",
   "description": "Homebrew classes for the dnd5e system, generated with dnd5e-pdf-importer. Includes The Vessel (+6 Sealed Spirit subclasses) and The Talent (+7 Psionic Specializations). Auto-generated draft \u2014 verify mechanics before play.",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "authors": [
     {
       "name": "declan34",
@@ -44,6 +44,13 @@
       "name": "homebrew-spells",
       "label": "Homebrew Spells (Vessel)",
       "path": "packs/homebrew-spells",
+      "type": "Item",
+      "system": "dnd5e"
+    },
+    {
+      "name": "homebrew-aspects",
+      "label": "Unsealed Aspects (Vessel)",
+      "path": "packs/homebrew-aspects",
       "type": "Item",
       "system": "dnd5e"
     }

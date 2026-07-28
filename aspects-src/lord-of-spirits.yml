@@ -1,0 +1,48 @@
+_id: 5EUH2LZrqhfGXn5x
+name: Lord of Spirits
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You can channel the elder authority of your Spirit to conjure servile entities. As an action, you can conjure one creature of CR 6 or lower, that is of the same type as your Archon Form that you can see before. It appears in an unoccupied space of your choice within 30 feet and remains for up to 1 hour. For the duration, it is absolutely loyal to you and obeys your orders completely, so long as they do not violate its nature. In combat, it shares your initiative and acts during your turn. Once you use this feature you must complete a long rest before you can conjure another creature in this way again.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 18th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: lord-of-spirits
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!5EUH2LZrqhfGXn5x'

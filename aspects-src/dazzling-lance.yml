@@ -1,0 +1,48 @@
+_id: wPQPAvQF3hX7DncV
+name: Dazzling Lance
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>You can project overwhelming spiritual power. When you use Shimmering Lance, its range becomes (100/300), it ignores half-cover, and treats three-quarters cover as half. In addition, when you hit with a ranged Iridescent Strike, you can expend a Vessel Magic spell slot to create a spiritual eruption. Creatures within 30 feet of the target must make a Dexterity saving throw. They take 6d8 damage of the type of an Iridescent Strike on a failure, and half on a success. As you gain Vessel levels the damage of this eruption on impact increases: at 13th level (7d8) and 17th level (8d8).</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 10th-level Vessel, Shimmering Lance
+  activities: {}
+  enchant: {}
+  identifier: dazzling-lance
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!wPQPAvQF3hX7DncV'

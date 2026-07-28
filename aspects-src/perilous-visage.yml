@@ -1,0 +1,48 @@
+_id: mb56s5afeKP0P5xx
+name: Perilous Visage
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You reveal a fraction of your Spirit's true power, horrifying all who behold you. When you transform into Archon Form, you can force creatures of your choice that can see you within 60 feet to make a Wisdom saving throw. On a failed save, they are Frightened of you for 1 minute. Creatures can repeat this saving throw at the end of each of their turns, ending the effect on a success. If it can still see your Archon Form, it has disadvantage on its saving throw.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 10th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: perilous-visage
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!mb56s5afeKP0P5xx'

@@ -1,0 +1,48 @@
+_id: d0jLTdstSCgBiLXH
+name: Dire Stature
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You can tap into the primordial stature of your Spirit. When you transform into Archon Form, you can choose for this new Form to grow by one size category, so long as there is room for you to do so. For example, your Archon Form may grow from Medium to Large. For each size category the Archon grows above Medium, the reach of its melee attacks increases by 5 feet, these attacks deal a bonus 1d4 damage on hit, and the Armor Class Bonus in its stat block increases by 1.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 7th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: dire-stature
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!d0jLTdstSCgBiLXH'

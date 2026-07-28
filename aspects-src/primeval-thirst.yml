@@ -1,0 +1,48 @@
+_id: mapiSUuotWsovQ9K
+name: Primeval Thirst
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>The primeval Spirit within you can absorb spells to restore its power. When you see a creature within 30 feet cast a spell while you are in Archon Form, you can use a reaction to force the caster to make a saving throw with its Spellcasting ability. On a failure, its spell fails, and if the spell was of a level equal to your Slot Level or higher, you regain one spell slot. You can use this reaction a number of times equal to your Charisma modifier (a minimum of once), and you regain all expended uses when you finish a long rest.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 14th-level Vessel, Otherworldly Maw
+  activities: {}
+  enchant: {}
+  identifier: primeval-thirst
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!mapiSUuotWsovQ9K'

@@ -1,0 +1,48 @@
+_id: NK2t3LkvjtcZmrcF
+name: Piercing Gaze
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your Spirit enhances your sight to near supernatural levels. Whenever you make an ability check that relies on your sense of sight while cloaked in your Spirit Mantle, you can add your Charisma modifier (minimum of +1) to your roll. When cloaked in your Spirit Mantle, you can see normally in magical dim light and darkness, and you instantly detect the presence of Illusion magic and other Shapeshifters.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 7th-level Vessel, Spirit Sense
+  activities: {}
+  enchant: {}
+  identifier: piercing-gaze
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!NK2t3LkvjtcZmrcF'

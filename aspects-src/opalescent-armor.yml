@@ -1,0 +1,48 @@
+_id: CquoRI5JHwQVMxh2
+name: Opalescent Armor
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>When you cloak yourself in your Spirit Mantle, you can fortify it with additional might. For the duration, you are Resistant to bludgeoning, piercing, and slashing damage but your speed is reduced by 10 feet. Silvered weapons ignore this Resistance.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 2nd-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: opalescent-armor
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!CquoRI5JHwQVMxh2'

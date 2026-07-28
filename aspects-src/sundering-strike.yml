@@ -1,0 +1,48 @@
+_id: u1069fpl73SdiBic
+name: Sundering Strike
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your strikes assault both body and spirit. Whenever you hit a creature with an Iridescent Strike, you can force it to make a Charisma saving throw. On a failure, it cannot concentrate on or cast spells until the start of your next turn. You can only force a creature to make this saving throw once per turn.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 10th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: sundering-strike
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!u1069fpl73SdiBic'

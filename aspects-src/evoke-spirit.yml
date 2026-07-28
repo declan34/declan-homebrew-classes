@@ -1,0 +1,48 @@
+_id: qlyyH0zObJ6HD8GQ
+name: Evoke Spirit
+type: feat
+folder: Ib94aQ1kHrfrq1lP
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You can release a minor form of the Spirit sealed within you. You learn the conjure familiar ll spell. It is a Vessel spell for you, but it does not count against your total number of Spells Known. You also learn to cast this spell as a Ritual. When you cast it, your Familiar resembles a Tiny version of your Sealed Spirit; it shares the creature type of your Archon, can attack on its turn, and uses the Spirit Familiar stat block.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — The Vessel
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 4
+    repeatable: false
+  properties: []
+  requirements: 7th-level Vessel
+  activities: {}
+  enchant: {}
+  identifier: evoke-spirit
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!qlyyH0zObJ6HD8GQ'
