@@ -262,8 +262,8 @@ system:
     title: ''
     hint: ''
   spellcasting:
-    progression: none
-    ability: ''
+    progression: vessel
+    ability: cha
     preparation:
       formula: ''
   wealth: ''

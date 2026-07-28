@@ -14,7 +14,7 @@ system:
     license: proprietary
     book: ''
   uses:
-    max: '2'
+    max: '1'
     spent: 0
     recovery:
       - period: sr

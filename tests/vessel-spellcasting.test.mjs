@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
+
+const require = createRequire(
+  new URL('../../dnd5e-pdf-importer/emit/package.json', import.meta.url)
+);
+const yaml = require('js-yaml');
 
 globalThis.Hooks = { once() {} };
 
@@ -97,4 +104,25 @@ test('module manifest loads the Vessel spellcasting registration', async () => {
     await readFile(new URL('../module.json', import.meta.url), 'utf8')
   );
   assert.deepEqual(manifest.esmodules, ['scripts/vessel-spellcasting.mjs']);
+});
+
+test('Vessel class selects native Vessel Magic with Charisma', () => {
+  const vessel = yaml.load(
+    readFileSync(new URL('../src/vessel/the-vessel.yml', import.meta.url), 'utf8')
+  );
+  assert.equal(vessel.system.spellcasting.progression, 'vessel');
+  assert.equal(vessel.system.spellcasting.ability, 'cha');
+});
+
+test('Archon Form has one free use per rest', () => {
+  const archon = yaml.load(
+    readFileSync(
+      new URL('../src/vessel/class-features/archon-form.yml', import.meta.url),
+      'utf8'
+    )
+  );
+  assert.equal(String(archon.system.uses.max), '1');
+  assert.deepEqual(archon.system.uses.recovery, [
+    { period: 'sr', type: 'recoverAll' }
+  ]);
 });
