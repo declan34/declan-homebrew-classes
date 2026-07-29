@@ -29,7 +29,8 @@
     ]
   },
   "esmodules": [
-    "scripts/vessel-spellcasting.mjs"
+    "scripts/vessel-spellcasting.mjs",
+    "scripts/vessel-automation.mjs"
   ],
   "packs": [
     {

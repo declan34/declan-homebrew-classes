@@ -99,11 +99,14 @@ test('returns false when dnd5e spellcasting configuration is unavailable', () =>
   }
 });
 
-test('module manifest loads the Vessel spellcasting registration', async () => {
+test('module manifest loads Vessel spellcasting and automation', async () => {
   const manifest = JSON.parse(
     await readFile(new URL('../module.json', import.meta.url), 'utf8')
   );
-  assert.deepEqual(manifest.esmodules, ['scripts/vessel-spellcasting.mjs']);
+  assert.deepEqual(manifest.esmodules, [
+    'scripts/vessel-spellcasting.mjs',
+    'scripts/vessel-automation.mjs'
+  ]);
 });
 
 test('Vessel class selects native Vessel Magic with Charisma', () => {
