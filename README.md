@@ -9,6 +9,18 @@ Currently included:
 - **The Vessel** — a Charisma-based caster/martial class, with its six *Sealed Spirit* subclasses:
   The Ascended, The Cataclysm, The Cursed, The Fallen, The Formless, The Trickster.
 
+## Vessel automation
+
+The Vessel includes native dnd5e activities for Spirit Mantle and Iridescent
+Strikes. Spirit Mantle toggles Ethereal Armor only while the character is
+unarmored and not wielding a Shield. Iridescent Strikes use Charisma, scale with
+Vessel level, and use Foundry's ordinary attack, critical-hit, and damage
+workflows.
+
+The module's custom code coordinates the Mantle state and prompts before an
+inactive Vessel attempts a Strike. It does not replace Foundry's attack or damage
+resolution and does not require another automation module.
+
 ## Install (for your DM)
 
 In Foundry: **Add-on Modules → Install Module**, and paste this manifest URL:
