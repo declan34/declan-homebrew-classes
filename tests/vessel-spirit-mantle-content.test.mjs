@@ -77,9 +77,9 @@ test('Spirit Mantle includes an inactive native AC effect template', () => {
   assert.equal(effect.disabled, true);
   assert.equal(effect.transfer, false);
   assert.deepEqual(effect.changes, [{
-    key: 'system.attributes.ac.calc',
-    mode: 5,
-    value: 'vesselMantle',
+    key: 'system.attributes.ac.min',
+    mode: 4,
+    value: '10 + @abilities.con.mod + @abilities.cha.mod',
     priority: 20
   }]);
 });

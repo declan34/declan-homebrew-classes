@@ -47,6 +47,20 @@ function effectTemplate(sourceItem) {
   return data;
 }
 
+function sameData(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function repairArmorChanges(current, canonical) {
+  const armorKeys = new Set([
+    'system.attributes.ac.calc',
+    'system.attributes.ac.min'
+  ]);
+  const custom = (current ?? []).filter(change => !armorKeys.has(change.key));
+  const armor = (canonical ?? []).filter(change => armorKeys.has(change.key));
+  return [...structuredClone(custom), ...structuredClone(armor)];
+}
+
 export function isSpiritMantleActive(actor) {
   return actor?.getFlag?.(MODULE_ID, MANTLE_ACTIVE_FLAG) === true
     || actor?.flags?.[MODULE_ID]?.vessel?.mantle?.active === true;
@@ -90,11 +104,20 @@ async function reconcileSpiritMantleUnlocked(actor, { sourceItem } = {}) {
 
   const disabled = !isEtherealArmorEligible(actor);
   const updates = [];
+  if (sourceItem) {
+    const template = effectTemplate(sourceItem);
+    const changes = repairArmorChanges(current.changes, template.changes);
+    const repair = { _id: current._id };
+    if (!sameData(current.changes, changes)) {
+      repair.changes = changes;
+    }
+    if (current.transfer !== false) repair.transfer = false;
+    if (Object.keys(repair).length > 1) updates.push(repair);
+  }
   if (current.disabled !== disabled) {
-    updates.push({
-      _id: current._id,
-      disabled
-    });
+    const currentUpdate = updates.find(update => update._id === current._id);
+    if (currentUpdate) currentUpdate.disabled = disabled;
+    else updates.push({ _id: current._id, disabled });
   }
   updates.push(...duplicates.filter(effect => !effect.disabled).map(effect => ({
     _id: effect._id,

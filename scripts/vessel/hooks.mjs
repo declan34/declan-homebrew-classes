@@ -6,6 +6,7 @@ import {
   reconcileSpiritMantle,
   toggleSpiritMantle
 } from './mantle.mjs';
+import { migrateVesselActor } from './migration.mjs';
 import {
   getAutomationRole,
   getUnlockedIridescentDamageTypes,
@@ -157,20 +158,21 @@ export function handlePostUseActivity(activity, {
   void toggle(actor, { sourceItem: sourceItem(activity) }).catch(onError);
 }
 
-async function reconcileActor(actor) {
-  if (!actor?.isOwner || !isVesselActor(actor) || !isSpiritMantleActive(actor)) return;
+export async function reconcileVesselActor(actor) {
+  if (!actor?.isOwner || !isVesselActor(actor)) return;
   const mantle = documents(actor.items).find(
     item => item.identifier === 'spirit-mantle'
       || item.system?.identifier === 'spirit-mantle'
   );
   if (mantle) await reconcileSpiritMantle(actor, { sourceItem: mantle });
-  else await deactivateSpiritMantle(actor);
+  else if (isSpiritMantleActive(actor)) await deactivateSpiritMantle(actor);
+  else await reconcileSpiritMantle(actor);
 }
 
 export function getResponsibleUser(actor, users) {
   const activeUsers = documents(users)
     .filter(user => user?.active && user.id)
-    .sort((left, right) => left.id.localeCompare(right.id));
+    .sort((left, right) => left.id < right.id ? -1 : left.id > right.id ? 1 : 0);
   return activeUsers.find(user => user.isGM)
     ?? activeUsers.find(user => actor?.testUserPermission?.(user, 'OWNER'));
 }
@@ -179,7 +181,8 @@ export function registerVesselAutomationHooks(hooks, {
   actors = () => globalThis.game?.actors ?? [],
   users = () => globalThis.game?.users ?? [],
   currentUserId = () => globalThis.game?.user?.id,
-  reconcileActor: reconcile = reconcileActor,
+  migrateActor: migrate = migrateVesselActor,
+  reconcileActor: reconcile = reconcileVesselActor,
   deactivateSpiritMantle: deactivate = deactivateSpiritMantle
 } = {}) {
   hooks.on('dnd5e.preUseActivity', handlePreUseActivity);
@@ -213,7 +216,14 @@ export function registerVesselAutomationHooks(hooks, {
     const userId = currentUserId();
     for (const actor of actors()) {
       if (getResponsibleUser(actor, availableUsers)?.id === userId) {
-        void reconcile(actor).catch(reportError);
+        void (async () => {
+          try {
+            await migrate(actor);
+          } catch (error) {
+            reportError(error);
+          }
+          await reconcile(actor);
+        })().catch(reportError);
       }
     }
   });

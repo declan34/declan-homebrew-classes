@@ -232,9 +232,9 @@ effects:
     type: base
     system: {}
     changes:
-      - key: system.attributes.ac.calc
-        mode: 5
-        value: vesselMantle
+      - key: system.attributes.ac.min
+        mode: 4
+        value: 10 + @abilities.con.mod + @abilities.cha.mod
         priority: 20
     duration:
       startTime: null
@@ -244,7 +244,7 @@ effects:
       turns: null
       startRound: null
       startTurn: null
-    description: '<p>While unarmored and not wielding a Shield, your base Armor Class is 10 + your Constitution modifier + your Charisma modifier.</p>'
+    description: '<p>While unarmored and not wielding a Shield, your Armor Class is at least 10 + your Constitution modifier + your Charisma modifier.</p>'
     tint: '#ffffff'
     statuses: []
     sort: 0

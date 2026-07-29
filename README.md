@@ -13,8 +13,9 @@ Currently included:
 
 The Vessel includes native dnd5e activities for Spirit Mantle and Iridescent
 Strikes. Spirit Mantle toggles Ethereal Armor only while the character is
-unarmored and not wielding a Shield. Iridescent Strikes use Charisma, scale with
-Vessel level, and use Foundry's ordinary attack, critical-hit, and damage
+unarmored and not wielding a Shield; its formula competes with other valid AC
+calculations instead of replacing them. Iridescent Strikes use Charisma, scale
+with Vessel level, and use Foundry's ordinary attack, critical-hit, and damage
 workflows.
 
 The module's custom code coordinates the Mantle state and prompts before an
@@ -26,7 +27,7 @@ resolution and does not require another automation module.
 In Foundry: **Add-on Modules → Install Module**, and paste this manifest URL:
 
 ```
-https://github.com/declan34/declan-homebrew-classes/releases/latest/download/module.json
+https://raw.githubusercontent.com/declan34/declan-homebrew-classes/main/module.json
 ```
 
 Then enable the module in your world. The classes appear in the **Homebrew Classes** compendium.

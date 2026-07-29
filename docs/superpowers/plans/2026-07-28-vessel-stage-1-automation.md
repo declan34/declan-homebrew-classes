@@ -4,7 +4,7 @@
 
 **Goal:** Add a one-click Spirit Mantle lifecycle, conditional Ethereal Armor, and native Charisma-based scaling Iridescent Strike activities.
 
-**Architecture:** The Spirit Mantle compendium item owns one utility activity, two attack activities, and an inactive AC-effect template. Focused module services register the Vessel AC calculation, calculate Vessel rules, apply or reconcile the Mantle effect, and connect those operations to public Foundry and dnd5e hooks. Attacks, critical hits, damage rolls, and damage-type choice remain native dnd5e activity workflows.
+**Architecture:** The Spirit Mantle compendium item owns one utility activity, two attack activities, and an inactive AC-effect template. Focused module services calculate Vessel rules, migrate legacy actor-owned Items, apply or reconcile the Mantle effect, and connect those operations to public Foundry and dnd5e hooks. Ethereal Armor uses dnd5e's competing minimum-AC field rather than replacing the actor's AC calculation. Attacks, critical hits, damage rolls, and damage-type choice remain native dnd5e activity workflows.
 
 **Tech Stack:** Foundry VTT 13, dnd5e 5.3.3, ECMAScript modules, dnd5e YAML compendium sources, Node.js built-in test runner, `js-yaml`, `@foundryvtt/foundryvtt-cli`
 
@@ -26,7 +26,7 @@
 
 - Create `scripts/vessel/constants.mjs`: module flag paths, activity/effect roles, and AC calculation identifier.
 - Create `scripts/vessel/rules.mjs`: pure Vessel-level, damage-die, damage-type, and armor-eligibility calculations.
-- Create `scripts/vessel/armor-class.mjs`: idempotent registration of the native `vesselMantle` AC calculation.
+- Create `scripts/vessel/migration.mjs`: versioned selective migration for legacy actor-owned Vessel Items.
 - Create `scripts/vessel/mantle.mjs`: Mantle state transitions and Active Effect reconciliation.
 - Create `scripts/vessel/hooks.mjs`: public Foundry/dnd5e hook handlers, confirmation prompt, and Strike preparation.
 - Create `scripts/vessel-automation.mjs`: small module entry point that registers the AC mode and hooks.
@@ -34,11 +34,37 @@
 - Modify `src/vessel/class-features/spirit-mantle.yml`: add native activities, roles, and the AC effect template.
 - Modify `module.json`: load `scripts/vessel-automation.mjs` after the existing spellcasting module.
 - Create `tests/vessel-rules.test.mjs`: pure rule-calculation tests.
-- Create `tests/vessel-armor-class.test.mjs`: AC registration tests.
+- Create `tests/vessel-migration.test.mjs`: legacy actor and idempotency tests.
+- Create `tests/vessel-compiled-pack.test.mjs`: read-only compiled LevelDB parity test.
 - Create `tests/vessel-mantle.test.mjs`: state/effect lifecycle tests with document mocks.
 - Create `tests/vessel-automation-hooks.test.mjs`: activity role, prompt, retry, and hook-registration tests.
 - Modify `tests/vessel-spellcasting.test.mjs`: expect both module entry points.
 - Modify `README.md`: describe the Stage 1 automation and its native-workflow boundary.
+
+## Final review amendment for v1.5.0
+
+This amendment supersedes the original custom AC-registration work in Task 3
+and the original ready-time details in Task 5:
+
+- No `vesselMantle` entry is registered in `CONFIG.DND5E.armorClasses`, and
+  `scripts/vessel/armor-class.mjs` is removed.
+- The module-owned effect applies
+  `system.attributes.ac.min = 10 + @abilities.con.mod + @abilities.cha.mod`
+  in Active Effect UPGRADE mode. dnd5e 5.3.3's actor preparation selects the
+  higher of this minimum and the normal calculated AC.
+- Ready processing elects one client with locale-independent code-unit ID
+  ordering. That client runs the versioned actor-owned Item migration and then
+  reconciles every Vessel actor, including actors whose Mantle flag is false or
+  missing so stale module effects are removed safely.
+- Migration version 1 merges the fixed ScaleValue, three activities, and effect
+  template from the module compendium. It preserves user presentation, state,
+  dynamic damage types, unrelated structures, and foreign flags; the version
+  flag is stored only after successful updates. Migration errors are reported
+  without suppressing the independent reconciliation pass.
+- The compiled-pack regression copies the committed LevelDB into a temporary
+  directory before extraction and compares the Vessel scale plus Spirit Mantle
+  activities/effect with YAML source. The committed pack is never opened by the
+  test.
 
 ---
 
@@ -1853,7 +1879,7 @@ scripts/vessel-spellcasting.mjs
 scripts/vessel-automation.mjs
 scripts/vessel/constants.mjs
 scripts/vessel/rules.mjs
-scripts/vessel/armor-class.mjs
+scripts/vessel/migration.mjs
 scripts/vessel/mantle.mjs
 scripts/vessel/hooks.mjs
 ```

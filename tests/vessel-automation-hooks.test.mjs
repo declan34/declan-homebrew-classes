@@ -336,7 +336,18 @@ test('responsible ready user prefers the first active GM by id', () => {
   assert.equal(getResponsibleUser(target, users).id, ACTIVE_GM_A_ID);
 });
 
-test('exactly the first active owner reconciles an actor on ready without a GM', async () => {
+test('responsible-user ordering uses locale-independent code units', () => {
+  const target = actor();
+  target.testUserPermission = () => true;
+  const users = [
+    { id: 'aOwnerUser000001', active: true, isGM: false },
+    { id: 'BOwnerUser000001', active: true, isGM: false }
+  ];
+
+  assert.equal(getResponsibleUser(target, users).id, 'BOwnerUser000001');
+});
+
+test('exactly the first active owner migrates then reconciles an actor on ready', async () => {
   const target = actor({ active: true });
   target.id = 'VesselActor00001';
   target.testUserPermission = user =>
@@ -346,6 +357,7 @@ test('exactly the first active owner reconciles an actor on ready without a GM',
     { id: OWNER_USER_A_ID, active: true, isGM: false },
     { id: 'OfflineUser00001', active: false, isGM: true }
   ];
+  const migrated = new Map(users.map(user => [user.id, []]));
   const reconciled = new Map(users.map(user => [user.id, []]));
   const clients = users.map(user => {
     const registry = hookRegistry();
@@ -353,6 +365,9 @@ test('exactly the first active owner reconciles an actor on ready without a GM',
       actors: () => [target],
       users: () => users,
       currentUserId: () => user.id,
+      migrateActor: async usedActor => {
+        migrated.get(user.id).push(usedActor);
+      },
       reconcileActor: async usedActor => {
         reconciled.get(user.id).push(usedActor);
       }
@@ -363,7 +378,79 @@ test('exactly the first active owner reconciles an actor on ready without a GM',
   for (const client of clients) client.once.get('ready')();
   await new Promise(resolve => setImmediate(resolve));
 
+  assert.equal(migrated.get(OWNER_USER_A_ID).length, 1);
+  assert.equal(migrated.get(OWNER_USER_B_ID).length, 0);
+  assert.equal(migrated.get('OfflineUser00001').length, 0);
   assert.equal(reconciled.get(OWNER_USER_A_ID).length, 1);
   assert.equal(reconciled.get(OWNER_USER_B_ID).length, 0);
   assert.equal(reconciled.get('OfflineUser00001').length, 0);
+});
+
+test('ready reconciliation cleans inactive stale effects after migration failure', async () => {
+  function staleActor(id, disabled) {
+    const staleEffect = {
+      _id: `StaleEffect0000${disabled ? '2' : '1'}`,
+      disabled,
+      flags: role('mantle-ac')
+    };
+    const target = {
+      id,
+      isOwner: true,
+      classes: { vessel: { system: { levels: 1 } } },
+      flags: {},
+      effects: [staleEffect],
+      itemTypes: { equipment: [] },
+      items: new Map([[
+        MANTLE_ITEM_ID,
+        {
+          id: MANTLE_ITEM_ID,
+          identifier: 'spirit-mantle',
+          system: { identifier: 'spirit-mantle' }
+        }
+      ]]),
+      testUserPermission: () => true,
+      getFlag() {
+        return undefined;
+      },
+      async setFlag() {
+        throw new Error('cleanup must not reactivate a removable stale effect');
+      },
+      async updateEmbeddedDocuments(type, rows) {
+        assert.equal(type, 'ActiveEffect');
+        for (const row of rows) {
+          Object.assign(this.effects.find(effect => effect._id === row._id), row);
+        }
+      },
+      async deleteEmbeddedDocuments(type, ids) {
+        assert.equal(type, 'ActiveEffect');
+        this.effects = this.effects.filter(effect => !ids.includes(effect._id));
+      }
+    };
+    return target;
+  }
+
+  const actors = [
+    staleActor('StaleActor000001', false),
+    staleActor('StaleActor000002', true)
+  ];
+  const registry = hookRegistry();
+  const originalError = console.error;
+  console.error = () => {};
+  try {
+    registerVesselAutomationHooks(registry.hooks, {
+      actors: () => actors,
+      users: () => [{ id: ACTIVE_GM_A_ID, active: true, isGM: true }],
+      currentUserId: () => ACTIVE_GM_A_ID,
+      migrateActor: async () => {
+        throw new Error('migration failed');
+      }
+    });
+
+    registry.once.get('ready')();
+    await new Promise(resolve => setImmediate(resolve));
+
+    assert.deepEqual(actors.map(target => target.effects.length), [0, 0]);
+  } finally {
+    console.error = originalError;
+  }
 });

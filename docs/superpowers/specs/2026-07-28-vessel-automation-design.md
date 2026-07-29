@@ -154,13 +154,32 @@ While the Mantle is active, an unarmored Vessel without a shield can use:
 `10 + Constitution modifier + Charisma modifier + Archon AC bonus`
 
 The automation must not overwrite worn armor, shields, or another valid AC
-calculation. If dnd5e cannot safely select this formula conditionally through native
-data, the module calculates and exposes the formula through the system's supported AC
-configuration rather than replacing actor AC preparation.
+calculation. In dnd5e 5.3.3, the Mantle effect targets the supported
+`system.attributes.ac.min` formula field in UPGRADE mode. Actor preparation then
+chooses the higher of Ethereal Armor and the actor's ordinary calculated AC, so
+Monk/Barbarian Unarmored Defense, Mage Armor, natural armor, and custom formulas
+continue to work. The effect never changes `system.attributes.ac.calc`.
 
 Equipping armor or a shield while the Mantle is active immediately makes Ethereal
 Armor inapplicable. Removing that equipment makes it available again. The actor
 sheet must continue to explain the active AC mode.
+
+### Stage 1 actor migration
+
+Compendium updates do not replace Items already owned by actors. At world ready,
+one responsible active client per Vessel actor performs a versioned migration
+before reconciliation. Responsibility uses deterministic JavaScript code-unit
+ordering: the first active GM, or otherwise the first active OWNER.
+
+The migration adds or repairs the fixed Iridescent Strike ScaleValue, three
+Spirit Mantle activities, and the module-role-tagged effect template. Stable
+mechanical fields owned by this module are refreshed from the compendium, while
+user presentation, notes, activity use state, current unlocked damage types,
+unrelated activities/advancements/effects, and foreign flag namespaces remain
+unchanged. The actor migration flag is written only after all owned Items update
+successfully, making retries safe and subsequent ready cycles no-ops. A migration
+error is reported but does not suppress the independent reconciliation pass, so
+inactive stale effects are still disabled and removed when cleanup is safe.
 
 ### Iridescent Strike activities
 

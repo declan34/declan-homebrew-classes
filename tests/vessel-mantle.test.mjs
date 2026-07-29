@@ -25,13 +25,23 @@ function effect(data) {
   };
 }
 
-function sourceItem({ effects } = {}) {
+function sourceItem({ effects, extraChanges = [] } = {}) {
   return {
     uuid: 'Actor.actor00000000001.Item.hbrvespnPw2Da1c3',
     effects: effects ?? [effect({
       _id: '9VejV6Hl6RdY5Gzt',
       _key: '!items.effects!hbrvespnPw2Da1c3.9VejV6Hl6RdY5Gzt',
       disabled: true,
+      transfer: false,
+      changes: [
+        ...structuredClone(extraChanges),
+        {
+          key: 'system.attributes.ac.min',
+          mode: 4,
+          value: '10 + @abilities.con.mod + @abilities.cha.mod',
+          priority: 20
+        }
+      ],
       flags: {
         [MODULE_ID]: { vessel: { role: 'mantle-ac' } }
       }
@@ -40,6 +50,7 @@ function sourceItem({ effects } = {}) {
 }
 
 function actor({
+  ac = { calc: 'default' },
   armor = [],
   createError,
   createGate,
@@ -53,6 +64,11 @@ function actor({
     effects: [],
     itemTypes: { equipment: armor },
     operations: [],
+    system: {
+      attributes: {
+        ac: structuredClone(ac)
+      }
+    },
     getFlag(scope, key) {
       if (scope !== MODULE_ID || key !== 'vessel.mantle.active') return undefined;
       return this.flags?.[scope]?.vessel?.mantle?.active;
@@ -192,6 +208,55 @@ test('reconciliation removes duplicate Mantle effects and normalizes the survivo
   assert.equal(mantleEffects(target)[0].disabled, false);
 });
 
+test('active reconciliation repairs a legacy AC override on the actor effect', async () => {
+  const target = actor({ ac: { calc: 'mage' } });
+  await target.setFlag(MODULE_ID, 'vessel.mantle.active', true);
+  target.effects.push(effect({
+    _id: 'legacyMantle0001',
+    disabled: false,
+    transfer: false,
+    changes: [{
+      key: 'system.attributes.ac.calc',
+      mode: 5,
+      value: 'vesselMantle',
+      priority: 20
+    }, {
+      key: 'system.attributes.ac.bonus',
+      mode: 2,
+      value: '1',
+      priority: 30
+    }],
+    flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
+  }));
+
+  await reconcileSpiritMantle(target, {
+    sourceItem: sourceItem({
+      extraChanges: [{
+        key: 'system.attributes.ac.bonus',
+        mode: 2,
+        value: '1',
+        priority: 30
+      }]
+    })
+  });
+
+  assert.deepEqual(mantleEffects(target)[0].changes, [
+    {
+      key: 'system.attributes.ac.bonus',
+      mode: 2,
+      value: '1',
+      priority: 30
+    },
+    {
+      key: 'system.attributes.ac.min',
+      mode: 4,
+      value: '10 + @abilities.con.mod + @abilities.cha.mod',
+      priority: 20
+    }
+  ]);
+  assert.deepEqual(target.system.attributes.ac, { calc: 'mage' });
+});
+
 test('armored reconciliation disables duplicates before failed deletion', async () => {
   const target = actor({
     armor: [{
@@ -313,6 +378,54 @@ test('inactive reconciliation restores active state when a stale effect cannot b
 
   assert.equal(isSpiritMantleActive(target), true);
   assert.equal(mantleEffects(target)[0].disabled, false);
+});
+
+test('inactive reconciliation deletes an already-disabled stale Mantle effect', async () => {
+  const target = actor();
+  target.effects.push(effect({
+    _id: 'staleMantle00001',
+    disabled: true,
+    flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
+  }));
+
+  await reconcileSpiritMantle(target);
+
+  assert.equal(isSpiritMantleActive(target), false);
+  assert.equal(mantleEffects(target).length, 0);
+});
+
+test('failed inactive cleanup leaves an undeleted stale Mantle effect disabled', async () => {
+  const target = actor({ deleteError: new Error('delete failed') });
+  target.effects.push(effect({
+    _id: 'staleMantle00001',
+    disabled: false,
+    flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
+  }));
+
+  await assert.rejects(reconcileSpiritMantle(target), /delete failed/);
+
+  assert.equal(isSpiritMantleActive(target), false);
+  assert.equal(mantleEffects(target).length, 1);
+  assert.equal(mantleEffects(target)[0].disabled, true);
+});
+
+test('Mantle lifecycle preserves alternate unarmored and custom AC calculations', async () => {
+  const calculations = [
+    { calc: 'unarmoredMonk' },
+    { calc: 'unarmoredBarb' },
+    { calc: 'mage' },
+    { calc: 'custom', formula: '17 + @abilities.dex.mod' },
+    { calc: 'natural', flat: 21 }
+  ];
+
+  for (const ac of calculations) {
+    const target = actor({ ac });
+    await activateSpiritMantle(target, { sourceItem: sourceItem() });
+    assert.deepEqual(target.system.attributes.ac, ac);
+
+    await deactivateSpiritMantle(target);
+    assert.deepEqual(target.system.attributes.ac, ac);
+  }
 });
 
 test('failed deactivation leaves an undeleted Mantle effect disabled', async () => {
