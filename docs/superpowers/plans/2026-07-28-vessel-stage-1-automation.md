@@ -1278,18 +1278,68 @@ git -c commit.gpgSign=false commit -m "feat: manage Spirit Mantle state"
   - `dnd5e.preUseActivity`
   - `dnd5e.postUseActivity`
   - Foundry `createItem`, `updateItem`, `deleteItem`, and `deleteActiveEffect`
+  - Foundry's normal `Item.update` API for actor-owned activity persistence
   - `DialogV2.confirm`
+  - `game.user`, active `game.users`, and actor OWNER permissions
   - the Task 4 Mantle service
 - Produces:
   - `prepareIridescentStrike(activity, actor): void`
+  - `persistIridescentStrikeAndRetry(activity): Promise<void>`
+  - `getResponsibleUser(actor, users): User | undefined`
   - `handlePreUseActivity(activity, dependencies): boolean | undefined`
   - `handlePostUseActivity(activity, dependencies): void`
   - `registerVesselAutomationHooks(hooks, dependencies): void`
 
+#### Approved Fix Round 1 amendment
+
+This amendment supersedes the clone-only damage preparation and all-client
+reconciliation details in the original first-pass Steps 1–3 below. The original
+listing is retained as the RED/first-pass implementation record; this section is
+the governing Task 5 design.
+
+- The actor-owned Spirit Mantle activity is the durable source for the chat
+  card's native Damage action. `handlePreUseActivity` compares its first damage
+  part's types with `getUnlockedIridescentDamageTypes(actor)`.
+- If those source types are stale, the current use returns `false`.
+  `persistIridescentStrikeAndRetry` serializes the source activity's damage
+  parts with `toObject()`, writes the allowed types through
+  `sourceItem.update({["system.activities.<activityId>.damage.parts"]: parts})`,
+  resolves the actor-owned activity again, and calls its native `use()`.
+- When the actor-owned types are current, the temporary use clone is prepared
+  with the same types and dnd5e proceeds normally. The retry therefore reaches
+  a current-source path rather than recursively persisting.
+- No attack, hit, critical, damage-roll, Damage-button, or damage-application
+  hook is intercepted.
+- `promptToActivateAndRetry` invokes the default confirmation through the
+  `DialogV2` class object so receiver-sensitive static behavior is preserved.
+- Pending activation prompts are deduplicated per actor. Concurrent inactive
+  Strike attempts return `false`, share one pending dialog, and can activate
+  and retry at most once for that pending prompt.
+- Foundry create/update/delete callbacks accept the documented `userId`
+  argument and reconcile only on the client where `userId === game.user.id`.
+  This applies to Item and ActiveEffect document hooks.
+- Ready reconciliation has one deterministic responsible active user per
+  actor: the lexicographically first active GM, or when no GM is active, the
+  lexicographically first active user with OWNER permission on that actor.
+  User enumeration, current-user identity, and reconciliation remain
+  injectable for multi-client tests. Task 4's per-client actor serialization
+  is unchanged.
+- Every document-shaped ID in `tests/vessel-automation-hooks.test.mjs` is
+  exactly 16 alphanumeric characters.
+- Required regressions are:
+  - `persists stale source Strike types before retrying once through native use`
+  - `the default DialogV2 confirmation keeps its class receiver`
+  - `concurrent inactive Strikes share one prompt and retry only once`
+  - `only the document-hook initiating client reconciles create update and delete events`
+  - `responsible ready user prefers the first active GM by id`
+  - `exactly the first active owner reconciles an actor on ready without a GM`
+
 - [ ] **Step 1: Write failing tests for dynamic damage types, prompt behavior, and hook registration**
 
 Create `tests/vessel-automation-hooks.test.mjs`. Build activity, item, and hook
-registry mocks; do not provide Roll, damage, or attack-resolution mocks:
+registry mocks; do not provide Roll, damage, or attack-resolution mocks. The
+following is the original first-pass test listing and is superseded where it
+conflicts with the approved amendment:
 
 ```js
 import test from 'node:test';
@@ -1441,7 +1491,8 @@ Expected: failure with `ERR_MODULE_NOT_FOUND` for `scripts/vessel/hooks.mjs`.
 
 - [ ] **Step 3: Implement prompt-first activity and reconciliation hooks**
 
-Create `scripts/vessel/hooks.mjs` with these rules:
+The following is the original first-pass implementation listing and is
+superseded where it conflicts with the approved amendment above:
 
 ```js
 import { AUTOMATION_ROLES } from './constants.mjs';
@@ -1582,9 +1633,10 @@ Hooks.once('init', () => {
 });
 ```
 
-Preserve the public signatures above. dnd5e 5.3.3's embedded damage parts expose
-`toObject()`, which is the supported serialization call used here before
-`activity.updateSource`.
+Preserve the public signatures above, including the amendment's persistence and
+responsible-user helpers. dnd5e 5.3.3's embedded damage parts expose
+`toObject()`, which is the supported serialization call used before both the
+durable Item update and temporary clone `activity.updateSource`.
 
 - [ ] **Step 4: Run hook tests and the full module suite**
 
@@ -1595,7 +1647,8 @@ node --test tests/vessel-automation-hooks.test.mjs
 node --test tests/*.test.mjs
 ```
 
-Expected: all tests pass. No test stubs or invokes a damage-resolution method.
+Expected: all tests pass, including every regression named in the approved
+amendment. No test stubs or invokes a damage-resolution method.
 
 - [ ] **Step 5: Commit activity integration**
 
