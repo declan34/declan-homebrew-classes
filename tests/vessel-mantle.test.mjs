@@ -27,7 +27,7 @@ function effect(data) {
 
 function sourceItem({ effects } = {}) {
   return {
-    uuid: 'Actor.actor0000000001.Item.hbrvespnPw2Da1c3',
+    uuid: 'Actor.actor00000000001.Item.hbrvespnPw2Da1c3',
     effects: effects ?? [effect({
       _id: '9VejV6Hl6RdY5Gzt',
       _key: '!items.effects!hbrvespnPw2Da1c3.9VejV6Hl6RdY5Gzt',
@@ -42,6 +42,7 @@ function sourceItem({ effects } = {}) {
 function actor({
   armor = [],
   createError,
+  createGate,
   deleteError,
   updateError
 } = {}) {
@@ -73,6 +74,7 @@ function actor({
       assert.equal(type, 'ActiveEffect');
       this.operations.push(['createEmbeddedDocuments', type, structuredClone(rows)]);
       if (createError) throw createError;
+      if (createGate) await createGate;
       const created = rows.map(row => effect({
         ...structuredClone(row),
         _id: `createdEffect00${++next}`
@@ -119,6 +121,26 @@ test('activation stores state and enables exactly one eligible AC effect', async
   assert.equal(mantleEffects(target).length, 1);
 });
 
+test('concurrent activation creates exactly one Mantle effect', async () => {
+  let releaseCreate;
+  const createGate = new Promise(resolve => {
+    releaseCreate = resolve;
+  });
+  const target = actor({ createGate });
+  const item = sourceItem();
+
+  const activations = Promise.all([
+    activateSpiritMantle(target, { sourceItem: item }),
+    activateSpiritMantle(target, { sourceItem: item })
+  ]);
+  await new Promise(resolve => setImmediate(resolve));
+  releaseCreate();
+  await activations;
+
+  assert.equal(isSpiritMantleActive(target), true);
+  assert.equal(mantleEffects(target).length, 1);
+});
+
 test('activation keeps the effect disabled while armor is equipped', async () => {
   const target = actor({
     armor: [{
@@ -152,12 +174,12 @@ test('reconciliation removes duplicate Mantle effects and normalizes the survivo
   await target.setFlag(MODULE_ID, 'vessel.mantle.active', true);
   target.effects.push(
     effect({
-      _id: 'mantleDuplicate01',
+      _id: 'mantleDplct00001',
       disabled: true,
       flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
     }),
     effect({
-      _id: 'mantleDuplicate02',
+      _id: 'mantleDplct00002',
       disabled: false,
       flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
     })
@@ -166,14 +188,45 @@ test('reconciliation removes duplicate Mantle effects and normalizes the survivo
   await reconcileSpiritMantle(target, { sourceItem: sourceItem() });
 
   assert.equal(mantleEffects(target).length, 1);
-  assert.equal(mantleEffects(target)[0]._id, 'mantleDuplicate01');
+  assert.equal(mantleEffects(target)[0]._id, 'mantleDplct00001');
   assert.equal(mantleEffects(target)[0].disabled, false);
+});
+
+test('armored reconciliation disables duplicates before failed deletion', async () => {
+  const target = actor({
+    armor: [{
+      system: { equipped: true, type: { value: 'light' } }
+    }],
+    deleteError: new Error('delete failed')
+  });
+  await target.setFlag(MODULE_ID, 'vessel.mantle.active', true);
+  target.effects.push(
+    effect({
+      _id: 'mantleDplct00001',
+      disabled: true,
+      flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
+    }),
+    effect({
+      _id: 'mantleDplct00002',
+      disabled: false,
+      flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
+    })
+  );
+
+  await assert.rejects(
+    reconcileSpiritMantle(target, { sourceItem: sourceItem() }),
+    /delete failed/
+  );
+
+  assert.equal(isSpiritMantleActive(target), true);
+  assert.equal(mantleEffects(target).length, 2);
+  assert.equal(mantleEffects(target).every(candidate => candidate.disabled), true);
 });
 
 test('deactivation clears state and removes only module Mantle effects', async () => {
   const target = actor();
   target.effects.push(effect({
-    _id: 'unrelated00000001',
+    _id: 'unrelated0000000',
     disabled: false,
     flags: {}
   }));
@@ -182,7 +235,7 @@ test('deactivation clears state and removes only module Mantle effects', async (
   assert.equal(isSpiritMantleActive(target), false);
   assert.equal(mantleEffects(target).length, 0);
   assert.equal(target.effects.length, 1);
-  assert.equal(target.effects[0]._id, 'unrelated00000001');
+  assert.equal(target.effects[0]._id, 'unrelated0000000');
 });
 
 test('deactivation disables an active effect before clearing state and deleting it', async () => {
@@ -234,7 +287,7 @@ test('failed activation keeps state active when a stale effect cannot be disable
     updateError: new Error('update failed')
   });
   target.effects.push(effect({
-    _id: 'staleMantle0001',
+    _id: 'staleMantle00001',
     disabled: false,
     flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
   }));
@@ -243,6 +296,20 @@ test('failed activation keeps state active when a stale effect cannot be disable
     activateSpiritMantle(target, { sourceItem: sourceItem() }),
     /update failed/
   );
+
+  assert.equal(isSpiritMantleActive(target), true);
+  assert.equal(mantleEffects(target)[0].disabled, false);
+});
+
+test('inactive reconciliation restores active state when a stale effect cannot be disabled', async () => {
+  const target = actor({ updateError: new Error('update failed') });
+  target.effects.push(effect({
+    _id: 'staleMantle00001',
+    disabled: false,
+    flags: { [MODULE_ID]: { vessel: { role: 'mantle-ac' } } }
+  }));
+
+  await assert.rejects(reconcileSpiritMantle(target), /update failed/);
 
   assert.equal(isSpiritMantleActive(target), true);
   assert.equal(mantleEffects(target)[0].disabled, false);

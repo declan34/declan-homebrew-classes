@@ -8,6 +8,8 @@ import {
   isEtherealArmorEligible
 } from './rules.mjs';
 
+const actorOperations = new WeakMap();
+
 function mantleEffects(actor) {
   return Array.from(actor?.effects ?? []).filter(
     effect => getAutomationRole(effect) === AUTOMATION_ROLES.MANTLE_AC
@@ -17,6 +19,18 @@ function mantleEffects(actor) {
 function requireOwner(actor) {
   if (!actor?.isOwner) {
     throw new Error('You do not have permission to update this Vessel.');
+  }
+}
+
+async function serializeActorOperation(actor, operation) {
+  requireOwner(actor);
+  const previous = actorOperations.get(actor) ?? Promise.resolve();
+  const current = previous.catch(() => {}).then(operation);
+  actorOperations.set(actor, current);
+  try {
+    return await current;
+  } finally {
+    if (actorOperations.get(actor) === current) actorOperations.delete(actor);
   }
 }
 
@@ -38,21 +52,25 @@ export function isSpiritMantleActive(actor) {
     || actor?.flags?.[MODULE_ID]?.vessel?.mantle?.active === true;
 }
 
-export async function reconcileSpiritMantle(actor, { sourceItem } = {}) {
-  requireOwner(actor);
+async function reconcileSpiritMantleUnlocked(actor, { sourceItem } = {}) {
   const active = isSpiritMantleActive(actor);
   const existing = mantleEffects(actor);
 
   if (!active) {
     const enabled = existing.filter(effect => !effect.disabled);
     if (enabled.length) {
-      await actor.updateEmbeddedDocuments(
-        'ActiveEffect',
-        enabled.map(effect => ({
-          _id: effect._id,
-          disabled: true
-        }))
-      );
+      try {
+        await actor.updateEmbeddedDocuments(
+          'ActiveEffect',
+          enabled.map(effect => ({
+            _id: effect._id,
+            disabled: true
+          }))
+        );
+      } catch (error) {
+        await actor.setFlag(MODULE_ID, MANTLE_ACTIVE_FLAG, true);
+        throw error;
+      }
     }
     if (existing.length) {
       await actor.deleteEmbeddedDocuments(
@@ -69,34 +87,41 @@ export async function reconcileSpiritMantle(actor, { sourceItem } = {}) {
     data.disabled = !isEtherealArmorEligible(actor);
     [current] = await actor.createEmbeddedDocuments('ActiveEffect', [data]);
   }
+
+  const disabled = !isEtherealArmorEligible(actor);
+  const updates = [];
+  if (current.disabled !== disabled) {
+    updates.push({
+      _id: current._id,
+      disabled
+    });
+  }
+  updates.push(...duplicates.filter(effect => !effect.disabled).map(effect => ({
+    _id: effect._id,
+    disabled: true
+  })));
+  if (updates.length) {
+    await actor.updateEmbeddedDocuments('ActiveEffect', updates);
+  }
   if (duplicates.length) {
     await actor.deleteEmbeddedDocuments(
       'ActiveEffect',
       duplicates.map(effect => effect._id)
     );
   }
-
-  const disabled = !isEtherealArmorEligible(actor);
-  if (current.disabled !== disabled) {
-    await actor.updateEmbeddedDocuments('ActiveEffect', [{
-      _id: current._id,
-      disabled
-    }]);
-  }
 }
 
-export async function activateSpiritMantle(actor, { sourceItem } = {}) {
-  requireOwner(actor);
+async function activateSpiritMantleUnlocked(actor, { sourceItem } = {}) {
   const wasActive = isSpiritMantleActive(actor);
   if (!wasActive) {
     await actor.setFlag(MODULE_ID, MANTLE_ACTIVE_FLAG, true);
   }
   try {
-    await reconcileSpiritMantle(actor, { sourceItem });
+    await reconcileSpiritMantleUnlocked(actor, { sourceItem });
   } catch (error) {
     if (!wasActive) {
       try {
-        await deactivateSpiritMantle(actor);
+        await deactivateSpiritMantleUnlocked(actor);
       } catch {
         // Preserve the original activation failure without clearing unsafe state.
       }
@@ -105,8 +130,7 @@ export async function activateSpiritMantle(actor, { sourceItem } = {}) {
   }
 }
 
-export async function deactivateSpiritMantle(actor) {
-  requireOwner(actor);
+async function deactivateSpiritMantleUnlocked(actor) {
   const existing = mantleEffects(actor);
   const enabled = existing.filter(effect => !effect.disabled);
   if (enabled.length) {
@@ -127,11 +151,31 @@ export async function deactivateSpiritMantle(actor) {
   }
 }
 
+export async function reconcileSpiritMantle(actor, { sourceItem } = {}) {
+  return serializeActorOperation(
+    actor,
+    () => reconcileSpiritMantleUnlocked(actor, { sourceItem })
+  );
+}
+
+export async function activateSpiritMantle(actor, { sourceItem } = {}) {
+  return serializeActorOperation(
+    actor,
+    () => activateSpiritMantleUnlocked(actor, { sourceItem })
+  );
+}
+
+export async function deactivateSpiritMantle(actor) {
+  return serializeActorOperation(actor, () => deactivateSpiritMantleUnlocked(actor));
+}
+
 export async function toggleSpiritMantle(actor, { sourceItem } = {}) {
-  if (isSpiritMantleActive(actor)) {
-    await deactivateSpiritMantle(actor);
-    return false;
-  }
-  await activateSpiritMantle(actor, { sourceItem });
-  return true;
+  return serializeActorOperation(actor, async () => {
+    if (isSpiritMantleActive(actor)) {
+      await deactivateSpiritMantleUnlocked(actor);
+      return false;
+    }
+    await activateSpiritMantleUnlocked(actor, { sourceItem });
+    return true;
+  });
 }
