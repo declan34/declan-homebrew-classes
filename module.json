@@ -2,7 +2,7 @@
   "id": "declan-homebrew-classes",
   "title": "Declan's Homebrew Classes (D&D 5e)",
   "description": "Homebrew classes for the dnd5e system, generated with dnd5e-pdf-importer. Includes The Vessel (+6 Sealed Spirit subclasses, Unsealed Aspects), The Talent (+7 Psionic Specializations), and The Warlord (+6 Academies of War, Tactical Exploits & Fighting Styles). Level-up prompts wired for Aspects, Exploits, and Fighting Styles. Auto-generated draft \u2014 verify mechanics before play.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "authors": [
     {
       "name": "declan34",
