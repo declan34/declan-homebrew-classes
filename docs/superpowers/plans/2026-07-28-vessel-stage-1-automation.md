@@ -1777,3 +1777,111 @@ world running dnd5e 5.3.3:
 
 Record any Foundry-only discrepancy as a failing regression test before changing
 the implementation. Do not proceed to Archon Form until this gate passes.
+
+---
+
+### Task 7: Prepare the user-approved v1.5.0 release
+
+**Files:**
+- Modify: `module.json`
+- Rebuild: `packs/homebrew-classes/`
+- Rebuild: `module.zip`
+
+**Interfaces:**
+- Consumes: the reviewed Stage 1 source, scripts, and compiled packs.
+- Produces: a locally reviewed `v1.5.0` manifest and release archive. Publishing
+  remains a separate post-review operation.
+
+The user explicitly deferred the live Foundry gate to testing in the DM's world
+and authorized a push and new release. The user selected version `1.5.0`.
+
+- [ ] **Step 1: Recompile and validate the release pack**
+
+Recompile `src/` to `packs/homebrew-classes/` with the standard
+`@foundryvtt/foundryvtt-cli` command. Remove only an exact
+`packs/homebrew-classes/LOCK` left after compilation.
+
+Run all module tests and sacred validation. Required results:
+
+```text
+46 tests passed, 0 failed
+{"ok":true,"errors":0}
+```
+
+Also validate the four unchanged pack sources before packaging:
+
+| Source | Pack |
+| --- | --- |
+| `spells-src` | `homebrew-spells` |
+| `aspects-src` | `vessel-aspects` |
+| `exploits-src` | `warlord-exploits` |
+| `fighting-styles-src` | `warlord-fighting-styles` |
+
+Every validator invocation must return `{"ok":true,"errors":0}`.
+
+- [ ] **Step 2: Bump the module manifest**
+
+Change only `module.json` version:
+
+```json
+"version": "1.5.0"
+```
+
+Do not change compatibility, URLs, pack definitions, or entry points.
+
+- [ ] **Step 3: Build a fresh release archive**
+
+Create a new temporary archive and atomically replace `module.zip`; do not
+update the existing ZIP in place. Include exactly these module paths:
+
+```text
+module.json
+packs/
+src/
+aspects-src/
+spells-src/
+exploits-src/
+fighting-styles-src/
+scripts/
+README.md
+```
+
+The archive must include:
+
+```text
+scripts/vessel-spellcasting.mjs
+scripts/vessel-automation.mjs
+scripts/vessel/constants.mjs
+scripts/vessel/rules.mjs
+scripts/vessel/armor-class.mjs
+scripts/vessel/mantle.mjs
+scripts/vessel/hooks.mjs
+```
+
+It must contain no `LOCK`, `.git`, `.superpowers`, test, or temporary files.
+
+- [ ] **Step 4: Verify the archive**
+
+Parse `module.json` from inside `module.zip` and assert:
+
+```text
+version = 1.5.0
+esmodules = scripts/vessel-spellcasting.mjs,scripts/vessel-automation.mjs
+```
+
+List all archive entries and verify every required file above exists and every
+forbidden path is absent. Run `unzip -t module.zip`; it must report no errors.
+Run the full Node suite and `git diff --check` once more.
+
+- [ ] **Step 5: Commit the local release candidate**
+
+Stage only `module.json`, `module.zip`, and the expected
+`packs/homebrew-classes/` compiler changes:
+
+```bash
+git add module.json module.zip packs/homebrew-classes
+git -c commit.gpgSign=false commit -m "chore: prepare v1.5.0"
+```
+
+Do not push, tag, or create the GitHub release in this task. Those actions occur
+only after the final whole-branch review.
