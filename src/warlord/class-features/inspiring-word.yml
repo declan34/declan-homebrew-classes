@@ -16,8 +16,11 @@ system:
     spent: 0
     max: '@scale.warlord.inspiring-word'
     recovery:
-    - period: lr
-      type: recoverAll
+      - period: sr
+        type: recoverAll
+      - period: initiative
+        type: recover
+        formula: '1'
   type:
     value: class
     subtype: ''
@@ -26,14 +29,463 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    InsLaunchA1b2C3d:
+      _id: InsLaunchA1b2C3d
+      type: utility
+      name: Inspiring Word
+      sort: 0
+      activation:
+        type: bonus
+        value: null
+        override: false
+        condition: ''
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Choose the recipient's Hit Die before restoring hit points.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-launcher
+            routerOnly: true
+      range:
+        value: '30'
+        override: false
+        units: ft
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: creature
+          special: Another creature
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: ''
+        name: ''
+        prompt: false
+        visible: false
+    IWd6chaA1b2C3d4e:
+      _id: IWd6chaA1b2C3d4e
+      type: heal
+      name: Inspiring Word (d6 Charisma)
+      sort: 100000
+      activation: &inspiring_activation
+        type: bonus
+        value: null
+        override: false
+        condition: ''
+      consumption: &inspiring_consumption
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets:
+          - type: itemUses
+            target: ''
+            value: '1'
+            scaling: {}
+      description: &inspiring_description
+        chatFlavor: ''
+      duration: &inspiring_duration
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 6
+            leadershipAbility: cha
+      range: &inspiring_range
+        value: '30'
+        override: false
+        units: ft
+        special: ''
+      target: &inspiring_target
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: creature
+          special: Another creature
+        override: false
+        prompt: true
+      uses: &inspiring_uses
+        spent: 0
+        recovery: []
+        max: ''
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d6 + @abilities.cha.mod
+    IWd6wisE5f6G7h8i:
+      _id: IWd6wisE5f6G7h8i
+      type: heal
+      name: Inspiring Word (d6 Wisdom)
+      sort: 200000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 6
+            leadershipAbility: wis
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d6 + @abilities.wis.mod
+    IWd6intI9j0K1l2m:
+      _id: IWd6intI9j0K1l2m
+      type: heal
+      name: Inspiring Word (d6 Intelligence)
+      sort: 300000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 6
+            leadershipAbility: int
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d6 + @abilities.int.mod
+    IWd8chaM3n4O5p6q:
+      _id: IWd8chaM3n4O5p6q
+      type: heal
+      name: Inspiring Word (d8 Charisma)
+      sort: 400000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 8
+            leadershipAbility: cha
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d8 + @abilities.cha.mod
+    IWd8wisQ7r8S9t0u:
+      _id: IWd8wisQ7r8S9t0u
+      type: heal
+      name: Inspiring Word (d8 Wisdom)
+      sort: 500000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 8
+            leadershipAbility: wis
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d8 + @abilities.wis.mod
+    IWd8intU1v2W3x4y:
+      _id: IWd8intU1v2W3x4y
+      type: heal
+      name: Inspiring Word (d8 Intelligence)
+      sort: 600000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 8
+            leadershipAbility: int
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d8 + @abilities.int.mod
+    IWd10chaY5z6A7b8:
+      _id: IWd10chaY5z6A7b8
+      type: heal
+      name: Inspiring Word (d10 Charisma)
+      sort: 700000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 10
+            leadershipAbility: cha
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d10 + @abilities.cha.mod
+    IWd10wisC9d0E1f2:
+      _id: IWd10wisC9d0E1f2
+      type: heal
+      name: Inspiring Word (d10 Wisdom)
+      sort: 800000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 10
+            leadershipAbility: wis
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d10 + @abilities.wis.mod
+    IWd10intG3h4I5j6:
+      _id: IWd10intG3h4I5j6
+      type: heal
+      name: Inspiring Word (d10 Intelligence)
+      sort: 900000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 10
+            leadershipAbility: int
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d10 + @abilities.int.mod
+    IWd12chaK7l8M9n0:
+      _id: IWd12chaK7l8M9n0
+      type: heal
+      name: Inspiring Word (d12 Charisma)
+      sort: 1000000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 12
+            leadershipAbility: cha
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d12 + @abilities.cha.mod
+    IWd12wisO1p2Q3r4:
+      _id: IWd12wisO1p2Q3r4
+      type: heal
+      name: Inspiring Word (d12 Wisdom)
+      sort: 1100000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 12
+            leadershipAbility: wis
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d12 + @abilities.wis.mod
+    IWd12intS5t6U7v8:
+      _id: IWd12intS5t6U7v8
+      type: heal
+      name: Inspiring Word (d12 Intelligence)
+      sort: 1200000
+      activation: *inspiring_activation
+      consumption: *inspiring_consumption
+      description: *inspiring_description
+      duration: *inspiring_duration
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: inspiring-word-helper
+            hidden: true
+            hitDie: 12
+            leadershipAbility: int
+      range: *inspiring_range
+      target: *inspiring_target
+      uses: *inspiring_uses
+      healing:
+        number: null
+        denomination: null
+        bonus: ''
+        types:
+          - healing
+        custom:
+          enabled: true
+          formula: 1d12 + @abilities.int.mod
   enchant: {}
   identifier: inspiring-word
 effects: []
 flags:
   dnd5e:
     riders:
-      activity: []
+      activity:
+        - IWd6chaA1b2C3d4e
+        - IWd6wisE5f6G7h8i
+        - IWd6intI9j0K1l2m
+        - IWd8chaM3n4O5p6q
+        - IWd8wisQ7r8S9t0u
+        - IWd8intU1v2W3x4y
+        - IWd10chaY5z6A7b8
+        - IWd10wisC9d0E1f2
+        - IWd10intG3h4I5j6
+        - IWd12chaK7l8M9n0
+        - IWd12wisO1p2Q3r4
+        - IWd12intS5t6U7v8
       effect: []
 _stats:
   duplicateSource: null

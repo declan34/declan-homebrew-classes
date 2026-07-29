@@ -16,8 +16,11 @@ system:
     spent: 0
     max: '@scale.warlord.rallying-cry'
     recovery:
-    - period: lr
-      type: recoverAll
+      - period: sr
+        type: recoverAll
+      - period: initiative
+        type: recover
+        formula: '1'
   type:
     value: class
     subtype: ''
@@ -26,7 +29,64 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    RallyCryA1b2C3d4:
+      _id: RallyCryA1b2C3d4
+      type: utility
+      name: Rallying Cry
+      sort: 0
+      activation:
+        type: reaction
+        value: null
+        override: false
+        condition: When another creature within range fails a saving throw.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets:
+          - type: itemUses
+            target: ''
+            value: '1'
+            scaling: {}
+      description:
+        chatFlavor: Reroll the saving throw and add the displayed Leadership modifier.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: rallying-cry
+      range:
+        value: '30'
+        override: false
+        units: ft
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: creature
+          special: Another creature
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: '@abilities.cha.mod'
+        name: Leadership Modifier
+        prompt: false
+        visible: true
   enchant: {}
   identifier: rallying-cry
 effects: []

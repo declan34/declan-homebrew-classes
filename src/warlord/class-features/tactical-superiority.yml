@@ -29,6 +29,9 @@ system:
   identifier: tactical-superiority
 effects: []
 flags:
+  declan-homebrew-classes:
+    warlord:
+      tacticalSuperiority: true
   dnd5e:
     riders:
       activity: []
