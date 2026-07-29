@@ -286,6 +286,34 @@ system:
     value: {}
     level: 1
     title: Aspects Known
+  - _id: ZReRcAXx7wv1xOTO
+    type: ScaleValue
+    configuration:
+      identifier: iridescent-strike
+      type: dice
+      distance:
+        units: ''
+      scale:
+        '1':
+          number: null
+          faces: 6
+          modifiers: []
+        '5':
+          number: null
+          faces: 8
+          modifiers: []
+        '11':
+          number: null
+          faces: 10
+          modifiers: []
+        '17':
+          number: null
+          faces: 12
+          modifiers: []
+    value: {}
+    level: 1
+    title: Iridescent Strike
+    hint: ''
   - _id: xmcA1L3ifAnLtj3h
     type: ItemChoice
     configuration:

@@ -25,10 +25,247 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    0I7T8AlyrNTKpU0h:
+      _id: 0I7T8AlyrNTKpU0h
+      type: utility
+      name: Cloak or Dismiss
+      sort: 0
+      activation:
+        type: bonus
+        value: null
+        override: false
+        condition: ''
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Toggle your Spirit Mantle.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel:
+            role: mantle-toggle
+      range:
+        override: false
+        units: self
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: ''
+          type: self
+          special: ''
+        override: false
+        prompt: false
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: ''
+        name: ''
+        prompt: false
+        visible: false
+    gDrrUixnPXPLBDHB:
+      _id: gDrrUixnPXPLBDHB
+      type: attack
+      name: Iridescent Strike
+      sort: 100000
+      activation:
+        type: action
+        value: null
+        override: false
+        condition: ''
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: ''
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel:
+            role: iridescent-strike
+      range:
+        override: false
+        units: self
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: creature
+          special: ''
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      attack:
+        critical:
+          threshold: null
+        flat: false
+        type:
+          value: melee
+          classification: unarmed
+        ability: cha
+        bonus: ''
+      damage:
+        critical:
+          bonus: ''
+        includeBase: true
+        parts:
+          - custom:
+              enabled: true
+              formula: '@scale.vessel.iridescent-strike + @mod'
+            number: null
+            denomination: 0
+            bonus: ''
+            types:
+              - radiant
+            scaling:
+              number: 1
+    dWCAZNHBAwxBjUw7:
+      _id: dWCAZNHBAwxBjUw7
+      type: attack
+      name: Bonus Iridescent Strike
+      sort: 200000
+      activation:
+        type: bonus
+        value: null
+        override: false
+        condition: ''
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: ''
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel:
+            role: iridescent-strike
+      range:
+        override: false
+        units: self
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: creature
+          special: ''
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      attack:
+        critical:
+          threshold: null
+        flat: false
+        type:
+          value: melee
+          classification: unarmed
+        ability: cha
+        bonus: ''
+      damage:
+        critical:
+          bonus: ''
+        includeBase: true
+        parts:
+          - custom:
+              enabled: true
+              formula: '@scale.vessel.iridescent-strike + @mod'
+            number: null
+            denomination: 0
+            bonus: ''
+            types:
+              - radiant
+            scaling:
+              number: 1
   enchant: {}
   identifier: spirit-mantle
-effects: []
+effects:
+  - _id: 9VejV6Hl6RdY5Gzt
+    name: Spirit Mantle — Ethereal Armor
+    img: icons/magic/defensive/shield-barrier-glowing-triangle-blue.webp
+    origin: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvespnPw2Da1c3
+    transfer: false
+    disabled: true
+    type: base
+    system: {}
+    changes:
+      - key: system.attributes.ac.calc
+        mode: 5
+        value: vesselMantle
+        priority: 20
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: '<p>While unarmored and not wielding a Shield, your base Armor Class is 10 + your Constitution modifier + your Charisma modifier.</p>'
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel:
+          role: mantle-ac
+      dnd5e:
+        riders:
+          statuses: []
+    _stats:
+      compendiumSource: null
+      duplicateSource: null
+      coreVersion: '13.344'
+      systemId: dnd5e
+      systemVersion: 5.3.3
+      createdTime: null
+      modifiedTime: null
+      lastModifiedBy: hbrbuilder000000
+      exportSource: null
+    _key: '!items.effects!hbrvespnPw2Da1c3.9VejV6Hl6RdY5Gzt'
 flags:
   dnd5e:
     riders:
