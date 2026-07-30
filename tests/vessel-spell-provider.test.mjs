@@ -113,6 +113,20 @@ test('resolves exactly one exact spell match from the first matching provider', 
   assert.equal(homebrew.getDocumentCalls, 1);
 });
 
+test('preserves a supplied stable spell key while matching by normalized name', async () => {
+  invalidateSpellProviderCache();
+  const homebrew = spellPack(HOMEBREW_COLLECTION, [item('moonbeam', 'Moonbeam')]);
+
+  const resolution = await resolveSpellSource(
+    { key: 'stable-sealed-magic-key', name: ' moonbeam ' },
+    dependencies([homebrew])
+  );
+
+  assert.equal(resolution.status, 'resolved');
+  assert.equal(resolution.spellKey, 'stable-sealed-magic-key');
+  assert.equal(resolution.sourceUuid, 'Compendium.test.moonbeam');
+});
+
 test('reports ambiguity when the first matching provider has two normalized matches', async () => {
   invalidateSpellProviderCache();
   const homebrew = spellPack(HOMEBREW_COLLECTION, [

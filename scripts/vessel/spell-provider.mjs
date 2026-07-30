@@ -100,7 +100,10 @@ function providers(packs, selectedPrivateCollection) {
 }
 
 export async function resolveSpellSource(spell, dependencies = {}) {
-  const spellKey = normalizeSpellName(spell?.name ?? spell);
+  const normalizedName = normalizeSpellName(spell?.name ?? spell);
+  const spellKey = typeof spell?.key === 'string' && spell.key.trim().length > 0
+    ? spell.key
+    : normalizedName;
   const packs = dependencies.packs ?? globalThis.game?.packs;
   const selectedPrivateCollection = getSettingsValue(dependencies);
   const diagnostics = [];
@@ -125,7 +128,7 @@ export async function resolveSpellSource(spell, dependencies = {}) {
         const index = await getCachedIndex(pack);
         candidates.push(...index
           .filter(entry => entry?.type === 'spell'
-            && normalizeSpellName(entry.name) === spellKey)
+            && normalizeSpellName(entry.name) === normalizedName)
           .map(entry => ({
             pack,
             candidate: candidateFrom(entry, collection)
