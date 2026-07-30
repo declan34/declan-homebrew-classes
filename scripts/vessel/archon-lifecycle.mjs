@@ -245,7 +245,11 @@ export function preparePendingArchonTransformData(
     originalDocument,
     profileActor,
     transformSource,
-    { ...options, payment: pending.payment }
+    {
+      ...options,
+      payment: pending.payment,
+      transformationId: pending.transformationId
+    }
   );
 }
 
@@ -263,7 +267,8 @@ export function prepareArchonTransformData(
   transformSource,
   {
     now = globalThis.game?.time?.worldTime ?? 0,
-    payment = 'free'
+    payment = 'free',
+    transformationId
   } = {}
 ) {
   const originalActor = actorDocument(originalDocument);
@@ -310,7 +315,8 @@ export function prepareArchonTransformData(
     sourceActorUuid: originalActor.uuid,
     payment,
     acBonus: getArchonACBonus(metadata),
-    tempHPBeforeTransform: currentTempHP(originalActor)
+    tempHPBeforeTransform: currentTempHP(originalActor),
+    ...(transformationId ? { transformationId } : {})
   };
   setSourceState(transformSource, state);
   return clone(state);

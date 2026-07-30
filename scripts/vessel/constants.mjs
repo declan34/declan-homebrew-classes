@@ -22,5 +22,6 @@ export const AUTOMATION_ROLES = Object.freeze({
   ARCHON_TRANSFORM_SLOT: 'archon-transform-slot',
   ARCHON_EXTEND: 'archon-extend',
   ARCHON_REVERT: 'archon-revert',
+  ARCHON_EQUIPMENT_PREFERENCE: 'archon-equipment-preference',
   ARCHON_FORM_EFFECT: 'archon-form-effect'
 });

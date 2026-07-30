@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import {
   handlePostUseActivity,
   handlePreUseActivity,
+  handleRenderArchonChatMessage,
+  performArchonTransformation,
+  promptForArchonEquipmentPreference,
   promptForArchonExpiry,
   promptForArchonReversion,
   registerVesselAutomationHooks
@@ -126,13 +129,14 @@ test('Archon pre-use delegates to async preparation while unrelated activities r
   const target = actor();
   const transform = activity('archon-transform-free', target);
   let prepared;
+  const messageConfig = { data: { flags: {} } };
 
   assert.equal(handlePreUseActivity(transform, {
     requestArchonActivityPreparation(used, usage, options) {
       prepared = { used, usage, options };
       return false;
     }
-  }, { transform: {} }), false);
+  }, { transform: {} }, messageConfig), false);
   assert.equal(prepared.used, transform);
   assert.deepEqual(prepared.usage, { transform: {} });
 
@@ -140,18 +144,29 @@ test('Archon pre-use delegates to async preparation while unrelated activities r
   assert.equal(handlePreUseActivity(unrelated), undefined);
 });
 
-test('successful Transform use stages payment, profile, activity, and time on its source actor', async () => {
+test('successful Transform use binds the native transform to its source actor', async () => {
   const target = actor();
   const transform = activity('archon-transform-slot', target);
+  const profile = { uuid: 'Compendium.test.Actor.cursed' };
+  const transformed = [];
+  target.transformInto = async (source, settings) => {
+    transformed.push({ source, settings });
+  };
+  transform.settings = { keep: new Set(['class']) };
   const message = {
+    id: 'message-transform-one',
     getFlag(scope, key) {
       if (scope === 'dnd5e' && key === 'transform.uuid') {
         return 'Compendium.test.Actor.cursed';
       }
+    },
+    async unsetFlag(scope, key) {
+      this.unset = [scope, key];
     }
   };
 
   handlePostUseActivity(transform, {
+    resolveUuid: async uuid => uuid === profile.uuid ? profile : undefined,
     reportError: error => { throw error; }
   }, {}, { message });
   await tick();
@@ -162,8 +177,67 @@ test('successful Transform use stages payment, profile, activity, and time on it
     payment: 'slot',
     profile: 'cursed',
     profileUuid: 'Compendium.test.Actor.cursed',
-    stagedAt: 0
+    stagedAt: 0,
+    transformationId: 'message-transform-one'
   });
+  assert.deepEqual(transformed, [{ source: profile, settings: transform.settings }]);
+  assert.deepEqual(message.unset, ['dnd5e', 'transform.uuid']);
+});
+
+test('owner-bound transform ignores unrelated controlled scene targets', async () => {
+  const owner = actor();
+  const unrelated = actor({ id: 'unrelated' });
+  const transform = activity('archon-transform-free', owner);
+  transform.settings = { keep: new Set(['class']) };
+  const calls = [];
+  owner.transformInto = async source => calls.push(['owner', source.uuid]);
+  unrelated.transformInto = async source => calls.push(['unrelated', source.uuid]);
+  const profile = { uuid: 'Compendium.test.Actor.cursed' };
+  const previousCanvas = globalThis.canvas;
+  globalThis.canvas = { tokens: { controlled: [{ actor: unrelated }] } };
+  try {
+    await performArchonTransformation(transform, {
+      payment: 'free',
+      profile: 'cursed',
+      profileUuid: profile.uuid,
+      transformationId: 'message-owner-bound'
+    }, {
+      message: { async unsetFlag() {} }
+    }, {
+      resolveUuid: async () => profile
+    });
+  } finally {
+    globalThis.canvas = previousCanvas;
+  }
+
+  assert.deepEqual(calls, [['owner', profile.uuid]]);
+});
+
+test('Archon chat cards suppress Foundry’s generic selected-target transform button', () => {
+  const target = actor();
+  const transform = activity('archon-transform-free', target);
+  const message = {
+    getAssociatedActivity() { return transform; }
+  };
+  const button = {
+    disabled: false,
+    removeCalls: 0,
+    remove() { this.removeCalls += 1; }
+  };
+  const html = {
+    querySelectorAll(selector) {
+      assert.equal(
+        selector,
+        '.card-buttons > button[data-action="transformActor"]'
+      );
+      return [button];
+    }
+  };
+
+  handleRenderArchonChatMessage(message, html);
+
+  assert.equal(button.disabled, true);
+  assert.equal(button.removeCalls, 1);
 });
 
 test('linked transform hook stamps lifecycle state and finalizes through normal createActor', async () => {
@@ -327,6 +401,83 @@ test('inactive Extend and Revert are rejected before native consumption', () => 
     handlePreUseActivity(activity('archon-revert', target)),
     false
   );
+});
+
+test('Equipment Preference saves either native equipment policy and never posts an activity card', async () => {
+  const target = actor();
+  const configure = activity('archon-equipment-preference', target);
+
+  assert.equal(handlePreUseActivity(configure, {
+    promptArchonEquipmentPreference: used => promptForArchonEquipmentPreference(
+      used,
+      { choose: async () => true }
+    ),
+    reportError: error => { throw error; }
+  }), false);
+  await tick();
+  assert.equal(
+    target.getFlag(MODULE_ID, 'vessel.archon.keepEquipment'),
+    true
+  );
+
+  assert.equal(handlePreUseActivity(configure, {
+    promptArchonEquipmentPreference: used => promptForArchonEquipmentPreference(
+      used,
+      { choose: async () => false }
+    ),
+    reportError: error => { throw error; }
+  }), false);
+  await tick();
+  assert.equal(
+    target.getFlag(MODULE_ID, 'vessel.archon.keepEquipment'),
+    false
+  );
+});
+
+test('Equipment Preference cancellation preserves the current policy and concurrent uses dedupe', async () => {
+  const target = actor();
+  await target.setFlag(MODULE_ID, 'vessel.archon.keepEquipment', true);
+  const configure = activity('archon-equipment-preference', target);
+  let resolveChoice;
+  const choice = new Promise(resolve => { resolveChoice = resolve; });
+  let prompts = 0;
+  const prompt = used => {
+    prompts += 1;
+    return promptForArchonEquipmentPreference(used, {
+      choose: async () => choice
+    });
+  };
+
+  assert.equal(handlePreUseActivity(configure, {
+    promptArchonEquipmentPreference: prompt
+  }), false);
+  assert.equal(handlePreUseActivity(configure, {
+    promptArchonEquipmentPreference: prompt
+  }), false);
+  assert.equal(prompts, 1);
+  resolveChoice(null);
+  await tick();
+
+  assert.equal(prompts, 1);
+  assert.equal(
+    target.getFlag(MODULE_ID, 'vessel.archon.keepEquipment'),
+    true
+  );
+});
+
+test('non-owners cannot change Archon equipment preference', async () => {
+  const target = actor();
+  target.isOwner = false;
+  let prompted = 0;
+
+  assert.equal(handlePreUseActivity(
+    activity('archon-equipment-preference', target),
+    {
+      promptArchonEquipmentPreference: async () => { prompted += 1; }
+    }
+  ), false);
+  await tick();
+  assert.equal(prompted, 0);
 });
 
 test('expiry prompt displays the profile and routes Extend, Revert, and Later safely', async () => {
@@ -504,7 +655,7 @@ test('default expiry enumeration includes active-scene unlinked token actors', a
   }
 });
 
-test('level 11 finalization emits one non-blocking Elder Archon reminder', async () => {
+test('level 11 finalization emits once per transformation, including a reused synthetic actor', async () => {
   const state = {
     active: true,
     startedAt: 0,
@@ -514,9 +665,10 @@ test('level 11 finalization emits one non-blocking Elder Archon reminder', async
     sourceActorUuid: 'Actor.vessel-actor',
     payment: 'free',
     acBonus: 1,
-    tempHPBeforeTransform: 0
+    tempHPBeforeTransform: 0,
+    transformationId: 'message-one'
   };
-  const form = actor({ id: 'elder-form', state, level: 11 });
+  const form = actor({ id: 'elder-form', state, level: 11, token: true });
   const hooks = registry();
   const reminders = [];
   registerVesselAutomationHooks(hooks.hooks, {
@@ -529,4 +681,27 @@ test('level 11 finalization emits one non-blocking Elder Archon reminder', async
   hooks.on.get('createActor')(form, {}, 'owner');
   await tick();
   assert.deepEqual(reminders, [form]);
+
+  form.flags[MODULE_ID].vessel.archon.state.transformationId = 'message-two';
+  hooks.on.get('updateActor')(
+    form,
+    {
+      flags: {
+        [MODULE_ID]: {
+          vessel: {
+            archon: {
+              state: {
+                ...state,
+                transformationId: 'message-two'
+              }
+            }
+          }
+        }
+      }
+    },
+    {},
+    'owner'
+  );
+  await tick();
+  assert.deepEqual(reminders, [form, form]);
 });

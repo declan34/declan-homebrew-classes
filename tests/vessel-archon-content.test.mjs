@@ -86,12 +86,13 @@ test('each Vessel subclass grants its dedicated Archon Form control at level 3',
   }
 });
 
-test('Archon controls expose four role-tagged native activities', () => {
+test('Archon controls expose five role-tagged native activities', () => {
   const expectedRoles = new Set([
     'archon-transform-free',
     'archon-transform-slot',
     'archon-extend',
-    'archon-revert'
+    'archon-revert',
+    'archon-equipment-preference'
   ]);
 
   for (const [subclass, expected] of Object.entries(CONTROLS)) {
@@ -146,7 +147,7 @@ test('transform activities reference only their subclass profiles and share safe
   }
 });
 
-test('free, slot, extend, and revert activities consume only their intended resources', () => {
+test('free, slot, extend, revert, and equipment activities consume only intended resources', () => {
   for (const expected of Object.values(CONTROLS)) {
     const control = load(
       `src/vessel/subclass-features/${expected.file}/archon-form-control.yml`
@@ -155,6 +156,7 @@ test('free, slot, extend, and revert activities consume only their intended reso
     const slot = activityByRole(control, 'archon-transform-slot');
     const extend = activityByRole(control, 'archon-extend');
     const revert = activityByRole(control, 'archon-revert');
+    const equipment = activityByRole(control, 'archon-equipment-preference');
 
     assert.deepEqual(free.consumption.targets, [{
       type: 'itemUses',
@@ -171,8 +173,10 @@ test('free, slot, extend, and revert activities consume only their intended reso
       }]);
     }
     assert.deepEqual(revert.consumption.targets, []);
+    assert.deepEqual(equipment.consumption.targets, []);
     assert.equal(extend.type, 'utility');
     assert.equal(revert.type, 'utility');
+    assert.equal(equipment.type, 'utility');
   }
 });
 

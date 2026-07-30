@@ -139,6 +139,27 @@ system:
         prompt: false
       uses: {spent: 0, recovery: [], max: ''}
       roll: {formula: '', name: '', prompt: false, visible: false}
+    hbrArcEquipCfg01:
+      _id: hbrArcEquipCfg01
+      type: utility
+      name: Equipment Preference
+      sort: 400000
+      activation: {type: special, value: null, override: false, condition: ''}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Choose how Archon Form handles your equipment.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: archon-equipment-preference}
+      range: {override: false, units: self, special: ''}
+      target:
+        template: {contiguous: false, units: ft, type: ''}
+        affects: {choice: false, count: '', type: self, special: ''}
+        override: false
+        prompt: false
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
   enchant: {}
   identifier: the-ascended-archon-form-control
 effects: []

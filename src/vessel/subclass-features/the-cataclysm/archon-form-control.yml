@@ -99,6 +99,17 @@ system:
       flags:
         declan-homebrew-classes:
           vessel: {role: archon-revert}
+    hbrArcEquipCfg01:
+      <<: *utility
+      _id: hbrArcEquipCfg01
+      name: Equipment Preference
+      sort: 400000
+      activation: {type: special, value: null, override: false, condition: ''}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Choose how Archon Form handles your equipment.}
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: archon-equipment-preference}
   enchant: {}
   identifier: the-cataclysm-archon-form-control
 effects: []
