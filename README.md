@@ -8,6 +8,9 @@ Currently included:
 
 - **The Vessel** — a Charisma-based caster/martial class, with its six *Sealed Spirit* subclasses:
   The Ascended, The Cataclysm, The Cursed, The Fallen, The Formless, The Trickster.
+- **Homebrew Spells** — 16 authorized homebrew spell documents. Official SRD
+  spells are supplied by the installed dnd5e system rather than duplicated in
+  this module.
 
 ## Vessel automation
 
@@ -138,3 +141,12 @@ and `exploits-src/`. The combined check is the required Exploit formula-closure
 validation; standalone `exploits-src/` verification cannot resolve a class
 scale stored in another pack. The helper removes its temporary copy and never
 modifies source or compiled pack files.
+
+Validate the public spell-content boundary with:
+
+```bash
+node scripts/verify-public-content.mjs
+```
+
+See [CONTENT_POLICY.md](CONTENT_POLICY.md) for approved sources and required
+attribution.
