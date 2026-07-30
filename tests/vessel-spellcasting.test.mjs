@@ -9,11 +9,16 @@ const require = createRequire(
 );
 const yaml = require('js-yaml');
 
-globalThis.Hooks = { once() {} };
+const initCallbacks = [];
+globalThis.Hooks = {
+  once(name, callback) { initCallbacks.push([name, callback]); },
+  on() {}
+};
 
 const {
   registerVesselSpellcasting
 } = await import('../scripts/vessel-spellcasting.mjs');
+await import('../scripts/vessel-automation.mjs');
 
 function makeConfig() {
   return {
@@ -108,6 +113,41 @@ test('module manifest loads Vessel and Warlord automation entry points', async (
     'scripts/vessel-automation.mjs',
     'scripts/warlord-automation.mjs'
   ]);
+});
+
+test('Vessel automation registers the private compendium setting during init', () => {
+  const previousGame = globalThis.game;
+  const previousHooks = globalThis.Hooks;
+  const calls = [];
+  const hookCalls = [];
+  globalThis.game = {
+    settings: {
+      register(module, key, configuration) {
+        calls.push([module, key, configuration]);
+      }
+    },
+    packs: [
+      { collection: 'private.spells', metadata: { label: 'Private Spells', type: 'Item' } }
+    ]
+  };
+  globalThis.Hooks = {
+    once(name, callback) { initCallbacks.push([name, callback]); },
+    on(name) { hookCalls.push(name); }
+  };
+
+  try {
+    const [, [, registerAutomation]] = initCallbacks.filter(([name]) => name === 'init');
+    registerAutomation();
+    assert.equal(calls.length, 1);
+    assert.deepEqual(calls[0].slice(0, 2), [
+      'declan-homebrew-classes',
+      'privateSpellCompendium'
+    ]);
+    assert.ok(hookCalls.length > 0);
+  } finally {
+    globalThis.game = previousGame;
+    globalThis.Hooks = previousHooks;
+  }
 });
 
 test('Vessel class selects native Vessel Magic with Charisma', () => {

@@ -1,4 +1,5 @@
 export const MODULE_ID = 'declan-homebrew-classes';
+export const PRIVATE_SPELL_COMPENDIUM_SETTING = 'privateSpellCompendium';
 export const VESSEL_CLASS_IDENTIFIER = 'vessel';
 export const MANTLE_ACTIVE_FLAG = 'vessel.mantle.active';
 export const ELEMENTAL_AFFINITY_FLAG = 'vessel.elementalAffinity';
