@@ -398,24 +398,198 @@ system:
         '3':
           count: 1
           replacement: true
+      pool:
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RBFxIvOXz9johjAJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.TOy5An5sMhtRIdIB
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HJOcXS4it0adGIbv
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.urXxeINM1ZnM4riX
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wiSLozxHrzdsrvu9
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.g7yNK6Cf6BXs0QJn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.9iv7b41kH201Ldc5
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zp61uUxzKpJZF5XP
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.c31ADMDftmoKUKUV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.4Gw8mF4MVs1ZR6re
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.87LrHc6768aCvIzm
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.stoAbFTgVFzLuATn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.YkNDVPjKkn3PvEb0
+      type: feat
+      restriction:
+        type: feat
+        subtype: ''
+        list: []
+      spell: null
+      allowDrops: true
+    value: {}
+    level: 2
+    title: Tactical Exploits
+  - _id: TExpDegreeFive05
+    type: ItemChoice
+    configuration:
+      choices:
         '5':
           count: 1
           replacement: true
         '7':
           count: 1
           replacement: true
+      pool:
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RBFxIvOXz9johjAJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zlooIGfDtz42NWIs
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.TOy5An5sMhtRIdIB
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.PO9APtQ4cTtPwvtz
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.WIrrBN4l50nCgBdL
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HJOcXS4it0adGIbv
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.bcPUNfP25GaeyTvD
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.IZCQ7cUCS8l1gELH
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.urXxeINM1ZnM4riX
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wiSLozxHrzdsrvu9
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.g7yNK6Cf6BXs0QJn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.T2MRWGAB4uUaxaKe
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.i575rQP7v51emvt4
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.qRtU5DvOlFNfKTyM
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.9iv7b41kH201Ldc5
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HAcwuHHxUihe2k2w
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.KcxDK77umpWdT4RV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zp61uUxzKpJZF5XP
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.QvGtff6iXp42wv7K
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.c31ADMDftmoKUKUV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.chjrpVUlaNKXGpFA
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.m1F1fM00KiYICnDT
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.4Gw8mF4MVs1ZR6re
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.87LrHc6768aCvIzm
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.stoAbFTgVFzLuATn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.jcXtXlS0VhDhHxus
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.YkNDVPjKkn3PvEb0
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.10WoGhD7FR3Cq7uq
+      type: feat
+      restriction:
+        type: feat
+        subtype: ''
+        list: []
+      spell: null
+      allowDrops: true
+    value: {}
+    level: 5
+    title: Tactical Exploits
+  - _id: TExpDegreeNine09
+    type: ItemChoice
+    configuration:
+      choices:
         '9':
           count: 1
           replacement: true
         '11':
           count: 1
           replacement: true
+      pool:
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RBFxIvOXz9johjAJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zlooIGfDtz42NWIs
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.yhAv4A4CpD07Gain
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.TOy5An5sMhtRIdIB
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.PO9APtQ4cTtPwvtz
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.WIrrBN4l50nCgBdL
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HJOcXS4it0adGIbv
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.bcPUNfP25GaeyTvD
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.IZCQ7cUCS8l1gELH
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.urXxeINM1ZnM4riX
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wiSLozxHrzdsrvu9
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.g7yNK6Cf6BXs0QJn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.T2MRWGAB4uUaxaKe
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.i575rQP7v51emvt4
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.qRtU5DvOlFNfKTyM
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.9iv7b41kH201Ldc5
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HAcwuHHxUihe2k2w
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.KIiLuvP3Opcpwgxa
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.KcxDK77umpWdT4RV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zp61uUxzKpJZF5XP
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.QvGtff6iXp42wv7K
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wBXjcM7tb8Yy3e6Z
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.c31ADMDftmoKUKUV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.DzbRUzipwL9dxUJW
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.chjrpVUlaNKXGpFA
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.m1F1fM00KiYICnDT
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.4Gw8mF4MVs1ZR6re
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RrqB8UyaSfd24LQs
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.87LrHc6768aCvIzm
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.stoAbFTgVFzLuATn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.jcXtXlS0VhDhHxus
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.8MfvqHhpxw8h6ox7
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.YkNDVPjKkn3PvEb0
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.U8Y6gYT5EO72D5NJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.10WoGhD7FR3Cq7uq
+      type: feat
+      restriction:
+        type: feat
+        subtype: ''
+        list: []
+      spell: null
+      allowDrops: true
+    value: {}
+    level: 9
+    title: Tactical Exploits
+  - _id: TExpDegreeThir13
+    type: ItemChoice
+    configuration:
+      choices:
         '13':
           count: 1
           replacement: true
         '15':
           count: 1
           replacement: true
+      pool:
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RBFxIvOXz9johjAJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zlooIGfDtz42NWIs
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.yhAv4A4CpD07Gain
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.TOy5An5sMhtRIdIB
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.PO9APtQ4cTtPwvtz
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.WIrrBN4l50nCgBdL
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HJOcXS4it0adGIbv
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.bcPUNfP25GaeyTvD
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.IZCQ7cUCS8l1gELH
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.urXxeINM1ZnM4riX
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wiSLozxHrzdsrvu9
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.g7yNK6Cf6BXs0QJn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.xA53KDleiLGS5SSF
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.T2MRWGAB4uUaxaKe
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.i575rQP7v51emvt4
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.qRtU5DvOlFNfKTyM
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.9iv7b41kH201Ldc5
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.HAcwuHHxUihe2k2w
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.KIiLuvP3Opcpwgxa
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.KcxDK77umpWdT4RV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.zp61uUxzKpJZF5XP
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.QvGtff6iXp42wv7K
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.wBXjcM7tb8Yy3e6Z
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.c31ADMDftmoKUKUV
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.DzbRUzipwL9dxUJW
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.chjrpVUlaNKXGpFA
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.m1F1fM00KiYICnDT
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.hZ4LZVEbP7IwtfNC
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.4Gw8mF4MVs1ZR6re
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.RrqB8UyaSfd24LQs
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.87LrHc6768aCvIzm
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.stoAbFTgVFzLuATn
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.jcXtXlS0VhDhHxus
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.8MfvqHhpxw8h6ox7
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.YkNDVPjKkn3PvEb0
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.ZQUslj1EThk2u2XP
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.U8Y6gYT5EO72D5NJ
+      - uuid: Compendium.declan-homebrew-classes.warlord-exploits.Item.10WoGhD7FR3Cq7uq
+      type: feat
+      restriction:
+        type: feat
+        subtype: ''
+        list: []
+      spell: null
+      allowDrops: true
+    value: {}
+    level: 13
+    title: Tactical Exploits
+  - _id: TExpDegreeSevn17
+    type: ItemChoice
+    configuration:
+      choices:
         '17':
           count: 1
           replacement: true
@@ -468,7 +642,7 @@ system:
       spell: null
       allowDrops: true
     value: {}
-    level: 2
+    level: 17
     title: Tactical Exploits
   - _id: 8d4fARQhXrTY5OGS
     type: ItemChoice
