@@ -257,6 +257,30 @@ test('active reconciliation repairs a legacy AC override on the actor effect', a
   assert.deepEqual(target.system.attributes.ac, { calc: 'mage' });
 });
 
+test('active Archon state adds its profile bonus only to Mantle minimum AC', async () => {
+  const target = actor({ ac: { calc: 'natural', flat: 20 } });
+  target.flags[MODULE_ID] = {
+    vessel: {
+      archon: {
+        state: {
+          active: true,
+          acBonus: 2
+        }
+      }
+    }
+  };
+
+  await activateSpiritMantle(target, { sourceItem: sourceItem() });
+
+  assert.deepEqual(target.system.attributes.ac, { calc: 'natural', flat: 20 });
+  assert.deepEqual(mantleEffects(target)[0].changes, [{
+    key: 'system.attributes.ac.min',
+    mode: 4,
+    value: '10 + @abilities.con.mod + @abilities.cha.mod + 2',
+    priority: 20
+  }]);
+});
+
 test('armored reconciliation disables duplicates before failed deletion', async () => {
   const target = actor({
     armor: [{
