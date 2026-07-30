@@ -9,8 +9,9 @@ subclass profile, Vessel resource choices, Spirit Mantle integration, duration,
 extension, and safe reversion prompts.
 
 **Architecture:** A new Actor compendium contains the nine Archon profiles. The
-owned Archon Form Item exposes native dnd5e Transform activities for the free-use
-and Vessel-slot paths plus Utility activities for extension and reversion. Focused
+subclass Archon control Item exposes native dnd5e Transform activities for the
+free-use and Vessel-slot paths plus Utility activities for extension, reversion,
+and equipment preference. Focused
 Vessel services select and validate the profile, prepare dnd5e transformation
 settings, record lifecycle state, consume Vessel slots, reconcile Spirit Mantle,
 and prompt at rule boundaries. Foundry's `Actor#transformInto`,
@@ -104,9 +105,10 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Modify: `tests/vessel-rules.test.mjs`
 
 - [x] Write failing tests for six dedicated subclass control Items. Each subclass
-  level-3 advancement grants its control Item. Each control has four roles: free
-  Transform, slot Transform, Extend, and Revert. The five ordinary controls
-  reference one direct profile; Cataclysm references four affinity profiles.
+  level-3 advancement grants its control Item. Each control has five roles: free
+  Transform, slot Transform, Extend, Revert, and Equipment Preference. The five
+  ordinary controls reference one direct profile; Cataclysm references four
+  affinity profiles.
 - [x] Keep the generic class Archon Form Item as the one-use/rest rules feature
   and source of free uses. Its control metadata links subclass controls back to
   this stable owned Item rather than duplicating or moving the resource.
@@ -174,7 +176,7 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
   on the restored actor without touching unrelated effects.
 - [x] Extend expiry by exactly 600 seconds only after dnd5e successfully
   consumes the Extend activity's Vessel-slot attribute target.
-- [ ] Handle linked and unlinked token actors using public dnd5e transform/revert
+- [x] Handle linked and unlinked token actors using public dnd5e transform/revert
   hooks plus normal create/update hooks where the native hook surface differs.
 - [x] Run:
   `node --test tests/vessel-archon-lifecycle.test.mjs tests/vessel-mantle.test.mjs`.
@@ -187,23 +189,25 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Create: `tests/vessel-archon-hooks.test.mjs`
 - Modify: `tests/vessel-automation-hooks.test.mjs`
 
-- [ ] Write failing tests for pre-use filtering/validation, free-use gating,
+- [x] Write failing tests for pre-use filtering/validation, free-use gating,
   slot fallback, Extend, Revert, successful transform finalization, error
   reporting, and no effect on unrelated activities.
-- [ ] Route only module-tagged Archon roles. The native Transform activities
-  still create their normal chat cards and invoke native transform buttons.
-- [ ] Deduplicate owner prompts for expiry, HP 0, and pre-level-7 Unconscious.
+- [x] Route only module-tagged Archon roles. Native Transform activities retain
+  their profile prompt, consumption, refund, settings, and Actor transform API;
+  the module binds the call to the owning Vessel instead of Foundry's generic
+  selected-token chat button.
+- [x] Deduplicate owner prompts for expiry, HP 0, and pre-level-7 Unconscious.
   Queue prompts to a microtask and wait for confirmation before invoking native
   revert.
-- [ ] At level 7+, use one-hour duration and do not prompt for Unconscious; at
+- [x] At level 7+, use one-hour duration and do not prompt for Unconscious; at
   every level prompt for HP 0. Expiry offers Extend with a Vessel slot or Revert
   and shows active profile plus remaining duration.
-- [ ] After level-11 successful transformation, offer a non-blocking reminder to
+- [x] After level-11 successful transformation, offer a non-blocking reminder to
   use an eligible Sealed Magic spell for free; do not intercept or recreate the
   spell activity.
-- [ ] Register only public Foundry/dnd5e hooks and elect one responsible client
+- [x] Register only public Foundry/dnd5e hooks and elect one responsible client
   for world-time/actor state prompts to avoid duplicates.
-- [ ] Run:
+- [x] Run:
   `node --test tests/vessel-archon-hooks.test.mjs tests/vessel-automation-hooks.test.mjs`.
 
 ## Task 6: Migrate existing owned Archon Form Items
@@ -213,17 +217,18 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Modify: `scripts/vessel/migration.mjs`
 - Modify: `tests/vessel-migration.test.mjs`
 
-- [ ] Raise the Vessel migration version to 2 and write failing tests for an
+- [x] Raise the Vessel migration version to 2 and write failing tests for an
   activity-less legacy Archon Form Item, partially migrated Items, custom names
   and images, unrelated activities/flags, idempotency, and failure not recording
   the version.
-- [ ] Load canonical Archon Form alongside Vessel and Spirit Mantle and merge the
-  four module activities by stable IDs/roles.
-- [ ] Repair mechanics, profiles, settings, consumption, and module flags while
+- [x] Load canonical Archon Form, six subclass controls, Vessel, and Spirit
+  Mantle and merge the five control activities by stable IDs/roles.
+- [x] Repair mechanics, profiles, settings, consumption, and module flags while
   preserving user presentation, unrelated activities, and foreign flags.
-- [ ] Ensure migration still completes Stage 1 repairs and records version 2
+- [x] Ensure migration still completes Stage 1 repairs and records version 2
   only after every required owned Item update succeeds.
-- [ ] Run: `node --test tests/vessel-migration.test.mjs`.
+- [x] Run:
+  `node --test tests/vessel-migration.test.mjs tests/vessel-archon-migration.test.mjs`.
 
 ## Task 7: Compile, verify, document, and review the complete feature
 
@@ -233,18 +238,18 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Modify generated: `packs/homebrew-classes/**`
 - Modify generated: `packs/vessel-archon-forms/**`
 
-- [ ] Extend compiled-pack parity to cover the four Archon Form activities and
+- [x] Extend compiled-pack parity to cover the five Archon Form activities and
   shared transform settings.
-- [ ] Document the Archon controls, profile selection, duration/reversion
+- [x] Document the Archon controls, profile selection, duration/reversion
   reminders, native workflow boundary, equipment-policy behavior, and the fact
   that Stage 3 form attacks/traits remain normal descriptive Items unless they
   already have native activities.
-- [ ] Compile `src` to `packs/homebrew-classes` and `archon-src` to
+- [x] Compile `src` to `packs/homebrew-classes` and `archon-src` to
   `packs/vessel-archon-forms`; remove `LOCK` files.
-- [ ] Run `verifyPack` on `src` as `homebrew-classes` and on `archon-src` as
+- [x] Run `verifyPack` on `src` as `homebrew-classes` and on `archon-src` as
   `vessel-archon-forms`; require `ok: true` and zero errors for both.
-- [ ] Run the complete test suite with `node --test tests/*.test.mjs`.
-- [ ] Inspect `git diff --check`, `git status --short`, and the complete diff.
+- [x] Run the complete test suite with `node --test tests/*.test.mjs`.
+- [x] Inspect `git diff --check`, `git status --short`, and the complete diff.
   Confirm that no Warlord source, scripts, tests, or pack was changed.
-- [ ] Request a final code review and resolve every actionable issue. Do not
+- [x] Request a final code review and resolve every actionable issue. Do not
   release from this task.
