@@ -31,6 +31,20 @@ const mantleSource = yaml.load(
     'utf8'
   )
 );
+const archonControlSources = [
+  'the-ascended',
+  'the-cataclysm',
+  'the-cursed',
+  'the-fallen',
+  'the-formless',
+  'the-trickster'
+].map(subclass => yaml.load(readFileSync(
+  new URL(
+    `../src/vessel/subclass-features/${subclass}/archon-form-control.yml`,
+    import.meta.url
+  ),
+  'utf8'
+)));
 
 function findYamlFiles(directory) {
   const files = [];
@@ -46,7 +60,7 @@ function role(document) {
   return document.flags?.['declan-homebrew-classes']?.vessel?.role;
 }
 
-test('committed compiled pack preserves Vessel Stage 1 source structures', async () => {
+test('committed compiled pack preserves Vessel automation source structures', async () => {
   const temporary = mkdtempSync(join(tmpdir(), 'vessel-compiled-pack-'));
   const pack = join(temporary, 'pack');
   const extracted = join(temporary, 'extracted');
@@ -79,6 +93,21 @@ test('committed compiled pack preserves Vessel Stage 1 source structures', async
     const expectedEffect = mantleSource.effects.find(effect => role(effect) === 'mantle-ac');
     const compiledEffect = compiledMantle.effects.find(effect => role(effect) === 'mantle-ac');
     assert.deepEqual(compiledEffect, expectedEffect);
+
+    for (const control of archonControlSources) {
+      const compiledControl = documents.find(document => document?._id === control._id);
+      assert.ok(compiledControl, control.system.identifier);
+      assert.deepEqual(
+        compiledControl.system.activities,
+        control.system.activities,
+        `${control.system.identifier} activities`
+      );
+      assert.deepEqual(
+        compiledControl.flags?.['declan-homebrew-classes']?.vessel?.archon,
+        control.flags?.['declan-homebrew-classes']?.vessel?.archon,
+        `${control.system.identifier} profile metadata`
+      );
+    }
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }
