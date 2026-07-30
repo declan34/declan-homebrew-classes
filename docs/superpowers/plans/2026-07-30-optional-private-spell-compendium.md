@@ -359,7 +359,7 @@ Use this result shape:
 Cover:
 
 ```js
-assert.equal(normalizeSpellName('  CAFE\\u0301   LIGHT  '), 'café light');
+assert.equal(normalizeSpellName('  CAFE\u0301   LIGHT  '), 'café light');
 ```
 
 Use a canonically equivalent composed/decomposed pair for the actual Unicode
