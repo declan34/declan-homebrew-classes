@@ -170,7 +170,7 @@ git -c commit.gpgSign=false commit -m "feat: add Vessel Stage 3 rules"
 - Produces native activities tagged with roles `arcane-blast`, `astral-step`,
   `bluster`, and `cataclysmic-eruption`.
 
-- [ ] **Step 1: Write failing source-schema tests**
+- [x] **Step 1: Write failing source-schema tests**
 
 Load the six YAML documents and assert:
 
@@ -196,13 +196,13 @@ For all activity flags assert:
 activity.flags['declan-homebrew-classes'].vessel.role === expectedRole
 ```
 
-- [ ] **Step 2: Verify the new tests fail**
+- [x] **Step 2: Verify the new tests fail**
 
 ```bash
 node --test tests/vessel-stage3-ascended-cataclysm.test.mjs
 ```
 
-- [ ] **Step 3: Add the native activities**
+- [x] **Step 3: Add the native activities**
 
 Arcane Blast uses a 5-foot radius point within 60 feet, Dexterity save, normal
 half-damage setting disabled because the published feature deals damage only on
@@ -221,14 +221,14 @@ published 15-foot-diameter, 60-foot-high area described on the card and `9d6`
 damage; its source damage type is the neutral affinity placeholder prepared in
 Task 7.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 ```bash
 node --test tests/vessel-stage3-ascended-cataclysm.test.mjs \
   tests/vessel-archon-profiles.test.mjs
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add archon-src src/vessel/subclass-features/the-cataclysm \

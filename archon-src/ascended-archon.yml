@@ -43,7 +43,32 @@ items:
     type: feat
     system:
       type: {value: monster, subtype: ''}
-      activities: {}
+      activities:
+        ArcBlastAct00001:
+          _id: ArcBlastAct00001
+          type: save
+          name: Arcane Blast
+          sort: 0
+          activation: {type: special, value: null, override: false, condition: 'Once on your turn, in place of one attack.'}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: Choose a point within 60 feet. Creatures in the 5-foot burst take Iridescent Strike damage only on a failed Dexterity save.}
+          duration: {units: inst, concentration: false, override: false}
+          effects: []
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: arcane-blast}
+          range: {value: '60', override: false, units: ft, special: ''}
+          target:
+            template: {contiguous: false, units: ft, type: radius, size: '5', count: '', width: ''}
+            affects: {choice: false, count: '', type: creature, special: All creatures in the burst}
+            override: false
+            prompt: true
+          uses: {spent: 0, recovery: [], max: ''}
+          damage:
+            onSave: none
+            parts:
+              - {number: null, denomination: null, bonus: '', types: [radiant], custom: {enabled: true, formula: '@scale.vessel.iridescent-strike + @mod'}, scaling: {mode: '', number: null, formula: ''}}
+          save: {ability: [dex], dc: {calculation: cha, formula: ''}}
       uses: {spent: 0, recovery: [], max: ''}
       description:
         value: <p>Once on its turn, the Archon can forgo one attack to cause a burst of raw magic at a point it can see within 60 feet. All creatures within 5 feet of that point must succeed on a Dexterity saving throw or take damage as if they were hit by one of your Iridescent Strikes.</p>
@@ -67,7 +92,24 @@ items:
     type: feat
     system:
       type: {value: monster, subtype: ''}
-      activities: {}
+      activities:
+        AstralStepAct001:
+          _id: AstralStepAct001
+          type: utility
+          name: Astral Step
+          sort: 0
+          activation: {type: special, value: null, override: false, condition: After you cast a spell.}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: "Teleport 10 feet per level of the triggering spell, with a minimum of 10 feet. Move the token to an unoccupied space you can see using Foundry's normal controls."}
+          duration: {units: inst, concentration: false, override: false}
+          effects: []
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: astral-step}
+          range: {value: null, override: false, units: self, special: 10 feet per spell level}
+          target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '', type: self, special: ''}, override: false, prompt: false}
+          uses: {spent: 0, recovery: [], max: ''}
+          roll: {formula: '', name: '', prompt: false, visible: false}
       uses: {spent: 0, recovery: [], max: ''}
       description:
         value: <p>After the Archon casts a spell, it can teleport a number of feet equal to 10 times the level of that spell (minimum of 10 feet) to an unoccupied space it can see.</p>
