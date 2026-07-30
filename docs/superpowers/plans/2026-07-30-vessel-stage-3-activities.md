@@ -329,7 +329,7 @@ git -c commit.gpgSign=false commit -m \
   `sticky-slime-escape`, `drain-vitality`,
   `drain-vitality-recovery`, `juxtapose`, and `stolen-memory`.
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```js
 assertActivity(formless, 'pseudopod-strike', {
@@ -352,13 +352,13 @@ assertActivity(trickster, 'stolen-memory', {
 });
 ```
 
-- [ ] **Step 2: Verify failure**
+- [x] **Step 2: Verify failure**
 
 ```bash
 node --test tests/vessel-stage3-formless-trickster.test.mjs
 ```
 
-- [ ] **Step 3: Implement activities and markers**
+- [x] **Step 3: Implement activities and markers**
 
 Pseudopods uses the shared Iridescent formula and unlocked damage choices.
 Sticky Slime applies a Grappled marker with a separate Strength escape activity.
@@ -375,14 +375,14 @@ and exposes a separate follow-up recovery activity. Juxtapose and Stolen Memory
 use native saves; their token movement and targeting restriction remain
 explicitly adjudicated.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 ```bash
 node --test tests/vessel-stage3-formless-trickster.test.mjs \
   tests/vessel-archon-profiles.test.mjs
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add archon-src/formless-archon.yml archon-src/trickster-archon.yml \

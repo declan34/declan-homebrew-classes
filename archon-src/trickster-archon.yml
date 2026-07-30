@@ -40,7 +40,25 @@ items:
     type: feat
     system:
       type: {value: monster, subtype: ''}
-      activities: {}
+      activities:
+        JuxtaposeAct0001:
+          _id: JuxtaposeAct0001
+          type: save
+          name: Juxtapose
+          sort: 0
+          activation: {type: bonus, value: null, override: false, condition: ''}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: "On a failed or voluntarily failed Charisma save, switch places. Move both tokens using Foundry's normal controls."}
+          duration: {units: inst, concentration: false, override: false}
+          effects: []
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: juxtapose}
+          range: {value: '60', override: false, units: ft, special: ''}
+          target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Creature you can see}, override: false, prompt: true}
+          uses: {spent: 0, recovery: [], max: ''}
+          damage: {onSave: none, parts: []}
+          save: {ability: [cha], dc: {calculation: cha, formula: ''}}
       uses: {spent: 0, recovery: [], max: ''}
       description: {value: "<p>As a bonus action, the Archon can force one creature that it can see within 60 feet to make a Charisma saving throw. On a failure, the Archon instantly switches places with the creature. The creature can choose to fail.</p>", chat: ''}
       identifier: juxtapose
@@ -62,7 +80,25 @@ items:
     type: feat
     system:
       type: {value: monster, subtype: ''}
-      activities: {}
+      activities:
+        StolenMemoryAct1:
+          _id: StolenMemoryAct1
+          type: save
+          name: Stolen Memory
+          sort: 0
+          activation: {type: special, value: null, override: false, condition: Once per turn after an Iridescent Strike deals psychic damage.}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: On a failed Intelligence save the target cannot perceive or target you until the start of your next turn. Targeting enforcement is player-managed.}
+          duration: {units: round, concentration: false, override: false}
+          effects: [{_id: StolenMemoryEff1, onSave: false}]
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: stolen-memory}
+          range: {value: null, override: false, units: self, special: Triggering Iridescent Strike}
+          target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Creature damaged by the triggering Strike}, override: false, prompt: true}
+          uses: {spent: 0, recovery: [], max: ''}
+          damage: {onSave: none, parts: []}
+          save: {ability: [int], dc: {calculation: cha, formula: ''}}
       uses: {spent: 0, recovery: [], max: ''}
       description: {value: "<p>Once per turn when the Archon deals psychic damage with an Iridescent Strike, it can force its target to make an Intelligence saving throw. On a failure, it cannot see, hear, smell, sense, or target the Archon in any way until the start of the Archon's next turn.</p>", chat: ''}
       identifier: stolen-memory
@@ -73,7 +109,26 @@ items:
       requirements: ''
       advancement: {}
     img: icons/svg/item-bag.svg
-    effects: []
+    effects:
+      - _id: StolenMemoryEff1
+        name: Stolen Memory
+        img: icons/magic/control/hypnosis-mesmerism-eye.webp
+        origin: null
+        transfer: false
+        disabled: false
+        type: base
+        system: {}
+        changes: []
+        duration: {startTime: null, seconds: null, combat: null, rounds: 1, turns: null, startRound: null, startTurn: null}
+        description: <p>You cannot see, hear, smell, sense, or target the Trickster Archon until the start of its next turn. This targeting restriction is player-managed.</p>
+        tint: '#ffffff'
+        statuses: []
+        sort: 0
+        flags:
+          declan-homebrew-classes:
+            vessel: {role: archon-form-effect, source: stolen-memory}
+          dnd5e: {riders: {statuses: []}}
+        _key: '!actors.items.effects!hbrTriArchon0001.hbrTrait00000022.StolenMemoryEff1'
     flags: {}
     _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
     ownership: {default: 0}

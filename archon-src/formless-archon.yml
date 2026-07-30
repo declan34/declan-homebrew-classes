@@ -38,7 +38,29 @@ items:
     type: feat
     system:
       type: {value: monster, subtype: ''}
-      activities: {}
+      activities:
+        PseudoStrikeAct1:
+          _id: PseudoStrikeAct1
+          type: attack
+          name: Pseudopod Strike
+          sort: 0
+          activation: {type: action, value: null, override: false, condition: ''}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: A 10-foot-reach melee Iridescent Strike made with one of your pseudopods.}
+          duration: {units: inst, concentration: false, override: false}
+          effects: []
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: pseudopod-strike}
+          range: {value: '10', override: false, units: ft, special: ''}
+          target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: ''}, override: false, prompt: true}
+          uses: {spent: 0, recovery: [], max: ''}
+          attack: {critical: {threshold: null}, flat: false, type: {value: melee, classification: unarmed}, ability: cha, bonus: ''}
+          damage:
+            critical: {bonus: ''}
+            includeBase: true
+            parts:
+              - {number: null, denomination: 0, bonus: '', types: [radiant], custom: {enabled: true, formula: '@scale.vessel.iridescent-strike + @mod'}, scaling: {number: 1}}
       uses: {spent: 0, recovery: [], max: ''}
       description: {value: "<p>The Archon sprouts a number of additional pseudopod limbs equal to your Charisma modifier. They have a reach of 10 feet, and they can be attacked as part of the Archon. These pseudopods can only be used to make melee Iridescent Strike attacks, Grapple, and Shove.</p>", chat: ''}
       identifier: pseudopods
@@ -60,7 +82,43 @@ items:
     type: feat
     system:
       type: {value: monster, subtype: ''}
-      activities: {}
+      activities:
+        StickySlimeAct01:
+          _id: StickySlimeAct01
+          type: save
+          name: Sticky Slime
+          sort: 0
+          activation: {type: special, value: null, override: false, condition: After a melee Iridescent Strike hits an equal-size or smaller creature.}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: On a failed Dexterity save the target becomes Grappled. Size eligibility is player-managed.}
+          duration: {units: spec, concentration: false, override: false}
+          effects: [{_id: StickyGrapple001, onSave: false}]
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: sticky-slime}
+          range: {value: null, override: false, units: self, special: Triggering melee Iridescent Strike}
+          target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Equal-size or smaller creature hit by the Strike}, override: false, prompt: true}
+          uses: {spent: 0, recovery: [], max: ''}
+          damage: {onSave: none, parts: []}
+          save: {ability: [dex], dc: {calculation: cha, formula: ''}}
+        StickyEscapeAct1:
+          _id: StickyEscapeAct1
+          type: save
+          name: Escape Sticky Slime
+          sort: 10
+          activation: {type: action, value: null, override: false, condition: A creature Grappled by Sticky Slime uses its action to escape.}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: Remove the Sticky Slime Grappled effect on a successful Strength save. Effect removal is player-managed.}
+          duration: {units: inst, concentration: false, override: false}
+          effects: []
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: sticky-slime-escape}
+          range: {value: null, override: false, units: self, special: ''}
+          target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Creature Grappled by Sticky Slime}, override: false, prompt: true}
+          uses: {spent: 0, recovery: [], max: ''}
+          damage: {onSave: none, parts: []}
+          save: {ability: [str], dc: {calculation: cha, formula: ''}}
       uses: {spent: 0, recovery: [], max: ''}
       description: {value: "<p>When the Archon hits a creature equal to its size or smaller with a melee Iridescent Strike, it can force it to make a Dexterity saving throw or become Grappled. To escape this Grapple, a creature must use its action to make a Strength saving throw, escaping on a success.</p>", chat: ''}
       identifier: sticky-slime
@@ -71,7 +129,26 @@ items:
       requirements: ''
       advancement: {}
     img: icons/svg/item-bag.svg
-    effects: []
+    effects:
+      - _id: StickyGrapple001
+        name: Sticky Slime — Grappled
+        img: systems/dnd5e/icons/svg/statuses/grappled.svg
+        origin: null
+        transfer: false
+        disabled: false
+        type: base
+        system: {}
+        changes: []
+        duration: {startTime: null, seconds: null, combat: null, rounds: null, turns: null, startRound: null, startTurn: null}
+        description: <p>Grappled by the Formless Archon's Sticky Slime. Use an action and succeed on the provided Strength save to escape.</p>
+        tint: '#ffffff'
+        statuses: [grappled]
+        sort: 0
+        flags:
+          declan-homebrew-classes:
+            vessel: {role: archon-form-effect, source: sticky-slime}
+          dnd5e: {riders: {statuses: []}}
+        _key: '!actors.items.effects!hbrForArchon0001.hbrTrait00000020.StickyGrapple001'
     flags: {}
     _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
     ownership: {default: 0}
