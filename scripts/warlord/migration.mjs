@@ -30,6 +30,8 @@ const ACTIVITY_FIELDS = Object.freeze([
   'uses',
   'roll',
   'healing',
+  'damage',
+  'effects',
   'save'
 ]);
 
@@ -205,6 +207,80 @@ function migrationChanges(item, canonical) {
   return changes;
 }
 
+function canonicalEffectData(effect) {
+  const source = objectData(effect);
+  source._id = documentId(effect);
+  delete source.id;
+  delete source._key;
+  return source;
+}
+
+function effectUpdateData(current, canonical) {
+  const source = canonicalEffectData(canonical);
+  const changes = { _id: source._id };
+  for (const [field, value] of Object.entries(source)) {
+    if (field === '_id') continue;
+    if (!sameData(current?.[field], value)) {
+      changes[field] = structuredClone(value);
+    }
+  }
+  return Object.keys(changes).length > 1 ? changes : undefined;
+}
+
+async function fallbackEffectChanges(item, updates, creates) {
+  const byId = new Map(documents(item?.effects).map(effect => [
+    documentId(effect),
+    objectData(effect)
+  ]));
+  for (const update of updates) {
+    const current = byId.get(update._id) ?? { _id: update._id };
+    byId.set(update._id, { ...current, ...structuredClone(update) });
+  }
+  for (const create of creates) {
+    byId.set(create._id, structuredClone(create));
+  }
+  await item.update({ effects: Array.from(byId.values()) });
+}
+
+async function repairCanonicalEffects(item, canonical) {
+  const currentById = new Map(documents(item?.effects).map(effect => [
+    documentId(effect),
+    effect
+  ]));
+  const updates = [];
+  const creates = [];
+  for (const sourceEffect of documents(canonical?.effects)) {
+    const sourceId = documentId(sourceEffect);
+    if (!sourceId) continue;
+    const current = currentById.get(sourceId);
+    if (!current) {
+      creates.push(canonicalEffectData(sourceEffect));
+      continue;
+    }
+    const changes = effectUpdateData(current, sourceEffect);
+    if (changes) updates.push(changes);
+  }
+
+  if (updates.length) {
+    if (typeof item?.updateEmbeddedDocuments === 'function') {
+      await item.updateEmbeddedDocuments('ActiveEffect', updates);
+    } else {
+      await fallbackEffectChanges(item, updates, []);
+    }
+  }
+  if (creates.length) {
+    if (typeof item?.createEmbeddedDocuments === 'function') {
+      await item.createEmbeddedDocuments(
+        'ActiveEffect',
+        creates,
+        { keepId: true }
+      );
+    } else {
+      await fallbackEffectChanges(item, [], creates);
+    }
+  }
+}
+
 function numericRange(activity) {
   const raw = activity?.range?.value;
   if (raw === null || raw === undefined || raw === '') return undefined;
@@ -230,7 +306,8 @@ function reconciliationChanges(item, canonical, superior) {
     const baseRange = numericRange(sourceActivity);
     if (baseRange !== undefined) {
       const range = objectData(sourceActivity.range);
-      range.value = superior ? baseRange * 2 : baseRange;
+      const scalable = baseRange === 15 || baseRange === 30;
+      range.value = superior && scalable ? baseRange * 2 : baseRange;
       if (!sameData(current.range, range)) {
         changes[`system.activities.${documentId(current)}.range`] = range;
       }
@@ -315,6 +392,16 @@ async function updateOwnedItems(actor, sources, changesForItem) {
   }
 }
 
+async function migrateOwnedExploitItems(actor, sources) {
+  for (const canonical of Object.values(sources)) {
+    const item = findOwnedItem(actor, canonical);
+    if (!item || typeof item.update !== 'function') continue;
+    const changes = migrationChanges(item, canonical);
+    if (Object.keys(changes).length) await item.update(changes);
+    await repairCanonicalEffects(item, canonical);
+  }
+}
+
 async function reconcileWarlordActorNow(actor, {
   loadSourceItems = loadWarlordSourceItems,
   loadExploitSourceItems = loadWarlordExploitSourceItems,
@@ -375,7 +462,7 @@ export async function migrateWarlordActor(actor, {
   const sources = await loadSourceItems();
   await updateOwnedItems(actor, sources, migrationChanges);
   const exploitSources = await loadExploitSourceItems(actor);
-  await updateOwnedItems(actor, exploitSources, migrationChanges);
+  await migrateOwnedExploitItems(actor, exploitSources);
 
   await reconcileWarlordActor(actor, {
     sourceItems: sources,

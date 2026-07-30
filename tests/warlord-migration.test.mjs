@@ -144,6 +144,19 @@ function canonicalExploitSources() {
         value: '1'
       }]
     },
+    damage: {
+      onSave: 'none',
+      parts: [{
+        custom: {
+          enabled: true,
+          formula: '@scale.warlord.exploit-die'
+        }
+      }]
+    },
+    effects: [
+      { _id: 'DirtyHitProne01A', onSave: false },
+      { _id: 'DirtyNoReact01AB', onSave: false }
+    ],
     save: { ability: ['con'], dc: { calculation: 'cha', formula: '' } },
     flags: {
       [MODULE_ID]: {
@@ -181,13 +194,34 @@ function canonicalExploitSources() {
       }
     }
   });
+  const dirtyHit = canonicalItem(
+    'WIrrBN4l50nCgBdL',
+    'dirty-hit',
+    [save, repeatSave, resolution],
+    { max: '', recovery: [] }
+  );
+  dirtyHit.effects = [
+    {
+      _id: 'DirtyHitProne01A',
+      name: 'Dirty Hit — Prone',
+      changes: [],
+      statuses: ['prone'],
+      duration: { rounds: null, seconds: null },
+      flags: { dnd5e: { riders: { statuses: [] } } },
+      _key: '!items.effects!WIrrBN4l50nCgBdL.DirtyHitProne01A'
+    },
+    {
+      _id: 'DirtyNoReact01AB',
+      name: 'Dirty Hit — No Reactions',
+      changes: [],
+      statuses: [],
+      duration: { rounds: 1, seconds: 6 },
+      flags: { dnd5e: { riders: { statuses: [] } } },
+      _key: '!items.effects!WIrrBN4l50nCgBdL.DirtyNoReact01AB'
+    }
+  ];
   return {
-    dirtyHit: canonicalItem(
-      'WIrrBN4l50nCgBdL',
-      'dirty-hit',
-      [save, repeatSave, resolution],
-      { max: '', recovery: [] }
-    ),
+    dirtyHit,
     parry: canonicalItem(
       'c31ADMDftmoKUKUV',
       'parry',
@@ -206,6 +240,23 @@ function canonicalExploitSources() {
               role: 'exploit-activity',
               exploit: 'parry',
               mechanic: 'roll'
+            }
+          }
+        }
+      })],
+      { max: '', recovery: [] }
+    ),
+    firstAid: canonicalItem(
+      '5sQXJ2OOPZdfRKa7',
+      'first-aid',
+      [warlordActivity('FirstAidAct01ABC', 'exploit-activity', {
+        range: { units: 'ft', value: '5' },
+        flags: {
+          [MODULE_ID]: {
+            warlord: {
+              role: 'exploit-activity',
+              exploit: 'first-aid',
+              mechanic: 'heal'
             }
           }
         }
@@ -245,7 +296,10 @@ function ownedItem({
   spent = 2,
   max = 99,
   activities = [],
-  failUpdates = 0
+  effects = [{ id: 'user-effect', name: 'Keep me' }],
+  failUpdates = 0,
+  failEffectUpdates = 0,
+  failEffectCreates = 0
 }) {
   const item = {
     id,
@@ -255,7 +309,7 @@ function ownedItem({
       otherModule: { keep: true },
       [MODULE_ID]: { userMetadata: { keep: true } }
     },
-    effects: [{ id: 'user-effect', name: 'Keep me' }],
+    effects: clone(effects),
     system: {
       identifier,
       description: { value: description },
@@ -267,7 +321,11 @@ function ownedItem({
       activities: Object.fromEntries(activities.map(entry => [entry.id, entry]))
     },
     updateCalls: [],
+    embeddedUpdateCalls: [],
+    embeddedCreateCalls: [],
     remainingFailures: failUpdates,
+    remainingEffectUpdateFailures: failEffectUpdates,
+    remainingEffectCreateFailures: failEffectCreates,
     async update(changes) {
       this.updateCalls.push(clone(changes));
       if (this.remainingFailures > 0) {
@@ -275,6 +333,30 @@ function ownedItem({
         throw new Error(`forced ${identifier} update failure`);
       }
       for (const [path, value] of Object.entries(changes)) setPath(this, path, value);
+    },
+    async updateEmbeddedDocuments(type, updates) {
+      this.embeddedUpdateCalls.push({ type, updates: clone(updates) });
+      if (this.remainingEffectUpdateFailures > 0) {
+        this.remainingEffectUpdateFailures -= 1;
+        throw new Error(`forced ${identifier} effect update failure`);
+      }
+      for (const update of updates) {
+        const effect = this.effects.find(entry => (entry._id ?? entry.id) === update._id);
+        if (!effect) continue;
+        Object.assign(effect, clone(update));
+      }
+    },
+    async createEmbeddedDocuments(type, creates, options) {
+      this.embeddedCreateCalls.push({
+        type,
+        creates: clone(creates),
+        options: clone(options)
+      });
+      if (this.remainingEffectCreateFailures > 0) {
+        this.remainingEffectCreateFailures -= 1;
+        throw new Error(`forced ${identifier} effect create failure`);
+      }
+      this.effects.push(...clone(creates));
     }
   };
   return item;
@@ -438,8 +520,21 @@ test('selectively migrates owned Tier A, B, and C Exploits and configures every 
     description: customDescription,
     spent: originalSpent,
     activities: [
-      staleActivity(dirtySource.DirtyHitAct01ABC),
+      staleActivity(dirtySource.DirtyHitAct01ABC, {
+        damage: { onSave: 'half', parts: [] },
+        effects: [{ _id: 'StaleEffectRef01', onSave: true }]
+      }),
       originalUserActivity
+    ],
+    effects: [
+      {
+        _id: 'DirtyHitProne01A',
+        id: 'DirtyHitProne01A',
+        name: 'Stale prone effect',
+        statuses: [],
+        duration: { rounds: 99 }
+      },
+      { _id: 'user-effect', id: 'user-effect', name: 'Keep me' }
     ]
   });
   const parry = ownedItem({
@@ -469,6 +564,7 @@ test('selectively migrates owned Tier A, B, and C Exploits and configures every 
   assert.deepEqual(attackOrder.system.activities, {
     userActivityId: originalUserActivity
   });
+  assert.deepEqual(attackOrder.effects, [{ id: 'user-effect', name: 'Keep me' }]);
   assert.equal(dirtyHit.system.uses.spent, originalSpent);
   assert.equal(dirtyHit.system.description.value, customDescription);
   assert.equal(dirtyHit.system.activities.userActivityId.range.value, 45);
@@ -484,10 +580,39 @@ test('selectively migrates owned Tier A, B, and C Exploits and configures every 
     dirtyHit.system.activities.DirtyHitAct01ABC.consumption.targets[0].target,
     'tactical-exploits'
   );
+  assert.deepEqual(
+    dirtyHit.system.activities.DirtyHitAct01ABC.damage,
+    dirtySource.DirtyHitAct01ABC.damage
+  );
+  assert.deepEqual(
+    dirtyHit.system.activities.DirtyHitAct01ABC.effects,
+    dirtySource.DirtyHitAct01ABC.effects
+  );
+  assert.equal(
+    dirtyHit.effects.find(effect => effect._id === 'DirtyHitProne01A').name,
+    'Dirty Hit — Prone'
+  );
+  assert.ok(dirtyHit.effects.some(effect => effect._id === 'DirtyNoReact01AB'));
+  assert.equal(
+    dirtyHit.effects.find(effect => effect._id === 'user-effect').name,
+    'Keep me'
+  );
+  assert.equal(
+    dirtyHit.embeddedUpdateCalls[0].updates[0]._key,
+    undefined
+  );
+  assert.equal(
+    dirtyHit.embeddedCreateCalls[0].creates[0]._key,
+    undefined
+  );
+  assert.deepEqual(dirtyHit.embeddedCreateCalls[0].options, { keepId: true });
+  for (const reference of dirtyHit.system.activities.DirtyHitAct01ABC.effects) {
+    assert.ok(dirtyHit.effects.some(effect => effect._id === reference._id));
+  }
   assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
 });
 
-test('Tactical Superiority derives every module-owned Exploit range from fresh canonical data', async () => {
+test('Tactical Superiority doubles only canonical 15 and 30 foot Exploit ranges', async () => {
   const coreSources = canonicalSources();
   const exploitSources = canonicalExploitSources();
   const warlord = warlordClass(10);
@@ -505,8 +630,15 @@ test('Tactical Superiority derives every module-owned Exploit range from fresh c
       }
     ]
   });
+  const firstAid = ownedItem({
+    id: 'owned-first-aid',
+    identifier: 'first-aid',
+    activities: [
+      staleActivity(exploitSources.firstAid.system.activities.FirstAidAct01ABC)
+    ]
+  });
   const actor = actorFixture({
-    items: [warlord, dirtyHit],
+    items: [warlord, dirtyHit, firstAid],
     leadershipAbility: undefined
   });
   let exploitLoads = 0;
@@ -522,6 +654,7 @@ test('Tactical Superiority derives every module-owned Exploit range from fresh c
   assert.equal(dirtyHit.system.activities.DirtyHitAct01ABC.range.value, 15);
   assert.equal(dirtyHit.system.activities.DirtyRepeat01ABC.range.value, 30);
   assert.equal(dirtyHit.system.activities.DirtyResolut01A.range.value, 15);
+  assert.equal(firstAid.system.activities.FirstAidAct01ABC.range.value, 5);
 
   warlord.system.levels = 11;
   await reconcileWarlordActor(actor, {
@@ -531,6 +664,7 @@ test('Tactical Superiority derives every module-owned Exploit range from fresh c
   assert.equal(dirtyHit.system.activities.DirtyHitAct01ABC.range.value, 30);
   assert.equal(dirtyHit.system.activities.DirtyRepeat01ABC.range.value, 60);
   assert.equal(dirtyHit.system.activities.DirtyResolut01A.range.value, 30);
+  assert.equal(firstAid.system.activities.FirstAidAct01ABC.range.value, 5);
   assert.equal(dirtyHit.system.activities.userActivityId.range.value, 25);
 
   warlord.system.levels = 10;
@@ -541,6 +675,7 @@ test('Tactical Superiority derives every module-owned Exploit range from fresh c
   assert.equal(dirtyHit.system.activities.DirtyHitAct01ABC.range.value, 15);
   assert.equal(dirtyHit.system.activities.DirtyRepeat01ABC.range.value, 30);
   assert.equal(dirtyHit.system.activities.DirtyResolut01A.range.value, 15);
+  assert.equal(firstAid.system.activities.FirstAidAct01ABC.range.value, 5);
   assert.equal(dirtyHit.system.activities.userActivityId.range.value, 25);
   assert.equal(exploitLoads, 3);
 });
@@ -707,6 +842,42 @@ test('sets no migration flag until Exploit repair succeeds and retries safely', 
     loadExploitSourceItems: async () => exploitSources
   }), true);
   assert.ok(dirtyHit.system.activities.DirtyHitAct01ABC);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
+});
+
+test('sets no migration flag until embedded Exploit effects succeed and retries safely', async () => {
+  const sources = canonicalSources();
+  const exploitSources = canonicalExploitSources();
+  const dirtyHit = ownedItem({
+    id: 'owned-dirty',
+    identifier: 'dirty-hit',
+    activities: [],
+    effects: [],
+    failEffectCreates: 1
+  });
+  const actor = actorFixture({
+    items: [warlordClass(), dirtyHit],
+    leadershipAbility: undefined
+  });
+
+  await assert.rejects(
+    migrateWarlordActor(actor, {
+      loadSourceItems: async () => sources,
+      loadExploitSourceItems: async () => exploitSources
+    }),
+    /forced dirty-hit effect create failure/
+  );
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, undefined);
+  assert.deepEqual(dirtyHit.effects, []);
+
+  assert.equal(await migrateWarlordActor(actor, {
+    loadSourceItems: async () => sources,
+    loadExploitSourceItems: async () => exploitSources
+  }), true);
+  assert.deepEqual(
+    dirtyHit.effects.map(effect => effect._id).sort(),
+    ['DirtyHitProne01A', 'DirtyNoReact01AB'].sort()
+  );
   assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
 });
 
