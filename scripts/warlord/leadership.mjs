@@ -14,6 +14,7 @@ const pendingLeadershipPrompts = new WeakMap();
 const pendingLeadershipConfigurations = new WeakMap();
 const leadershipAbilityValues = new Set(Object.values(LEADERSHIP_ABILITIES));
 const leadershipRollRoles = new Set([WARLORD_ROLES.RALLYING_CRY]);
+const leadershipAbilityToken = /@abilities\.(?:cha|wis|int)\.mod/g;
 
 function documents(collection) {
   if (!collection) return [];
@@ -26,6 +27,29 @@ function requireOwner(actor) {
   if (!actor?.isOwner) {
     throw new Error('You do not have permission to update this Warlord.');
   }
+}
+
+function propertyAtPath(value, path) {
+  return path.split('.').reduce((current, segment) => current?.[segment], value);
+}
+
+export function getLeadershipFormulaPaths(activity) {
+  const paths = activity?.flags?.[MODULE_ID]?.warlord?.leadershipFormulaPaths;
+  if (!Array.isArray(paths)) return [];
+  return paths.filter(path => typeof path === 'string' && path.length);
+}
+
+export function matchesLeadershipFormulas(activity, ability) {
+  const paths = getLeadershipFormulaPaths(activity);
+  if (!paths.length || !leadershipAbilityValues.has(ability)) return false;
+  return paths.every(path => {
+    const formula = propertyAtPath(activity, path);
+    if (typeof formula !== 'string') return false;
+    const tokens = [...formula.matchAll(
+      /@abilities\.(cha|wis|int)\.mod/g
+    )].map(match => match[1]);
+    return tokens.length > 0 && tokens.every(token => token === ability);
+  });
 }
 
 function leadershipDialogOptions() {
@@ -58,6 +82,17 @@ async function configureLeadershipItemsNow(actor, ability) {
       }
       if (leadershipRollRoles.has(role)) {
         changes[`system.activities.${activity.id}.roll.formula`] = leadershipFormula(ability);
+      }
+      for (const path of getLeadershipFormulaPaths(activity)) {
+        const formula = propertyAtPath(activity, path);
+        if (typeof formula !== 'string') continue;
+        const configured = formula.replace(
+          leadershipAbilityToken,
+          leadershipFormula(ability)
+        );
+        if (configured !== formula) {
+          changes[`system.activities.${activity.id}.${path}`] = configured;
+        }
       }
     }
     if (!Object.keys(changes).length || typeof item?.update !== 'function') return false;

@@ -3,7 +3,9 @@ import {
   chooseLeadershipAbility,
   configureLeadershipItems,
   ensureLeadershipAbility,
-  isLeadershipConfigurationPending
+  getLeadershipFormulaPaths,
+  isLeadershipConfigurationPending,
+  matchesLeadershipFormulas
 } from './leadership.mjs';
 import { useInspiringWord } from './inspiring-word.mjs';
 import { migrateWarlordActor, reconcileWarlordActor } from './migration.mjs';
@@ -86,7 +88,8 @@ function sourceActivity(activity) {
 
 function requiresLeadership(activity) {
   return Boolean(activity?.save && typeof activity.save === 'object')
-    || leadershipRollRoles.has(getWarlordRole(activity));
+    || leadershipRollRoles.has(getWarlordRole(activity))
+    || getLeadershipFormulaPaths(activity).length > 0;
 }
 
 function matchesLeadership(activity, ability) {
@@ -96,6 +99,10 @@ function matchesLeadership(activity, ability) {
   }
   if (leadershipRollRoles.has(getWarlordRole(activity))
     && activity?.roll?.formula !== leadershipFormula(ability)) {
+    return false;
+  }
+  if (getLeadershipFormulaPaths(activity).length
+    && !matchesLeadershipFormulas(activity, ability)) {
     return false;
   }
   return true;

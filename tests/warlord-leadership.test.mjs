@@ -361,6 +361,52 @@ test('updates only module-owned Save and Leadership-roll activity fields', async
   }]);
 });
 
+test('rewrites only explicitly flagged Utility and Heal Leadership formula paths', async () => {
+  const utility = activity('utility-id', 'exploit-activity', {
+    flags: {
+      [MODULE_ID]: {
+        warlord: {
+          role: 'exploit-activity',
+          leadershipFormulaPaths: ['roll.formula']
+        }
+      }
+    },
+    roll: { formula: 'max(1, @abilities.cha.mod) * 5' }
+  });
+  const heal = activity('heal-id', 'exploit-activity', {
+    flags: {
+      [MODULE_ID]: {
+        warlord: {
+          role: 'exploit-activity',
+          leadershipFormulaPaths: ['healing.custom.formula']
+        }
+      }
+    },
+    healing: {
+      custom: {
+        formula: '@scaling * @scale.warlord.exploit-die + @abilities.cha.mod'
+      }
+    }
+  });
+  const unflagged = activity('unflagged-id', 'exploit-activity', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  const item = itemWithActivities(utility, heal, unflagged);
+
+  assert.equal(await configureLeadershipItems(actor({ items: [item] }), 'wis'), true);
+  assert.equal(utility.update.roll.formula, 'max(1, @abilities.wis.mod) * 5');
+  assert.equal(
+    heal.update.healing.custom.formula,
+    '@scaling * @scale.warlord.exploit-die + @abilities.wis.mod'
+  );
+  assert.equal(unflagged.update, undefined);
+  assert.deepEqual(item.updateCalls, [{
+    'system.activities.utility-id.roll.formula': 'max(1, @abilities.wis.mod) * 5',
+    'system.activities.heal-id.healing.custom.formula':
+      '@scaling * @scale.warlord.exploit-die + @abilities.wis.mod'
+  }]);
+});
+
 test('does not persist an empty Leadership activity update', async () => {
   const launcher = activity('launcher-id', 'leadership-config');
   const item = itemWithActivities(launcher);

@@ -261,6 +261,113 @@ test('allows dnd5e to resolve Rallying Cry normally when its stored ability matc
   assert.equal(handleWarlordPreUse(rally), undefined);
 });
 
+test('configures flagged Utility and Heal formulas before one native retry', async () => {
+  for (const [id, dataPath, staleData, configuredData] of [
+    [
+      'utility-id',
+      'roll.formula',
+      { roll: { formula: 'max(1, @abilities.cha.mod) * 5' } },
+      { roll: { formula: 'max(1, @abilities.wis.mod) * 5' } }
+    ],
+    [
+      'heal-id',
+      'healing.custom.formula',
+      {
+        healing: {
+          custom: {
+            formula: '@scaling * @scale.warlord.exploit-die + @abilities.cha.mod'
+          }
+        }
+      },
+      {
+        healing: {
+          custom: {
+            formula: '@scaling * @scale.warlord.exploit-die + @abilities.wis.mod'
+          }
+        }
+      }
+    ]
+  ]) {
+    const actor = actorFixture({ leadershipAbility: 'wis' });
+    const flags = {
+      [MODULE_ID]: {
+        warlord: {
+          role: 'exploit-activity',
+          leadershipFormulaPaths: [dataPath]
+        }
+      }
+    };
+    const original = ownedActivity(actor, id, 'exploit-activity', {
+      flags,
+      ...staleData
+    });
+    const item = original.item;
+    let configureCalls = 0;
+    let nativeUseCalls = 0;
+    let recursiveResult;
+    const options = {
+      configureLeadershipItems: async () => {
+        configureCalls += 1;
+        const resolved = activity(id, 'exploit-activity', {
+          actor,
+          item,
+          flags,
+          ...configuredData,
+          async use() {
+            nativeUseCalls += 1;
+            recursiveResult = handleWarlordPreUse(this, options);
+          }
+        });
+        item.system.activities.set(id, resolved);
+      }
+    };
+
+    assert.equal(handleWarlordPreUse(original, options), false);
+    await flushTasks();
+    await flushTasks();
+
+    assert.equal(configureCalls, 1, `${id} configuration`);
+    assert.equal(nativeUseCalls, 1, `${id} native retry`);
+    assert.equal(recursiveResult, undefined, `${id} recursive native use`);
+  }
+});
+
+test('allows matching flagged Utility and Heal formulas to resolve natively', () => {
+  for (const [id, dataPath, data] of [
+    [
+      'utility-id',
+      'roll.formula',
+      { roll: { formula: 'max(1, @abilities.int.mod) * 5' } }
+    ],
+    [
+      'heal-id',
+      'healing.custom.formula',
+      {
+        healing: {
+          custom: {
+            formula: '@details.level + @abilities.int.mod'
+          }
+        }
+      }
+    ]
+  ]) {
+    const actor = actorFixture({ leadershipAbility: 'int' });
+    const flagged = ownedActivity(actor, id, 'exploit-activity', {
+      flags: {
+        [MODULE_ID]: {
+          warlord: {
+            role: 'exploit-activity',
+            leadershipFormulaPaths: [dataPath]
+          }
+        }
+      },
+      ...data
+    });
+
+    assert.equal(handleWarlordPreUse(flagged), undefined, id);
+  }
+});
+
 test('allows only the recursive retry while native Rallying Cry use is pending', async () => {
   const actor = actorFixture();
   const original = ownedActivity(actor, 'rally-id', 'rallying-cry', {
