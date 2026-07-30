@@ -173,8 +173,8 @@ function activityByRole(control, role) {
   );
 }
 
-test('Vessel migration v2 loads all nine canonical Items and retries a rejected cache', async () => {
-  assert.equal(VESSEL_MIGRATION_VERSION, 2);
+test('Vessel migration v3 retains all Stage 2 canonical Items and retries a rejected cache', async () => {
+  assert.equal(VESSEL_MIGRATION_VERSION, 3);
   const ids = [
     vesselSource._id,
     mantleSource._id,
@@ -216,7 +216,7 @@ test('Vessel migration v2 loads all nine canonical Items and retries a rejected 
   assert.equal(calls.length, callsAfterSuccess);
 });
 
-test('v2 creates the determinable missing subclass control and preserves Archon resource presentation and spent use', async () => {
+test('v3 creates the determinable missing subclass control and preserves Archon resource presentation and spent use', async () => {
   const resource = item({
     ...archonSource,
     name: 'My Archon Awakening',
@@ -258,10 +258,10 @@ test('v2 creates the determinable missing subclass control and preserves Archon 
     resource.system.activities.get('CustomResource01').name,
     'My Resource Note'
   );
-  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 2);
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 3);
 });
 
-test('v2 creates a level-3 subclass control even when the legacy Archon resource is missing', async () => {
+test('v3 creates a level-3 subclass control even when the legacy Archon resource is missing', async () => {
   const target = actor({
     subclass: 'the-fallen',
     archon: null
@@ -276,7 +276,7 @@ test('v2 creates a level-3 subclass control even when the legacy Archon resource
   ));
 });
 
-test('v2 repairs all module control mechanics while preserving custom presentation and unrelated activities', async () => {
+test('v3 repairs all module control mechanics while preserving custom presentation and unrelated activities', async () => {
   const broken = structuredClone(controlSources['the-cursed']);
   broken.name = 'My Cursed Shape';
   broken.img = 'icons/custom-shape.webp';
@@ -324,7 +324,7 @@ test('v2 repairs all module control mechanics while preserving custom presentati
   assert.equal(migrated.system.activities.get('CustomActivity01').name, 'User Activity');
 });
 
-test('v2 records no flag after a partial control failure and repairs cleanly on retry', async () => {
+test('v3 records no flag after a partial control failure and repairs cleanly on retry', async () => {
   const broken = item(controlSources['the-cursed']);
   broken.system.activities.delete('hbrArcEquipCfg01');
   const target = actor({ control: broken });
@@ -345,7 +345,7 @@ test('v2 records no flag after a partial control failure and repairs cleanly on 
   assert.equal(await migrateVesselActor(target, {
     loadSourceItems: async () => sourceItems()
   }), true);
-  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 2);
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 3);
   const operations = target.operations.length + broken.operations.length;
   assert.equal(await migrateVesselActor(target, {
     loadSourceItems: async () => {

@@ -9,6 +9,7 @@ import {
   VESSEL_MIGRATION_VERSION
 } from './constants.mjs';
 import {
+  STAGE3_ACTIVITY_ROLES,
   getAutomationRole,
   getVesselLevel,
   getVesselSubclassIdentifier
@@ -46,6 +47,26 @@ const ARCHON_ACTIVITY_FIELDS = [
 ];
 
 let sourceItemsPromise;
+let stage3SourceItemsPromise;
+
+const STAGE3_CLASS_SOURCE_IDS = Object.freeze([
+  'hbrvesLGlYzPTrpS',
+  'hbrvesQdu3j2S7ev',
+  'hbrFalCondemn001',
+  'hbrveshZhemFHFD0'
+]);
+const STAGE3_ASPECT_SOURCE_IDS = Object.freeze([
+  'oUmkQMBtbkjpGzhL',
+  'CquoRI5JHwQVMxh2',
+  'mb56s5afeKP0P5xx',
+  'CpYrFMC1h6nw0fkk',
+  'IXh8m5czq8ak3Iw2',
+  'R1Is4N2JEStH8LOs',
+  'oNQaG7C5qlSyRLve',
+  'wPQPAvQF3hX7DncV',
+  'u1069fpl73SdiBic',
+  'r81LpnSWinmglc4u'
+]);
 
 function documents(collection) {
   if (!collection) return [];
@@ -209,6 +230,111 @@ function repairArchonActivity(current, canonical) {
   repaired.flags[MODULE_ID].vessel.role =
     source.flags[MODULE_ID].vessel.role;
   return repaired;
+}
+
+const STAGE3_ACTIVITY_FIELDS = [
+  ...ARCHON_ACTIVITY_FIELDS,
+  'attack',
+  'damage',
+  'healing',
+  'save'
+];
+
+function repairStage3Activity(current, canonical) {
+  if (!current) return objectData(canonical);
+  const existing = objectData(current);
+  const source = objectData(canonical);
+  const repaired = mergeMissing(existing, source);
+  repaired._id = existing._id ?? source._id;
+  for (const field of STAGE3_ACTIVITY_FIELDS) {
+    if (Object.hasOwn(source, field)) {
+      repaired[field] = structuredClone(source[field]);
+    } else {
+      delete repaired[field];
+    }
+  }
+  repaired.uses = mergeMissing(existing.uses, source.uses);
+  repaired.flags ??= {};
+  repaired.flags[MODULE_ID] ??= {};
+  repaired.flags[MODULE_ID].vessel ??= {};
+  repaired.flags[MODULE_ID].vessel.role =
+    source.flags[MODULE_ID].vessel.role;
+  return repaired;
+}
+
+function isStage3Effect(effect) {
+  const flags = effect?.flags?.[MODULE_ID]?.vessel;
+  return Boolean(
+    flags?.stage3Source
+    || (
+      flags?.role === AUTOMATION_ROLES.ARCHON_FORM_EFFECT
+      && flags?.source
+    )
+  );
+}
+
+function repairStage3Effect(current, canonical) {
+  if (!current) {
+    const created = objectData(canonical);
+    delete created._key;
+    return created;
+  }
+  const existing = objectData(current);
+  const source = objectData(canonical);
+  const repaired = mergeMissing(existing, source);
+  repaired._id = existing._id ?? source._id;
+  repaired.type = source.type;
+  repaired.transfer = source.transfer;
+  repaired.disabled = source.disabled;
+  repaired.changes = structuredClone(source.changes);
+  repaired.duration = structuredClone(source.duration);
+  repaired.statuses = structuredClone(source.statuses);
+  repaired.flags ??= {};
+  repaired.flags[MODULE_ID] = structuredClone(source.flags?.[MODULE_ID] ?? {});
+  delete repaired._key;
+  return repaired;
+}
+
+async function migrateStage3Item(item, canonical) {
+  const sourceActivities = documents(canonical?.system?.activities).filter(
+    activity => STAGE3_ACTIVITY_ROLES.has(getAutomationRole(activity))
+  );
+  for (const source of sourceActivities) {
+    const current = documents(item.system?.activities).find(activity =>
+      documentId(activity) === documentId(source)
+        || getAutomationRole(activity) === getAutomationRole(source)
+    );
+    const repaired = repairStage3Activity(current, source);
+    if (!current || !sameData(objectData(current), repaired)) {
+      await item.update({
+        [`system.activities.${documentId(current) ?? documentId(source)}`]: repaired
+      });
+    }
+  }
+
+  const sourceEffects = documents(canonical?.effects).filter(isStage3Effect);
+  for (const source of sourceEffects) {
+    const sourceFlags = source.flags?.[MODULE_ID]?.vessel ?? {};
+    const current = documents(item.effects).find(effect => {
+      const currentFlags = effect.flags?.[MODULE_ID]?.vessel ?? {};
+      return documentId(effect) === documentId(source)
+        || (
+          currentFlags.role === sourceFlags.role
+          && currentFlags.source === sourceFlags.source
+          && currentFlags.stage3Source === sourceFlags.stage3Source
+        );
+    });
+    const repaired = repairStage3Effect(current, source);
+    if (!current) {
+      await item.createEmbeddedDocuments(
+        'ActiveEffect',
+        [repaired],
+        {keepId: true}
+      );
+    } else if (!sameData(objectData(current), repaired)) {
+      await item.updateEmbeddedDocuments('ActiveEffect', [repaired]);
+    }
+  }
 }
 
 async function migrateArchonResource(item, canonical) {
@@ -439,8 +565,37 @@ export async function loadVesselSourceItems({
   }
 }
 
+export async function loadStage3SourceItems({
+  packs = globalThis.game?.packs
+} = {}) {
+  if (stage3SourceItemsPromise) return stage3SourceItemsPromise;
+  const request = (async () => {
+    const classPack = packs?.get?.(`${MODULE_ID}.homebrew-classes`);
+    const aspectPack = packs?.get?.(`${MODULE_ID}.vessel-aspects`);
+    if (!classPack || !aspectPack) {
+      throw new Error('The Vessel Stage 3 compendiums are unavailable.');
+    }
+    const sources = await Promise.all([
+      ...STAGE3_CLASS_SOURCE_IDS.map(id => classPack.getDocument(id)),
+      ...STAGE3_ASPECT_SOURCE_IDS.map(id => aspectPack.getDocument(id))
+    ]);
+    if (sources.some(document => !document)) {
+      throw new Error('The Vessel Stage 3 compendiums are missing migration sources.');
+    }
+    return new Map(sources.map(source => [identifier(source), source]));
+  })();
+  stage3SourceItemsPromise = request;
+  try {
+    return await request;
+  } catch (error) {
+    if (stage3SourceItemsPromise === request) stage3SourceItemsPromise = undefined;
+    throw error;
+  }
+}
+
 export async function migrateVesselActor(actor, {
-  loadSourceItems = loadVesselSourceItems
+  loadSourceItems = loadVesselSourceItems,
+  loadStage3Items = loadStage3SourceItems
 } = {}) {
   if (!actor?.isOwner) {
     throw new Error('You do not have permission to migrate this Vessel.');
@@ -484,6 +639,57 @@ export async function migrateVesselActor(actor, {
   for (const item of controls) {
     const controlSubclass = archonControlSubclass(item);
     await migrateArchonControl(item, source.controls?.[controlSubclass]);
+  }
+
+  const stage3Owned = items.filter(item =>
+    STAGE3_ACTIVITY_ROLES.has(getAutomationRole(item))
+      || [
+        'cataclysmic-eruption',
+        'divine-wrath',
+        'condemnation',
+        'drain-vitality',
+        'aether-wings',
+        'opalescent-armor',
+        'perilous-visage',
+        'otherworldly-maw',
+        'primordial-bulwark',
+        'twilight-steps',
+        'shimmering-lance',
+        'dazzling-lance',
+        'sundering-strike',
+        'vexing-strike'
+      ].includes(identifier(item))
+  );
+  const needsCondemnation = subclass === 'the-fallen'
+    && getVesselLevel(actor) >= 6
+    && !items.some(item => identifier(item) === 'condemnation');
+  if (stage3Owned.length || needsCondemnation) {
+    const stage3Sources = await loadStage3Items();
+    if (needsCondemnation) {
+      const canonical = stage3Sources.get('condemnation');
+      if (!canonical) {
+        throw new Error(
+          'The Vessel Stage 3 compendiums are missing condemnation.'
+        );
+      }
+      const created = await actor.createEmbeddedDocuments(
+        'Item',
+        [ownedItemSource(canonical)],
+        {keepId: true}
+      );
+      if (!created?.[0]) {
+        throw new Error('Foundry did not create the missing Condemnation Item.');
+      }
+    }
+    for (const item of stage3Owned) {
+      const canonical = stage3Sources.get(identifier(item));
+      if (!canonical) {
+        throw new Error(
+          `The Vessel Stage 3 compendiums are missing ${identifier(item)}.`
+        );
+      }
+      await migrateStage3Item(item, canonical);
+    }
   }
 
   await actor.setFlag(

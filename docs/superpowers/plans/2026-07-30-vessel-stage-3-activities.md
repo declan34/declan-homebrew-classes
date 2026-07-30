@@ -651,7 +651,7 @@ git -c commit.gpgSign=false commit -m \
   `vessel-archon-forms`; Stage 2 migration version 2.
 - Produces idempotent migration version 3.
 
-- [ ] **Step 1: Write failing migration tests**
+- [x] **Step 1: Write failing migration tests**
 
 Construct actors with legacy owned Aspects and subclass Items. Assert migration:
 
@@ -668,21 +668,21 @@ Assert unrelated activities/effects survive, activity use state survives,
 failure does not record version 3, retries succeed, and a second successful run
 does no writes.
 
-- [ ] **Step 2: Verify failure**
+- [x] **Step 2: Verify failure**
 
 ```bash
 node --test tests/vessel-stage3-migration.test.mjs \
   tests/vessel-archon-migration.test.mjs
 ```
 
-- [ ] **Step 3: Add selective version-3 repair**
+- [x] **Step 3: Add selective version-3 repair**
 
 Raise `VESSEL_MIGRATION_VERSION` to `3`. Merge only module-owned activities,
 effects, fixed formulas, and module flags by stable ID/role. Load all canonical
 documents before the first owned-Item update so missing packs cannot create a
 partial migration. Reuse Stage 2's preservation and completion semantics.
 
-- [ ] **Step 4: Run all Vessel migration tests**
+- [x] **Step 4: Run all Vessel migration tests**
 
 ```bash
 node --test tests/vessel-migration.test.mjs \
@@ -690,7 +690,7 @@ node --test tests/vessel-migration.test.mjs \
   tests/vessel-stage3-migration.test.mjs
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/vessel/constants.mjs scripts/vessel/migration.mjs \
