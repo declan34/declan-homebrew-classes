@@ -496,7 +496,7 @@ git -c commit.gpgSign=false commit -m \
   `spells.vessel.value`, and Stage 3 role flags.
 - Produces all remaining Aspect activities and source-linked effects.
 
-- [ ] **Step 1: Write failing inventory and schema tests**
+- [x] **Step 1: Write failing inventory and schema tests**
 
 Assert exact mechanics:
 
@@ -526,13 +526,13 @@ assertActivity(vexing, 'vexing-strike', {
 });
 ```
 
-- [ ] **Step 2: Verify failure**
+- [x] **Step 2: Verify failure**
 
 ```bash
 node --test tests/vessel-stage3-active-aspects.test.mjs
 ```
 
-- [ ] **Step 3: Add activities and source-linked markers**
+- [x] **Step 3: Add activities and source-linked markers**
 
 Use separate native activities for the triggering attack and optional rider.
 Dazzling Eruption consumes one Vessel slot through a normal attribute
@@ -547,14 +547,14 @@ Perilous Visage applies a one-minute Frightened effect; repeat saves and
 line-of-sight disadvantage remain on its card. Sundering and Vexing apply
 one-round descriptive markers without patching spell or attack workflows.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 ```bash
 node --test tests/vessel-stage3-active-aspects.test.mjs \
   tests/vessel-stage3-rules.test.mjs
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add aspects-src tests/vessel-stage3-active-aspects.test.mjs

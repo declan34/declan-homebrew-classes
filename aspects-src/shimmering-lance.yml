@@ -24,7 +24,29 @@ system:
     repeatable: false
   properties: []
   requirements: 2nd-level Vessel
-  activities: {}
+  activities:
+    ShimmerLanceAct1:
+      _id: ShimmerLanceAct1
+      type: attack
+      name: Shimmering Lance
+      sort: 0
+      activation: {type: action, value: null, override: false, condition: As part of the Attack action.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Make a ranged spell attack as an Iridescent Strike.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: shimmering-lance}
+      range: {value: '30', long: '90', override: false, units: ft, special: ''}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: ''}, override: false, prompt: true}
+      uses: {spent: 0, recovery: [], max: ''}
+      attack: {critical: {threshold: null}, flat: false, type: {value: ranged, classification: spell}, ability: cha, bonus: ''}
+      damage:
+        critical: {bonus: ''}
+        includeBase: true
+        parts:
+          - {number: null, denomination: 0, bonus: '', types: [radiant], custom: {enabled: true, formula: '@scale.vessel.iridescent-strike + @mod'}, scaling: {number: 1}}
   enchant: {}
   identifier: shimmering-lance
 effects: []

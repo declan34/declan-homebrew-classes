@@ -24,7 +24,24 @@ system:
     repeatable: false
   properties: []
   requirements: 14th-level Vessel
-  activities: {}
+  activities:
+    TwilightStepAct1:
+      _id: TwilightStepAct1
+      type: utility
+      name: Twilight Steps
+      sort: 0
+      activation: {type: bonus, value: null, override: false, condition: ''}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Cast the modified slot-free spectral passage. It lasts until the end of this turn and does not require concentration; resolve its movement through Foundry's normal controls.}
+      duration: {units: turn, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: twilight-steps}
+      range: {value: null, override: false, units: self, special: ''}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '', type: self, special: ''}, override: false, prompt: false}
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
   enchant: {}
   identifier: twilight-steps
 effects: []
