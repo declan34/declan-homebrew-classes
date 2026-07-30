@@ -164,6 +164,91 @@ test('leaves a failed Leadership choice uncommitted and allows a clean retry', a
   assert.equal(rallyActivity.update.roll.formula, '@abilities.wis.mod');
 });
 
+test('waits for delayed sibling updates before allowing a failed choice retry', async () => {
+  const fastActivity = activity('fast-rally', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  const slowActivity = activity('slow-rally', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  let releaseSlowUpdate;
+  const slowUpdatePending = new Promise(resolve => { releaseSlowUpdate = resolve; });
+  let fastAttempts = 0;
+  let slowAttempts = 0;
+
+  function applyChanges(target, changes) {
+    for (const [path, value] of Object.entries(changes)) {
+      const [, , id, ...activityPath] = path.split('.');
+      assert.equal(id, target.id);
+      setPath(target, activityPath.join('.'), value);
+    }
+  }
+
+  const fastItem = {
+    system: { activities: new Map([[fastActivity.id, fastActivity]]) },
+    async update(changes) {
+      fastAttempts += 1;
+      if (fastAttempts === 1) throw new Error('prompt sibling failure');
+      applyChanges(fastActivity, changes);
+    }
+  };
+  const slowItem = {
+    system: { activities: new Map([[slowActivity.id, slowActivity]]) },
+    async update(changes) {
+      slowAttempts += 1;
+      if (slowAttempts === 1) await slowUpdatePending;
+      applyChanges(slowActivity, changes);
+    }
+  };
+  const target = actor({ items: [fastItem, slowItem] });
+  const promptChoices = ['mentor', 'strategist'];
+  let promptCalls = 0;
+  const prompt = async () => promptChoices[promptCalls++];
+
+  const failedChoice = chooseLeadershipAbility(target, { prompt });
+  const failedOutcome = failedChoice.then(
+    value => ({ value }),
+    error => ({ error })
+  );
+  await new Promise(resolve => setImmediate(resolve));
+
+  const earlyRetry = chooseLeadershipAbility(target, { prompt });
+  const earlyRetryOutcome = earlyRetry.then(
+    value => ({ value }),
+    error => ({ error })
+  );
+  await new Promise(resolve => setImmediate(resolve));
+
+  const beforeSlowSettles = {
+    fastAttempts,
+    slowAttempts,
+    promptCalls,
+    committedFlags: target.setFlagCalls.length
+  };
+  releaseSlowUpdate();
+  const [failedResult, earlyRetryResult] = await Promise.all([
+    failedOutcome,
+    earlyRetryOutcome
+  ]);
+
+  assert.deepEqual(beforeSlowSettles, {
+    fastAttempts: 1,
+    slowAttempts: 1,
+    promptCalls: 1,
+    committedFlags: 0
+  });
+  assert.match(failedResult.error?.message, /prompt sibling failure/);
+  assert.match(earlyRetryResult.error?.message, /prompt sibling failure/);
+  assert.equal(target.getFlag(MODULE_ID, 'warlord.leadershipAbility'), undefined);
+
+  assert.equal(await chooseLeadershipAbility(target, { prompt }), 'int');
+  assert.equal(fastAttempts, 2);
+  assert.equal(slowAttempts, 2);
+  assert.equal(fastActivity.roll.formula, '@abilities.int.mod');
+  assert.equal(slowActivity.roll.formula, '@abilities.int.mod');
+  assert.equal(target.getFlag(MODULE_ID, 'warlord.leadershipAbility'), 'int');
+});
+
 test('makes dependent Leadership resolution wait for an in-flight choice change', async () => {
   const target = actor({ leadershipAbility: 'cha' });
   let resolvePrompt;

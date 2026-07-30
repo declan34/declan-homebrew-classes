@@ -66,7 +66,10 @@ async function configureLeadershipItemsNow(actor, ability) {
     return true;
   });
 
-  return (await Promise.all(updates)).some(Boolean);
+  const results = await Promise.allSettled(updates);
+  const failure = results.find(result => result.status === 'rejected');
+  if (failure) throw failure.reason;
+  return results.some(result => result.value);
 }
 
 export async function configureLeadershipItems(actor, ability) {
