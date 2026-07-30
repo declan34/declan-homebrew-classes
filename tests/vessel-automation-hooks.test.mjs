@@ -341,6 +341,38 @@ test('only the document-hook initiating client reconciles create update and dele
   assert.equal(reconciledB.length, 0);
 });
 
+test('the initiating client reconciles Stage 3 effects after Mantle and Archon state changes', async () => {
+  const registry = hookRegistry();
+  const reconciled = [];
+  const target = actor({active: true});
+  registerVesselAutomationHooks(registry.hooks, {
+    currentUserId: () => OWNER_USER_A_ID,
+    reconcileActor: async usedActor => { reconciled.push(usedActor); }
+  });
+
+  registry.on.get('updateActor')(
+    target,
+    {flags: {[MODULE_ID]: {vessel: {mantle: {active: true}}}}},
+    {},
+    OWNER_USER_A_ID
+  );
+  registry.on.get('updateActor')(
+    target,
+    {flags: {[MODULE_ID]: {vessel: {archon: {state: {active: false}}}}}},
+    {},
+    OWNER_USER_A_ID
+  );
+  registry.on.get('updateActor')(
+    target,
+    {flags: {[MODULE_ID]: {vessel: {mantle: {active: false}}}}},
+    {},
+    OWNER_USER_B_ID
+  );
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.deepEqual(reconciled, [target, target]);
+});
+
 test('responsible ready user prefers the first active GM by id', () => {
   const target = actor();
   target.testUserPermission = user =>

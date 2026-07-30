@@ -38,7 +38,7 @@ system:
         scaling: {allowed: false, max: ''}
         spellSlot: true
         targets: [{type: itemUses, target: '', value: '1', scaling: {}}]
-      description: {chatFlavor: A 15-foot-diameter, 60-foot-high pillar erupts from the chosen surface. The damage type is your saved Elemental Affinity.}
+      description: {chatFlavor: 'A 15-foot-diameter, 60-foot-high pillar erupts from the chosen surface. The damage type is your saved Elemental Affinity.'}
       duration: {units: inst, concentration: false, override: false}
       effects: []
       flags:

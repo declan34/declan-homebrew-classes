@@ -77,6 +77,11 @@ test('each Vessel subclass grants its dedicated Archon Form control at level 3',
     assert.equal(control._id, expected.id, subclass);
     assert.match(control._id, /^[A-Za-z0-9]{16}$/, subclass);
     assert.equal(control.system.identifier, `${subclass}-archon-form-control`);
+    assert.deepEqual(
+      Object.keys(control.system.description).sort(),
+      ['chat', 'value'],
+      `${subclass} description schema`
+    );
     assert.ok(
       advancement.configuration.items.some(entry =>
         entry.uuid === `${ITEM_PREFIX}${expected.id}` && entry.optional === false

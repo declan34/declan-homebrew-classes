@@ -45,6 +45,12 @@ const archonControlSources = [
   ),
   'utf8'
 )));
+const stage3FeatureSources = [
+  '../src/vessel/subclass-features/the-cataclysm/cataclysmic-eruption.yml',
+  '../src/vessel/subclass-features/the-fallen/divine-wrath.yml',
+  '../src/vessel/subclass-features/the-fallen/condemnation.yml',
+  '../src/vessel/subclass-features/the-formless/drain-vitality.yml'
+].map(path => yaml.load(readFileSync(new URL(path, import.meta.url), 'utf8')));
 
 function findYamlFiles(directory) {
   const files = [];
@@ -106,6 +112,22 @@ test('committed compiled pack preserves Vessel automation source structures', as
         compiledControl.flags?.['declan-homebrew-classes']?.vessel?.archon,
         control.flags?.['declan-homebrew-classes']?.vessel?.archon,
         `${control.system.identifier} profile metadata`
+      );
+    }
+
+    for (const source of stage3FeatureSources) {
+      const compiled = documents.find(document => document?._id === source._id);
+      assert.ok(compiled, source.system.identifier);
+      assert.deepEqual(
+        compiled.system.activities,
+        source.system.activities,
+        `${source.system.identifier} activities`
+      );
+      assert.deepEqual(compiled.effects, source.effects, `${source.system.identifier} effects`);
+      assert.deepEqual(
+        compiled.flags?.['declan-homebrew-classes'],
+        source.flags?.['declan-homebrew-classes'],
+        `${source.system.identifier} module flags`
       );
     }
   } finally {

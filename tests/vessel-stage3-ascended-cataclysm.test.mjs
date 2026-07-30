@@ -62,6 +62,7 @@ test('Cataclysmic Eruption uses a native save, area, damage, and feature use', (
   assert.equal(eruption.target.template.size, '7.5');
   assert.equal(eruption.damage.onSave, 'half');
   assert.equal(eruption.damage.parts[0].custom.formula, '9d6');
+  assert.deepEqual(Object.keys(eruption.description), ['chatFlavor']);
   assert.deepEqual(eruption.consumption.targets, [
     { type: 'itemUses', target: '', value: '1', scaling: {} }
   ]);

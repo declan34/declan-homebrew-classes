@@ -862,11 +862,19 @@ export function registerVesselAutomationHooks(hooks, {
     })().catch(reportError);
   });
   hooks.on('updateActor', (actor, changes, _options, userId) => {
-    if (userId === currentUserId()
-      && changes?.flags?.[MODULE_ID]?.vessel?.archon?.state?.active) {
+    const vesselChanges = changes?.flags?.[MODULE_ID]?.vessel;
+    const archonStateChanged = Object.hasOwn(vesselChanges?.archon ?? {}, 'state');
+    const mantleStateChanged = Object.hasOwn(vesselChanges ?? {}, 'mantle');
+    if (
+      userId === currentUserId()
+      && (archonStateChanged || mantleStateChanged)
+    ) {
       void (async () => {
-        const result = await finalizeCreatedArchon(actor, { finalizeArchon });
-        queueElderArchonReminder(actor, result, elderReminder);
+        if (vesselChanges?.archon?.state?.active) {
+          const result = await finalizeCreatedArchon(actor, { finalizeArchon });
+          queueElderArchonReminder(actor, result, elderReminder);
+        }
+        await reconcile(actor);
       })().catch(reportError);
     }
     queueReversionRulePrompt(actor, {

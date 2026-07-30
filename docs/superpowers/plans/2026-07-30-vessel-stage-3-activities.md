@@ -719,7 +719,7 @@ git -c commit.gpgSign=false commit -m \
 - Consumes: all Stage 3 source, scripts, and tests.
 - Produces three verified packs and a review-ready local feature branch.
 
-- [ ] **Step 1: Add copied-LevelDB parity tests**
+- [x] **Step 1: Add copied-LevelDB parity tests**
 
 Compare source and compiled documents by stable ID. For every Stage 3 document,
 assert equality of:
@@ -735,13 +735,13 @@ assert equality of:
 For Actor profiles, compare embedded Item activities and effects by embedded
 Item ID.
 
-- [ ] **Step 2: Update README**
+- [x] **Step 2: Update README**
 
 Document the Stage 3 native workflow, manual-adjudication boundary, available
 Archon/Aspect controls, and explicit lack of Midi-QOL dependency. State that
 teleports, pushes, swaps, and target restrictions remain player/GM adjudicated.
 
-- [ ] **Step 3: Compile all changed packs**
+- [x] **Step 3: Compile all changed packs**
 
 From `/Users/c7g6g8/Development/dnd5e-pdf-importer/emit`, run:
 
@@ -767,7 +767,7 @@ node -e 'import("@foundryvtt/foundryvtt-cli").then(async m => {
 
 Remove only `LOCK` files inside those three explicit pack directories.
 
-- [ ] **Step 4: Run source validators**
+- [x] **Step 4: Run source validators**
 
 ```bash
 node -e 'import("./verify.mjs").then(async m => {
@@ -792,7 +792,7 @@ vessel-archon-forms true 0
 vessel-aspects true 0
 ```
 
-- [ ] **Step 5: Run complete verification**
+- [x] **Step 5: Run complete verification**
 
 ```bash
 node --test tests/*.test.mjs
@@ -802,7 +802,7 @@ git status --short
 
 Require every test to pass and no unexpected file changes.
 
-- [ ] **Step 6: Commit compiled content and documentation**
+- [x] **Step 6: Commit compiled content and documentation**
 
 ```bash
 git add README.md packs tests docs/superpowers/plans/2026-07-30-vessel-stage-3-activities.md

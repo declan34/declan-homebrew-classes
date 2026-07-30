@@ -49,8 +49,25 @@ spell.
 
 Foundry remains responsible for activity consumption/refunds, transformation,
 reversion, attacks, saves, damage, healing, spells, and token replacement. The
-form profiles' Stage 3 attacks and traits are descriptive Items unless they
-already expose a native activity.
+module coordinates the class state around those public workflows without
+replacing them.
+
+### Stage 3 Archon and Aspect activities
+
+The Archon profiles expose native activities for their attacks, saves, damage,
+healing, temporary hit points, and limited-use features. The active Unsealed
+Aspects likewise provide native controls for their strikes, saves, damage,
+healing, durations, and recovery. Aether Wings, Opalescent Armor, and Primordial
+Bulwark apply and remove their module-owned effects automatically as Spirit
+Mantle and Archon Form change.
+
+The module prepares affinity and Iridescent damage choices, checks whether an
+activity requires Spirit Mantle or Archon Form, and prompts the player where a
+choice is required. Foundry's ordinary chat cards and activity workflows remain
+the source of truth. Teleports, forced movement, token swaps, target-specific
+restrictions, and adjustments based on damage already resolved remain explicit
+player/GM adjudication steps described on the activity. This automation has no
+Midi-QOL dependency.
 
 ## Install (for your DM)
 

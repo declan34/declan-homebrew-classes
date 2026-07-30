@@ -4,7 +4,7 @@ type: feat
 folder: WlkBzHy6spqIPVPU
 img: icons/svg/explosion.svg
 system:
-  description: {value: <p>Transform into the Archon Form matching your Elemental Affinity, extend its duration, or revert. Your free use is tracked by the Archon Form class feature.</p>, chat: ''}
+  description: {value: '<p>Transform into the Archon Form matching your Elemental Affinity, extend its duration, or revert. Your free use is tracked by the Archon Form class feature.</p>', chat: ''}
   source: {custom: '', rules: '2024', revision: 1, license: proprietary, book: ''}
   uses: {max: '', spent: 0, recovery: []}
   type: {value: class, subtype: ''}
