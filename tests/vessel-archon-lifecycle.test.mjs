@@ -234,6 +234,7 @@ test('transform preparation stamps lifecycle state and unions languages', () => 
     source.flags[MODULE_ID].vessel.archon.state,
     state
   );
+  assert.equal(source.system.attributes.hp.temp, 12);
 });
 
 test('controlled transformation receives a one-hour expiry', () => {
@@ -244,6 +245,16 @@ test('controlled transformation receives a one-hour expiry', () => {
     payment: 'slot'
   });
   assert.equal(state.expiresAt, 3850);
+});
+
+test('transform preparation never replaces higher pre-existing temporary HP', () => {
+  const original = mockActor({ level: 6, temp: 30 });
+  const source = transformedSource();
+  source.system.attributes.hp.temp = 12;
+
+  prepareArchonTransformData(original, profile(), source, { now: 100 });
+
+  assert.equal(source.system.attributes.hp.temp, 30);
 });
 
 test('finalization activates Mantle, applies profile AC, and raises temp HP to its floor', async () => {

@@ -136,7 +136,10 @@ async function finalizeUnlocked(actor, {
   }
 
   await activateSpiritMantleUnlocked(actor, { sourceItem: mantle });
-  const floor = getArchonTempHP(actor);
+  const floor = Math.max(
+    getArchonTempHP(actor),
+    Number(state.tempHPBeforeTransform) || 0
+  );
   if (currentTempHP(actor) < floor) await setTempHP(actor, floor);
   return { handled: true, state: getArchonState(actor) };
 }
@@ -220,6 +223,13 @@ export function prepareArchonTransformData(
   setCustomLanguageValues(
     transformSource,
     [...customLanguages].sort((left, right) => left.localeCompare(right))
+  );
+  transformSource.system.attributes ??= {};
+  transformSource.system.attributes.hp ??= {};
+  transformSource.system.attributes.hp.temp = Math.max(
+    currentTempHP(originalActor),
+    getArchonTempHP(originalActor),
+    Number(transformSource.system.attributes.hp.temp) || 0
   );
 
   const startedAt = Number(now) || 0;
