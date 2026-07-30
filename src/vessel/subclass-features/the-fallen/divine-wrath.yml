@@ -25,7 +25,29 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    DivineWrathAct01:
+      _id: DivineWrathAct01
+      type: attack
+      name: Divine Wrath
+      sort: 0
+      activation: {type: action, value: null, override: false, condition: While Spirit Mantle is active.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: This generic control adds Charisma and radiant damage. Enter the chosen melee weapon damage die in Foundry's situational bonus field; the attack counts as an Iridescent Strike.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: divine-wrath}
+      range: {value: null, override: false, units: self, special: Chosen melee weapon reach}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: ''}, override: false, prompt: true}
+      uses: {spent: 0, recovery: [], max: ''}
+      attack: {critical: {threshold: null}, flat: false, type: {value: melee, classification: weapon}, ability: cha, bonus: ''}
+      damage:
+        critical: {bonus: ''}
+        includeBase: true
+        parts:
+          - {number: null, denomination: 0, bonus: '', types: [radiant], custom: {enabled: true, formula: '@mod'}, scaling: {number: 1}}
   enchant: {}
   identifier: divine-wrath
 effects: []

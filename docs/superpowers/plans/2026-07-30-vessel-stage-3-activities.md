@@ -255,7 +255,7 @@ git -c commit.gpgSign=false commit -m \
 - Produces roles `frenzy`, `infernal-drain`, `divine-wrath`, `divine-ward`,
   and `condemnation`.
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 Assert:
 
@@ -280,13 +280,13 @@ Assert the Fallen subclass grants Condemnation at level 6 and that the marker
 effect carries both `archon-form-effect` cleanup metadata and the source Item
 identifier.
 
-- [ ] **Step 2: Verify failure**
+- [x] **Step 2: Verify failure**
 
 ```bash
 node --test tests/vessel-stage3-cursed-fallen.test.mjs
 ```
 
-- [ ] **Step 3: Implement the native and adjudicated activities**
+- [x] **Step 3: Implement the native and adjudicated activities**
 
 Frenzy applies a one-round effect using public dnd5e advantage/grants-advantage
 changes confirmed from the installed dnd5e schema. Infernal Drain and Divine
@@ -295,14 +295,14 @@ Charisma melee attack with radiant damage and a situational weapon-die field;
 do not mutate an arbitrary weapon Item. Condemnation applies one visible,
 source-linked marker and explains movement and critical thresholds.
 
-- [ ] **Step 4: Run focused tests and validators**
+- [x] **Step 4: Run focused tests and validators**
 
 ```bash
 node --test tests/vessel-stage3-cursed-fallen.test.mjs \
   tests/vessel-archon-content.test.mjs
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add archon-src/cursed-archon.yml archon-src/fallen-archon.yml \

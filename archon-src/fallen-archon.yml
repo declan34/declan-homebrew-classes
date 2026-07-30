@@ -40,7 +40,24 @@ items:
     type: feat
     system:
       type: {value: monster, subtype: ''}
-      activities: {}
+      activities:
+        DivineWardAct001:
+          _id: DivineWardAct001
+          type: heal
+          name: Divine Ward
+          sort: 0
+          activation: {type: bonus, value: null, override: false, condition: ''}
+          consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+          description: {chatFlavor: Grant the target temporary hit points equal to your Charisma modifier for 1 minute.}
+          duration: {units: minute, concentration: false, override: false}
+          effects: []
+          flags:
+            declan-homebrew-classes:
+              vessel: {role: divine-ward}
+          range: {value: '30', override: false, units: ft, special: ''}
+          target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Creature you can see}, override: false, prompt: true}
+          uses: {spent: 0, recovery: [], max: ''}
+          healing: {number: null, denomination: null, bonus: '', types: [temphp], custom: {enabled: true, formula: '@abilities.cha.mod'}, scaling: {mode: '', number: null, formula: ''}}
       uses: {spent: 0, recovery: [], max: ''}
       description: {value: "<p>As a bonus action, the Archon can grant a creature it can see within 30 feet temporary hit points equal to your Charisma modifier, which last 1 minute.</p>", chat: ''}
       identifier: divine-ward
