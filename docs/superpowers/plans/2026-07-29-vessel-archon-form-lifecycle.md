@@ -67,7 +67,8 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
   verify each form's authoritative size, type, movement, senses, resistances,
   immunities, languages, skill proficiencies, AC bonus flag, and trait Items
   against the existing Vessel subclass text.
-- [ ] Add the nine `character` Actor YAML documents. Keep abilities and HP
+- [ ] Add the nine `npc` Actor YAML documents, matching dnd5e's canonical
+  transform-profile representation. Keep abilities and HP
   neutral because transform settings retain the Vessel's values. Encode only
   published profile facts; never invent missing speeds, senses, or defenses.
 - [ ] Store profile metadata under
