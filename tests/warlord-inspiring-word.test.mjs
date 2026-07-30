@@ -138,20 +138,28 @@ test('reports a missing native helper without spending the launcher item', async
   assert.equal(item.updateCalls.length, 0);
 });
 
-test('stops before either dialog when no Inspiring Word uses remain', async () => {
-  const selected = helper(6, 'cha');
-  const { launcher } = fixture({ uses: 0, helpers: [selected] });
-  let leadershipCalls = 0;
-  let hitDieCalls = 0;
+test('stops before either dialog without a positive numeric Inspiring Word use value', async () => {
+  for (const [label, uses] of [
+    ['zero', 0],
+    ['missing', undefined],
+    ['nonnumeric', 'available']
+  ]) {
+    const selected = helper(6, 'cha');
+    const { launcher } = fixture({ uses: 1, helpers: [selected] });
+    if (uses === undefined) delete launcher.item.system.uses.value;
+    else launcher.item.system.uses.value = uses;
+    let leadershipCalls = 0;
+    let hitDieCalls = 0;
 
-  await useInspiringWord(launcher, {
-    ensureLeadershipAbility: async () => { leadershipCalls += 1; return 'cha'; },
-    chooseHitDie: async () => { hitDieCalls += 1; return 6; }
-  });
+    await useInspiringWord(launcher, {
+      ensureLeadershipAbility: async () => { leadershipCalls += 1; return 'cha'; },
+      chooseHitDie: async () => { hitDieCalls += 1; return 6; }
+    });
 
-  assert.equal(leadershipCalls, 0);
-  assert.equal(hitDieCalls, 0);
-  assert.equal(selected.useCalls, 0);
+    assert.equal(leadershipCalls, 0, `${label} uses must not prompt for Leadership`);
+    assert.equal(hitDieCalls, 0, `${label} uses must not prompt for Hit Die`);
+    assert.equal(selected.useCalls, 0, `${label} uses must not invoke a helper`);
+  }
 });
 
 test('surfaces a native helper error without retrying it', async () => {

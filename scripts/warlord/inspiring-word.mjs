@@ -72,7 +72,7 @@ export async function useInspiringWord(activity, {
   if (pending) return pending;
 
   const tracked = (async () => {
-    if (Number(item.system?.uses?.value) <= 0) return;
+    if (!(Number(item.system?.uses?.value) > 0)) return;
 
     const ability = await ensureLeadershipAbility(actor, leadershipOptions);
     if (!ability) return;
