@@ -32,6 +32,17 @@ system:
   identifier: archon-form
 effects: []
 flags:
+  declan-homebrew-classes:
+    vessel:
+      role: archon-resource
+      archon:
+        controls:
+          - hbrAscCtrlForm01
+          - hbrCatCtrlForm01
+          - hbrCurCtrlForm01
+          - hbrFalCtrlForm01
+          - hbrForCtrlForm01
+          - hbrTriCtrlForm01
   dnd5e:
     riders:
       activity: []

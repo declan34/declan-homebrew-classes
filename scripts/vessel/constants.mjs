@@ -6,9 +6,17 @@ export const VESSEL_MIGRATION_FLAG = 'vessel.migrationVersion';
 export const VESSEL_MIGRATION_VERSION = 1;
 export const VESSEL_ITEM_ID = 'hbrves4NAQOTE286';
 export const SPIRIT_MANTLE_ITEM_ID = 'hbrvespnPw2Da1c3';
+export const ARCHON_FORM_ITEM_ID = 'hbrvesnmpXyN7pCZ';
+export const ARCHON_PROFILE_PACK =
+  'declan-homebrew-classes.vessel-archon-forms';
 
 export const AUTOMATION_ROLES = Object.freeze({
   MANTLE_TOGGLE: 'mantle-toggle',
   IRIDESCENT_STRIKE: 'iridescent-strike',
-  MANTLE_AC: 'mantle-ac'
+  MANTLE_AC: 'mantle-ac',
+  ARCHON_RESOURCE: 'archon-resource',
+  ARCHON_TRANSFORM_FREE: 'archon-transform-free',
+  ARCHON_TRANSFORM_SLOT: 'archon-transform-slot',
+  ARCHON_EXTEND: 'archon-extend',
+  ARCHON_REVERT: 'archon-revert'
 });

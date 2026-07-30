@@ -22,6 +22,8 @@ system:
         items:
           - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesQew98IFyCJ
             optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrAscCtrlForm01
+            optional: false
         optional: false
         spell: null
       value: {}

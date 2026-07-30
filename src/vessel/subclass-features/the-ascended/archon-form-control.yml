@@ -1,0 +1,164 @@
+_id: hbrAscCtrlForm01
+name: Ascended Archon Form
+type: feat
+folder: wtdIJdEpCr54EqxW
+img: icons/svg/angel.svg
+system:
+  description:
+    value: <p>Use these activities to transform into your Ascended Archon Form, extend its duration, or revert. Your free use is tracked by the Archon Form class feature.</p>
+    chat: ''
+  source: {custom: '', rules: '2024', revision: 1, license: proprietary, book: ''}
+  uses: {max: '', spent: 0, recovery: []}
+  type: {value: class, subtype: ''}
+  prerequisites: {level: 3, repeatable: false}
+  properties: []
+  requirements: Vessel (The Ascended)
+  activities:
+    hbrArcFreeForm01:
+      _id: hbrArcFreeForm01
+      type: transform
+      name: Transform (Free Use)
+      sort: 0
+      activation: {type: bonus, value: null, override: false, condition: ''}
+      consumption:
+        scaling: {allowed: false, max: ''}
+        spellSlot: true
+        targets:
+          - {type: itemUses, target: '', value: '1', scaling: {}}
+      description: {chatFlavor: Transform using the free Archon Form use.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: archon-transform-free}
+      range: {override: false, units: self, special: ''}
+      target:
+        template: {contiguous: false, units: ft, type: ''}
+        affects: {choice: false, count: '', type: self, special: ''}
+        override: false
+        prompt: true
+      uses: {spent: 0, recovery: [], max: ''}
+      profiles:
+        - _id: hbrAscProfile001
+          cr: ''
+          level: {min: null, max: null}
+          movement: []
+          name: Ascended Archon
+          sizes: []
+          types: []
+          uuid: Compendium.declan-homebrew-classes.vessel-archon-forms.Actor.hbrAscArchon0001
+      settings: &archonSettings
+        effects: [origin, otherOrigin, background, class, feat, spell]
+        keep: [physical, mental, gearProf, class, feats, spells, bio, hp]
+        merge: [saves, skills]
+        minimumAC: ''
+        other: []
+        preset: null
+        spellLists: []
+        tempFormula: 2 * @classes.vessel.levels
+        transformTokens: true
+      transform: {customize: true, mode: '', preset: ''}
+    hbrArcSlotForm01:
+      _id: hbrArcSlotForm01
+      type: transform
+      name: Transform (Vessel Slot)
+      sort: 100000
+      activation: {type: bonus, value: null, override: false, condition: ''}
+      consumption:
+        scaling: {allowed: false, max: ''}
+        spellSlot: true
+        targets:
+          - {type: attribute, target: spells.vessel.value, value: '1', scaling: {}}
+      description: {chatFlavor: Transform by expending one Vessel Magic spell slot.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: archon-transform-slot}
+      range: {override: false, units: self, special: ''}
+      target:
+        template: {contiguous: false, units: ft, type: ''}
+        affects: {choice: false, count: '', type: self, special: ''}
+        override: false
+        prompt: true
+      uses: {spent: 0, recovery: [], max: ''}
+      profiles:
+        - _id: hbrAscProfile001
+          cr: ''
+          level: {min: null, max: null}
+          movement: []
+          name: Ascended Archon
+          sizes: []
+          types: []
+          uuid: Compendium.declan-homebrew-classes.vessel-archon-forms.Actor.hbrAscArchon0001
+      settings: *archonSettings
+      transform: {customize: true, mode: '', preset: ''}
+    hbrArcExtend0001:
+      _id: hbrArcExtend0001
+      type: utility
+      name: Extend 10 Minutes
+      sort: 200000
+      activation: {type: special, value: null, override: false, condition: While transformed}
+      consumption:
+        scaling: {allowed: false, max: ''}
+        spellSlot: true
+        targets:
+          - {type: attribute, target: spells.vessel.value, value: '1', scaling: {}}
+      description: {chatFlavor: Extend your Archon Form by 10 minutes.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: archon-extend}
+      range: {override: false, units: self, special: ''}
+      target:
+        template: {contiguous: false, units: ft, type: ''}
+        affects: {choice: false, count: '', type: self, special: ''}
+        override: false
+        prompt: false
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
+    hbrArcRevert0001:
+      _id: hbrArcRevert0001
+      type: utility
+      name: Revert
+      sort: 300000
+      activation: {type: bonus, value: null, override: false, condition: While transformed}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Revert to your original form.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: archon-revert}
+      range: {override: false, units: self, special: ''}
+      target:
+        template: {contiguous: false, units: ft, type: ''}
+        affects: {choice: false, count: '', type: self, special: ''}
+        override: false
+        prompt: false
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
+  enchant: {}
+  identifier: the-ascended-archon-form-control
+effects: []
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon:
+        role: archon-control
+        subclass: the-ascended
+        profiles: [ascended]
+  dnd5e: {riders: {activity: [], effect: []}}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership: {default: 0}
+_key: '!items!hbrAscCtrlForm01'
