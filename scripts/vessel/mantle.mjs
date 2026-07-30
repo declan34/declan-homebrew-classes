@@ -1,4 +1,5 @@
 import {
+  ARCHON_STATE_FLAG,
   AUTOMATION_ROLES,
   MANTLE_ACTIVE_FLAG,
   MODULE_ID
@@ -7,8 +8,9 @@ import {
   getAutomationRole,
   isEtherealArmorEligible
 } from './rules.mjs';
-
-const actorOperations = new WeakMap();
+import {
+  serializeActorOperation
+} from './operations.mjs';
 
 function mantleEffects(actor) {
   return Array.from(actor?.effects ?? []).filter(
@@ -16,25 +18,33 @@ function mantleEffects(actor) {
   );
 }
 
-function requireOwner(actor) {
-  if (!actor?.isOwner) {
-    throw new Error('You do not have permission to update this Vessel.');
-  }
+function rawFlag(actor, key) {
+  const segments = key.split('.');
+  let value = actor?.flags?.[MODULE_ID];
+  for (const segment of segments) value = value?.[segment];
+  return value;
 }
 
-async function serializeActorOperation(actor, operation) {
-  requireOwner(actor);
-  const previous = actorOperations.get(actor) ?? Promise.resolve();
-  const current = previous.catch(() => {}).then(operation);
-  actorOperations.set(actor, current);
-  try {
-    return await current;
-  } finally {
-    if (actorOperations.get(actor) === current) actorOperations.delete(actor);
-  }
+function archonACBonus(actor) {
+  const state = actor?.getFlag?.(MODULE_ID, ARCHON_STATE_FLAG)
+    ?? rawFlag(actor, ARCHON_STATE_FLAG);
+  return state?.active ? Math.max(0, Number(state.acBonus) || 0) : 0;
 }
 
-function effectTemplate(sourceItem) {
+function applyArchonACBonus(changes, actor) {
+  const bonus = archonACBonus(actor);
+  return (changes ?? []).map(change => {
+    if (change.key !== 'system.attributes.ac.min') {
+      return structuredClone(change);
+    }
+    return {
+      ...structuredClone(change),
+      value: `${change.value}${bonus ? ` + ${bonus}` : ''}`
+    };
+  });
+}
+
+function effectTemplate(sourceItem, actor) {
   const template = Array.from(sourceItem?.effects ?? []).find(
     effect => getAutomationRole(effect) === AUTOMATION_ROLES.MANTLE_AC
   );
@@ -44,6 +54,7 @@ function effectTemplate(sourceItem) {
   delete data._id;
   delete data._key;
   data.origin = sourceItem.uuid;
+  data.changes = applyArchonACBonus(data.changes, actor);
   return data;
 }
 
@@ -66,7 +77,7 @@ export function isSpiritMantleActive(actor) {
     || actor?.flags?.[MODULE_ID]?.vessel?.mantle?.active === true;
 }
 
-async function reconcileSpiritMantleUnlocked(actor, { sourceItem } = {}) {
+export async function reconcileSpiritMantleUnlocked(actor, { sourceItem } = {}) {
   const active = isSpiritMantleActive(actor);
   const existing = mantleEffects(actor);
 
@@ -97,7 +108,7 @@ async function reconcileSpiritMantleUnlocked(actor, { sourceItem } = {}) {
 
   let [current, ...duplicates] = existing;
   if (!current) {
-    const data = effectTemplate(sourceItem);
+    const data = effectTemplate(sourceItem, actor);
     data.disabled = !isEtherealArmorEligible(actor);
     [current] = await actor.createEmbeddedDocuments('ActiveEffect', [data]);
   }
@@ -105,7 +116,7 @@ async function reconcileSpiritMantleUnlocked(actor, { sourceItem } = {}) {
   const disabled = !isEtherealArmorEligible(actor);
   const updates = [];
   if (sourceItem) {
-    const template = effectTemplate(sourceItem);
+    const template = effectTemplate(sourceItem, actor);
     const changes = repairArmorChanges(current.changes, template.changes);
     const repair = { _id: current._id };
     if (!sameData(current.changes, changes)) {
@@ -134,7 +145,7 @@ async function reconcileSpiritMantleUnlocked(actor, { sourceItem } = {}) {
   }
 }
 
-async function activateSpiritMantleUnlocked(actor, { sourceItem } = {}) {
+export async function activateSpiritMantleUnlocked(actor, { sourceItem } = {}) {
   const wasActive = isSpiritMantleActive(actor);
   if (!wasActive) {
     await actor.setFlag(MODULE_ID, MANTLE_ACTIVE_FLAG, true);
@@ -153,7 +164,7 @@ async function activateSpiritMantleUnlocked(actor, { sourceItem } = {}) {
   }
 }
 
-async function deactivateSpiritMantleUnlocked(actor) {
+export async function deactivateSpiritMantleUnlocked(actor) {
   const existing = mantleEffects(actor);
   const enabled = existing.filter(effect => !effect.disabled);
   if (enabled.length) {

@@ -22,6 +22,36 @@ The module's custom code coordinates the Mantle state and prompts before an
 inactive Vessel attempts a Strike. It does not replace Foundry's attack or damage
 resolution and does not require another automation module.
 
+### Archon Form
+
+At 3rd level, each Vessel subclass receives an **Archon Form control** with
+Foundry-native activities to:
+
+- transform using the feature's free use or one Vessel Magic slot;
+- extend an active form by 10 minutes using one Vessel Magic slot;
+- revert through Foundry's normal transformation workflow; and
+- choose whether usable equipment is retained or merged/left behind.
+
+The Transform activity prompts for the appropriate subclass profile. Cataclysm
+Vessels can choose Air, Earth, Fire, or Water, with their saved affinity used as
+the default. The module binds the transformation to the Vessel who used the
+activity, then calls Foundry's native `Actor#transformInto` API; selecting another
+token cannot redirect it.
+
+Archon Form keeps the Vessel's abilities, hit points, class features, spells,
+and biography, while merging saves and skills and applying the form's movement,
+senses, defenses, languages, and descriptive traits. Spirit Mantle is activated
+on entry, temporary hit points and Ethereal Armor are reconciled, and the module
+prompts at expiry or applicable early-end boundaries. Controlled Transformation
+uses the one-hour duration and removes the pre-7th-level Unconscious prompt.
+Elder Archon gives a non-blocking reminder for its free eligible Sealed Magic
+spell.
+
+Foundry remains responsible for activity consumption/refunds, transformation,
+reversion, attacks, saves, damage, healing, spells, and token replacement. The
+form profiles' Stage 3 attacks and traits are descriptive Items unless they
+already expose a native activity.
+
 ## Warlord automation
 
 The Warlord uses one shared Exploit Die pool, degree-aware Exploit choices,

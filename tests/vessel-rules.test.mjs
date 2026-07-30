@@ -2,11 +2,20 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const {
+  ARCHON_PROFILES,
   getAutomationRole,
+  getArchonACBonus,
+  getArchonDurationSeconds,
+  getArchonProfilesForActor,
+  getArchonTempHP,
   getIridescentStrikeDie,
+  getVesselSubclassIdentifier,
   getUnlockedIridescentDamageTypes,
   getVesselLevel,
-  isEtherealArmorEligible
+  isEtherealArmorEligible,
+  normalizeElementalAffinity,
+  shouldEndArchonFormAtZeroHP,
+  shouldEndArchonFormForUnconscious
 } = await import('../scripts/vessel/rules.mjs');
 
 function item(identifier, type = 'feat', system = {}) {
@@ -115,4 +124,101 @@ test('reads automation roles without Foundry globals', () => {
     }
   }), 'mantle-toggle');
   assert.equal(getAutomationRole({ flags: {} }), undefined);
+});
+
+test('inventories the nine stable Archon profiles', () => {
+  assert.deepEqual(Object.keys(ARCHON_PROFILES), [
+    'ascended',
+    'cataclysm-air',
+    'cataclysm-earth',
+    'cataclysm-fire',
+    'cataclysm-water',
+    'cursed',
+    'fallen',
+    'formless',
+    'trickster'
+  ]);
+  assert.equal(new Set(
+    Object.values(ARCHON_PROFILES).map(profile => profile.actorId)
+  ).size, 9);
+  assert.ok(Object.values(ARCHON_PROFILES).every(profile =>
+    /^[A-Za-z0-9]{16}$/.test(profile.actorId)
+    && profile.uuid.endsWith(`.Actor.${profile.actorId}`)
+  ));
+});
+
+test('detects the owned Vessel subclass from shape-tolerant Item collections', () => {
+  assert.equal(getVesselSubclassIdentifier({
+    itemTypes: {
+      subclass: [item('the-fallen', 'subclass')]
+    }
+  }), 'the-fallen');
+  assert.equal(getVesselSubclassIdentifier({
+    items: new Map([
+      ['subclass', item('the-formless', 'subclass')]
+    ])
+  }), 'the-formless');
+  assert.equal(getVesselSubclassIdentifier({
+    items: [item('other-subclass', 'subclass')]
+  }), undefined);
+});
+
+test('selects one subclass profile or the Cataclysm affinity profile', () => {
+  assert.deepEqual(
+    getArchonProfilesForActor({
+      items: [item('the-ascended', 'subclass')]
+    }).map(profile => profile.profile),
+    ['ascended']
+  );
+  assert.deepEqual(
+    getArchonProfilesForActor({
+      items: [item('the-cataclysm', 'subclass')],
+      flags: {
+        'declan-homebrew-classes': {
+          vessel: { elementalAffinity: ' Earth ' }
+        }
+      }
+    }).map(profile => profile.profile),
+    ['cataclysm-earth']
+  );
+  assert.deepEqual(
+    getArchonProfilesForActor({
+      items: [item('the-cataclysm', 'subclass')]
+    }).map(profile => profile.profile),
+    [
+      'cataclysm-air',
+      'cataclysm-earth',
+      'cataclysm-fire',
+      'cataclysm-water'
+    ]
+  );
+  assert.deepEqual(getArchonProfilesForActor({ items: [] }), []);
+});
+
+test('normalizes only supported Cataclysm affinities', () => {
+  assert.equal(normalizeElementalAffinity(' FIRE '), 'fire');
+  assert.equal(normalizeElementalAffinity({ value: 'water' }), 'water');
+  assert.equal(normalizeElementalAffinity('ice'), undefined);
+  assert.equal(normalizeElementalAffinity(null), undefined);
+});
+
+test('applies Controlled Transformation duration and early-end rules', () => {
+  assert.equal(getArchonDurationSeconds(1), 600);
+  assert.equal(getArchonDurationSeconds(6), 600);
+  assert.equal(getArchonDurationSeconds(7), 3600);
+  assert.equal(getArchonDurationSeconds(actor({ level: 20 })), 3600);
+  assert.equal(shouldEndArchonFormForUnconscious(6), true);
+  assert.equal(shouldEndArchonFormForUnconscious(7), false);
+  assert.equal(shouldEndArchonFormAtZeroHP(0), true);
+  assert.equal(shouldEndArchonFormAtZeroHP('0'), true);
+  assert.equal(shouldEndArchonFormAtZeroHP(1), false);
+});
+
+test('calculates Archon temporary HP and AC bonuses safely', () => {
+  assert.equal(getArchonTempHP(11), 22);
+  assert.equal(getArchonTempHP(actor({ level: 7 })), 14);
+  assert.equal(getArchonTempHP(-2), 0);
+  assert.equal(getArchonACBonus('cataclysm-earth'), 2);
+  assert.equal(getArchonACBonus(ARCHON_PROFILES.cursed), 1);
+  assert.equal(getArchonACBonus('missing'), 0);
 });

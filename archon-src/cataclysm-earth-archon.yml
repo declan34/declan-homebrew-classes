@@ -1,0 +1,113 @@
+_id: hbrErtArchon0001
+name: Earth Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills:
+    ath: {value: 1, ability: str, bonuses: {check: '', passive: ''}}
+    itm: {value: 1, ability: cha, bonuses: {check: '', passive: ''}}
+  attributes:
+    movement: {walk: 30, climb: 30, burrow: 10, units: ft, hover: false, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: ''
+      ranges: {darkvision: null, blindsight: null, tremorsense: 10, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography: {value: <p>The Earth Archon Form of a Cataclysm Spirit.</p>, public: ''}
+    alignment: ''
+    type: {value: elemental, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [acid, poison], custom: ''}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [], custom: ''}
+    languages: {value: [terran], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000006
+    name: Elder Elemental
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon deals Affinity damage, it ignores Resistance and treats Immunity as Resistance.</p>", chat: ''}
+      identifier: elder-elemental
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrErtArchon0001.hbrTrait00000006'
+  - _id: hbrTrait00000007
+    name: Rock Solid
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon deals bludgeoning damage to a creature with an Iridescent Strike, the target's speed is halved until the start of the Archon's following turn.</p>", chat: ''}
+      identifier: rock-solid
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrErtArchon0001.hbrTrait00000007'
+  - _id: hbrTrait00000008
+    name: Siege Monster
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>The Archon deals maximum bludgeoning damage to nonmagical objects and structures.</p>", chat: ''}
+      identifier: siege-monster
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 2
+    _key: '!actors.items!hbrErtArchon0001.hbrTrait00000008'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: cataclysm-earth, subclass: the-cataclysm, affinity: earth, acBonus: 2}
+_stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+sort: 2
+ownership: {default: 0}
+_key: '!actors!hbrErtArchon0001'

@@ -1,0 +1,113 @@
+_id: hbrWatArchon0001
+name: Water Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills:
+    acr: {value: 1, ability: dex, bonuses: {check: '', passive: ''}}
+    ste: {value: 1, ability: dex, bonuses: {check: '', passive: ''}}
+  attributes:
+    movement: {walk: 30, swim: 50, units: ft, hover: false, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: ''
+      ranges: {darkvision: 120, blindsight: null, tremorsense: null, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography: {value: <p>The Water Archon Form of a Cataclysm Spirit.</p>, public: ''}
+    alignment: ''
+    type: {value: elemental, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [acid, cold], custom: ''}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [], custom: ''}
+    languages: {value: [aquan], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000012
+    name: Aqueous
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>The Archon can breathe normally in both air and water, and it can move through gaps as narrow as 1 inch without having to squeeze.</p>", chat: ''}
+      identifier: aqueous
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrWatArchon0001.hbrTrait00000012'
+  - _id: hbrTrait00000013
+    name: Elder Elemental
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon deals Affinity damage, it ignores Resistance and treats Immunity as Resistance.</p>", chat: ''}
+      identifier: elder-elemental
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrWatArchon0001.hbrTrait00000013'
+  - _id: hbrTrait00000014
+    name: Fluid Resilience
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon takes damage, it can use its reaction to reduce that damage by your Charisma modifier, and then move up to 15 feet without provoking opportunity attacks. It cannot use this reaction when it takes force or psychic damage.</p>", chat: ''}
+      identifier: fluid-resilience
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 2
+    _key: '!actors.items!hbrWatArchon0001.hbrTrait00000014'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: cataclysm-water, subclass: the-cataclysm, affinity: water, acBonus: 0}
+_stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+sort: 4
+ownership: {default: 0}
+_key: '!actors!hbrWatArchon0001'

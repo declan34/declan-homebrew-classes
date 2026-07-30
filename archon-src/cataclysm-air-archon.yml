@@ -1,0 +1,113 @@
+_id: hbrAirArchon0001
+name: Air Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills:
+    acr: {value: 1, ability: dex, bonuses: {check: '', passive: ''}}
+    ste: {value: 1, ability: dex, bonuses: {check: '', passive: ''}}
+  attributes:
+    movement: {walk: 20, fly: 30, units: ft, hover: true, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: ''
+      ranges: {darkvision: null, blindsight: null, tremorsense: null, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography: {value: <p>The Air Archon Form of a Cataclysm Spirit.</p>, public: ''}
+    alignment: ''
+    type: {value: elemental, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [thunder, lightning], custom: ''}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [], custom: ''}
+    languages: {value: [auran], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000003
+    name: Bluster
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon deals thunder damage to a creature with an Iridescent Strike, its target is knocked back 10 feet in a straight line. This distance is halved for each size the target is above the Archon.</p>", chat: ''}
+      identifier: bluster
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrAirArchon0001.hbrTrait00000003'
+  - _id: hbrTrait00000004
+    name: Elder Elemental
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon deals Affinity damage, it ignores Resistance and treats Immunity as Resistance.</p>", chat: ''}
+      identifier: elder-elemental
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrAirArchon0001.hbrTrait00000004'
+  - _id: hbrTrait00000005
+    name: Gaseous
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>The Archon can move through gaps as narrow as 1 inch without squeezing, and while using its flying speed, opportunity attacks have disadvantage against it.</p>", chat: ''}
+      identifier: gaseous
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 2
+    _key: '!actors.items!hbrAirArchon0001.hbrTrait00000005'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: cataclysm-air, subclass: the-cataclysm, affinity: air, acBonus: 0}
+_stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+sort: 1
+ownership: {default: 0}
+_key: '!actors!hbrAirArchon0001'
