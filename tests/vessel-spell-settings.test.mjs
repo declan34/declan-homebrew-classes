@@ -36,6 +36,20 @@ test('builds a None-first choice list from installed Item packs', () => {
   });
 });
 
+test('builds Item pack choices from a Map-shaped pack collection', () => {
+  const choices = buildItemPackChoices(new Map([
+    ['private.spells', pack('private.spells', 'Private Spells', 'Item')],
+    ['private.actors', pack('private.actors', 'Private Actors', 'Actor')],
+    ['dnd5e.spells', pack('dnd5e.spells', 'SRD Spells', 'Item')]
+  ]));
+
+  assert.deepEqual(choices, {
+    '': 'None',
+    'dnd5e.spells': 'SRD Spells',
+    'private.spells': 'Private Spells'
+  });
+});
+
 test('sorts Item pack choices deterministically by label', () => {
   const choices = buildItemPackChoices([
     pack('private.zebra', 'Zebra Spells', 'Item'),

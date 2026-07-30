@@ -6,7 +6,7 @@ import {
 const registeredSettings = new WeakSet();
 
 export function buildItemPackChoices(packs) {
-  const itemPacks = Array.from(packs ?? [])
+  const itemPacks = Array.from(packs?.values?.() ?? packs ?? [])
     .filter(pack => (pack.documentName ?? pack.metadata?.type) === 'Item')
     .map(pack => ({
       collection: pack.collection,
