@@ -63,7 +63,7 @@ sources, Node.js built-in test runner, `js-yaml`,
   `isMantleBoundStage3Role(role): boolean`,
   `isArchonBoundStage3Role(role): boolean`.
 
-- [ ] **Step 1: Write failing boundary and inventory tests**
+- [x] **Step 1: Write failing boundary and inventory tests**
 
 ```js
 test('Stage 3 scaling follows published Vessel boundaries', () => {
@@ -102,7 +102,7 @@ Also assert that the role set contains exactly:
 ]
 ```
 
-- [ ] **Step 2: Run the focused test and verify failure**
+- [x] **Step 2: Run the focused test and verify failure**
 
 Run:
 
@@ -112,7 +112,7 @@ node --test tests/vessel-stage3-rules.test.mjs
 
 Expected: FAIL because the Stage 3 exports do not exist.
 
-- [ ] **Step 3: Add constants and minimal pure helpers**
+- [x] **Step 3: Add constants and minimal pure helpers**
 
 Use table-driven functions:
 
@@ -135,7 +135,7 @@ function scaledValue(levelOrActor, table) {
 Map Cataclysm affinity through the existing saved flag and existing affinity
 normalizer; do not create a second affinity source.
 
-- [ ] **Step 4: Run focused and existing rule tests**
+- [x] **Step 4: Run focused and existing rule tests**
 
 ```bash
 node --test tests/vessel-stage3-rules.test.mjs tests/vessel-rules.test.mjs
@@ -143,7 +143,7 @@ node --test tests/vessel-stage3-rules.test.mjs tests/vessel-rules.test.mjs
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/vessel/constants.mjs scripts/vessel/rules.mjs \
@@ -839,4 +839,3 @@ git add docs/superpowers/plans/2026-07-30-vessel-stage-3-activities.md
 git -c commit.gpgSign=false commit -m \
   "docs: complete Vessel Stage 3 plan"
 ```
-
