@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const {
+  loadWarlordExploitSourceItems,
   loadWarlordSourceItems,
   migrateWarlordActor,
   reconcileWarlordActor
@@ -130,6 +131,94 @@ function canonicalSources() {
     riders: { activity: ['InspiringHelp01', 'InspiringHelp02'] }
   };
   return sources;
+}
+
+function canonicalExploitSources() {
+  const save = warlordActivity('DirtyHitAct01ABC', 'exploit-activity', {
+    type: 'save',
+    range: { units: 'ft', value: '15' },
+    consumption: {
+      targets: [{
+        type: 'itemUses',
+        target: 'tactical-exploits',
+        value: '1'
+      }]
+    },
+    save: { ability: ['con'], dc: { calculation: 'cha', formula: '' } },
+    flags: {
+      [MODULE_ID]: {
+        warlord: {
+          role: 'exploit-activity',
+          exploit: 'dirty-hit',
+          mechanic: 'save-damage-effect'
+        }
+      }
+    }
+  });
+  const repeatSave = warlordActivity('DirtyRepeat01ABC', 'exploit-repeat-save', {
+    type: 'save',
+    range: { units: 'ft', value: '30' },
+    save: { ability: ['con'], dc: { calculation: 'cha', formula: '' } },
+    flags: {
+      [MODULE_ID]: {
+        warlord: {
+          role: 'exploit-repeat-save',
+          exploit: 'dirty-hit',
+          mechanic: 'repeat-save'
+        }
+      }
+    }
+  });
+  const resolution = warlordActivity('DirtyResolut01A', 'exploit-resolution', {
+    range: { units: 'ft', value: '15' },
+    flags: {
+      [MODULE_ID]: {
+        warlord: {
+          role: 'exploit-resolution',
+          exploit: 'dirty-hit',
+          mechanic: 'damage'
+        }
+      }
+    }
+  });
+  return {
+    dirtyHit: canonicalItem(
+      'WIrrBN4l50nCgBdL',
+      'dirty-hit',
+      [save, repeatSave, resolution],
+      { max: '', recovery: [] }
+    ),
+    parry: canonicalItem(
+      'c31ADMDftmoKUKUV',
+      'parry',
+      [warlordActivity('ParryAct01ABCDEF', 'exploit-activity', {
+        range: { units: 'ft', value: '30' },
+        consumption: {
+          targets: [{
+            type: 'itemUses',
+            target: 'tactical-exploits',
+            value: '1'
+          }]
+        },
+        flags: {
+          [MODULE_ID]: {
+            warlord: {
+              role: 'exploit-activity',
+              exploit: 'parry',
+              mechanic: 'roll'
+            }
+          }
+        }
+      })],
+      { max: '', recovery: [] }
+    ),
+    attackOrder: canonicalItem(
+      'RBFxIvOXz9johjAJ',
+      'attack-order',
+      [],
+      { max: '', recovery: [] }
+    )
+  };
 }
 
 function setPath(target, path, value) {
@@ -291,6 +380,171 @@ test('retries canonical source loading after a transient pack failure', async ()
   assert.equal(loaded.leadership.id, SOURCE_IDS.leadership);
 });
 
+test('loads canonical Exploit documents only for identifiers the actor owns', async () => {
+  const sources = canonicalExploitSources();
+  const index = Object.values(sources).map(item => ({
+    _id: item.id,
+    system: { identifier: item.system.identifier }
+  }));
+  const byId = new Map(Object.values(sources).map(item => [item.id, item]));
+  const requested = [];
+  const pack = {
+    async getIndex() {
+      return index;
+    },
+    async getDocument(id) {
+      requested.push(id);
+      return byId.get(id);
+    }
+  };
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-dirty', identifier: 'dirty-hit' }),
+      ownedItem({ id: 'owned-attack', identifier: 'attack-order' })
+    ]
+  });
+
+  const loaded = await loadWarlordExploitSourceItems(actor, {
+    packs: new Map([[`${MODULE_ID}.warlord-exploits`, pack]])
+  });
+
+  assert.deepEqual(requested.sort(), [
+    sources.attackOrder.id,
+    sources.dirtyHit.id
+  ].sort());
+  assert.deepEqual(
+    Object.values(loaded).map(item => item.system.identifier).sort(),
+    ['attack-order', 'dirty-hit']
+  );
+});
+
+test('selectively migrates owned Tier A, B, and C Exploits and configures every canonical save', async () => {
+  const coreSources = canonicalSources();
+  const exploitSources = canonicalExploitSources();
+  const dirtySource = exploitSources.dirtyHit.system.activities;
+  const customDescription = '<p>Keep my custom Dirty Hit prose.</p>';
+  const originalSpent = 2;
+  const originalUserActivity = {
+    id: 'userActivityId',
+    name: 'My custom Exploit activity',
+    type: 'attack',
+    range: { units: 'ft', value: 45 },
+    flags: { otherModule: { keep: true } }
+  };
+  const dirtyHit = ownedItem({
+    id: 'owned-dirty',
+    identifier: 'dirty-hit',
+    description: customDescription,
+    spent: originalSpent,
+    activities: [
+      staleActivity(dirtySource.DirtyHitAct01ABC),
+      originalUserActivity
+    ]
+  });
+  const parry = ownedItem({
+    id: 'owned-parry',
+    identifier: 'parry',
+    activities: [originalUserActivity]
+  });
+  const attackOrder = ownedItem({
+    id: 'owned-attack',
+    identifier: 'attack-order',
+    activities: [originalUserActivity]
+  });
+  const actor = actorFixture({
+    items: [warlordClass(10), dirtyHit, parry, attackOrder],
+    leadershipAbility: 'int'
+  });
+
+  assert.equal(await migrateWarlordActor(actor, {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems: async () => exploitSources
+  }), true);
+
+  assert.ok(dirtyHit.system.activities.DirtyHitAct01ABC);
+  assert.ok(dirtyHit.system.activities.DirtyRepeat01ABC);
+  assert.ok(dirtyHit.system.activities.DirtyResolut01A);
+  assert.ok(parry.system.activities.ParryAct01ABCDEF);
+  assert.deepEqual(attackOrder.system.activities, {
+    userActivityId: originalUserActivity
+  });
+  assert.equal(dirtyHit.system.uses.spent, originalSpent);
+  assert.equal(dirtyHit.system.description.value, customDescription);
+  assert.equal(dirtyHit.system.activities.userActivityId.range.value, 45);
+  assert.equal(
+    dirtyHit.system.activities.DirtyHitAct01ABC.save.dc.calculation,
+    'int'
+  );
+  assert.equal(
+    dirtyHit.system.activities.DirtyRepeat01ABC.save.dc.calculation,
+    'int'
+  );
+  assert.equal(
+    dirtyHit.system.activities.DirtyHitAct01ABC.consumption.targets[0].target,
+    'tactical-exploits'
+  );
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
+});
+
+test('Tactical Superiority derives every module-owned Exploit range from fresh canonical data', async () => {
+  const coreSources = canonicalSources();
+  const exploitSources = canonicalExploitSources();
+  const warlord = warlordClass(10);
+  const dirtyHit = ownedItem({
+    id: 'owned-dirty',
+    identifier: 'dirty-hit',
+    activities: [
+      staleActivity(exploitSources.dirtyHit.system.activities.DirtyHitAct01ABC),
+      staleActivity(exploitSources.dirtyHit.system.activities.DirtyRepeat01ABC),
+      staleActivity(exploitSources.dirtyHit.system.activities.DirtyResolut01A),
+      {
+        id: 'userActivityId',
+        type: 'utility',
+        range: { units: 'ft', value: 25 }
+      }
+    ]
+  });
+  const actor = actorFixture({
+    items: [warlord, dirtyHit],
+    leadershipAbility: undefined
+  });
+  let exploitLoads = 0;
+  const loadExploitSourceItems = async () => {
+    exploitLoads += 1;
+    return clone(exploitSources);
+  };
+
+  await reconcileWarlordActor(actor, {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems
+  });
+  assert.equal(dirtyHit.system.activities.DirtyHitAct01ABC.range.value, 15);
+  assert.equal(dirtyHit.system.activities.DirtyRepeat01ABC.range.value, 30);
+  assert.equal(dirtyHit.system.activities.DirtyResolut01A.range.value, 15);
+
+  warlord.system.levels = 11;
+  await reconcileWarlordActor(actor, {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems
+  });
+  assert.equal(dirtyHit.system.activities.DirtyHitAct01ABC.range.value, 30);
+  assert.equal(dirtyHit.system.activities.DirtyRepeat01ABC.range.value, 60);
+  assert.equal(dirtyHit.system.activities.DirtyResolut01A.range.value, 30);
+  assert.equal(dirtyHit.system.activities.userActivityId.range.value, 25);
+
+  warlord.system.levels = 10;
+  await reconcileWarlordActor(actor, {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems
+  });
+  assert.equal(dirtyHit.system.activities.DirtyHitAct01ABC.range.value, 15);
+  assert.equal(dirtyHit.system.activities.DirtyRepeat01ABC.range.value, 30);
+  assert.equal(dirtyHit.system.activities.DirtyResolut01A.range.value, 15);
+  assert.equal(dirtyHit.system.activities.userActivityId.range.value, 25);
+  assert.equal(exploitLoads, 3);
+});
+
 test('selectively migrates Warlord structures while preserving presentation and user data', async () => {
   const sources = canonicalSources();
   const inspiringSource = sources.inspiring.system.activities;
@@ -323,7 +577,7 @@ test('selectively migrates Warlord structures while preserving presentation and 
   assert.equal(await migrateWarlordActor(actor, {
     loadSourceItems: async () => sources
   }), true);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 1);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
   assert.equal(actor.inspiring.system.uses.spent, 2);
   assert.equal(actor.inspiring.name, 'My Rallying Words');
   assert.equal(actor.inspiring.system.description.value, '<p>Keep my prose.</p>');
@@ -415,13 +669,45 @@ test('leaves the migration flag absent after a partial failure and repairs the r
   assert.equal(await migrateWarlordActor(actor, {
     loadSourceItems: async () => sources
   }), true);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 1);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
   assert.equal(rally.system.activities.RallyingCryAct01.type, 'utility');
   assert.ok(inspiring.updateCalls.length >= completedInspiringUpdates);
   assert.equal(
     inspiring.system.activities.InspiringLaunch1.name,
     'My Canonical inspiring-word-launcher'
   );
+});
+
+test('sets no migration flag until Exploit repair succeeds and retries safely', async () => {
+  const sources = canonicalSources();
+  const exploitSources = canonicalExploitSources();
+  const dirtyHit = ownedItem({
+    id: 'owned-dirty',
+    identifier: 'dirty-hit',
+    failUpdates: 1,
+    activities: []
+  });
+  const actor = actorFixture({
+    items: [warlordClass(), dirtyHit],
+    leadershipAbility: undefined
+  });
+
+  await assert.rejects(
+    migrateWarlordActor(actor, {
+      loadSourceItems: async () => sources,
+      loadExploitSourceItems: async () => exploitSources
+    }),
+    /forced dirty-hit update failure/
+  );
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, undefined);
+  assert.equal(dirtyHit.system.activities.DirtyHitAct01ABC, undefined);
+
+  assert.equal(await migrateWarlordActor(actor, {
+    loadSourceItems: async () => sources,
+    loadExploitSourceItems: async () => exploitSources
+  }), true);
+  assert.ok(dirtyHit.system.activities.DirtyHitAct01ABC);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
 });
 
 test('reconciliation reapplies canonical base values after a level reduction', async () => {

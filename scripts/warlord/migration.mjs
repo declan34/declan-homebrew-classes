@@ -37,6 +37,14 @@ const RECOVERY_ITEM_IDENTIFIERS = new Set([
   'inspiring-word',
   'rallying-cry'
 ]);
+const CORE_ITEM_IDENTIFIERS = new Set([
+  WARLORD_CLASS_IDENTIFIER,
+  'leadership-style',
+  'inspiring-word',
+  'rallying-cry',
+  'tactical-exploits',
+  'tactical-superiority'
+]);
 
 let sourceItemsPromise;
 const reconciliationQueues = new WeakMap();
@@ -267,21 +275,69 @@ export async function loadWarlordSourceItems({
   }
 }
 
+export async function loadWarlordExploitSourceItems(actor, {
+  packs = globalThis.game?.packs
+} = {}) {
+  const ownedIdentifiers = new Set(documents(actor?.items)
+    .map(getIdentifier)
+    .filter(identifier => (
+      typeof identifier === 'string'
+      && identifier.length > 0
+      && !CORE_ITEM_IDENTIFIERS.has(identifier)
+    )));
+  if (!ownedIdentifiers.size) return {};
+
+  const pack = packs?.get?.(`${MODULE_ID}.warlord-exploits`);
+  if (!pack) throw new Error('The Warlord Exploits compendium is unavailable.');
+
+  const index = typeof pack.getIndex === 'function'
+    ? await pack.getIndex({ fields: ['system.identifier'] })
+    : pack.index;
+  const selected = documents(index).filter(entry => (
+    ownedIdentifiers.has(getIdentifier(entry))
+  ));
+  const entries = await Promise.all(selected.map(async entry => {
+    const source = await pack.getDocument(documentId(entry));
+    if (!source) {
+      throw new Error('The Warlord Exploits compendium is missing a migration source.');
+    }
+    return [getIdentifier(source), source];
+  }));
+  return Object.fromEntries(entries);
+}
+
+async function updateOwnedItems(actor, sources, changesForItem) {
+  for (const canonical of Object.values(sources)) {
+    const item = findOwnedItem(actor, canonical);
+    if (!item || typeof item.update !== 'function') continue;
+    const changes = changesForItem(item, canonical);
+    if (Object.keys(changes).length) await item.update(changes);
+  }
+}
+
 async function reconcileWarlordActorNow(actor, {
   loadSourceItems = loadWarlordSourceItems,
+  loadExploitSourceItems = loadWarlordExploitSourceItems,
   sourceItems,
+  exploitSourceItems,
   configureLeadership = configureLeadershipItems
 } = {}) {
   if (!actor?.isOwner || !actorHasWarlordClass(actor)) return;
 
   const sources = sourceItems ?? await loadSourceItems();
+  const exploitSources = exploitSourceItems
+    ?? await loadExploitSourceItems(actor);
   const superior = getWarlordLevel(actor) >= 11;
-  for (const canonical of Object.values(sources)) {
-    const item = findOwnedItem(actor, canonical);
-    if (!item || typeof item.update !== 'function') continue;
-    const changes = reconciliationChanges(item, canonical, superior);
-    if (Object.keys(changes).length) await item.update(changes);
-  }
+  await updateOwnedItems(
+    actor,
+    sources,
+    (item, canonical) => reconciliationChanges(item, canonical, superior)
+  );
+  await updateOwnedItems(
+    actor,
+    exploitSources,
+    (item, canonical) => reconciliationChanges(item, canonical, superior)
+  );
 
   const ability = getLeadershipAbility(actor);
   if (ability) await configureLeadership(actor, ability);
@@ -307,6 +363,7 @@ export async function reconcileWarlordActor(actor, options = {}) {
 
 export async function migrateWarlordActor(actor, {
   loadSourceItems = loadWarlordSourceItems,
+  loadExploitSourceItems = loadWarlordExploitSourceItems,
   configureLeadership = configureLeadershipItems
 } = {}) {
   if (!actor?.isOwner) {
@@ -316,15 +373,13 @@ export async function migrateWarlordActor(actor, {
   if (!actorHasWarlordClass(actor)) return false;
 
   const sources = await loadSourceItems();
-  for (const canonical of Object.values(sources)) {
-    const item = findOwnedItem(actor, canonical);
-    if (!item || typeof item.update !== 'function') continue;
-    const changes = migrationChanges(item, canonical);
-    if (Object.keys(changes).length) await item.update(changes);
-  }
+  await updateOwnedItems(actor, sources, migrationChanges);
+  const exploitSources = await loadExploitSourceItems(actor);
+  await updateOwnedItems(actor, exploitSources, migrationChanges);
 
   await reconcileWarlordActor(actor, {
     sourceItems: sources,
+    exploitSourceItems: exploitSources,
     configureLeadership
   });
   await actor.setFlag(

@@ -2,7 +2,7 @@ export const MODULE_ID = 'declan-homebrew-classes';
 export const WARLORD_CLASS_IDENTIFIER = 'warlord';
 export const LEADERSHIP_FLAG = 'warlord.leadershipAbility';
 export const WARLORD_MIGRATION_FLAG = 'warlord.migrationVersion';
-export const WARLORD_MIGRATION_VERSION = 1;
+export const WARLORD_MIGRATION_VERSION = 2;
 
 export const WARLORD_ROLES = Object.freeze({
   LEADERSHIP_CONFIG: 'leadership-config',
