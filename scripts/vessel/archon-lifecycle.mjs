@@ -1,4 +1,5 @@
 import {
+  ARCHON_PENDING_FLAG,
   ARCHON_STATE_FLAG,
   AUTOMATION_ROLES,
   MODULE_ID,
@@ -179,6 +180,73 @@ export function getArchonState(document) {
   const state = actor?.getFlag?.(MODULE_ID, ARCHON_STATE_FLAG)
     ?? rawFlag(actor, ARCHON_STATE_FLAG);
   return clone(state);
+}
+
+export function getArchonPending(document) {
+  const actor = actorDocument(document);
+  const pending = actor?.getFlag?.(MODULE_ID, ARCHON_PENDING_FLAG)
+    ?? rawFlag(actor, ARCHON_PENDING_FLAG);
+  return clone(pending);
+}
+
+export async function stageArchonTransformation(document, pending) {
+  const actor = actorDocument(document);
+  requireActorOwner(actor);
+  if (!pending?.profile || !pending?.profileUuid) {
+    throw new Error('Archon Form could not determine the selected profile.');
+  }
+  await actor.setFlag(MODULE_ID, ARCHON_PENDING_FLAG, clone(pending));
+  return clone(pending);
+}
+
+export async function clearArchonPending(document, expectedProfileUuid) {
+  const actor = actorDocument(document);
+  if (!actor) return false;
+  const pending = getArchonPending(actor);
+  if (!pending) return false;
+  if (expectedProfileUuid && pending.profileUuid !== expectedProfileUuid) {
+    return false;
+  }
+  await actor.unsetFlag(MODULE_ID, ARCHON_PENDING_FLAG);
+  return true;
+}
+
+export function preparePendingArchonTransformData(
+  originalDocument,
+  transformSource,
+  pending,
+  options = {}
+) {
+  if (!pending?.profile || !pending?.profileUuid) {
+    throw new Error('Archon Form has no matching pending profile.');
+  }
+  const profileActor = {
+    uuid: pending.profileUuid,
+    flags: {
+      [MODULE_ID]: {
+        vessel: {
+          archon: {
+            profile: pending.profile,
+            acBonus: pending.acBonus
+          }
+        }
+      }
+    },
+    system: {
+      traits: {
+        languages: {
+          value: new Set(),
+          custom: ''
+        }
+      }
+    }
+  };
+  return prepareArchonTransformData(
+    originalDocument,
+    profileActor,
+    transformSource,
+    { ...options, payment: pending.payment }
+  );
 }
 
 export function isArchonFormActive(document) {
