@@ -792,6 +792,13 @@ vessel-archon-forms true 0
 vessel-aspects true 0
 ```
 
+The Aspect pack's Shimmering and Dazzling Lance formulas intentionally resolve
+the `@scale.vessel.iridescent-strike` scale from the actor's class Item in the
+Homebrew Classes pack. Because `verifyPack` only indexes scales inside the pack
+being checked, validate `aspects-src` with `src/vessel/the-vessel.yml` and its
+folder copied into a temporary verification directory as reference context. The
+temporary context is not compiled into the committed Aspect pack.
+
 - [x] **Step 5: Run complete verification**
 
 ```bash
@@ -810,7 +817,7 @@ git -c commit.gpgSign=false commit -m \
   "build: compile Vessel Stage 3 activities"
 ```
 
-- [ ] **Step 7: Perform final review**
+- [x] **Step 7: Perform final review**
 
 Review:
 
@@ -829,7 +836,7 @@ Confirm:
 - no module version, archive, push, or release change exists;
 - no `Co-Authored-By` trailer exists.
 
-- [ ] **Step 8: Record completion**
+- [x] **Step 8: Record completion**
 
 Check every completed plan box, commit the plan-only update, and leave the branch
 ready for integration:
