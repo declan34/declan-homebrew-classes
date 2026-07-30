@@ -59,6 +59,16 @@ test('the Fighting Style pack contains the seven exact style documents', () => {
   assert.deepEqual([...styles.keys()], IDENTIFIERS);
 });
 
+test('all seven Fighting Styles are available at the Warlord level-2 choice', () => {
+  for (const identifier of IDENTIFIERS) {
+    assert.equal(
+      styles.get(identifier).system.prerequisites.level,
+      2,
+      `${identifier} prerequisite level`
+    );
+  }
+});
+
 test('Balanced and Classical use supported dnd5e enchantment change paths', () => {
   const balanced = activity('balanced-fighting', 'weapon-damage-enchantment');
   assert.equal(balanced.type, 'enchant');

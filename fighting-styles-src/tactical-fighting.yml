@@ -20,7 +20,7 @@ system:
     value: fightingStyle
     subtype: ''
   prerequisites:
-    level: 4
+    level: 2
     repeatable: false
   properties: []
   requirements: Intelligence of 13 or higher

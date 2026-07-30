@@ -28,6 +28,7 @@ const sourceDirectory = fileURLToPath(
 const parityPaths = [
   '_id',
   'system.identifier',
+  'system.prerequisites',
   'system.activities',
   'system.enchant',
   'effects',
