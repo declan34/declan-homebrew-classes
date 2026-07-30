@@ -145,7 +145,6 @@ async function cleanupRestoredActor(actor, state, {
   sourceItem
 } = {}) {
   requireActorOwner(actor);
-  await deleteFormOnlyEffects(actor);
 
   const beforeTransform = Math.max(
     0,
@@ -155,10 +154,21 @@ async function cleanupRestoredActor(actor, state, {
     await setTempHP(actor, beforeTransform);
   }
 
-  await actor.unsetFlag(MODULE_ID, ARCHON_STATE_FLAG);
+  await deleteFormOnlyEffects(actor);
   await reconcileSpiritMantleUnlocked(actor, {
     sourceItem: spiritMantleSource(actor, sourceItem)
   });
+  await actor.unsetFlag(MODULE_ID, ARCHON_STATE_FLAG);
+}
+
+async function cleanupAfterNativeReversion(actor, state, options) {
+  const cleanupState = {
+    ...state,
+    active: false,
+    cleanupPending: true
+  };
+  await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, cleanupState);
+  await cleanupRestoredActor(actor, cleanupState, options);
 }
 
 export function getArchonState(document) {
@@ -239,7 +249,12 @@ export async function finalizeArchonTransformation(document, options = {}) {
 export async function reconcileArchonForm(document, options = {}) {
   const actor = actorDocument(document);
   return serializeActorOperation(actor, async () => {
-    if (!isArchonFormActive(actor)) return { handled: false };
+    const state = getArchonState(actor);
+    if (state?.cleanupPending) {
+      await cleanupRestoredActor(actor, state, options);
+      return { handled: true, cleaned: true };
+    }
+    if (!state?.active) return { handled: false };
     return finalizeUnlocked(actor, options);
   });
 }
@@ -269,6 +284,10 @@ export async function revertArchonForm(document, {
   const actor = actorDocument(document);
   return serializeActorOperation(actor, async () => {
     const state = getArchonState(actor);
+    if (state?.cleanupPending) {
+      await cleanupRestoredActor(actor, state, { sourceItem });
+      return actor;
+    }
     if (!state?.active) {
       throw new Error('Archon Form is not active and cannot be reverted.');
     }
@@ -281,7 +300,14 @@ export async function revertArchonForm(document, {
     if (!restored) {
       throw new Error('Foundry did not return the restored Actor after reversion.');
     }
-    await cleanupRestoredActor(restored, state, { sourceItem });
+    if (restored === actor) {
+      await cleanupAfterNativeReversion(restored, state, { sourceItem });
+    } else {
+      await serializeActorOperation(
+        restored,
+        () => cleanupAfterNativeReversion(restored, state, { sourceItem })
+      );
+    }
     return restored;
   });
 }

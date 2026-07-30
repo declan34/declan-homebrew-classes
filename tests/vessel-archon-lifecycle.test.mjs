@@ -11,6 +11,7 @@ import {
   revertArchonForm
 } from '../scripts/vessel/archon-lifecycle.mjs';
 import { activateSpiritMantle } from '../scripts/vessel/mantle.mjs';
+import { serializeActorOperation } from '../scripts/vessel/operations.mjs';
 
 const MODULE_ID = 'declan-homebrew-classes';
 
@@ -389,7 +390,7 @@ test('failed native reversion leaves lifecycle state and module effects untouche
   assert.equal(transformed.effects.length, 1);
 });
 
-test('failed restored temp-HP cleanup keeps lifecycle state available for retry', async () => {
+test('failed restored temp-HP cleanup records a retryable cleanup phase', async () => {
   const state = {
     active: true,
     startedAt: 100,
@@ -402,6 +403,7 @@ test('failed restored temp-HP cleanup keeps lifecycle state available for retry'
     tempHPBeforeTransform: 2
   };
   const restored = mockActor({ state, temp: 12 });
+  const originalUpdate = restored.update.bind(restored);
   restored.update = async () => {
     throw new Error('temp update failed');
   };
@@ -409,7 +411,43 @@ test('failed restored temp-HP cleanup keeps lifecycle state available for retry'
   transformed.revertOriginalForm = async () => restored;
 
   await assert.rejects(revertArchonForm(transformed), /temp update failed/);
-  assert.equal(isArchonFormActive(restored), true);
+  assert.equal(isArchonFormActive(restored), false);
+  assert.equal(getArchonState(restored).cleanupPending, true);
+
+  restored.update = originalUpdate;
+  const retry = await reconcileArchonForm(restored);
+  assert.equal(retry.cleaned, true);
+  assert.equal(getArchonState(restored), undefined);
+  assert.equal(restored.system.attributes.hp.temp, 2);
+});
+
+test('post-reversion cleanup joins the restored Actor operation queue', async () => {
+  const state = {
+    active: true,
+    startedAt: 100,
+    expiresAt: 700,
+    profile: 'fallen',
+    profileUuid: 'Actor.profile',
+    sourceActorUuid: 'Actor.original',
+    payment: 'free',
+    acBonus: 2,
+    tempHPBeforeTransform: 0
+  };
+  const restored = mockActor({ id: 'original', state, temp: 12 });
+  const transformed = mockActor({ state });
+  transformed.revertOriginalForm = async () => restored;
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  const holding = serializeActorOperation(restored, () => gate);
+
+  const reverting = revertArchonForm(transformed);
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(restored.operations.length, 0);
+
+  release();
+  await Promise.all([holding, reverting]);
+  assert.equal(getArchonState(restored), undefined);
+  assert.equal(restored.system.attributes.hp.temp, 0);
 });
 
 test('reconciliation accepts token and synthetic actor shapes and is idempotent', async () => {
