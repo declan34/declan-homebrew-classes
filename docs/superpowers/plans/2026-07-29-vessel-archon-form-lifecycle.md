@@ -63,23 +63,23 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Create: `tests/vessel-archon-profiles.test.mjs`
 - Create: `tests/vessel-archon-compiled-pack.test.mjs`
 
-- [ ] Write failing source tests that inventory exactly nine stable Actor IDs and
+- [x] Write failing source tests that inventory exactly nine stable Actor IDs and
   verify each form's authoritative size, type, movement, senses, resistances,
   immunities, languages, skill proficiencies, AC bonus flag, and trait Items
   against the existing Vessel subclass text.
-- [ ] Add the nine `npc` Actor YAML documents, matching dnd5e's canonical
+- [x] Add the nine `npc` Actor YAML documents, matching dnd5e's canonical
   transform-profile representation. Keep abilities and HP
   neutral because transform settings retain the Vessel's values. Encode only
   published profile facts; never invent missing speeds, senses, or defenses.
-- [ ] Store profile metadata under
+- [x] Store profile metadata under
   `flags.declan-homebrew-classes.vessel.archon`, including stable `profile`,
   `subclass`, optional `affinity`, and numeric `acBonus`.
-- [ ] Add the `vessel-archon-forms` Actor pack to `module.json` with player
+- [x] Add the `vessel-archon-forms` Actor pack to `module.json` with player
   observer ownership.
-- [ ] Compile `archon-src` to `packs/vessel-archon-forms`, remove any `LOCK`,
+- [x] Compile `archon-src` to `packs/vessel-archon-forms`, remove any `LOCK`,
   and add a copied-LevelDB parity test that compares all nine compiled profiles
   with YAML source.
-- [ ] Run:
+- [x] Run:
   `node --test tests/vessel-archon-profiles.test.mjs tests/vessel-archon-compiled-pack.test.mjs`.
 
 ## Task 2: Add subclass control Items, native activities, and pure selection rules
