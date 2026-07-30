@@ -99,13 +99,14 @@ test('returns false when dnd5e spellcasting configuration is unavailable', () =>
   }
 });
 
-test('module manifest loads Vessel spellcasting and automation', async () => {
+test('module manifest loads Vessel and Warlord automation entry points', async () => {
   const manifest = JSON.parse(
     await readFile(new URL('../module.json', import.meta.url), 'utf8')
   );
   assert.deepEqual(manifest.esmodules, [
     'scripts/vessel-spellcasting.mjs',
-    'scripts/vessel-automation.mjs'
+    'scripts/vessel-automation.mjs',
+    'scripts/warlord-automation.mjs'
   ]);
 });
 

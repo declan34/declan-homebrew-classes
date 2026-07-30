@@ -30,7 +30,8 @@
   },
   "esmodules": [
     "scripts/vessel-spellcasting.mjs",
-    "scripts/vessel-automation.mjs"
+    "scripts/vessel-automation.mjs",
+    "scripts/warlord-automation.mjs"
   ],
   "packs": [
     {
