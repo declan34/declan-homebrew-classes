@@ -103,11 +103,11 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Create: `tests/vessel-archon-content.test.mjs`
 - Modify: `tests/vessel-rules.test.mjs`
 
-- [ ] Write failing tests for six dedicated subclass control Items. Each subclass
+- [x] Write failing tests for six dedicated subclass control Items. Each subclass
   level-3 advancement grants its control Item. Each control has four roles: free
   Transform, slot Transform, Extend, and Revert. The five ordinary controls
   reference one direct profile; Cataclysm references four affinity profiles.
-- [ ] Keep the generic class Archon Form Item as the one-use/rest rules feature
+- [x] Keep the generic class Archon Form Item as the one-use/rest rules feature
   and source of free uses. Its control metadata links subclass controls back to
   this stable owned Item rather than duplicating or moving the resource.
 - [ ] Configure the free Transform activity with an `itemUses` target. Its
@@ -115,16 +115,16 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
   allowing dnd5e's normal consumption and chat-card refund workflow to own the
   resource. Configure the slot Transform with native attribute consumption at
   `spells.vessel.value`.
-- [ ] Configure Extend and Revert as self-targeted Utility activities with no
-  native consumption targets.
-- [ ] Add pure functions for profile inventory lookup, subclass detection,
+- [x] Configure Extend and Revert as self-targeted Utility activities. Extend
+  consumes `spells.vessel.value`; Revert has no native consumption target.
+- [x] Add pure functions for profile inventory lookup, subclass detection,
   Cataclysm affinity selection, 10-minute versus one-hour duration, Archon AC
   bonus, early-end rules, and transform settings.
-- [ ] Ensure the settings retain physical and mental abilities, HP, class,
+- [x] Ensure the settings retain physical and mental abilities, HP, class,
   features, spells, biography, and gear proficiencies; merge saves and skills;
   exclude retained temp HP; and use
   `2 * @classes.vessel.levels` as the transform temp-HP formula.
-- [ ] Run:
+- [x] Run:
   `node --test tests/vessel-archon-content.test.mjs tests/vessel-rules.test.mjs`.
 
 ## Task 3: Implement profile routing and resource preflight
