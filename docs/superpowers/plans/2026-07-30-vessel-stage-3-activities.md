@@ -413,7 +413,7 @@ git -c commit.gpgSign=false commit -m \
   roles `aether-wings`, `opalescent-armor`, `primordial-bulwark`,
   `primordial-bulwark-harden`.
 
-- [ ] **Step 1: Write failing source and lifecycle tests**
+- [x] **Step 1: Write failing source and lifecycle tests**
 
 Test that Aether Wings grants fly 60 and hover, Opalescent Armor grants physical
 resistance and speed -10, and Primordial Bulwark is Archon-bound. Test:
@@ -431,14 +431,14 @@ assert.equal(moduleEffects(actor).length, 2);
 
 Then deactivate Mantle and assert only module-owned bound effects are removed.
 
-- [ ] **Step 2: Verify failure**
+- [x] **Step 2: Verify failure**
 
 ```bash
 node --test tests/vessel-stage3-effects.test.mjs \
   tests/vessel-stage3-passive-aspects.test.mjs
 ```
 
-- [ ] **Step 3: Add source effects and focused reconciler**
+- [x] **Step 3: Add source effects and focused reconciler**
 
 The reconciler:
 
@@ -458,7 +458,7 @@ effects. Primordial Bulwark Harden remains a manually invoked Utility activity
 with a one-round marker if native damage reduction cannot exactly express the
 Charisma reduction.
 
-- [ ] **Step 4: Run focused and Mantle/lifecycle regression tests**
+- [x] **Step 4: Run focused and Mantle/lifecycle regression tests**
 
 ```bash
 node --test tests/vessel-stage3-effects.test.mjs \
@@ -466,7 +466,7 @@ node --test tests/vessel-stage3-effects.test.mjs \
   tests/vessel-mantle.test.mjs tests/vessel-archon-lifecycle.test.mjs
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add aspects-src/aether-wings.yml aspects-src/opalescent-armor.yml \

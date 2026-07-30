@@ -27,7 +27,30 @@ system:
   activities: {}
   enchant: {}
   identifier: opalescent-armor
-effects: []
+effects:
+  - _id: OpalArmorEff0001
+    name: Opalescent Armor
+    img: icons/equipment/chest/breastplate-layered-steel-black.webp
+    origin: null
+    transfer: false
+    disabled: true
+    type: base
+    system: {}
+    changes:
+      - {key: system.traits.dr.value, mode: 2, value: bludgeoning, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: piercing, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: slashing, priority: 20}
+      - {key: system.attributes.movement.walk, mode: 2, value: '-10', priority: 20}
+    duration: {startTime: null, seconds: null, combat: null, rounds: null, turns: null, startRound: null, startTurn: null}
+    description: <p>While Spirit Mantle is active, you resist bludgeoning, piercing, and slashing damage and your speed is reduced by 10 feet. Silvered weapons ignore this Resistance. Non-walking speed reductions and silvered bypass are player-managed.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: opalescent-armor, stage3Binding: mantle, stage3Source: opalescent-armor}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!CquoRI5JHwQVMxh2.OpalArmorEff0001'
 flags:
   dnd5e:
     riders:

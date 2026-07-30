@@ -27,7 +27,28 @@ system:
   activities: {}
   enchant: {}
   identifier: aether-wings
-effects: []
+effects:
+  - _id: AetherWingEff001
+    name: Aether Wings
+    img: icons/creatures/abilities/wing-batlike-white-blue.webp
+    origin: null
+    transfer: false
+    disabled: true
+    type: base
+    system: {}
+    changes:
+      - {key: system.attributes.movement.fly, mode: 4, value: '60', priority: 20}
+      - {key: system.attributes.movement.hover, mode: 5, value: 'true', priority: 20}
+    duration: {startTime: null, seconds: null, combat: null, rounds: null, turns: null, startRound: null, startTurn: null}
+    description: <p>While Spirit Mantle is active, you have a 60-foot flying speed and can hover.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: aether-wings, stage3Binding: mantle, stage3Source: aether-wings}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!oUmkQMBtbkjpGzhL.AetherWingEff001'
 flags:
   dnd5e:
     riders:
