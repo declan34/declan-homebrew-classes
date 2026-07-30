@@ -375,19 +375,24 @@ test('Extend and Revert remain native at post-use boundaries', async () => {
   const revert = activity('archon-revert', target);
   let extended = 0;
   let reverted = 0;
+  let revertOptions = 'not-called';
 
   handlePostUseActivity(extend, {
     extendArchonForm: async () => { extended += 1; },
     reportError: error => { throw error; }
   });
   handlePostUseActivity(revert, {
-    revertArchonForm: async () => { reverted += 1; },
+    revertArchonForm: async (_actor, options) => {
+      reverted += 1;
+      revertOptions = options;
+    },
     reportError: error => { throw error; }
   });
   await tick();
 
   assert.equal(extended, 1);
   assert.equal(reverted, 1);
+  assert.equal(revertOptions, undefined);
 });
 
 test('inactive Extend and Revert are rejected before native consumption', () => {

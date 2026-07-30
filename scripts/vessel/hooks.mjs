@@ -475,7 +475,7 @@ export function handlePostUseActivity(activity, {
     return;
   }
   if (activityRole === AUTOMATION_ROLES.ARCHON_REVERT) {
-    void revertArchon(actor, { sourceItem: sourceItem(activity) }).catch(onError);
+    void revertArchon(actor).catch(onError);
     return;
   }
   if (activityRole !== AUTOMATION_ROLES.MANTLE_TOGGLE) return;
