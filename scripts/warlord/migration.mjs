@@ -47,6 +47,15 @@ const CORE_ITEM_IDENTIFIERS = new Set([
   'tactical-exploits',
   'tactical-superiority'
 ]);
+const STYLE_ITEM_IDENTIFIERS = new Set([
+  'balanced-fighting',
+  'classical-swordplay',
+  'defensive-fighting',
+  'mounted-warrior',
+  'protection',
+  'standard-bearer',
+  'tactical-fighting'
+]);
 
 let sourceItemsPromise;
 const reconciliationQueues = new WeakMap();
@@ -281,6 +290,89 @@ async function repairCanonicalEffects(item, canonical) {
   }
 }
 
+function warlordMetadata(document) {
+  return document?.flags?.[MODULE_ID]?.warlord;
+}
+
+function findStyleEffect(item, canonicalEffect) {
+  const sourceId = documentId(canonicalEffect);
+  const sourceMetadata = warlordMetadata(canonicalEffect);
+  if (!sourceMetadata) return undefined;
+
+  const metadataMatches = documents(item?.effects).filter(effect => {
+    const metadata = warlordMetadata(effect);
+    return (
+      metadata?.role === sourceMetadata.role
+      && metadata?.style === sourceMetadata.style
+      && metadata?.mechanic === sourceMetadata.mechanic
+    );
+  });
+  if (metadataMatches.length === 1) return metadataMatches[0];
+  if (metadataMatches.length > 1) {
+    return metadataMatches.find(effect => documentId(effect) === sourceId);
+  }
+
+  return documents(item?.effects).find(effect => (
+    documentId(effect) === sourceId
+  ));
+}
+
+function styleEffectUpdateData(current, canonical) {
+  const source = canonicalEffectData(canonical);
+  const changes = { _id: documentId(current) };
+  for (const field of ['changes', 'duration', 'transfer', 'type', 'system']) {
+    if (
+      Object.hasOwn(source, field)
+      && !sameData(current?.[field], source[field])
+    ) {
+      changes[field] = structuredClone(source[field]);
+    }
+  }
+
+  const sourceMetadata = warlordMetadata(source);
+  if (!sameData(warlordMetadata(current), sourceMetadata)) {
+    const flags = structuredClone(current?.flags ?? {});
+    flags[MODULE_ID] ??= {};
+    flags[MODULE_ID].warlord = structuredClone(sourceMetadata);
+    changes.flags = flags;
+  }
+  return Object.keys(changes).length > 1 ? changes : undefined;
+}
+
+async function repairStyleEffects(item, canonical) {
+  const updates = [];
+  const creates = [];
+  for (const sourceEffect of documents(canonical?.effects)) {
+    if (getWarlordRole(sourceEffect) !== 'fighting-style-effect') continue;
+    const current = findStyleEffect(item, sourceEffect);
+    if (!current) {
+      creates.push(canonicalEffectData(sourceEffect));
+      continue;
+    }
+    const changes = styleEffectUpdateData(current, sourceEffect);
+    if (changes) updates.push(changes);
+  }
+
+  if (updates.length) {
+    if (typeof item?.updateEmbeddedDocuments === 'function') {
+      await item.updateEmbeddedDocuments('ActiveEffect', updates);
+    } else {
+      await fallbackEffectChanges(item, updates, []);
+    }
+  }
+  if (creates.length) {
+    if (typeof item?.createEmbeddedDocuments === 'function') {
+      await item.createEmbeddedDocuments(
+        'ActiveEffect',
+        creates,
+        { keepId: true }
+      );
+    } else {
+      await fallbackEffectChanges(item, [], creates);
+    }
+  }
+}
+
 function numericRange(activity) {
   const raw = activity?.range?.value;
   if (raw === null || raw === undefined || raw === '') return undefined;
@@ -361,6 +453,7 @@ export async function loadWarlordExploitSourceItems(actor, {
       typeof identifier === 'string'
       && identifier.length > 0
       && !CORE_ITEM_IDENTIFIERS.has(identifier)
+      && !STYLE_ITEM_IDENTIFIERS.has(identifier)
     )));
   if (!ownedIdentifiers.size) return {};
 
@@ -383,6 +476,46 @@ export async function loadWarlordExploitSourceItems(actor, {
   return Object.fromEntries(entries);
 }
 
+export async function loadWarlordStyleSourceItems(actor, {
+  packs = globalThis.game?.packs
+} = {}) {
+  const ownedIdentifiers = new Set(documents(actor?.items)
+    .map(getIdentifier)
+    .filter(identifier => STYLE_ITEM_IDENTIFIERS.has(identifier)));
+  if (!ownedIdentifiers.size) return {};
+
+  const pack = packs?.get?.(`${MODULE_ID}.warlord-fighting-styles`);
+  if (!pack) {
+    throw new Error('The Warlord Fighting Styles compendium is unavailable.');
+  }
+
+  const index = typeof pack.getIndex === 'function'
+    ? await pack.getIndex({ fields: ['system.identifier'] })
+    : pack.index;
+  const selected = documents(index).filter(entry => (
+    ownedIdentifiers.has(getIdentifier(entry))
+  ));
+  const indexedIdentifiers = new Set(selected.map(getIdentifier));
+  if (
+    Array.from(ownedIdentifiers)
+      .some(identifier => !indexedIdentifiers.has(identifier))
+  ) {
+    throw new Error(
+      'The Warlord Fighting Styles compendium is missing a migration source.'
+    );
+  }
+  const entries = await Promise.all(selected.map(async entry => {
+    const source = await pack.getDocument(documentId(entry));
+    if (!source) {
+      throw new Error(
+        'The Warlord Fighting Styles compendium is missing a migration source.'
+      );
+    }
+    return [getIdentifier(source), source];
+  }));
+  return Object.fromEntries(entries);
+}
+
 async function updateOwnedItems(actor, sources, changesForItem) {
   for (const canonical of Object.values(sources)) {
     const item = findOwnedItem(actor, canonical);
@@ -399,6 +532,16 @@ async function migrateOwnedExploitItems(actor, sources) {
     const changes = migrationChanges(item, canonical);
     if (Object.keys(changes).length) await item.update(changes);
     await repairCanonicalEffects(item, canonical);
+  }
+}
+
+async function migrateOwnedStyleItems(actor, sources) {
+  for (const canonical of Object.values(sources)) {
+    const item = findOwnedItem(actor, canonical);
+    if (!item || typeof item.update !== 'function') continue;
+    const changes = activityChanges(item, canonical);
+    if (Object.keys(changes).length) await item.update(changes);
+    await repairStyleEffects(item, canonical);
   }
 }
 
@@ -451,6 +594,7 @@ export async function reconcileWarlordActor(actor, options = {}) {
 export async function migrateWarlordActor(actor, {
   loadSourceItems = loadWarlordSourceItems,
   loadExploitSourceItems = loadWarlordExploitSourceItems,
+  loadStyleSourceItems = loadWarlordStyleSourceItems,
   configureLeadership = configureLeadershipItems
 } = {}) {
   if (!actor?.isOwner) {
@@ -463,6 +607,8 @@ export async function migrateWarlordActor(actor, {
   await updateOwnedItems(actor, sources, migrationChanges);
   const exploitSources = await loadExploitSourceItems(actor);
   await migrateOwnedExploitItems(actor, exploitSources);
+  const styleSources = await loadStyleSourceItems(actor);
+  await migrateOwnedStyleItems(actor, styleSources);
 
   await reconcileWarlordActor(actor, {
     sourceItems: sources,

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 const {
   loadWarlordExploitSourceItems,
+  loadWarlordStyleSourceItems,
   loadWarlordSourceItems,
   migrateWarlordActor,
   reconcileWarlordActor
@@ -272,6 +273,110 @@ function canonicalExploitSources() {
   };
 }
 
+function styleMetadata(style, mechanic, role = 'fighting-style-effect') {
+  return {
+    [MODULE_ID]: {
+      warlord: { role, style, mechanic }
+    }
+  };
+}
+
+function canonicalStyleEffect(id, style, mechanic, {
+  disabled = false,
+  type = 'base',
+  transfer = false,
+  changes = [{ key: 'system.attributes.ac.bonus', mode: 2, value: '1', priority: 20 }]
+} = {}) {
+  return {
+    _id: id,
+    id,
+    name: `Canonical ${style} effect`,
+    type,
+    transfer,
+    system: type === 'enchantment' ? { schema: 'canonical' } : {},
+    changes: clone(changes),
+    disabled,
+    duration: { rounds: null, seconds: null },
+    description: '<p>Canonical effect description.</p>',
+    flags: {
+      otherCanonicalFlag: { replace: false },
+      ...styleMetadata(style, mechanic)
+    },
+    _key: `!items.effects!canonical.${id}`
+  };
+}
+
+function canonicalStyleSources() {
+  const balancedActivity = warlordActivity(
+    'BalFightEnchant1',
+    'fighting-style-activity',
+    {
+      type: 'enchant',
+      flags: styleMetadata(
+        'balanced-fighting',
+        'weapon-damage-enchantment',
+        'fighting-style-activity'
+      )
+    }
+  );
+  const mountedActivity = warlordActivity(
+    'MountedUseAct001',
+    'fighting-style-activity',
+    {
+      type: 'utility',
+      flags: styleMetadata(
+        'mounted-warrior',
+        'mounted-ac',
+        'fighting-style-activity'
+      )
+    }
+  );
+  const balanced = canonicalItem(
+    'hbrcInmfAaXPMRVr',
+    'balanced-fighting',
+    [balancedActivity],
+    { max: '', recovery: [] }
+  );
+  balanced.effects = [canonicalStyleEffect(
+    'BalFightDmgEff01',
+    'balanced-fighting',
+    'weapon-damage-bonus',
+    {
+      type: 'enchantment',
+      changes: [{
+        key: 'system.damage.base.bonus',
+        mode: 2,
+        value: '2',
+        priority: 20
+      }]
+    }
+  )];
+  const defensive = canonicalItem(
+    'ZhP7bFygnQsXTIqz',
+    'defensive-fighting',
+    [],
+    { max: '', recovery: [] }
+  );
+  defensive.effects = [canonicalStyleEffect(
+    'DefensiveACEff01',
+    'defensive-fighting',
+    'conditional-ac',
+    { disabled: true, transfer: true }
+  )];
+  const mounted = canonicalItem(
+    'H7BeSma1Jfb3xK5s',
+    'mounted-warrior',
+    [mountedActivity],
+    { max: '', recovery: [] }
+  );
+  mounted.effects = [canonicalStyleEffect(
+    'MountedACEff0001',
+    'mounted-warrior',
+    'mounted-ac'
+  )];
+  return { balanced, defensive, mounted };
+}
+
 function setPath(target, path, value) {
   const keys = path.split('.');
   let current = target;
@@ -501,6 +606,310 @@ test('loads canonical Exploit documents only for identifiers the actor owns', as
   );
 });
 
+test('loads canonical Fighting Style documents only for identifiers the actor owns', async () => {
+  const sources = canonicalStyleSources();
+  const index = Object.values(sources).map(item => ({
+    _id: item.id,
+    system: { identifier: item.system.identifier }
+  }));
+  const byId = new Map(Object.values(sources).map(item => [item.id, item]));
+  const requested = [];
+  const pack = {
+    async getIndex() {
+      return index;
+    },
+    async getDocument(id) {
+      requested.push(id);
+      return byId.get(id);
+    }
+  };
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-balanced', identifier: 'balanced-fighting' }),
+      ownedItem({ id: 'owned-mounted', identifier: 'mounted-warrior' }),
+      ownedItem({ id: 'owned-dirty', identifier: 'dirty-hit' })
+    ]
+  });
+
+  const loaded = await loadWarlordStyleSourceItems(actor, {
+    packs: new Map([[`${MODULE_ID}.warlord-fighting-styles`, pack]])
+  });
+
+  assert.deepEqual(requested.sort(), [
+    sources.balanced.id,
+    sources.mounted.id
+  ].sort());
+  assert.deepEqual(
+    Object.values(loaded).map(item => item.system.identifier).sort(),
+    ['balanced-fighting', 'mounted-warrior']
+  );
+});
+
+test('does not look up the Fighting Style pack when the actor owns no styles', async () => {
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-dirty', identifier: 'dirty-hit' })
+    ]
+  });
+
+  const loaded = await loadWarlordStyleSourceItems(actor, {
+    packs: {
+      get() {
+        throw new Error('style pack must not be read');
+      }
+    }
+  });
+
+  assert.deepEqual(loaded, {});
+});
+
+test('rejects an incomplete Fighting Style index so migration can retry', async () => {
+  const sources = canonicalStyleSources();
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-balanced', identifier: 'balanced-fighting' }),
+      ownedItem({ id: 'owned-mounted', identifier: 'mounted-warrior' })
+    ]
+  });
+  const pack = {
+    async getIndex() {
+      return [{
+        _id: sources.balanced.id,
+        system: { identifier: 'balanced-fighting' }
+      }];
+    },
+    async getDocument() {
+      return sources.balanced;
+    }
+  };
+
+  await assert.rejects(
+    loadWarlordStyleSourceItems(actor, {
+      packs: new Map([[`${MODULE_ID}.warlord-fighting-styles`, pack]])
+    }),
+    /missing a migration source/
+  );
+});
+
+test('selectively migrates Fighting Style activities and effects while preserving player data', async () => {
+  const coreSources = canonicalSources();
+  const styleSources = canonicalStyleSources();
+  const userActivity = {
+    id: 'userActivityId',
+    name: 'My custom style activity',
+    type: 'attack',
+    flags: { otherModule: { keep: true } }
+  };
+  const balancedEffect = {
+    _id: 'BalFightDmgEff01',
+    id: 'BalFightDmgEff01',
+    name: 'My renamed damage effect',
+    type: 'legacy',
+    transfer: true,
+    system: { stale: true },
+    changes: [],
+    disabled: true,
+    duration: { rounds: 99 },
+    description: '<p>Keep my effect notes.</p>',
+    flags: {
+      otherModule: { keep: 'balanced-effect' },
+      [MODULE_ID]: {
+        warlord: { role: 'fighting-style-effect' }
+      }
+    }
+  };
+  const balanced = ownedItem({
+    id: 'owned-balanced',
+    identifier: 'balanced-fighting',
+    activities: [
+      staleActivity(styleSources.balanced.system.activities.BalFightEnchant1),
+      userActivity
+    ],
+    effects: [balancedEffect]
+  });
+  const userAcEffect = {
+    _id: 'user-ac-effect',
+    id: 'user-ac-effect',
+    name: 'My other AC effect',
+    changes: [{
+      key: 'system.attributes.ac.bonus',
+      mode: 2,
+      value: '3',
+      priority: 20
+    }],
+    disabled: false,
+    flags: { otherModule: { keep: true } }
+  };
+  const defensive = ownedItem({
+    id: 'owned-defensive',
+    identifier: 'defensive-fighting',
+    effects: [userAcEffect]
+  });
+  const mountedEffect = {
+    ...clone(styleSources.mounted.effects[0]),
+    name: 'My mounted effect',
+    disabled: false,
+    description: '<p>Keep mounted effect notes.</p>',
+    flags: {
+      otherModule: { keep: 'mounted-effect' },
+      ...styleMetadata('mounted-warrior', 'mounted-ac')
+    },
+    changes: []
+  };
+  const customMountedName = 'My Cavalry Training';
+  const customMountedDescription = '<p>Keep my mounted prose.</p>';
+  const mounted = ownedItem({
+    id: 'owned-mounted',
+    identifier: 'mounted-warrior',
+    name: customMountedName,
+    description: customMountedDescription,
+    activities: [],
+    effects: [mountedEffect]
+  });
+  const actor = actorFixture({
+    items: [warlordClass(), balanced, defensive, mounted],
+    leadershipAbility: undefined
+  });
+
+  assert.equal(await migrateWarlordActor(actor, {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems: async () => ({}),
+    loadStyleSourceItems: async () => styleSources
+  }), true);
+
+  assert.ok(balanced.system.activities.BalFightEnchant1);
+  assert.ok(balanced.system.activities.userActivityId);
+  assert.ok(mounted.system.activities.MountedUseAct001);
+  assert.ok(defensive.effects.some(effect => effect._id === 'user-ac-effect'));
+  const defensiveCanonical = defensive.effects.find(effect => (
+    effect.flags?.[MODULE_ID]?.warlord?.role === 'fighting-style-effect'
+  ));
+  assert.equal(defensiveCanonical._id, 'DefensiveACEff01');
+  assert.equal(defensiveCanonical.disabled, true);
+  assert.deepEqual(defensive.embeddedCreateCalls[0].options, { keepId: true });
+
+  const migratedBalancedEffect = balanced.effects.find(effect => (
+    effect._id === 'BalFightDmgEff01'
+  ));
+  assert.equal(migratedBalancedEffect.name, 'My renamed damage effect');
+  assert.equal(
+    migratedBalancedEffect.description,
+    '<p>Keep my effect notes.</p>'
+  );
+  assert.deepEqual(
+    migratedBalancedEffect.flags.otherModule,
+    { keep: 'balanced-effect' }
+  );
+  assert.deepEqual(
+    migratedBalancedEffect.flags[MODULE_ID].warlord,
+    styleSources.balanced.effects[0].flags[MODULE_ID].warlord
+  );
+  assert.equal(migratedBalancedEffect.disabled, true);
+  assert.deepEqual(
+    migratedBalancedEffect.changes,
+    styleSources.balanced.effects[0].changes
+  );
+  assert.equal(migratedBalancedEffect.type, 'enchantment');
+  assert.deepEqual(
+    migratedBalancedEffect.system,
+    styleSources.balanced.effects[0].system
+  );
+  const migratedMountedEffect = mounted.effects.find(effect => (
+    effect._id === 'MountedACEff0001'
+  ));
+  assert.equal(migratedMountedEffect.disabled, false);
+  assert.deepEqual(
+    migratedMountedEffect.changes,
+    styleSources.mounted.effects[0].changes
+  );
+  assert.equal(mounted.name, customMountedName);
+  assert.equal(mounted.system.description.value, customMountedDescription);
+  assert.deepEqual(mounted.flags.otherModule, { keep: true });
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+
+  assert.equal(await migrateWarlordActor(actor, {
+    loadSourceItems: async () => {
+      throw new Error('an idempotent style migration must not reload core');
+    },
+    loadExploitSourceItems: async () => {
+      throw new Error('an idempotent style migration must not reload exploits');
+    },
+    loadStyleSourceItems: async () => {
+      throw new Error('an idempotent style migration must not reload styles');
+    }
+  }), false);
+});
+
+test('preserves enabled and disabled state on existing eligibility effects', async () => {
+  const coreSources = canonicalSources();
+  const styleSources = canonicalStyleSources();
+  const options = {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems: async () => ({}),
+    loadStyleSourceItems: async () => ({ defensive: styleSources.defensive })
+  };
+  for (const disabled of [false, true]) {
+    const effect = {
+      ...clone(styleSources.defensive.effects[0]),
+      changes: [],
+      disabled
+    };
+    const defensive = ownedItem({
+      id: `owned-defensive-${disabled}`,
+      identifier: 'defensive-fighting',
+      effects: [effect]
+    });
+    const actor = actorFixture({
+      items: [warlordClass(), defensive],
+      leadershipAbility: undefined
+    });
+
+    assert.equal(await migrateWarlordActor(actor, options), true);
+    assert.equal(
+      defensive.effects.find(entry => entry._id === 'DefensiveACEff01').disabled,
+      disabled
+    );
+    assert.deepEqual(
+      defensive.effects.find(entry => entry._id === 'DefensiveACEff01').changes,
+      styleSources.defensive.effects[0].changes
+    );
+  }
+});
+
+test('leaves the migration flag absent until Fighting Style effects succeed and retries safely', async () => {
+  const coreSources = canonicalSources();
+  const styleSources = canonicalStyleSources();
+  const defensive = ownedItem({
+    id: 'owned-defensive',
+    identifier: 'defensive-fighting',
+    effects: [],
+    failEffectCreates: 1
+  });
+  const actor = actorFixture({
+    items: [warlordClass(), defensive],
+    leadershipAbility: undefined
+  });
+  const options = {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems: async () => ({}),
+    loadStyleSourceItems: async () => styleSources
+  };
+
+  await assert.rejects(
+    migrateWarlordActor(actor, options),
+    /forced defensive-fighting effect create failure/
+  );
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, undefined);
+  assert.deepEqual(defensive.effects, []);
+
+  assert.equal(await migrateWarlordActor(actor, options), true);
+  assert.ok(defensive.effects.some(effect => effect._id === 'DefensiveACEff01'));
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+});
+
 test('selectively migrates owned Tier A, B, and C Exploits and configures every canonical save', async () => {
   const coreSources = canonicalSources();
   const exploitSources = canonicalExploitSources();
@@ -609,7 +1018,7 @@ test('selectively migrates owned Tier A, B, and C Exploits and configures every 
   for (const reference of dirtyHit.system.activities.DirtyHitAct01ABC.effects) {
     assert.ok(dirtyHit.effects.some(effect => effect._id === reference._id));
   }
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
 });
 
 test('Tactical Superiority doubles only canonical 15 and 30 foot Exploit ranges', async () => {
@@ -712,7 +1121,7 @@ test('selectively migrates Warlord structures while preserving presentation and 
   assert.equal(await migrateWarlordActor(actor, {
     loadSourceItems: async () => sources
   }), true);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
   assert.equal(actor.inspiring.system.uses.spent, 2);
   assert.equal(actor.inspiring.name, 'My Rallying Words');
   assert.equal(actor.inspiring.system.description.value, '<p>Keep my prose.</p>');
@@ -804,7 +1213,7 @@ test('leaves the migration flag absent after a partial failure and repairs the r
   assert.equal(await migrateWarlordActor(actor, {
     loadSourceItems: async () => sources
   }), true);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
   assert.equal(rally.system.activities.RallyingCryAct01.type, 'utility');
   assert.ok(inspiring.updateCalls.length >= completedInspiringUpdates);
   assert.equal(
@@ -842,7 +1251,7 @@ test('sets no migration flag until Exploit repair succeeds and retries safely', 
     loadExploitSourceItems: async () => exploitSources
   }), true);
   assert.ok(dirtyHit.system.activities.DirtyHitAct01ABC);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
 });
 
 test('sets no migration flag until embedded Exploit effects succeed and retries safely', async () => {
@@ -878,7 +1287,7 @@ test('sets no migration flag until embedded Exploit effects succeed and retries 
     dirtyHit.effects.map(effect => effect._id).sort(),
     ['DirtyHitProne01A', 'DirtyNoReact01AB'].sort()
   );
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 2);
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
 });
 
 test('reconciliation reapplies canonical base values after a level reduction', async () => {
