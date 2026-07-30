@@ -22,6 +22,22 @@ The module's custom code coordinates the Mantle state and prompts before an
 inactive Vessel attempts a Strike. It does not replace Foundry's attack or damage
 resolution and does not require another automation module.
 
+## Warlord automation
+
+The Warlord uses one shared Exploit Die pool, degree-aware Exploit choices,
+native activities for mechanically useful Exploits, and player-controlled
+Fighting Style effects. Set the actor's Leadership Style once so Foundry can use
+the correct Intelligence, Wisdom, or Charisma modifier.
+
+Inspiring Word asks for the target's Hit Die and then opens Foundry's native
+healing workflow. Conditional Exploits and reactions track their action,
+targets, rolls, and resources while leaving the triggering attack, save, or
+movement in Foundry's normal workflow. Free prose-driven Orders continue to use
+Post to Chat.
+
+The module does not replace attack, save, healing, damage, or effect resolution
+and does not require Midi-QOL.
+
 ## Install (for your DM)
 
 In Foundry: **Add-on Modules → Install Module**, and paste this manifest URL:
