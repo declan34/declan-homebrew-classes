@@ -101,6 +101,10 @@ When a new version is released, Foundry shows an **Update** button.
 
 **Requires:** the `dnd5e` system (v5.3.3+) and Foundry VTT v13+.
 
+## Optional private spell compendium
+
+If your GM has access to the optional companion spell module, see [Private Spell Compendium setup](docs/private-spell-compendium.md). In **Game Settings** → **Configure Settings** → **Module Settings**, select its **Item compendium** for **Private Spell Compendium**, or leave the setting at **None**. The companion is distributed separately, so this public repository does not link to it.
+
 ## ⚠️ Auto-generated draft — verify before play
 
 This content was extracted automatically from a PDF. The **descriptive text is faithful**
