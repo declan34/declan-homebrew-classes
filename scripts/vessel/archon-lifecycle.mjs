@@ -199,12 +199,22 @@ export async function stageArchonTransformation(document, pending) {
   return clone(pending);
 }
 
-export async function clearArchonPending(document, expectedProfileUuid) {
+export async function clearArchonPending(
+  document,
+  expectedProfileUuid,
+  expectedTransformationId
+) {
   const actor = actorDocument(document);
   if (!actor) return false;
   const pending = getArchonPending(actor);
   if (!pending) return false;
   if (expectedProfileUuid && pending.profileUuid !== expectedProfileUuid) {
+    return false;
+  }
+  if (
+    expectedTransformationId
+    && pending.transformationId !== expectedTransformationId
+  ) {
     return false;
   }
   await actor.unsetFlag(MODULE_ID, ARCHON_PENDING_FLAG);

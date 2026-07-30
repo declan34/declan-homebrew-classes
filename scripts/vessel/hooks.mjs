@@ -337,6 +337,13 @@ export function handlePreUseActivity(activity, {
   if (ARCHON_ACTIVITY_ROLES.has(activityRole)) {
     const actor = activity?.item?.actor;
     if (
+      ARCHON_TRANSFORM_ROLES.has(activityRole)
+      && isArchonFormActive(actor)
+    ) {
+      warn('Revert your current Archon Form before transforming again.');
+      return false;
+    }
+    if (
       [AUTOMATION_ROLES.ARCHON_EXTEND, AUTOMATION_ROLES.ARCHON_REVERT]
         .includes(activityRole)
       && !isArchonFormActive(actor)
@@ -370,7 +377,8 @@ export async function performArchonTransformation(
   results,
   {
     resolveUuid = globalThis.fromUuid,
-    stageArchonTransformation: stageArchon = stageArchonTransformation
+    stageArchonTransformation: stageArchon = stageArchonTransformation,
+    clearArchonPending: clearPending = clearArchonPending
   } = {}
 ) {
   const actor = activity?.item?.actor;
@@ -397,13 +405,34 @@ export async function performArchonTransformation(
       );
     }
     await stageArchon(actor, pending);
-    const transformed = await actor.transformInto(profileActor, activity.settings);
+    let transformed;
+    try {
+      transformed = await actor.transformInto(profileActor, activity.settings);
+    } catch (error) {
+      try {
+        await clearPending(
+          actor,
+          pending.profileUuid,
+          pending.transformationId
+        );
+      } catch (cleanupError) {
+        console.error(
+          "Declan's Homebrew Classes | Failed to clear an unsuccessful Archon transformation.",
+          cleanupError
+        );
+      }
+      throw error;
+    }
     if (transformed === null) {
+      await clearPending(
+        actor,
+        pending.profileUuid,
+        pending.transformationId
+      );
       throw new Error(
         'Foundry did not allow this Archon Form transformation. Use the chat card Refund action, then retry.'
       );
     }
-    await results?.message?.unsetFlag?.('dnd5e', 'transform.uuid');
     return transformed;
   } finally {
     transformingArchons.delete(actor);

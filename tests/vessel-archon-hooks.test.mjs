@@ -181,7 +181,6 @@ test('successful Transform use binds the native transform to its source actor', 
     transformationId: 'message-transform-one'
   });
   assert.deepEqual(transformed, [{ source: profile, settings: transform.settings }]);
-  assert.deepEqual(message.unset, ['dnd5e', 'transform.uuid']);
 });
 
 test('owner-bound transform ignores unrelated controlled scene targets', async () => {
@@ -401,6 +400,60 @@ test('inactive Extend and Revert are rejected before native consumption', () => 
     handlePreUseActivity(activity('archon-revert', target)),
     false
   );
+});
+
+test('Transform is rejected while Archon Form is already active', () => {
+  const target = actor({
+    state: {
+      active: true,
+      startedAt: 0,
+      expiresAt: 600,
+      profile: 'cursed',
+      profileUuid: 'Compendium.test.Actor.cursed',
+      sourceActorUuid: 'Actor.vessel-actor',
+      payment: 'free',
+      acBonus: 1,
+      tempHPBeforeTransform: 0,
+      transformationId: 'existing-form'
+    }
+  });
+  let prepared = 0;
+
+  for (const role of ['archon-transform-free', 'archon-transform-slot']) {
+    assert.equal(handlePreUseActivity(activity(role, target), {
+      requestArchonActivityPreparation: () => { prepared += 1; }
+    }), false);
+  }
+  assert.equal(prepared, 0);
+});
+
+test('failed and rejected native transforms clear only their matching pending state', async () => {
+  for (const failure of ['throw', 'null']) {
+    const target = actor({ id: `failed-${failure}` });
+    const transform = activity('archon-transform-free', target);
+    transform.settings = {};
+    target.transformInto = async () => {
+      if (failure === 'throw') throw new Error('native transform failed');
+      return null;
+    };
+    const pending = {
+      payment: 'free',
+      profile: 'cursed',
+      profileUuid: 'Compendium.test.Actor.cursed',
+      transformationId: `message-${failure}`
+    };
+
+    await assert.rejects(
+      performArchonTransformation(
+        transform,
+        pending,
+        {},
+        { resolveUuid: async () => ({ uuid: pending.profileUuid }) }
+      ),
+      failure === 'throw' ? /native transform failed/ : /did not allow/
+    );
+    assert.equal(getArchonPending(target), undefined);
+  }
 });
 
 test('Equipment Preference saves either native equipment policy and never posts an activity card', async () => {
