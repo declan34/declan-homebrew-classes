@@ -27,7 +27,42 @@ system:
   activities: {}
   enchant: {}
   identifier: defensive-fighting
-effects: []
+effects:
+  - name: Defensive Fighting AC
+    img: icons/svg/shield.svg
+    origin: null
+    transfer: true
+    _id: DefensiveACEff01
+    type: base
+    system: {}
+    changes:
+      - key: system.attributes.ac.bonus
+        mode: 2
+        value: '1'
+        priority: 20
+    disabled: true
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Enable only while wearing medium armor, heavy armor, or wielding a shield.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+      declan-homebrew-classes:
+        warlord:
+          role: fighting-style-effect
+          style: defensive-fighting
+          mechanic: conditional-ac
+    _key: '!items.effects!ZhP7bFygnQsXTIqz.DefensiveACEff01'
 flags:
   dnd5e:
     riders:

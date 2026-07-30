@@ -24,10 +24,132 @@ system:
     repeatable: false
   properties: []
   requirements: Dexterity of 13 or higher
-  activities: {}
+  activities:
+    ClassicalEnchant:
+      _id: ClassicalEnchant
+      type: enchant
+      name: Enchant Finesse Weapon
+      sort: 0
+      activation:
+        type: special
+        value: null
+        override: false
+        condition: While wielding one finesse weapon, no shield, and no heavy armor.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Select the eligible finesse weapon. The enchantment adds 2 to its attack rolls; remove it when the weapon is no longer eligible. Enable the separate AC effect only while all equipment requirements are met.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects:
+        - _id: ClsAttackEff0001
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: fighting-style-activity
+            style: classical-swordplay
+            mechanic: weapon-attack-enchantment
+      range:
+        override: false
+      target:
+        template:
+          contiguous: false
+          units: ft
+        affects:
+          choice: false
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      enchant:
+        self: false
+      restrictions:
+        allowMagical: true
+        categories: []
+        properties:
+          - fin
+        type: weapon
   enchant: {}
   identifier: classical-swordplay
-effects: []
+effects:
+  - name: Classical Swordplay Attack
+    img: icons/svg/sword.svg
+    origin: null
+    transfer: false
+    _id: ClsAttackEff0001
+    type: enchantment
+    system: {}
+    changes:
+      - key: activities[attack].attack.bonus
+        mode: 2
+        value: '2'
+        priority: 20
+    disabled: false
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Adds 2 to attack rolls made with the enchanted finesse weapon. Remove the enchantment when the weapon is no longer eligible.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+      declan-homebrew-classes:
+        warlord:
+          role: fighting-style-effect
+          style: classical-swordplay
+          mechanic: weapon-attack-bonus
+    _key: '!items.effects!t2H00Ym07D8pxiMA.ClsAttackEff0001'
+  - name: Classical Swordplay AC
+    img: icons/svg/shield.svg
+    origin: null
+    transfer: true
+    _id: ClassicalACEff01
+    type: base
+    system: {}
+    changes:
+      - key: system.attributes.ac.bonus
+        mode: 2
+        value: '1'
+        priority: 20
+    disabled: true
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Enable only while wielding one finesse weapon, no shield, and no heavy armor.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+      declan-homebrew-classes:
+        warlord:
+          role: fighting-style-effect
+          style: classical-swordplay
+          mechanic: conditional-ac
+    _key: '!items.effects!t2H00Ym07D8pxiMA.ClassicalACEff01'
 flags:
   dnd5e:
     riders:

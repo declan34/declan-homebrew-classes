@@ -24,10 +24,98 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    BalFightEnchant1:
+      _id: BalFightEnchant1
+      type: enchant
+      name: Enchant Melee Weapon
+      sort: 0
+      activation:
+        type: special
+        value: null
+        override: false
+        condition: While wielding an eligible melee weapon in one hand and no other weapons.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Select one eligible melee weapon. The enchantment adds 2 to its damage rolls; remove it when the weapon is no longer eligible.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects:
+        - _id: BalFightDmgEff01
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: fighting-style-activity
+            style: balanced-fighting
+            mechanic: weapon-damage-enchantment
+      range:
+        override: false
+      target:
+        template:
+          contiguous: false
+          units: ft
+        affects:
+          choice: false
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      enchant:
+        self: false
+      restrictions:
+        allowMagical: true
+        categories:
+          - simpleM
+          - martialM
+        properties: []
+        type: weapon
   enchant: {}
   identifier: balanced-fighting
-effects: []
+effects:
+  - name: Balanced Fighting Damage
+    img: icons/svg/sword.svg
+    origin: null
+    transfer: false
+    _id: BalFightDmgEff01
+    type: enchantment
+    system: {}
+    changes:
+      - key: system.damage.base.bonus
+        mode: 2
+        value: '2'
+        priority: 20
+    disabled: false
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Adds 2 to damage rolls made with the enchanted weapon. The player selects an eligible melee weapon and removes this enchantment when it is no longer eligible.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+      declan-homebrew-classes:
+        warlord:
+          role: fighting-style-effect
+          style: balanced-fighting
+          mechanic: weapon-damage-bonus
+    _key: '!items.effects!hbrcInmfAaXPMRVr.BalFightDmgEff01'
 flags:
   dnd5e:
     riders:

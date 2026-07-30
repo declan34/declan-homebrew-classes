@@ -24,7 +24,62 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    ProtectionUse001:
+      _id: ProtectionUse001
+      type: utility
+      name: Protect
+      sort: 0
+      activation:
+        type: reaction
+        value: null
+        override: false
+        condition: When a visible creature hits you or a target within 5 feet with a melee attack.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Compare the displayed Proficiency Bonus with the triggering attack. This activity does not alter the attack roll or determine whether it misses.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: fighting-style-activity
+            style: protection
+            mechanic: proficiency-comparison
+      range:
+        value: '5'
+        override: false
+        units: ft
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: creature
+          special: The creature protected against the triggering attack
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: '@prof'
+        name: Armor Class Increase
+        prompt: false
+        visible: true
   enchant: {}
   identifier: protection
 effects: []

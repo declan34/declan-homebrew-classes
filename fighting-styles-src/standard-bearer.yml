@@ -24,10 +24,121 @@ system:
     repeatable: false
   properties: []
   requirements: Charisma of 13 or higher
-  activities: {}
+  activities:
+    StandardSaveAct1:
+      _id: StandardSaveAct1
+      type: utility
+      name: Rally Saving Throw
+      sort: 0
+      activation:
+        type: reaction
+        value: null
+        override: false
+        condition: When a creature in your banner's radius makes a saving throw.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Grants advantage on the target's next saving throw. Remove the effect immediately after that saving throw.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects:
+        - _id: StandardSaveEf01
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: fighting-style-activity
+            style: standard-bearer
+            mechanic: next-save-advantage
+      range:
+        value: '@prof * 5'
+        override: false
+        units: ft
+        special: Banner radius
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: ally
+          special: A creature within your banner's radius
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: ''
+        name: ''
+        prompt: false
+        visible: false
   enchant: {}
   identifier: standard-bearer
-effects: []
+effects:
+  - name: Standard Bearer Advantage
+    img: icons/svg/upgrade.svg
+    origin: null
+    transfer: false
+    _id: StandardSaveEf01
+    type: base
+    system: {}
+    changes:
+      - key: system.abilities.str.save.roll.mode
+        mode: 2
+        value: '1'
+        priority: 20
+      - key: system.abilities.dex.save.roll.mode
+        mode: 2
+        value: '1'
+        priority: 20
+      - key: system.abilities.con.save.roll.mode
+        mode: 2
+        value: '1'
+        priority: 20
+      - key: system.abilities.int.save.roll.mode
+        mode: 2
+        value: '1'
+        priority: 20
+      - key: system.abilities.wis.save.roll.mode
+        mode: 2
+        value: '1'
+        priority: 20
+      - key: system.abilities.cha.save.roll.mode
+        mode: 2
+        value: '1'
+        priority: 20
+    disabled: false
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Advantage on the next saving throw. Remove this effect immediately after that saving throw.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+      declan-homebrew-classes:
+        warlord:
+          role: fighting-style-effect
+          style: standard-bearer
+          mechanic: next-save-advantage
+    _key: '!items.effects!xZm5h2F67c9FL66a.StandardSaveEf01'
 flags:
   dnd5e:
     riders:

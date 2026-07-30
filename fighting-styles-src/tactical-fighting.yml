@@ -24,10 +24,97 @@ system:
     repeatable: false
   properties: []
   requirements: Intelligence of 13 or higher
-  activities: {}
+  activities:
+    TacticalHelpAct1:
+      _id: TacticalHelpAct1
+      type: utility
+      name: Help Attack
+      sort: 0
+      activation:
+        type: bonus
+        value: null
+        override: false
+        condition: When you use Help to aid an attack and the attacker can hear you.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Applies a reminder for advantage on the target's next attack. Roll that attack with advantage, then remove the effect. Use Post to Chat for the bonus-action Search option.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects:
+        - _id: TacticalHelpEf01
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: fighting-style-activity
+            style: tactical-fighting
+            mechanic: next-attack-advantage
+      range:
+        value: '30'
+        override: false
+        units: ft
+        special: The attacker must be able to hear you
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: ally
+          special: The creature making the aided attack
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: ''
+        name: ''
+        prompt: false
+        visible: false
   enchant: {}
   identifier: tactical-fighting
-effects: []
+effects:
+  - name: Helped Attack
+    img: icons/svg/upgrade.svg
+    origin: null
+    transfer: false
+    _id: TacticalHelpEf01
+    type: base
+    system: {}
+    changes: []
+    disabled: false
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>Roll the next aided attack with advantage, then remove this reminder effect. Core dnd5e 5.3.3 has no supported global Actor Active Effect field for attack advantage.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+      declan-homebrew-classes:
+        warlord:
+          role: fighting-style-effect
+          style: tactical-fighting
+          mechanic: next-attack-advantage
+    _key: '!items.effects!RNPIQL3LGBrSKrgj.TacticalHelpEf01'
 flags:
   dnd5e:
     riders:

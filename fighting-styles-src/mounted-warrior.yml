@@ -24,10 +24,101 @@ system:
     repeatable: false
   properties: []
   requirements: proficiency in Animal Handling
-  activities: {}
+  activities:
+    MountedUseAct001:
+      _id: MountedUseAct001
+      type: utility
+      name: Mounted Warrior
+      sort: 0
+      activation:
+        type: special
+        value: null
+        override: false
+        condition: While riding a controlled mount.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: Target yourself and your controlled or selected mount to apply 1 AC to both. Remove the effects manually when you dismount. This activity does not command the mount to act.
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects:
+        - _id: MountedACEff0001
+      flags:
+        declan-homebrew-classes:
+          warlord:
+            role: fighting-style-activity
+            style: mounted-warrior
+            mechanic: mounted-ac
+      range:
+        value: null
+        override: false
+        units: self
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: true
+          count: '2'
+          type: creature
+          special: Self and the controlled or selected mount
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      roll:
+        formula: ''
+        name: ''
+        prompt: false
+        visible: false
   enchant: {}
   identifier: mounted-warrior
-effects: []
+effects:
+  - name: Mounted Warrior AC
+    img: icons/svg/shield.svg
+    origin: null
+    transfer: false
+    _id: MountedACEff0001
+    type: base
+    system: {}
+    changes:
+      - key: system.attributes.ac.bonus
+        mode: 2
+        value: '1'
+        priority: 20
+    disabled: false
+    duration:
+      startTime: null
+      seconds: null
+      combat: null
+      rounds: null
+      turns: null
+      startRound: null
+      startTurn: null
+    description: <p>1 AC while the Warlord is mounted. Remove this effect manually on dismount.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e:
+        riders:
+          statuses: []
+      declan-homebrew-classes:
+        warlord:
+          role: fighting-style-effect
+          style: mounted-warrior
+          mechanic: mounted-ac
+    _key: '!items.effects!H7BeSma1Jfb3xK5s.MountedACEff0001'
 flags:
   dnd5e:
     riders:
