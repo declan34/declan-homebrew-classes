@@ -1,0 +1,69 @@
+_id: hbrFalCondemn001
+name: Condemnation
+type: feat
+folder: XFSvxG8fKsG1mZyi
+img: icons/magic/control/debuff-chains-shackles-movement-red.webp
+system:
+  description:
+    value: <p>When you hit a creature with a Divine Wrath attack while in Archon Form, you can Condemn it. A Condemned creature must spend two feet of movement for every foot it moves away from you, and your Divine Wrath attacks against it score a critical hit on a roll of 19 or 20. You can Condemn only one creature per transformation, and the effect lasts until you revert.</p>
+    chat: ''
+  source: {custom: 'Laser Llama — The Vessel', rules: '2024', revision: 1, license: proprietary, book: ''}
+  uses: {max: '', spent: 0, recovery: []}
+  type: {value: class, subtype: ''}
+  prerequisites: {level: 6, repeatable: false}
+  properties: []
+  requirements: 6th-level Fallen Vessel
+  activities:
+    CondemnAct000001:
+      _id: CondemnAct000001
+      type: utility
+      name: Condemn
+      sort: 0
+      activation: {type: special, value: null, override: false, condition: After a Divine Wrath attack hits while in Archon Form.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Apply this marker to your one Condemned creature. Movement and target-specific critical thresholds remain player-managed.}
+      duration: {units: spec, concentration: false, override: false}
+      effects: [{_id: CondemnedEff0001}]
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: condemnation}
+      range: {value: null, override: false, units: self, special: Triggering Divine Wrath attack}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Creature hit by Divine Wrath}, override: false, prompt: true}
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
+  enchant: {}
+  identifier: condemnation
+effects:
+  - _id: CondemnedEff0001
+    name: Condemned
+    img: icons/magic/control/debuff-chains-shackles-movement-red.webp
+    origin: null
+    transfer: false
+    disabled: false
+    type: base
+    system: {}
+    changes: []
+    duration: {startTime: null, seconds: null, combat: null, rounds: null, turns: null, startRound: null, startTurn: null}
+    description: <p>Moving away from the condemning Vessel costs 2 feet per foot. Divine Wrath attacks from that Vessel critically hit on 19–20, or 18–20 after Heavenly Zeal. These target-specific rules are player-managed.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: archon-form-effect, source: condemnation}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!hbrFalCondemn001.CondemnedEff0001'
+flags:
+  dnd5e: {riders: {activity: [], effect: []}}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership: {default: 0}
+_key: '!items!hbrFalCondemn001'

@@ -31,6 +31,17 @@ system:
       value: {}
       level: 3
       title: Features
+    - _id: hbrFalGrant60001
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrFalCondemn001
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
   spellcasting:
     progression: none
     ability: ''

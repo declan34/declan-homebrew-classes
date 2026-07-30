@@ -24,10 +24,47 @@ system:
     repeatable: false
   properties: []
   requirements: 10th-level Vessel
-  activities: {}
+  activities:
+    PerilousVisAct01:
+      _id: PerilousVisAct01
+      type: save
+      name: Perilous Visage
+      sort: 0
+      activation: {type: special, value: null, override: false, condition: When you transform into Archon Form.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Creatures that fail are Frightened for 1 minute. Repeat the save at the end of each turn; apply disadvantage while the creature can still see you.}
+      duration: {units: minute, concentration: false, override: false}
+      effects: [{_id: PerilousFear0001, onSave: false}]
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: perilous-visage}
+      range: {value: '60', override: false, units: ft, special: ''}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: true, count: '', type: creature, special: Creatures of your choice that can see you}, override: false, prompt: true}
+      uses: {spent: 0, recovery: [], max: ''}
+      damage: {onSave: none, parts: []}
+      save: {ability: [wis], dc: {calculation: cha, formula: ''}}
   enchant: {}
   identifier: perilous-visage
-effects: []
+effects:
+  - _id: PerilousFear0001
+    name: Perilous Visage — Frightened
+    img: systems/dnd5e/icons/svg/statuses/frightened.svg
+    origin: null
+    transfer: false
+    disabled: false
+    type: base
+    system: {}
+    changes: []
+    duration: {startTime: null, seconds: 60, combat: null, rounds: 10, turns: null, startRound: null, startTurn: null}
+    description: <p>Frightened of the Vessel for 1 minute. Repeat the Wisdom save at the end of each turn, with disadvantage while you can still see the Archon Form, ending the effect on a success.</p>
+    tint: '#ffffff'
+    statuses: [frightened]
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: archon-form-effect, source: perilous-visage}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!mb56s5afeKP0P5xx.PerilousFear0001'
 flags:
   dnd5e:
     riders:

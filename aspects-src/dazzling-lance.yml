@@ -24,7 +24,57 @@ system:
     repeatable: false
   properties: []
   requirements: 10th-level Vessel, Shimmering Lance
-  activities: {}
+  activities:
+    DazzleLanceAct01:
+      _id: DazzleLanceAct01
+      type: attack
+      name: Dazzling Lance
+      sort: 0
+      activation: {type: action, value: null, override: false, condition: As part of the Attack action.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Make a ranged Iridescent Strike at 100/300 feet. Ignore half cover and treat three-quarters cover as half cover through Foundry's attack controls.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: dazzling-lance}
+      range: {value: '100', long: '300', override: false, units: ft, special: ''}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: ''}, override: false, prompt: true}
+      uses: {spent: 0, recovery: [], max: ''}
+      attack: {critical: {threshold: null}, flat: false, type: {value: ranged, classification: spell}, ability: cha, bonus: ''}
+      damage:
+        critical: {bonus: ''}
+        includeBase: true
+        parts:
+          - {number: null, denomination: 0, bonus: '', types: [radiant], custom: {enabled: true, formula: '@scale.vessel.iridescent-strike + @mod'}, scaling: {number: 1}}
+    DazzleBurstAct01:
+      _id: DazzleBurstAct01
+      type: save
+      name: Dazzling Eruption
+      sort: 10
+      activation: {type: special, value: null, override: false, condition: After a ranged Iridescent Strike hits.}
+      consumption:
+        scaling: {allowed: false, max: ''}
+        spellSlot: true
+        targets: [{type: attribute, target: spells.vessel.value, value: '1', scaling: {}}]
+      description: {chatFlavor: Choose an unlocked Iridescent damage type. Creatures within 30 feet of the hit target take half damage on a successful save.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: dazzling-eruption}
+      range: {value: '300', override: false, units: ft, special: Centered on the creature hit by Dazzling Lance}
+      target:
+        template: {contiguous: false, units: ft, type: radius, size: '30', count: '', width: ''}
+        affects: {choice: false, count: '', type: creature, special: Creatures within 30 feet of the hit target}
+        override: false
+        prompt: true
+      uses: {spent: 0, recovery: [], max: ''}
+      damage:
+        onSave: half
+        parts:
+          - {number: null, denomination: null, bonus: '', types: [radiant], custom: {enabled: true, formula: '(@classes.vessel.levels >= 17 ? 8 : @classes.vessel.levels >= 13 ? 7 : 6)d8'}, scaling: {mode: '', number: null, formula: ''}}
+      save: {ability: [dex], dc: {calculation: cha, formula: ''}}
   enchant: {}
   identifier: dazzling-lance
 effects: []

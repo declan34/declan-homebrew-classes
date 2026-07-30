@@ -24,10 +24,46 @@ system:
     repeatable: false
   properties: []
   requirements: 2nd-level Vessel
-  activities: {}
+  activities:
+    VexingStrikeAct1:
+      _id: VexingStrikeAct1
+      type: utility
+      name: Vexing Strike
+      sort: 0
+      activation: {type: special, value: null, override: false, condition: After a melee Iridescent Strike hits.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Apply the marker to the creature hit by your melee Iridescent Strike. Attack-target disadvantage is player-managed.}
+      duration: {units: round, concentration: false, override: false}
+      effects: [{_id: VexingEff0000001}]
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: vexing-strike}
+      range: {value: null, override: false, units: self, special: Triggering melee Iridescent Strike}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Creature hit by the triggering Strike}, override: false, prompt: true}
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
   enchant: {}
   identifier: vexing-strike
-effects: []
+effects:
+  - _id: VexingEff0000001
+    name: Vexing Strike
+    img: icons/magic/control/debuff-energy-hold-levitate-pink.webp
+    origin: null
+    transfer: false
+    disabled: false
+    type: base
+    system: {}
+    changes: []
+    duration: {startTime: null, seconds: null, combat: null, rounds: 1, turns: null, startRound: null, startTurn: null}
+    description: <p>You have disadvantage on attacks against targets other than the Vessel until the start of its next turn. A creature immune to the Charmed condition is immune to this effect. Target-specific disadvantage is player-managed.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: archon-form-effect, source: vexing-strike}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!r81LpnSWinmglc4u.VexingEff0000001'
 flags:
   dnd5e:
     riders:

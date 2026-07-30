@@ -249,7 +249,7 @@ test('Archon profile sources encode only the published form statistics', () => {
   }
 });
 
-test('embedded Archon traits remain descriptive native feat Items', () => {
+test('embedded Archon traits remain native feats with only tagged activities', () => {
   const profiles = loadProfiles();
   const items = profiles.flatMap(profile => profile.items);
   assert.equal(items.length, 22);
@@ -261,7 +261,13 @@ test('embedded Archon traits remain descriptive native feat Items', () => {
       assert.match(item._id, /^[A-Za-z0-9]{16}$/, item.name);
       assert.equal(item._key, `!actors.items!${profile._id}.${item._id}`);
       assert.match(item.system.description.value, /^<p>.+<\/p>$/, item.name);
-      assert.deepEqual(item.system.activities, {}, item.name);
+      for (const activity of Object.values(item.system.activities)) {
+        assert.match(activity._id, /^[A-Za-z0-9]{16}$/, item.name);
+        assert.ok(
+          activity.flags?.['declan-homebrew-classes']?.vessel?.role,
+          item.name
+        );
+      }
     }
   }
 });

@@ -27,7 +27,35 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    CatEruptAct00001:
+      _id: CatEruptAct00001
+      type: save
+      name: Cataclysmic Eruption
+      sort: 0
+      activation: {type: action, value: null, override: false, condition: ''}
+      consumption:
+        scaling: {allowed: false, max: ''}
+        spellSlot: true
+        targets: [{type: itemUses, target: '', value: '1', scaling: {}}]
+      description: {chatFlavor: 'A 15-foot-diameter, 60-foot-high pillar erupts from the chosen surface. The damage type is your saved Elemental Affinity.'}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: cataclysmic-eruption}
+      range: {value: '30', override: false, units: ft, special: ''}
+      target:
+        template: {contiguous: false, units: ft, type: radius, size: '7.5', count: '', width: ''}
+        affects: {choice: false, count: '', type: creature, special: Creatures in the 60-foot-high pillar}
+        override: false
+        prompt: true
+      uses: {spent: 0, recovery: [], max: ''}
+      damage:
+        onSave: half
+        parts:
+          - {number: null, denomination: null, bonus: '', types: [thunder], custom: {enabled: true, formula: 9d6}, scaling: {mode: '', number: null, formula: ''}}
+      save: {ability: [dex], dc: {calculation: cha, formula: ''}}
   enchant: {}
   identifier: cataclysmic-eruption
 effects: []

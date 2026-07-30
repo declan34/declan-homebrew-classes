@@ -24,7 +24,45 @@ system:
     repeatable: false
   properties: []
   requirements: 7th-level Vessel
-  activities: {}
+  activities:
+    MawDamageAct0001:
+      _id: MawDamageAct0001
+      type: save
+      name: Otherworldly Maw
+      sort: 0
+      activation: {type: special, value: null, override: false, condition: Once per turn in place of one attack while in Archon Form.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: On a failed Charisma save the target takes necrotic damage. Use the separate recovery activity after damage resolves.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: otherworldly-maw}
+      range: {value: null, override: false, units: self, special: Your current reach}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '1', type: creature, special: Creature within your reach}, override: false, prompt: true}
+      uses: {spent: 0, recovery: [], max: ''}
+      damage:
+        onSave: none
+        parts:
+          - {number: null, denomination: null, bonus: '', types: [necrotic], custom: {enabled: true, formula: 2d6}, scaling: {mode: '', number: null, formula: ''}}
+      save: {ability: [cha], dc: {calculation: cha, formula: ''}}
+    MawRecoverAct001:
+      _id: MawRecoverAct001
+      type: heal
+      name: Otherworldly Maw Recovery
+      sort: 10
+      activation: {type: special, value: null, override: false, condition: After Otherworldly Maw damage resolves.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: 'Increase your temporary hit points by half the necrotic damage dealt, without exceeding twice your Vessel level. Enter half the resolved damage in the situational bonus field.'}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: otherworldly-maw-recovery}
+      range: {value: null, override: false, units: self, special: ''}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '', type: self, special: ''}, override: false, prompt: false}
+      uses: {spent: 0, recovery: [], max: ''}
+      healing: {number: null, denomination: null, bonus: '', types: [temphp], custom: {enabled: true, formula: '0'}, scaling: {mode: '', number: null, formula: ''}}
   enchant: {}
   identifier: otherworldly-maw
 effects: []

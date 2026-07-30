@@ -299,6 +299,13 @@ test('only the document-hook initiating client reconciles create update and dele
     identifier: 'leather-armor',
     system: { identifier: 'leather-armor' }
   };
+  const aspect = {
+    id: 'AetherWings00001',
+    type: 'feat',
+    actor: target,
+    identifier: 'aether-wings',
+    system: { identifier: 'aether-wings' }
+  };
   const effect = {
     id: 'MantleEffect0001',
     flags: role('mantle-ac'),
@@ -323,12 +330,47 @@ test('only the document-hook initiating client reconciles create update and dele
       OWNER_USER_A_ID
     );
     client.on.get('deleteItem')(equipment, {}, OWNER_USER_A_ID);
+    client.on.get('createItem')(aspect, {}, OWNER_USER_A_ID);
+    client.on.get('updateItem')(aspect, {name: 'Aether Wings'}, {}, OWNER_USER_A_ID);
+    client.on.get('deleteItem')(aspect, {}, OWNER_USER_A_ID);
     client.on.get('deleteActiveEffect')(effect, {}, OWNER_USER_A_ID);
   }
   await new Promise(resolve => setImmediate(resolve));
 
-  assert.equal(reconciledA.length, 4);
+  assert.equal(reconciledA.length, 7);
   assert.equal(reconciledB.length, 0);
+});
+
+test('the initiating client reconciles Stage 3 effects after Mantle and Archon state changes', async () => {
+  const registry = hookRegistry();
+  const reconciled = [];
+  const target = actor({active: true});
+  registerVesselAutomationHooks(registry.hooks, {
+    currentUserId: () => OWNER_USER_A_ID,
+    reconcileActor: async usedActor => { reconciled.push(usedActor); }
+  });
+
+  registry.on.get('updateActor')(
+    target,
+    {flags: {[MODULE_ID]: {vessel: {mantle: {active: true}}}}},
+    {},
+    OWNER_USER_A_ID
+  );
+  registry.on.get('updateActor')(
+    target,
+    {flags: {[MODULE_ID]: {vessel: {archon: {state: {active: false}}}}}},
+    {},
+    OWNER_USER_A_ID
+  );
+  registry.on.get('updateActor')(
+    target,
+    {flags: {[MODULE_ID]: {vessel: {mantle: {active: false}}}}},
+    {},
+    OWNER_USER_B_ID
+  );
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.deepEqual(reconciled, [target, target]);
 });
 
 test('responsible ready user prefers the first active GM by id', () => {

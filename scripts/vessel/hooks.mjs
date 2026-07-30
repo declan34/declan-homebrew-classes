@@ -24,11 +24,16 @@ import {
   toggleSpiritMantle
 } from './mantle.mjs';
 import { migrateVesselActor } from './migration.mjs';
+import { reconcileStage3Effects } from './stage3-effects.mjs';
 import {
   ARCHON_PROFILES,
+  STAGE3_ACTIVITY_ROLES,
+  getCataclysmAffinityDamageType,
   getAutomationRole,
   getUnlockedIridescentDamageTypes,
   getVesselLevel,
+  isArchonBoundStage3Role,
+  isMantleBoundStage3Role,
   shouldEndArchonFormAtZeroHP,
   shouldEndArchonFormForUnconscious
 } from './rules.mjs';
@@ -51,6 +56,12 @@ const ARCHON_ACTIVITY_ROLES = new Set([
   ...ARCHON_TRANSFORM_ROLES,
   AUTOMATION_ROLES.ARCHON_EXTEND,
   AUTOMATION_ROLES.ARCHON_REVERT
+]);
+
+const STAGE3_PASSIVE_ASPECTS = new Set([
+  'aether-wings',
+  'opalescent-armor',
+  'primordial-bulwark'
 ]);
 
 function sourceItem(activity) {
@@ -97,6 +108,12 @@ function findOwnedActivity(actor, activityRole) {
 function affectsEquipment(changes) {
   return Object.hasOwn(changes?.system ?? {}, 'equipped')
     || Object.hasOwn(changes?.system?.type ?? {}, 'value');
+}
+
+function isStage3PassiveAspect(item) {
+  return STAGE3_PASSIVE_ASPECTS.has(
+    item?.identifier ?? item?.system?.identifier
+  );
 }
 
 function serializedDamageParts(activity) {
@@ -208,6 +225,44 @@ export function prepareIridescentStrike(activity, actor) {
   if (!parts.length) return;
   parts[0].types = getUnlockedIridescentDamageTypes(actor);
   activity.updateSource({ damage: { parts } });
+}
+
+const STAGE3_IRIDESCENT_DAMAGE_ROLES = new Set([
+  AUTOMATION_ROLES.ARCANE_BLAST,
+  AUTOMATION_ROLES.PSEUDOPOD_STRIKE,
+  AUTOMATION_ROLES.SHIMMERING_LANCE,
+  AUTOMATION_ROLES.DAZZLING_LANCE,
+  AUTOMATION_ROLES.DAZZLING_ERUPTION
+]);
+
+export function prepareStage3Activity(activity) {
+  const role = getAutomationRole(activity);
+  if (!STAGE3_ACTIVITY_ROLES.has(role)) return;
+  const actor = activity?.item?.actor;
+
+  if (isArchonBoundStage3Role(role) && !isArchonFormActive(actor)) {
+    warn('This Vessel activity requires Archon Form.');
+    return false;
+  }
+  if (isMantleBoundStage3Role(role) && !isSpiritMantleActive(actor)) {
+    warn('This Vessel activity requires Spirit Mantle.');
+    return false;
+  }
+
+  const parts = serializedDamageParts(activity);
+  if (!parts.length) return;
+  if (role === AUTOMATION_ROLES.CATACLYSMIC_ERUPTION) {
+    const affinity = getCataclysmAffinityDamageType(actor);
+    if (!affinity) {
+      warn('Choose a Cataclysm Elemental Affinity before using this activity.');
+      return false;
+    }
+    parts[0].types = [affinity];
+    activity.updateSource({ damage: { parts } });
+  } else if (STAGE3_IRIDESCENT_DAMAGE_ROLES.has(role)) {
+    parts[0].types = getUnlockedIridescentDamageTypes(actor);
+    activity.updateSource({ damage: { parts } });
+  }
 }
 
 export async function persistIridescentStrikeAndRetry(activity) {
@@ -357,6 +412,9 @@ export function handlePreUseActivity(activity, {
     });
     if (result !== false) applyEquipmentPreference(activity, actor);
     return result;
+  }
+  if (STAGE3_ACTIVITY_ROLES.has(activityRole)) {
+    return prepareStage3Activity(activity);
   }
   if (activityRole !== AUTOMATION_ROLES.IRIDESCENT_STRIKE) return;
   const actor = activity?.item?.actor;
@@ -763,6 +821,7 @@ export async function reconcileVesselActor(actor) {
   if (mantle) await reconcileSpiritMantle(actor, { sourceItem: mantle });
   else if (isSpiritMantleActive(actor)) await deactivateSpiritMantle(actor);
   else await reconcileSpiritMantle(actor);
+  await reconcileStage3Effects(actor);
 }
 
 export function getResponsibleUser(actor, users) {
@@ -803,11 +862,19 @@ export function registerVesselAutomationHooks(hooks, {
     })().catch(reportError);
   });
   hooks.on('updateActor', (actor, changes, _options, userId) => {
-    if (userId === currentUserId()
-      && changes?.flags?.[MODULE_ID]?.vessel?.archon?.state?.active) {
+    const vesselChanges = changes?.flags?.[MODULE_ID]?.vessel;
+    const archonStateChanged = Object.hasOwn(vesselChanges?.archon ?? {}, 'state');
+    const mantleStateChanged = Object.hasOwn(vesselChanges ?? {}, 'mantle');
+    if (
+      userId === currentUserId()
+      && (archonStateChanged || mantleStateChanged)
+    ) {
       void (async () => {
-        const result = await finalizeCreatedArchon(actor, { finalizeArchon });
-        queueElderArchonReminder(actor, result, elderReminder);
+        if (vesselChanges?.archon?.state?.active) {
+          const result = await finalizeCreatedArchon(actor, { finalizeArchon });
+          queueElderArchonReminder(actor, result, elderReminder);
+        }
+        await reconcile(actor);
       })().catch(reportError);
     }
     queueReversionRulePrompt(actor, {
@@ -851,17 +918,24 @@ export function registerVesselAutomationHooks(hooks, {
 
   hooks.on('updateItem', (item, changes, _options, userId) => {
     if (userId !== currentUserId()) return;
-    if (item.type === 'equipment' && affectsEquipment(changes)) {
+    if (
+      (item.type === 'equipment' && affectsEquipment(changes))
+      || isStage3PassiveAspect(item)
+    ) {
       void reconcile(item.actor).catch(reportError);
     }
   });
   hooks.on('createItem', (item, _options, userId) => {
     if (userId !== currentUserId()) return;
-    if (item.type === 'equipment') void reconcile(item.actor).catch(reportError);
+    if (item.type === 'equipment' || isStage3PassiveAspect(item)) {
+      void reconcile(item.actor).catch(reportError);
+    }
   });
   hooks.on('deleteItem', (item, _options, userId) => {
     if (userId !== currentUserId()) return;
-    if (item.type === 'equipment') void reconcile(item.actor).catch(reportError);
+    if (item.type === 'equipment' || isStage3PassiveAspect(item)) {
+      void reconcile(item.actor).catch(reportError);
+    }
     if (item.identifier === 'spirit-mantle' || item.system?.identifier === 'spirit-mantle') {
       void deactivate(item.actor).catch(reportError);
     }

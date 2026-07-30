@@ -24,10 +24,75 @@ system:
     repeatable: false
   properties: []
   requirements: 18th-level Vessel, Opalescent Armor
-  activities: {}
+  activities:
+    PrimHardenAct001:
+      _id: PrimHardenAct001
+      type: utility
+      name: Harden Archon Form
+      sort: 0
+      activation: {type: bonus, value: null, override: false, condition: While in Archon Form.}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: 'Until the start of your next turn, reduce each instance of damage by your Charisma modifier (minimum 1) using Foundry’s normal damage adjustment controls.'}
+      duration: {units: round, concentration: false, override: false}
+      effects: [{_id: PrimHardenEff001}]
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: primordial-bulwark-harden}
+      range: {value: null, override: false, units: self, special: ''}
+      target: {template: {contiguous: false, units: ft, type: ''}, affects: {choice: false, count: '', type: self, special: ''}, override: false, prompt: false}
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
   enchant: {}
   identifier: primordial-bulwark
-effects: []
+effects:
+  - _id: PrimBulwarkEff01
+    name: Primordial Bulwark
+    img: icons/magic/defensive/shield-barrier-flaming-diamond-blue.webp
+    origin: null
+    transfer: false
+    disabled: true
+    type: base
+    system: {}
+    changes:
+      - {key: system.traits.dr.value, mode: 2, value: acid, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: bludgeoning, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: cold, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: fire, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: lightning, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: necrotic, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: piercing, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: poison, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: slashing, priority: 20}
+      - {key: system.traits.dr.value, mode: 2, value: thunder, priority: 20}
+    duration: {startTime: null, seconds: null, combat: null, rounds: null, turns: null, startRound: null, startTurn: null}
+    description: <p>While in Archon Form, you resist all damage except force, psychic, and radiant.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: primordial-bulwark, stage3Binding: archon, stage3Source: primordial-bulwark}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!IXh8m5czq8ak3Iw2.PrimBulwarkEff01'
+  - _id: PrimHardenEff001
+    name: Primordial Bulwark — Hardened
+    img: icons/magic/defensive/shield-barrier-flaming-diamond-blue.webp
+    origin: null
+    transfer: false
+    disabled: false
+    type: base
+    system: {}
+    changes: []
+    duration: {startTime: null, seconds: null, combat: null, rounds: 1, turns: null, startRound: null, startTurn: null}
+    description: <p>Reduce each instance of damage by your Charisma modifier, minimum 1, until the start of your next turn. Apply the reduction through Foundry's normal damage adjustment controls.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 1
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: archon-form-effect, source: primordial-bulwark-harden}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!IXh8m5czq8ak3Iw2.PrimHardenEff001'
 flags:
   dnd5e:
     riders:
