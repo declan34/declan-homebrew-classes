@@ -25,6 +25,7 @@ const SLOT_ROLES = new Set([
 ]);
 
 const profileSourceCache = new Map();
+const preparationState = new WeakMap();
 
 function documents(collection) {
   if (!collection) return [];
@@ -182,7 +183,8 @@ export async function resolveArchonProfileSources(profiles, {
 }
 
 function filterTransformProfiles(activity, actor, usageConfig) {
-  const allowed = getArchonProfilesForActor(actor);
+  const allowed = getAllowedArchonProfilesForActor(actor);
+  const preferred = getArchonProfilesForActor(actor);
   const allowedUuids = new Set(allowed.map(profile => profile.uuid));
   const current = activityProfiles(activity);
   const filtered = current.filter(profile => allowedUuids.has(profile.uuid));
@@ -197,9 +199,7 @@ function filterTransformProfiles(activity, actor, usageConfig) {
   const selected = usageConfig?.transform?.profile;
   const selectedAllowed = !selected
     || filtered.some(profile => (profile.id ?? profile._id) === selected);
-  const affinitySelected = allowed.length === 1
-    && getAllowedArchonProfilesForActor(actor).length > 1;
-  if (!selectedAllowed && !affinitySelected) {
+  if (!selectedAllowed) {
     throw error(
       'invalid-profile-selection',
       'The selected Archon profile does not belong to this actor’s Sealed Spirit.'
@@ -208,9 +208,15 @@ function filterTransformProfiles(activity, actor, usageConfig) {
 
   const serialized = filtered.map(objectData);
   updateActivity(activity, { profiles: serialized });
-  if (serialized.length === 1) {
+  const preferredUuid = preferred.length === 1 ? preferred[0].uuid : undefined;
+  const preferredProfile = preferredUuid
+    ? serialized.find(profile => profile.uuid === preferredUuid)
+    : undefined;
+  if (preferredProfile || serialized.length === 1) {
     usageConfig.transform ??= {};
-    usageConfig.transform.profile = serialized[0]._id ?? serialized[0].id;
+    usageConfig.transform.profile =
+      (preferredProfile ?? serialized[0])._id
+      ?? (preferredProfile ?? serialized[0]).id;
   }
   const allowedByUuid = new Map(allowed.map(profile => [profile.uuid, profile]));
   return filtered.map(profile => allowedByUuid.get(profile.uuid));
@@ -293,4 +299,91 @@ export async function prepareArchonActivityUse(activity, usageConfig = {}, {
     profiles,
     profileSources
   };
+}
+
+function preparationKey(activity) {
+  return [
+    activity?.item?.id ?? activity?.item?._id ?? '',
+    activity?.id ?? activity?._id ?? '',
+    role(activity) ?? ''
+  ].join(':');
+}
+
+function stateForActor(state, actor) {
+  let entries = state.get(actor);
+  if (!entries) {
+    entries = new Map();
+    state.set(actor, entries);
+  }
+  return entries;
+}
+
+function preparedPayload(activity, usageConfig) {
+  return {
+    profiles: activityProfiles(activity).map(objectData),
+    consumption: objectData(activity.consumption ?? {}),
+    selectedProfile: usageConfig?.transform?.profile
+  };
+}
+
+function applyPreparedPayload(activity, usageConfig, payload) {
+  updateActivity(activity, {
+    profiles: payload.profiles,
+    consumption: payload.consumption
+  });
+  if (payload.selectedProfile) {
+    usageConfig.transform ??= {};
+    usageConfig.transform.profile = payload.selectedProfile;
+  }
+}
+
+/**
+ * Bridge dnd5e's synchronous pre-use hook to the asynchronous compendium
+ * preflight. The first call cancels native use and resolves the profile Actors.
+ * The guarded retry applies the prepared clone data synchronously and proceeds.
+ */
+export function requestArchonActivityPreparation(activity, usageConfig = {}, {
+  state = preparationState,
+  prepareUse = prepareArchonActivityUse,
+  retry,
+  onError = error => console.error(
+    "Declan's Homebrew Classes | Archon preparation failed.",
+    error
+  ),
+  ...prepareOptions
+} = {}) {
+  if (!ARCHON_ROLES.has(role(activity))) return;
+
+  const actor = activity?.item?.actor;
+  const stateOwner = actor ?? activity?.item ?? activity;
+  const entries = stateForActor(state, stateOwner);
+  const key = preparationKey(activity);
+  const existing = entries.get(key);
+  if (existing?.status === 'ready') {
+    entries.delete(key);
+    applyPreparedPayload(activity, usageConfig, existing.payload);
+    return;
+  }
+  if (existing?.status === 'pending') return false;
+
+  const entry = { status: 'pending' };
+  entries.set(key, entry);
+  entry.promise = Promise.resolve()
+    .then(() => prepareUse(activity, usageConfig, prepareOptions))
+    .then(() => {
+      if (entries.get(key) !== entry) return;
+      entry.status = 'ready';
+      entry.payload = preparedPayload(activity, usageConfig);
+      return retry?.(activity);
+    })
+    .catch(failure => {
+      if (entries.get(key) === entry) entries.delete(key);
+      onError(failure);
+    })
+    .finally(() => {
+      if (entries.get(key) === entry && entry.status === 'ready') {
+        entries.delete(key);
+      }
+    });
+  return false;
 }

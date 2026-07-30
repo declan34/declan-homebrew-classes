@@ -4,6 +4,7 @@ import {
   ArchonPreparationError,
   findArchonFormItem,
   prepareArchonActivityUse,
+  requestArchonActivityPreparation,
   resolveArchonProfileSources
 } from '../scripts/vessel/archon-profiles.mjs';
 import { ARCHON_PROFILES } from '../scripts/vessel/rules.mjs';
@@ -52,7 +53,10 @@ function profileDocument(uuid) {
 
 function activity(role, host, profiles = []) {
   const source = {
+    id: 'test-activity-id',
+    _id: 'test-activity-id',
     item: {
+      id: 'test-control-id',
       actor: host,
       isOwner: host.isOwner
     },
@@ -212,7 +216,7 @@ test('routes each non-Cataclysm subclass to exactly its own profile', async () =
   }
 });
 
-test('Cataclysm affinity filters to one profile and rewrites the early native default', async () => {
+test('Cataclysm affinity keeps four choices and rewrites the early native default', async () => {
   const cataclysmProfiles = profilesFor('the-cataclysm');
   for (const affinity of ['air', 'earth', 'fire', 'water']) {
     const host = actor({ subclass: 'the-cataclysm', affinity });
@@ -226,12 +230,14 @@ test('Cataclysm affinity filters to one profile and rewrites the early native de
 
     await prepare(subject, usageConfig);
 
-    assert.equal(subject.profiles.length, 1);
-    assert.equal(
-      subject.profiles[0].uuid,
-      ARCHON_PROFILES[`cataclysm-${affinity}`].uuid
+    assert.equal(subject.profiles.length, 4);
+    const preferred = subject.profiles.find(profile =>
+      profile.uuid === ARCHON_PROFILES[`cataclysm-${affinity}`].uuid
     );
-    assert.equal(usageConfig.transform.profile, subject.profiles[0]._id);
+    assert.equal(
+      usageConfig.transform.profile,
+      preferred._id
+    );
   }
 });
 
@@ -274,6 +280,23 @@ test('rejects cross-subclass selections and missing profile Actors', async () =>
       resolveUuid: async () => null
     }),
     error => error.code === 'missing-profile-actor'
+  );
+});
+
+test('saved Cataclysm affinity does not permit a cross-subclass selection', async () => {
+  const host = actor({
+    subclass: 'the-cataclysm',
+    affinity: 'earth'
+  });
+  const subject = activity('archon-transform-slot', host, [
+    ...profilesFor('the-cataclysm'),
+    ARCHON_PROFILES.cursed
+  ]);
+  const cursedId = subject.profiles.at(-1)._id;
+
+  await assert.rejects(
+    prepare(subject, { transform: { profile: cursedId } }),
+    error => error.code === 'invalid-profile-selection'
   );
 });
 
@@ -348,4 +371,114 @@ test('ignores unrelated activities without mutating their data', async () => {
   assert.deepEqual(result, { handled: false });
   assert.deepEqual(subject.profiles, before.profiles);
   assert.deepEqual(subject.consumption, before.consumption);
+});
+
+test('two-phase preparation cancels once, resolves asynchronously, then applies on retry', async () => {
+  const host = actor({
+    subclass: 'the-cataclysm',
+    affinity: 'water'
+  });
+  const firstClone = activity(
+    'archon-transform-free',
+    host,
+    profilesFor('the-cataclysm')
+  );
+  const firstUsage = {
+    transform: { profile: firstClone.profiles[0]._id }
+  };
+  const state = new WeakMap();
+  let retryCount = 0;
+  let retryClone;
+  let retryUsage;
+  let retryResult;
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  const prepareUse = async (subject, usageConfig) => {
+    await gate;
+    return prepare(subject, usageConfig);
+  };
+
+  const options = {
+    state,
+    prepareUse,
+    retry: async () => {
+      retryCount += 1;
+      retryClone = activity(
+        'archon-transform-free',
+        host,
+        profilesFor('the-cataclysm')
+      );
+      retryUsage = {
+        transform: { profile: retryClone.profiles[0]._id }
+      };
+      retryResult = requestArchonActivityPreparation(
+        retryClone,
+        retryUsage,
+        options
+      );
+    },
+    onError: assert.fail
+  };
+  const firstResult = requestArchonActivityPreparation(
+    firstClone,
+    firstUsage,
+    options
+  );
+  const duplicateResult = requestArchonActivityPreparation(
+    firstClone,
+    firstUsage,
+    options
+  );
+  assert.equal(firstResult, false);
+  assert.equal(duplicateResult, false);
+  assert.equal(retryCount, 0);
+
+  release();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(retryCount, 1);
+
+  assert.equal(retryResult, undefined);
+  assert.equal(retryClone.consumption.targets[0].target, 'archon-form-owned');
+  assert.equal(retryClone.profiles.length, 4);
+  assert.equal(
+    retryUsage.transform.profile,
+    retryClone.profiles.find(profile =>
+      profile.uuid === ARCHON_PROFILES['cataclysm-water'].uuid
+    )._id
+  );
+});
+
+test('two-phase preparation reports failure without retrying or leaving a guard', async () => {
+  const host = actor();
+  const subject = activity(
+    'archon-transform-slot',
+    host,
+    profilesFor('the-ascended')
+  );
+  const state = new WeakMap();
+  const errors = [];
+  let retries = 0;
+  const options = {
+    state,
+    prepareUse: async () => {
+      throw new ArchonPreparationError('missing-profile-actor', 'missing');
+    },
+    retry: async () => { retries += 1; },
+    onError: error => errors.push(error)
+  };
+
+  assert.equal(
+    requestArchonActivityPreparation(subject, { transform: {} }, options),
+    false
+  );
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(retries, 0);
+  assert.equal(errors[0].code, 'missing-profile-actor');
+
+  assert.equal(
+    requestArchonActivityPreparation(subject, { transform: {} }, options),
+    false
+  );
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(errors.length, 2);
 });
