@@ -22,15 +22,9 @@ const { extractPack } = await import(pathToFileURL(cliEntry));
 const compiledPack = fileURLToPath(
   new URL('../packs/warlord-fighting-styles/', import.meta.url)
 );
-const identifiers = [
-  'balanced-fighting',
-  'classical-swordplay',
-  'defensive-fighting',
-  'mounted-warrior',
-  'protection',
-  'standard-bearer',
-  'tactical-fighting'
-];
+const sourceDirectory = fileURLToPath(
+  new URL('../fighting-styles-src/', import.meta.url)
+);
 const parityPaths = [
   '_id',
   'system.identifier',
@@ -40,8 +34,8 @@ const parityPaths = [
   'flags'
 ];
 
-function loadYaml(path) {
-  return yaml.load(readFileSync(new URL(path, import.meta.url), 'utf8'));
+function loadYamlFile(path) {
+  return yaml.load(readFileSync(path, 'utf8'));
 }
 
 function findYamlFiles(directory) {
@@ -58,10 +52,61 @@ function valueAt(document, path) {
   return path.split('.').reduce((value, key) => value?.[key], document);
 }
 
+function assertClosedPack(sources, compiled) {
+  assert.equal(sources.length, 7, 'expected seven source Fighting Style items');
+  assert.equal(compiled.length, 7, 'expected seven compiled Fighting Style items');
+
+  const sourceIds = sources.map(source => source?._id);
+  const compiledIds = compiled.map(document => document?._id);
+  assert.equal(
+    new Set(sourceIds).size,
+    7,
+    'source Fighting Style IDs must be unique'
+  );
+  assert.equal(
+    new Set(compiledIds).size,
+    7,
+    'compiled Fighting Style IDs must be unique'
+  );
+  assert.deepEqual(
+    [...compiledIds].sort(),
+    [...sourceIds].sort(),
+    'source and compiled Fighting Style ID sets must match'
+  );
+}
+
+test('pack closure rejects extra and duplicate documents before ID mapping', () => {
+  const sources = Array.from({ length: 7 }, (_, index) => ({
+    _id: `source-${index}`
+  }));
+  const compiled = structuredClone(sources);
+
+  assert.doesNotThrow(() => assertClosedPack(sources, compiled));
+  assert.throws(
+    () => assertClosedPack([...sources, { _id: 'extra-source' }], compiled),
+    /seven source/
+  );
+  assert.throws(
+    () => assertClosedPack(sources, [...compiled, { _id: 'extra-compiled' }]),
+    /seven compiled/
+  );
+  assert.throws(
+    () => assertClosedPack(sources, [
+      ...compiled.slice(0, -1),
+      { _id: compiled[0]._id }
+    ]),
+    /compiled Fighting Style IDs must be unique/
+  );
+});
+
 test('committed Fighting Style pack preserves all seven source documents', async () => {
-  const sources = identifiers.map(identifier => loadYaml(
-    `../fighting-styles-src/${identifier}.yml`
-  ));
+  const sources = readdirSync(sourceDirectory, { withFileTypes: true })
+    .filter(entry =>
+      entry.isFile()
+      && /\.ya?ml$/.test(entry.name)
+      && entry.name !== '_folder.yml'
+    )
+    .map(entry => loadYamlFile(join(sourceDirectory, entry.name)));
   const temporary = mkdtempSync(join(
     tmpdir(),
     'warlord-fighting-styles-compiled-pack-'
@@ -70,38 +115,19 @@ test('committed Fighting Style pack preserves all seven source documents', async
   const extracted = join(temporary, 'extracted');
 
   try {
-    assert.equal(sources.length, 7, 'expected seven source Fighting Styles');
-    assert.equal(
-      new Set(sources.map(source => source._id)).size,
-      7,
-      'source Fighting Style IDs must be unique'
-    );
-
     cpSync(compiledPack, pack, { recursive: true });
     await extractPack(pack, extracted, { yaml: true, recursive: true });
 
-    const documents = findYamlFiles(extracted)
-      .map(path => yaml.load(readFileSync(path, 'utf8')));
-    const compiledById = new Map(documents.map(document => [
+    const compiledItems = findYamlFiles(extracted)
+      .map(loadYamlFile)
+      .filter(document => document?._key?.startsWith('!items!'));
+
+    assertClosedPack(sources, compiledItems);
+
+    const compiledById = new Map(compiledItems.map(document => [
       document?._id,
       document
     ]));
-    const compiledStyles = sources.map(source => {
-      const compiled = compiledById.get(source._id);
-      assert.ok(compiled, `expected compiled ${source.name}`);
-      return compiled;
-    });
-
-    assert.equal(
-      compiledStyles.length,
-      7,
-      'expected seven compiled Fighting Styles'
-    );
-    assert.equal(
-      new Set(compiledStyles.map(style => style._id)).size,
-      7,
-      'compiled Fighting Style IDs must be unique'
-    );
 
     for (const source of sources) {
       const compiled = compiledById.get(source._id);
