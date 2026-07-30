@@ -7,10 +7,11 @@ this public documentation intentionally does not link to its repository.
 ## GM setup
 
 1. Install and enable Declan's Homebrew Classes and the private spell module.
-2. Open **Game Settings** → **Configure Settings** → **Module Settings**.
-3. Under **Declan's Homebrew Classes**, find **Private Spell Compendium**.
-4. Select the private module's **Item compendium**.
-5. Save the setting and reload if Foundry requests it.
+2. Open Game Settings → Configure Settings → Module Settings.
+3. Under Declan's Homebrew Classes, find Private Spell Compendium.
+4. Select the private module's Item compendium.
+5. Save and reload if Foundry requests it.
+6. If the pack is missing, verify that the private module is enabled and declares a dnd5e Item pack.
 
 Choose **None** when the optional companion is not installed or should not be
 used. Only enabled modules with a dnd5e `Item` pack appear as choices.
