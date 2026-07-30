@@ -522,7 +522,7 @@ test('level 11 finalization emits one non-blocking Elder Archon reminder', async
   registerVesselAutomationHooks(hooks.hooks, {
     currentUserId: () => 'owner',
     finalizeArchon: async () => ({ handled: true }),
-    remindElderArchon: async used => { reminders.push(used); }
+    remindElderArchon: used => { reminders.push(used); }
   });
 
   hooks.on.get('createActor')(form, {}, 'owner');

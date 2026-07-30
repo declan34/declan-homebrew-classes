@@ -592,7 +592,9 @@ export function registerVesselAutomationHooks(hooks, {
         && !remindedElderArchons.has(actor)
       ) {
         remindedElderArchons.add(actor);
-        queueMicrotask(() => void elderReminder(actor).catch(reportError));
+        queueMicrotask(() => {
+          void Promise.resolve(elderReminder(actor)).catch(reportError);
+        });
       }
     })().catch(reportError);
   });
@@ -607,7 +609,9 @@ export function registerVesselAutomationHooks(hooks, {
           && !remindedElderArchons.has(actor)
         ) {
           remindedElderArchons.add(actor);
-          queueMicrotask(() => void elderReminder(actor).catch(reportError));
+          queueMicrotask(() => {
+            void Promise.resolve(elderReminder(actor)).catch(reportError);
+          });
         }
       })().catch(reportError);
     }
