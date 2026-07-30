@@ -50,11 +50,16 @@ function actor({ items = [], isOwner = true, leadershipAbility } = {}) {
       [MODULE_ID]: { warlord: { leadershipAbility } }
     },
     setFlagCalls: [],
+    unsetFlagCalls: [],
     async setFlag(scope, key, value) {
       this.setFlagCalls.push({ scope, key, value });
       this.flags[scope] ??= {};
       this.flags[scope].warlord ??= {};
       this.flags[scope].warlord.leadershipAbility = value;
+    },
+    async unsetFlag(scope, key) {
+      this.unsetFlagCalls.push({ scope, key });
+      delete this.flags[scope]?.warlord?.leadershipAbility;
     },
     getFlag(scope, key) {
       return key.split('.').reduce((value, segment) => value?.[segment], this.flags[scope]);
@@ -126,6 +131,85 @@ test('shares one pending Leadership prompt for concurrent selections', async () 
 
   assert.deepEqual(await Promise.all([first, second]), ['int', 'int']);
   assert.equal(target.setFlagCalls.length, 1);
+});
+
+test('leaves a failed Leadership choice uncommitted and allows a clean retry', async () => {
+  const rallyActivity = activity('rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  const item = itemWithActivities(rallyActivity);
+  const update = item.update.bind(item);
+  let updateAttempts = 0;
+  item.update = async changes => {
+    updateAttempts += 1;
+    if (updateAttempts === 1) throw new Error('transient item update failure');
+    return update(changes);
+  };
+  const target = actor({ items: [item], leadershipAbility: 'cha' });
+
+  await assert.rejects(
+    chooseLeadershipAbility(target, { prompt: async () => 'mentor' }),
+    /transient item update failure/
+  );
+  assert.equal(target.getFlag(MODULE_ID, 'warlord.leadershipAbility'), undefined);
+  assert.equal(target.setFlagCalls.length, 0);
+  assert.equal(target.unsetFlagCalls.length, 1);
+
+  assert.equal(await chooseLeadershipAbility(target, {
+    prompt: async () => 'mentor'
+  }), 'wis');
+  assert.equal(updateAttempts, 2);
+  assert.equal(target.setFlagCalls.length, 1);
+  assert.equal(target.setFlagCalls[0].value, 'wis');
+  assert.equal(rallyActivity.update.roll.formula, '@abilities.wis.mod');
+});
+
+test('makes dependent Leadership resolution wait for an in-flight choice change', async () => {
+  const target = actor({ leadershipAbility: 'cha' });
+  let resolvePrompt;
+  const promptPending = new Promise(resolve => { resolvePrompt = resolve; });
+  const prompt = async () => promptPending;
+
+  const change = chooseLeadershipAbility(target, { prompt });
+  const dependent = ensureLeadershipAbility(target, { prompt });
+  resolvePrompt('mentor');
+
+  assert.deepEqual(await Promise.all([change, dependent]), ['wis', 'wis']);
+  assert.equal(target.setFlagCalls.at(-1).value, 'wis');
+});
+
+test('serializes concurrent Leadership item configurations for one actor', async () => {
+  const rallyActivity = activity('rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  let releaseFirstUpdate;
+  const firstUpdatePending = new Promise(resolve => { releaseFirstUpdate = resolve; });
+  let activeUpdates = 0;
+  let maximumActiveUpdates = 0;
+  const updates = [];
+  const item = {
+    system: { activities: new Map([[rallyActivity.id, rallyActivity]]) },
+    async update(changes) {
+      updates.push(changes);
+      activeUpdates += 1;
+      maximumActiveUpdates = Math.max(maximumActiveUpdates, activeUpdates);
+      if (updates.length === 1) await firstUpdatePending;
+      activeUpdates -= 1;
+    }
+  };
+  const target = actor({ items: [item] });
+
+  const first = configureLeadershipItems(target, 'wis');
+  await Promise.resolve();
+  const second = configureLeadershipItems(target, 'int');
+  await Promise.resolve();
+
+  assert.equal(updates.length, 1);
+  assert.equal(maximumActiveUpdates, 1);
+  releaseFirstUpdate();
+  await Promise.all([first, second]);
+  assert.equal(updates.length, 2);
+  assert.equal(maximumActiveUpdates, 1);
 });
 
 test('uses DialogV2.wait with its class receiver and Leadership-style callback values', async () => {

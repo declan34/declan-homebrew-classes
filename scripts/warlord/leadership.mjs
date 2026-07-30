@@ -11,6 +11,7 @@ import {
 } from './rules.mjs';
 
 const pendingLeadershipPrompts = new WeakMap();
+const pendingLeadershipConfigurations = new WeakMap();
 const leadershipAbilityValues = new Set(Object.values(LEADERSHIP_ABILITIES));
 const leadershipRollRoles = new Set([WARLORD_ROLES.RALLYING_CRY]);
 
@@ -45,10 +46,7 @@ async function promptForLeadershipAbility() {
   return dialog.wait(leadershipDialogOptions());
 }
 
-export async function configureLeadershipItems(actor, ability) {
-  requireOwner(actor);
-  if (!leadershipAbilityValues.has(ability)) return false;
-
+async function configureLeadershipItemsNow(actor, ability) {
   const updates = documents(actor.items).map(async item => {
     const changes = {};
     for (const activity of documents(item?.system?.activities)) {
@@ -71,6 +69,37 @@ export async function configureLeadershipItems(actor, ability) {
   return (await Promise.all(updates)).some(Boolean);
 }
 
+export async function configureLeadershipItems(actor, ability) {
+  requireOwner(actor);
+  if (!leadershipAbilityValues.has(ability)) return false;
+
+  const previous = pendingLeadershipConfigurations.get(actor);
+  const tracked = (async () => {
+    if (previous) {
+      try {
+        await previous;
+      } catch {
+        // A failed configuration must not prevent a later retry.
+      }
+    }
+    return configureLeadershipItemsNow(actor, ability);
+  })();
+  pendingLeadershipConfigurations.set(actor, tracked);
+
+  try {
+    return await tracked;
+  } finally {
+    if (pendingLeadershipConfigurations.get(actor) === tracked) {
+      pendingLeadershipConfigurations.delete(actor);
+    }
+  }
+}
+
+export function isLeadershipConfigurationPending(actor) {
+  return pendingLeadershipPrompts.has(actor)
+    || pendingLeadershipConfigurations.has(actor);
+}
+
 export async function chooseLeadershipAbility(actor, {
   prompt = promptForLeadershipAbility
 } = {}) {
@@ -83,8 +112,14 @@ export async function chooseLeadershipAbility(actor, {
     const ability = LEADERSHIP_ABILITIES[choice];
     if (!ability) return undefined;
 
-    await actor.setFlag(MODULE_ID, LEADERSHIP_FLAG, ability);
+    if (getLeadershipAbility(actor)) {
+      if (typeof actor?.unsetFlag !== 'function') {
+        throw new Error('The Warlord Leadership flag cannot be cleared safely.');
+      }
+      await actor.unsetFlag(MODULE_ID, LEADERSHIP_FLAG);
+    }
     await configureLeadershipItems(actor, ability);
+    await actor.setFlag(MODULE_ID, LEADERSHIP_FLAG, ability);
     return ability;
   })();
   pendingLeadershipPrompts.set(actor, tracked);
@@ -99,5 +134,14 @@ export async function chooseLeadershipAbility(actor, {
 }
 
 export async function ensureLeadershipAbility(actor, options) {
+  const pendingChoice = pendingLeadershipPrompts.get(actor);
+  if (pendingChoice) return pendingChoice;
+
+  const pendingConfiguration = pendingLeadershipConfigurations.get(actor);
+  if (pendingConfiguration) {
+    await pendingConfiguration;
+    return getLeadershipAbility(actor);
+  }
+
   return getLeadershipAbility(actor) ?? chooseLeadershipAbility(actor, options);
 }

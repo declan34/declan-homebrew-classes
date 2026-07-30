@@ -2,17 +2,20 @@ import { WARLORD_CLASS_IDENTIFIER, WARLORD_ROLES } from './constants.mjs';
 import {
   chooseLeadershipAbility,
   configureLeadershipItems,
-  ensureLeadershipAbility
+  ensureLeadershipAbility,
+  isLeadershipConfigurationPending
 } from './leadership.mjs';
 import { useInspiringWord } from './inspiring-word.mjs';
 import { migrateWarlordActor, reconcileWarlordActor } from './migration.mjs';
 import {
   getIdentifier,
   getLeadershipAbility,
-  getWarlordRole
+  getWarlordRole,
+  leadershipFormula
 } from './rules.mjs';
 
 const pendingActivities = new WeakMap();
+const leadershipRollRoles = new Set([WARLORD_ROLES.RALLYING_CRY]);
 
 function documents(collection) {
   if (!collection) return [];
@@ -81,6 +84,23 @@ function sourceActivity(activity) {
     ?? sourceItem?.system?.activities?.[activity.id];
 }
 
+function requiresLeadership(activity) {
+  return Boolean(activity?.save && typeof activity.save === 'object')
+    || leadershipRollRoles.has(getWarlordRole(activity));
+}
+
+function matchesLeadership(activity, ability) {
+  if (activity?.save && typeof activity.save === 'object'
+    && activity.save?.dc?.calculation !== ability) {
+    return false;
+  }
+  if (leadershipRollRoles.has(getWarlordRole(activity))
+    && activity?.roll?.formula !== leadershipFormula(ability)) {
+    return false;
+  }
+  return true;
+}
+
 function hasWarlordActivity(item) {
   return documents(item?.system?.activities).some(activity => getWarlordRole(activity));
 }
@@ -95,6 +115,7 @@ export function handleWarlordPreUse(activity, {
   chooseLeadershipAbility: chooseLeadership = chooseLeadershipAbility,
   ensureLeadershipAbility: ensureLeadership = ensureLeadershipAbility,
   configureLeadershipItems: configureLeadership = configureLeadershipItems,
+  leadershipConfigurationPending: configurationPending = isLeadershipConfigurationPending,
   reportError: onError = reportError
 } = {}) {
   const role = getWarlordRole(activity);
@@ -119,16 +140,34 @@ export function handleWarlordPreUse(activity, {
     return false;
   }
 
-  if (!activity?.save || getLeadershipAbility(actor)) return;
+  const ownedActivity = sourceActivity(activity) ?? activity;
+  if (!requiresLeadership(ownedActivity)) return;
   if (pendingState) {
-    return pendingState.phase === 'retrying' ? undefined : false;
+    if (pendingState.phase === 'retry-armed') {
+      pendingState.phase = 'native-use';
+      return;
+    }
+    return false;
+  }
+  const storedAbility = getLeadershipAbility(actor);
+  if (storedAbility
+    && matchesLeadership(ownedActivity, storedAbility)
+    && !configurationPending(actor)) {
+    return;
   }
 
   scheduleActivity(activity, async state => {
     const ability = await ensureLeadership(actor);
     if (!ability) return;
-    await configureLeadership(actor, ability);
-    state.phase = 'retrying';
+    let configured = sourceActivity(activity) ?? activity;
+    if (!matchesLeadership(configured, ability)) {
+      await configureLeadership(actor, ability);
+      configured = sourceActivity(activity) ?? activity;
+    }
+    if (!matchesLeadership(configured, ability)) {
+      throw new Error('The actor-owned Warlord activity does not match its Leadership ability.');
+    }
+    state.phase = 'retry-armed';
     const retry = sourceActivity(activity);
     if (typeof retry?.use !== 'function') {
       throw new Error('The actor-owned Warlord activity is unavailable for retry.');

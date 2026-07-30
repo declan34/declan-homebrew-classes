@@ -119,10 +119,10 @@ test('cancels and deduplicates both router-only launchers', async () => {
   }
 });
 
-test('prompts once, configures the actor-owned source, and lets the native save retry resolve once', async () => {
+test('prompts once for the real Rallying Cry Utility roll and lets its native retry resolve once', async () => {
   const actor = actorFixture();
-  const original = ownedActivity(actor, 'save-id', 'rallying-cry', {
-    save: { dc: { calculation: '' } }
+  const original = ownedActivity(actor, 'rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
   });
   const item = original.item;
   let ensureCalls = 0;
@@ -138,16 +138,16 @@ test('prompts once, configures the actor-owned source, and lets the native save 
     configureLeadershipItems: async usedActor => {
       configureCalls += 1;
       assert.equal(usedActor, actor);
-      const resolved = activity('save-id', 'rallying-cry', {
+      const resolved = activity('rally-id', 'rallying-cry', {
         actor,
         item,
-        save: { dc: { calculation: 'wis' } },
+        roll: { formula: '@abilities.wis.mod' },
         async use() {
           nativeUseCalls += 1;
           recursiveResult = handleWarlordPreUse(this, options);
         }
       });
-      item.system.activities.set('save-id', resolved);
+      item.system.activities.set('rally-id', resolved);
     }
   };
 
@@ -162,15 +162,15 @@ test('prompts once, configures the actor-owned source, and lets the native save 
   assert.equal(recursiveResult, undefined);
 });
 
-test('does not retry a module Save activity when Leadership selection is cancelled', async () => {
+test('does not retry Rallying Cry when Leadership selection is cancelled', async () => {
   const actor = actorFixture();
-  const save = ownedActivity(actor, 'save-id', 'rallying-cry', {
-    save: { dc: { calculation: '' } },
+  const rally = ownedActivity(actor, 'rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' },
     async use() { throw new Error('must not retry'); }
   });
   let configureCalls = 0;
 
-  assert.equal(handleWarlordPreUse(save, {
+  assert.equal(handleWarlordPreUse(rally, {
     ensureLeadershipAbility: async () => undefined,
     configureLeadershipItems: async () => { configureCalls += 1; }
   }), false);
@@ -179,13 +179,127 @@ test('does not retry a module Save activity when Leadership selection is cancell
   assert.equal(configureCalls, 0);
 });
 
-test('allows dnd5e to resolve a module Save normally when Leadership is already stored', () => {
+test('reconfigures a stale Rallying Cry before allowing native resolution', async () => {
+  const actor = actorFixture({ leadershipAbility: 'wis' });
+  const original = ownedActivity(actor, 'rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  const item = original.item;
+  let configureCalls = 0;
+  let nativeUseCalls = 0;
+  let recursiveResult;
+
+  const options = {
+    configureLeadershipItems: async () => {
+      configureCalls += 1;
+      const resolved = activity('rally-id', 'rallying-cry', {
+        actor,
+        item,
+        roll: { formula: '@abilities.wis.mod' },
+        async use() {
+          nativeUseCalls += 1;
+          recursiveResult = handleWarlordPreUse(this, options);
+        }
+      });
+      item.system.activities.set('rally-id', resolved);
+    }
+  };
+
+  assert.equal(handleWarlordPreUse(original, options), false);
+  await flushTasks();
+  await flushTasks();
+
+  assert.equal(configureCalls, 1);
+  assert.equal(nativeUseCalls, 1);
+  assert.equal(recursiveResult, undefined);
+});
+
+test('waits for an in-flight Leadership change instead of trusting the old flag', async () => {
   const actor = actorFixture({ leadershipAbility: 'cha' });
-  const save = ownedActivity(actor, 'save-id', 'rallying-cry', {
-    save: { dc: { calculation: 'cha' } }
+  const original = ownedActivity(actor, 'rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  const item = original.item;
+  let releaseChoice;
+  const choicePending = new Promise(resolve => { releaseChoice = resolve; });
+  let nativeUseCalls = 0;
+  let recursiveResult;
+
+  const options = {
+    leadershipConfigurationPending: () => true,
+    ensureLeadershipAbility: async () => choicePending,
+    configureLeadershipItems: async () => {
+      const resolved = activity('rally-id', 'rallying-cry', {
+        actor,
+        item,
+        roll: { formula: '@abilities.wis.mod' },
+        async use() {
+          nativeUseCalls += 1;
+          recursiveResult = handleWarlordPreUse(this, options);
+        }
+      });
+      item.system.activities.set('rally-id', resolved);
+    }
+  };
+
+  assert.equal(handleWarlordPreUse(original, options), false);
+  await flushTasks();
+  assert.equal(nativeUseCalls, 0);
+  releaseChoice('wis');
+  await flushTasks();
+  await flushTasks();
+  assert.equal(nativeUseCalls, 1);
+  assert.equal(recursiveResult, undefined);
+});
+
+test('allows dnd5e to resolve Rallying Cry normally when its stored ability matches', () => {
+  const actor = actorFixture({ leadershipAbility: 'cha' });
+  const rally = ownedActivity(actor, 'rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
   });
 
-  assert.equal(handleWarlordPreUse(save), undefined);
+  assert.equal(handleWarlordPreUse(rally), undefined);
+});
+
+test('allows only the recursive retry while native Rallying Cry use is pending', async () => {
+  const actor = actorFixture();
+  const original = ownedActivity(actor, 'rally-id', 'rallying-cry', {
+    roll: { formula: '@abilities.cha.mod' }
+  });
+  const item = original.item;
+  let releaseNativeUse;
+  const nativeUsePending = new Promise(resolve => { releaseNativeUse = resolve; });
+  let nativeUseCalls = 0;
+  const recursiveResults = [];
+
+  const options = {
+    ensureLeadershipAbility: async () => 'wis',
+    configureLeadershipItems: async () => {
+      const resolved = activity('rally-id', 'rallying-cry', {
+        actor,
+        item,
+        roll: { formula: '@abilities.wis.mod' },
+        async use() {
+          nativeUseCalls += 1;
+          recursiveResults.push(handleWarlordPreUse(this, options));
+          return nativeUsePending;
+        }
+      });
+      item.system.activities.set('rally-id', resolved);
+    }
+  };
+
+  assert.equal(handleWarlordPreUse(original, options), false);
+  await flushTasks();
+  assert.equal(nativeUseCalls, 1);
+  assert.deepEqual(recursiveResults, [undefined]);
+
+  const extraClick = item.system.activities.get('rally-id');
+  assert.equal(handleWarlordPreUse(extraClick, options), false);
+  assert.equal(nativeUseCalls, 1);
+
+  releaseNativeUse();
+  await flushTasks();
 });
 
 test('only the initiating client reconciles a newly owned Warlord item', async () => {
