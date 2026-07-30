@@ -316,7 +316,33 @@ function canonicalStyleSources() {
         'balanced-fighting',
         'weapon-damage-enchantment',
         'fighting-style-activity'
-      )
+      ),
+      enchant: { self: false },
+      restrictions: {
+        allowMagical: true,
+        categories: ['simpleM', 'martialM'],
+        properties: [],
+        type: 'weapon'
+      }
+    }
+  );
+  const classicalActivity = warlordActivity(
+    'ClassicalEnchant',
+    'fighting-style-activity',
+    {
+      type: 'enchant',
+      flags: styleMetadata(
+        'classical-swordplay',
+        'weapon-attack-enchantment',
+        'fighting-style-activity'
+      ),
+      enchant: { self: false },
+      restrictions: {
+        allowMagical: true,
+        categories: [],
+        properties: ['fin'],
+        type: 'weapon'
+      }
     }
   );
   const mountedActivity = warlordActivity(
@@ -351,6 +377,13 @@ function canonicalStyleSources() {
       }]
     }
   )];
+  const classical = canonicalItem(
+    't2H00Ym07D8pxiMA',
+    'classical-swordplay',
+    [classicalActivity],
+    { max: '', recovery: [] }
+  );
+  classical.effects = [];
   const defensive = canonicalItem(
     'ZhP7bFygnQsXTIqz',
     'defensive-fighting',
@@ -374,7 +407,7 @@ function canonicalStyleSources() {
     'mounted-warrior',
     'mounted-ac'
   )];
-  return { balanced, defensive, mounted };
+  return { balanced, classical, defensive, mounted };
 }
 
 function setPath(target, path, value) {
@@ -694,6 +727,68 @@ test('rejects an incomplete Fighting Style index so migration can retry', async 
   );
 });
 
+test('rejects a Fighting Style document whose identifier disagrees with its index entry', async () => {
+  const sources = canonicalStyleSources();
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-balanced', identifier: 'balanced-fighting' })
+    ]
+  });
+  const pack = {
+    async getIndex() {
+      return [{
+        _id: sources.balanced.id,
+        system: { identifier: 'balanced-fighting' }
+      }];
+    },
+    async getDocument() {
+      return sources.mounted;
+    }
+  };
+
+  await assert.rejects(
+    loadWarlordStyleSourceItems(actor, {
+      packs: new Map([[`${MODULE_ID}.warlord-fighting-styles`, pack]])
+    }),
+    /identifier does not match its index entry/
+  );
+});
+
+test('rejects duplicate Fighting Style index identifiers', async () => {
+  const sources = canonicalStyleSources();
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-balanced', identifier: 'balanced-fighting' })
+    ]
+  });
+  const pack = {
+    async getIndex() {
+      return [
+        {
+          _id: sources.balanced.id,
+          system: { identifier: 'balanced-fighting' }
+        },
+        {
+          _id: 'StaleDuplicate01',
+          system: { identifier: 'balanced-fighting' }
+        }
+      ];
+    },
+    async getDocument() {
+      return sources.balanced;
+    }
+  };
+
+  await assert.rejects(
+    loadWarlordStyleSourceItems(actor, {
+      packs: new Map([[`${MODULE_ID}.warlord-fighting-styles`, pack]])
+    }),
+    /duplicate migration sources/
+  );
+});
+
 test('selectively migrates Fighting Style activities and effects while preserving player data', async () => {
   const coreSources = canonicalSources();
   const styleSources = canonicalStyleSources();
@@ -725,7 +820,15 @@ test('selectively migrates Fighting Style activities and effects while preservin
     id: 'owned-balanced',
     identifier: 'balanced-fighting',
     activities: [
-      staleActivity(styleSources.balanced.system.activities.BalFightEnchant1),
+      staleActivity(styleSources.balanced.system.activities.BalFightEnchant1, {
+        enchant: { self: true },
+        restrictions: {
+          allowMagical: false,
+          categories: [],
+          properties: ['stale'],
+          type: ''
+        }
+      }),
       userActivity
     ],
     effects: [balancedEffect]
@@ -747,6 +850,22 @@ test('selectively migrates Fighting Style activities and effects while preservin
     id: 'owned-defensive',
     identifier: 'defensive-fighting',
     effects: [userAcEffect]
+  });
+  const classical = ownedItem({
+    id: 'owned-classical',
+    identifier: 'classical-swordplay',
+    activities: [
+      staleActivity(styleSources.classical.system.activities.ClassicalEnchant, {
+        enchant: { self: true },
+        restrictions: {
+          allowMagical: false,
+          categories: ['stale'],
+          properties: [],
+          type: ''
+        }
+      })
+    ],
+    effects: []
   });
   const mountedEffect = {
     ...clone(styleSources.mounted.effects[0]),
@@ -770,7 +889,7 @@ test('selectively migrates Fighting Style activities and effects while preservin
     effects: [mountedEffect]
   });
   const actor = actorFixture({
-    items: [warlordClass(), balanced, defensive, mounted],
+    items: [warlordClass(), balanced, classical, defensive, mounted],
     leadershipAbility: undefined
   });
 
@@ -782,6 +901,30 @@ test('selectively migrates Fighting Style activities and effects while preservin
 
   assert.ok(balanced.system.activities.BalFightEnchant1);
   assert.ok(balanced.system.activities.userActivityId);
+  assert.deepEqual(
+    balanced.system.activities.BalFightEnchant1.enchant,
+    styleSources.balanced.system.activities.BalFightEnchant1.enchant
+  );
+  assert.deepEqual(
+    balanced.system.activities.BalFightEnchant1.restrictions,
+    styleSources.balanced.system.activities.BalFightEnchant1.restrictions
+  );
+  assert.equal(
+    balanced.system.activities.BalFightEnchant1.description.chatFlavor,
+    'My activity flavor'
+  );
+  assert.deepEqual(
+    classical.system.activities.ClassicalEnchant.enchant,
+    styleSources.classical.system.activities.ClassicalEnchant.enchant
+  );
+  assert.deepEqual(
+    classical.system.activities.ClassicalEnchant.restrictions,
+    styleSources.classical.system.activities.ClassicalEnchant.restrictions
+  );
+  assert.equal(
+    classical.system.activities.ClassicalEnchant.description.chatFlavor,
+    'My activity flavor'
+  );
   assert.ok(mounted.system.activities.MountedUseAct001);
   assert.ok(defensive.effects.some(effect => effect._id === 'user-ac-effect'));
   const defensiveCanonical = defensive.effects.find(effect => (
@@ -815,7 +958,7 @@ test('selectively migrates Fighting Style activities and effects while preservin
   assert.equal(migratedBalancedEffect.type, 'enchantment');
   assert.deepEqual(
     migratedBalancedEffect.system,
-    styleSources.balanced.effects[0].system
+    { stale: true }
   );
   const migratedMountedEffect = mounted.effects.find(effect => (
     effect._id === 'MountedACEff0001'

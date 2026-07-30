@@ -32,7 +32,9 @@ const ACTIVITY_FIELDS = Object.freeze([
   'healing',
   'damage',
   'effects',
-  'save'
+  'save',
+  'enchant',
+  'restrictions'
 ]);
 
 const RECOVERY_ITEM_IDENTIFIERS = new Set([
@@ -320,7 +322,7 @@ function findStyleEffect(item, canonicalEffect) {
 function styleEffectUpdateData(current, canonical) {
   const source = canonicalEffectData(canonical);
   const changes = { _id: documentId(current) };
-  for (const field of ['changes', 'duration', 'transfer', 'type', 'system']) {
+  for (const field of ['changes', 'duration', 'transfer', 'type']) {
     if (
       Object.hasOwn(source, field)
       && !sameData(current?.[field], source[field])
@@ -495,7 +497,13 @@ export async function loadWarlordStyleSourceItems(actor, {
   const selected = documents(index).filter(entry => (
     ownedIdentifiers.has(getIdentifier(entry))
   ));
-  const indexedIdentifiers = new Set(selected.map(getIdentifier));
+  const selectedIdentifiers = selected.map(getIdentifier);
+  const indexedIdentifiers = new Set(selectedIdentifiers);
+  if (indexedIdentifiers.size !== selectedIdentifiers.length) {
+    throw new Error(
+      'The Warlord Fighting Styles compendium has duplicate migration sources.'
+    );
+  }
   if (
     Array.from(ownedIdentifiers)
       .some(identifier => !indexedIdentifiers.has(identifier))
@@ -505,14 +513,34 @@ export async function loadWarlordStyleSourceItems(actor, {
     );
   }
   const entries = await Promise.all(selected.map(async entry => {
+    const indexedIdentifier = getIdentifier(entry);
     const source = await pack.getDocument(documentId(entry));
     if (!source) {
       throw new Error(
         'The Warlord Fighting Styles compendium is missing a migration source.'
       );
     }
-    return [getIdentifier(source), source];
+    const sourceIdentifier = getIdentifier(source);
+    if (
+      sourceIdentifier !== indexedIdentifier
+      || !ownedIdentifiers.has(sourceIdentifier)
+    ) {
+      throw new Error(
+        'A Warlord Fighting Style document identifier does not match its index entry.'
+      );
+    }
+    return [sourceIdentifier, source];
   }));
+  const fetchedIdentifiers = new Set(entries.map(([identifier]) => identifier));
+  if (
+    fetchedIdentifiers.size !== entries.length
+    || Array.from(ownedIdentifiers)
+      .some(identifier => !fetchedIdentifiers.has(identifier))
+  ) {
+    throw new Error(
+      'The Warlord Fighting Styles compendium returned stale or duplicate migration sources.'
+    );
+  }
   return Object.fromEntries(entries);
 }
 
