@@ -110,7 +110,7 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - [x] Keep the generic class Archon Form Item as the one-use/rest rules feature
   and source of free uses. Its control metadata links subclass controls back to
   this stable owned Item rather than duplicating or moving the resource.
-- [ ] Configure the free Transform activity with an `itemUses` target. Its
+- [x] Configure the free Transform activity with an `itemUses` target. Its
   target is filled at pre-use time with the owned generic Archon Form Item ID,
   allowing dnd5e's normal consumption and chat-card refund workflow to own the
   resource. Configure the slot Transform with native attribute consumption at
@@ -133,19 +133,19 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Create: `scripts/vessel/archon-profiles.mjs`
 - Create: `tests/vessel-archon-profile-routing.test.mjs`
 
-- [ ] Write failing tests for the six subclasses, four Cataclysm affinities,
+- [x] Write failing tests for the six subclasses, four Cataclysm affinities,
   saved-affinity defaulting, explicit profile choices, missing pack documents,
   owner/permission failure, and invalid cross-subclass selection.
-- [ ] Resolve pack Actors lazily through public compendium APIs and cache only
+- [x] Resolve pack Actors lazily through public compendium APIs and cache only
   stable source Actor documents, not transformed owned actors.
-- [ ] Preflight the owned Archon Form feature and `system.spells.vessel.value`,
+- [x] Preflight the owned Archon Form feature and `system.spells.vessel.value`,
   then inject the correct dynamic consumption target into the activity source
   before dnd5e prepares consumption. Free Transform must never touch slots and
   slot Transform/Extend must never touch the feature use.
-- [ ] Treat dnd5e's activity chat-card Refund action as the safe recovery path
+- [x] Treat dnd5e's activity chat-card Refund action as the safe recovery path
   when a player creates a Transform card but never completes its later native
   Transform button. Do not build a competing resource ledger.
-- [ ] Run: `node --test tests/vessel-archon-profile-routing.test.mjs`.
+- [x] Run: `node --test tests/vessel-archon-profile-routing.test.mjs`.
 
 ## Task 4: Implement lifecycle state, transform preparation, and native reversion
 
