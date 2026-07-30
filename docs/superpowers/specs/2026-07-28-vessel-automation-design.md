@@ -296,7 +296,13 @@ available and otherwise remain clearly described manual modifiers.
 ## Stage 4: Progression and Resources
 
 Subclass advancements grant each Sealed Magic spell at its specified Vessel level.
-These spells do not count against spells known.
+These spells do not count against spells known. The [optional spell provider
+contract](2026-07-30-optional-private-spell-compendium-design.md) resolves each
+content-free Sealed Magic entry at runtime before the progression reconciler
+creates an actor-owned spell copy. Provider UUIDs are dynamic and therefore
+cannot be embedded as fixed advancement UUIDs. The resolver boundary does not
+define spell manifests or grant spells; a separate Stage 4 content review must
+approve those entries before reconciliation work begins.
 
 Advancements also:
 
