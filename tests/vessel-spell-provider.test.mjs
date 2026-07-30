@@ -214,6 +214,47 @@ test('reports an unavailable selected private pack and falls back to SRD', async
   }]);
 });
 
+test('reports an invalid selected private pack and falls back to SRD', async () => {
+  invalidateSpellProviderCache();
+  const privatePack = spellPack('private.actors', [item('private', 'Guidance')]);
+  privatePack.documentName = 'Actor';
+  const srd = spellPack('dnd5e.spells', [item('srd', 'Guidance')], {
+    packageType: 'system', packageName: 'dnd5e'
+  });
+
+  const result = await resolveSpellSource({ name: 'Guidance' }, dependencies(
+    [privatePack, srd], privatePack.collection
+  ));
+
+  assert.equal(result.status, 'resolved');
+  assert.equal(result.provider, 'srd');
+  assert.equal(result.sourceUuid, 'Compendium.test.srd');
+  assert.deepEqual(result.diagnostics, [{
+    provider: 'private',
+    code: 'pack-invalid',
+    message: 'Configured private spell compendium "private.actors" must contain Item documents.'
+  }]);
+});
+
+test('reports an invalid selected private pack when no fallback resolves', async () => {
+  invalidateSpellProviderCache();
+  const privatePack = spellPack('private.actors', [item('private', 'Guidance')]);
+  privatePack.documentName = 'Actor';
+
+  const result = await resolveSpellSource({ name: 'Guidance' }, dependencies(
+    [privatePack], privatePack.collection
+  ));
+
+  assert.equal(result.status, 'unavailable');
+  assert.equal(result.provider, null);
+  assert.equal(result.sourceUuid, null);
+  assert.deepEqual(result.diagnostics, [{
+    provider: 'private',
+    code: 'pack-invalid',
+    message: 'Configured private spell compendium "private.actors" must contain Item documents.'
+  }]);
+});
+
 test('uses only dnd5e system item packs for SRD fallback', async () => {
   invalidateSpellProviderCache();
   const allowed = spellPack('dnd5e.allowed', [item('allowed', 'Guidance')], {

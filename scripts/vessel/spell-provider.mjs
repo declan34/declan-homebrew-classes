@@ -124,6 +124,15 @@ export async function resolveSpellSource(spell, dependencies = {}) {
         continue;
       }
 
+      if (descriptor.provider === 'private' && !itemPack(pack)) {
+        diagnostics.push({
+          provider: 'private',
+          code: 'pack-invalid',
+          message: `Configured private spell compendium "${collection}" must contain Item documents.`
+        });
+        continue;
+      }
+
       try {
         const index = await getCachedIndex(pack);
         candidates.push(...index
