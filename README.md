@@ -61,3 +61,17 @@ open an issue.
 
 The compendium source (YAML) lives in `src/`; the compiled pack is in `packs/homebrew-classes/`.
 Generated with [dnd5e-pdf-importer](https://github.com/declan34/dnd5e-pdf-importer).
+
+Warlord Exploits live in a separate compendium but reference the Warlord
+class's `@scale.warlord.exploit-die` value. Validate both authoritative source
+trees without duplicating that scale definition by running:
+
+```bash
+node scripts/verify-warlord-sources.mjs
+```
+
+This checks `src/` on its own, then checks a temporary combined copy of `src/`
+and `exploits-src/`. The combined check is the required Exploit formula-closure
+validation; standalone `exploits-src/` verification cannot resolve a class
+scale stored in another pack. The helper removes its temporary copy and never
+modifies source or compiled pack files.

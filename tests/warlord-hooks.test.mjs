@@ -261,6 +261,64 @@ test('allows dnd5e to resolve Rallying Cry normally when its stored ability matc
   assert.equal(handleWarlordPreUse(rally), undefined);
 });
 
+test('blocks a die-spending Warlord activity when its shared pool item is missing', () => {
+  const actor = actorFixture();
+  const exploit = ownedActivity(actor, 'exploit-id', 'exploit-activity', {
+    consumption: {
+      targets: [
+        { type: 'itemUses', target: 'tactical-exploits', value: '1' }
+      ]
+    }
+  });
+  const reported = [];
+
+  assert.equal(handleWarlordPreUse(exploit, {
+    reportError: error => reported.push(error)
+  }), false);
+  assert.equal(reported.length, 1);
+  assert.ok(reported[0] instanceof Error);
+  assert.match(reported[0].message, /Tactical Exploits.*missing/i);
+});
+
+test('allows a die-spending Warlord activity when its shared pool item exists', () => {
+  const actor = actorFixture();
+  actor.items.set('pool-item', {
+    id: 'pool-item',
+    system: { identifier: 'tactical-exploits' }
+  });
+  const exploit = ownedActivity(actor, 'exploit-id', 'exploit-activity', {
+    consumption: {
+      targets: [
+        { type: 'itemUses', target: 'tactical-exploits', value: '1' }
+      ]
+    }
+  });
+  const reported = [];
+
+  assert.equal(handleWarlordPreUse(exploit, {
+    reportError: error => reported.push(error)
+  }), undefined);
+  assert.deepEqual(reported, []);
+});
+
+test('does not require the shared pool for free Orders or no-consumption resolution activities', () => {
+  const actor = actorFixture();
+  const freeOrder = ownedActivity(actor, 'free-order-id', 'exploit-activity', {
+    consumption: { targets: [] }
+  });
+  const resolution = ownedActivity(actor, 'resolution-id', 'exploit-resolution', {
+    consumption: { targets: [] }
+  });
+  const repeatSave = ownedActivity(actor, 'repeat-save-id', 'exploit-repeat-save');
+  const reported = [];
+  const options = { reportError: error => reported.push(error) };
+
+  assert.equal(handleWarlordPreUse(freeOrder, options), undefined);
+  assert.equal(handleWarlordPreUse(resolution, options), undefined);
+  assert.equal(handleWarlordPreUse(repeatSave, options), undefined);
+  assert.deepEqual(reported, []);
+});
+
 test('configures flagged Utility and Heal formulas before one native retry', async () => {
   for (const [id, dataPath, staleData, configuredData] of [
     [

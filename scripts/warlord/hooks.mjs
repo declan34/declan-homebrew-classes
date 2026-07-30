@@ -112,6 +112,19 @@ function hasWarlordActivity(item) {
   return documents(item?.system?.activities).some(activity => getWarlordRole(activity));
 }
 
+function spendsTacticalExploitDie(activity) {
+  return documents(activity?.consumption?.targets).some(
+    target => target?.type === 'itemUses'
+      && target?.target === 'tactical-exploits'
+  );
+}
+
+function hasTacticalExploitPool(actor) {
+  return documents(actor?.items).some(
+    item => getIdentifier(item) === 'tactical-exploits'
+  );
+}
+
 function isWarlordClass(item) {
   return item?.type === 'class'
     && getIdentifier(item) === WARLORD_CLASS_IDENTIFIER;
@@ -148,6 +161,14 @@ export function handleWarlordPreUse(activity, {
   }
 
   const ownedActivity = sourceActivity(activity) ?? activity;
+  if (spendsTacticalExploitDie(ownedActivity)
+    && !hasTacticalExploitPool(actor)) {
+    onError(new Error(
+      'The Tactical Exploits resource is missing from this actor. '
+      + 'Re-add or migrate the Warlord class features before using this Exploit.'
+    ));
+    return false;
+  }
   if (!requiresLeadership(ownedActivity)) return;
   if (pendingState) {
     if (pendingState.phase === 'retry-armed') {
