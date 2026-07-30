@@ -52,6 +52,11 @@ test('Unsealed Aspect choices expose only aspects available at each Vessel level
     entry => entry.title === 'Unsealed Aspects'
   );
   assert.ok(advancement, 'Vessel has an Unsealed Aspects ItemChoice');
+  assert.equal(
+    advancement.configuration.allowDrops,
+    false,
+    'the curated Aspect choice does not expose Foundry’s generic feat browser'
+  );
 
   const byId = new Map(aspects.map(aspect => [aspect._id, aspect]));
   const pool = advancement.configuration.pool.map(({ uuid }) => {

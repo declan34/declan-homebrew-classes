@@ -370,7 +370,7 @@ system:
         subtype: ''
         list: []
       spell: null
-      allowDrops: true
+      allowDrops: false
     value: {}
     level: 1
     title: Unsealed Aspects
