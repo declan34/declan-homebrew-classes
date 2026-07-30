@@ -1,0 +1,106 @@
+_id: hbrAscArchon0001
+name: Ascended Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills:
+    arc: {value: 1, ability: int, bonuses: {check: '', passive: ''}}
+    his: {value: 1, ability: int, bonuses: {check: '', passive: ''}}
+    rel: {value: 1, ability: int, bonuses: {check: '', passive: ''}}
+  attributes:
+    movement: {walk: 30, fly: 10, units: ft, hover: true, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: ''
+      ranges: {darkvision: null, blindsight: null, tremorsense: null, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography:
+      value: <p>The Archon Form of an Ascended Spirit.</p>
+      public: ''
+    alignment: ''
+    type: {value: humanoid, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [], custom: All damage from spells}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [], custom: ''}
+    languages: {value: [primordial], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000001
+    name: Arcane Blast
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description:
+        value: <p>Once on its turn, the Archon can forgo one attack to cause a burst of raw magic at a point it can see within 60 feet. All creatures within 5 feet of that point must succeed on a Dexterity saving throw or take damage as if they were hit by one of your Iridescent Strikes.</p>
+        chat: ''
+      identifier: arcane-blast
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrAscArchon0001.hbrTrait00000001'
+  - _id: hbrTrait00000002
+    name: Astral Step
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description:
+        value: <p>After the Archon casts a spell, it can teleport a number of feet equal to 10 times the level of that spell (minimum of 10 feet) to an unoccupied space it can see.</p>
+        chat: ''
+      identifier: astral-step
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrAscArchon0001.hbrTrait00000002'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: ascended, subclass: the-ascended, acBonus: 0}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership: {default: 0}
+_key: '!actors!hbrAscArchon0001'

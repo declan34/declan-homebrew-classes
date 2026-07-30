@@ -1,0 +1,91 @@
+_id: hbrFalArchon0001
+name: Fallen Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills:
+    itm: {value: 1, ability: cha, bonuses: {check: '', passive: ''}}
+    rel: {value: 1, ability: int, bonuses: {check: '', passive: ''}}
+  attributes:
+    movement: {walk: 30, units: ft, hover: false, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: ''
+      ranges: {darkvision: 60, blindsight: null, tremorsense: null, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography: {value: <p>The Archon Form of a Fallen Spirit.</p>, public: ''}
+    alignment: ''
+    type: {value: celestial, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [necrotic, radiant], custom: ''}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [], custom: ''}
+    languages: {value: [celestial], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000017
+    name: Divine Ward
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>As a bonus action, the Archon can grant a creature it can see within 30 feet temporary hit points equal to your Charisma modifier, which last 1 minute.</p>", chat: ''}
+      identifier: divine-ward
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrFalArchon0001.hbrTrait00000017'
+  - _id: hbrTrait00000018
+    name: Wings of Wrath
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon uses Divine Wrath, it gains the Thrown (20/60) property, and after the attack, the weapon instantly returns to the Archon's hand.</p>", chat: ''}
+      identifier: wings-of-wrath
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrFalArchon0001.hbrTrait00000018'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: fallen, subclass: the-fallen, acBonus: 2}
+_stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+sort: 6
+ownership: {default: 0}
+_key: '!actors!hbrFalArchon0001'

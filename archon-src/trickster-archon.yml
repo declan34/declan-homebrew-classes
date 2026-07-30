@@ -1,0 +1,91 @@
+_id: hbrTriArchon0001
+name: Trickster Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills:
+    dec: {value: 1, ability: cha, bonuses: {check: '', passive: ''}}
+    ste: {value: 1, ability: dex, bonuses: {check: '', passive: ''}}
+  attributes:
+    movement: {walk: 30, units: ft, hover: false, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: ''
+      ranges: {darkvision: 60, blindsight: null, tremorsense: null, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography: {value: <p>The Archon Form of a Trickster Spirit.</p>, public: ''}
+    alignment: ''
+    type: {value: fey, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [], custom: ''}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [charmed, frightened], custom: ''}
+    languages: {value: [sylvan], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000021
+    name: Juxtapose
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>As a bonus action, the Archon can force one creature that it can see within 60 feet to make a Charisma saving throw. On a failure, the Archon instantly switches places with the creature. The creature can choose to fail.</p>", chat: ''}
+      identifier: juxtapose
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrTriArchon0001.hbrTrait00000021'
+  - _id: hbrTrait00000022
+    name: Stolen Memory
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>Once per turn when the Archon deals psychic damage with an Iridescent Strike, it can force its target to make an Intelligence saving throw. On a failure, it cannot see, hear, smell, sense, or target the Archon in any way until the start of the Archon's next turn.</p>", chat: ''}
+      identifier: stolen-memory
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrTriArchon0001.hbrTrait00000022'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: trickster, subclass: the-trickster, acBonus: 0}
+_stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+sort: 8
+ownership: {default: 0}
+_key: '!actors!hbrTriArchon0001'

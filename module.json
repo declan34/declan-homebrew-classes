@@ -60,6 +60,17 @@
       "system": "dnd5e"
     },
     {
+      "name": "vessel-archon-forms",
+      "label": "Archon Forms (Vessel)",
+      "path": "packs/vessel-archon-forms",
+      "type": "Actor",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "warlord-exploits",
       "label": "Tactical Exploits (Warlord)",
       "path": "packs/warlord-exploits",

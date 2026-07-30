@@ -1,0 +1,89 @@
+_id: hbrForArchon0001
+name: Formless Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills: {}
+  attributes:
+    movement: {walk: 30, climb: 30, units: ft, hover: false, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: Blind beyond this radius
+      ranges: {darkvision: null, blindsight: 60, tremorsense: null, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography: {value: <p>The Archon Form of a Formless Spirit.</p>, public: ''}
+    alignment: ''
+    type: {value: ooze, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [acid, poison], custom: ''}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [grappled, restrained], custom: ''}
+    languages: {value: [primordial], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000019
+    name: Pseudopods
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>The Archon sprouts a number of additional pseudopod limbs equal to your Charisma modifier. They have a reach of 10 feet, and they can be attacked as part of the Archon. These pseudopods can only be used to make melee Iridescent Strike attacks, Grapple, and Shove.</p>", chat: ''}
+      identifier: pseudopods
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrForArchon0001.hbrTrait00000019'
+  - _id: hbrTrait00000020
+    name: Sticky Slime
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When the Archon hits a creature equal to its size or smaller with a melee Iridescent Strike, it can force it to make a Dexterity saving throw or become Grappled. To escape this Grapple, a creature must use its action to make a Strength saving throw, escaping on a success.</p>", chat: ''}
+      identifier: sticky-slime
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrForArchon0001.hbrTrait00000020'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: formless, subclass: the-formless, acBonus: 1}
+_stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+sort: 7
+ownership: {default: 0}
+_key: '!actors!hbrForArchon0001'

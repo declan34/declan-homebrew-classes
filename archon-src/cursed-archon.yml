@@ -1,0 +1,91 @@
+_id: hbrCurArchon0001
+name: Cursed Archon
+type: npc
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str: {value: 10, proficient: 0}
+    dex: {value: 10, proficient: 0}
+    con: {value: 10, proficient: 0}
+    int: {value: 10, proficient: 0}
+    wis: {value: 10, proficient: 0}
+    cha: {value: 10, proficient: 0}
+  skills:
+    itm: {value: 1, ability: cha, bonuses: {check: '', passive: ''}}
+    ste: {value: 1, ability: dex, bonuses: {check: '', passive: ''}}
+  attributes:
+    movement: {walk: 40, climb: 40, units: ft, hover: false, ignoredDifficultTerrain: []}
+    senses:
+      units: ft
+      special: ''
+      ranges: {darkvision: 60, blindsight: null, tremorsense: null, truesight: null}
+    ac: {flat: 10, calc: flat}
+    hp: {value: 1, max: 1, temp: null, tempmax: null, formula: ''}
+  details:
+    biography: {value: <p>The Archon Form of a Cursed Spirit.</p>, public: ''}
+    alignment: ''
+    type: {value: fiend, subtype: Shapechanger, swarm: '', custom: ''}
+    cr: null
+  traits:
+    size: med
+    di: {bypasses: [], value: [], custom: ''}
+    dr: {bypasses: [], value: [fire, poison], custom: ''}
+    dv: {bypasses: [], value: [], custom: ''}
+    dm: {amount: {}, bypasses: []}
+    ci: {value: [], custom: ''}
+    languages: {value: [infernal], custom: '', communication: {}}
+items:
+  - _id: hbrTrait00000015
+    name: Frenzy
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>When it takes the Attack action, the Archon can enter a Frenzy which lasts until the start of its next turn. For the duration, all of its attacks and all attacks targeting the Archon are made with advantage.</p>", chat: ''}
+      identifier: frenzy
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 0
+    _key: '!actors.items!hbrCurArchon0001.hbrTrait00000015'
+  - _id: hbrTrait00000016
+    name: Infernal Drain
+    type: feat
+    system:
+      type: {value: monster, subtype: ''}
+      activities: {}
+      uses: {spent: 0, recovery: [], max: ''}
+      description: {value: "<p>Once per turn when the Archon deals fire damage with an Iridescent Strike, its temporary hit points increase by your Charisma modifier. Your total temporary hit points cannot exceed twice your Vessel level.</p>", chat: ''}
+      identifier: infernal-drain
+      source: {revision: 1, rules: '2024', book: '', license: proprietary}
+      enchant: {}
+      prerequisites: {level: null, repeatable: false, items: []}
+      properties: [trait]
+      requirements: ''
+      advancement: {}
+    img: icons/svg/item-bag.svg
+    effects: []
+    flags: {}
+    _stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+    ownership: {default: 0}
+    sort: 1
+    _key: '!actors.items!hbrCurArchon0001.hbrTrait00000016'
+effects: []
+folder: hbrArchonForms01
+flags:
+  declan-homebrew-classes:
+    vessel:
+      archon: {profile: cursed, subclass: the-cursed, acBonus: 1}
+_stats: {coreVersion: '13.344', systemId: dnd5e, systemVersion: 5.3.3, lastModifiedBy: hbrbuilder000000}
+sort: 5
+ownership: {default: 0}
+_key: '!actors!hbrCurArchon0001'
