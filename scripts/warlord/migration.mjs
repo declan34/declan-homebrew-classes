@@ -1,5 +1,6 @@
 import {
   MODULE_ID,
+  WARLORD_EXPLOIT_IDENTIFIERS,
   WARLORD_CLASS_IDENTIFIER,
   WARLORD_MIGRATION_FLAG,
   WARLORD_MIGRATION_VERSION
@@ -41,14 +42,6 @@ const RECOVERY_ITEM_IDENTIFIERS = new Set([
   'inspiring-word',
   'rallying-cry'
 ]);
-const CORE_ITEM_IDENTIFIERS = new Set([
-  WARLORD_CLASS_IDENTIFIER,
-  'leadership-style',
-  'inspiring-word',
-  'rallying-cry',
-  'tactical-exploits',
-  'tactical-superiority'
-]);
 const STYLE_ITEM_IDENTIFIERS = new Set([
   'balanced-fighting',
   'classical-swordplay',
@@ -58,6 +51,7 @@ const STYLE_ITEM_IDENTIFIERS = new Set([
   'standard-bearer',
   'tactical-fighting'
 ]);
+const EXPLOIT_ITEM_IDENTIFIERS = new Set(WARLORD_EXPLOIT_IDENTIFIERS);
 
 let sourceItemsPromise;
 const reconciliationQueues = new WeakMap();
@@ -126,24 +120,39 @@ function findActivity(item, sourceActivity, canonicalItem) {
   return sourceRoleCount === 1 ? roleMatches[0] : undefined;
 }
 
-function newActivityData(canonical) {
+function activityDataWithEffectIds(canonical, effectIdMap) {
   const source = objectData(canonical);
+  if (effectIdMap && Array.isArray(source.effects)) {
+    source.effects = source.effects.map(reference => {
+      const sourceId = reference?._id;
+      const targetId = effectIdMap.get(sourceId);
+      return targetId
+        ? { ...reference, _id: targetId }
+        : reference;
+    });
+  }
+  return source;
+}
+
+function newActivityData(canonical, effectIdMap) {
+  const source = activityDataWithEffectIds(canonical, effectIdMap);
   delete source._key;
   return source;
 }
 
-function activityChanges(item, canonical) {
+function activityChanges(item, canonical, effectIdMap) {
   const changes = {};
   for (const sourceActivity of documents(canonical?.system?.activities)) {
     if (!getWarlordRole(sourceActivity)) continue;
     const current = findActivity(item, sourceActivity, canonical);
     const targetId = documentId(current) ?? documentId(sourceActivity);
     if (!current) {
-      changes[`system.activities.${targetId}`] = newActivityData(sourceActivity);
+      changes[`system.activities.${targetId}`] =
+        newActivityData(sourceActivity, effectIdMap);
       continue;
     }
 
-    const source = objectData(sourceActivity);
+    const source = activityDataWithEffectIds(sourceActivity, effectIdMap);
     for (const field of ACTIVITY_FIELDS) {
       if (
         Object.hasOwn(source, field)
@@ -228,12 +237,28 @@ function canonicalEffectData(effect) {
 
 function effectUpdateData(current, canonical) {
   const source = canonicalEffectData(canonical);
-  const changes = { _id: source._id };
-  for (const [field, value] of Object.entries(source)) {
-    if (field === '_id') continue;
-    if (!sameData(current?.[field], value)) {
-      changes[field] = structuredClone(value);
+  const changes = { _id: documentId(current) };
+  for (const field of [
+    'changes',
+    'duration',
+    'transfer',
+    'type',
+    'statuses'
+  ]) {
+    if (
+      Object.hasOwn(source, field)
+      && !sameData(current?.[field], source[field])
+    ) {
+      changes[field] = structuredClone(source[field]);
     }
+  }
+
+  const sourceMetadata = warlordMetadata(source);
+  if (sourceMetadata && !sameData(warlordMetadata(current), sourceMetadata)) {
+    const flags = structuredClone(current?.flags ?? {});
+    flags[MODULE_ID] ??= {};
+    flags[MODULE_ID].warlord = structuredClone(sourceMetadata);
+    changes.flags = flags;
   }
   return Object.keys(changes).length > 1 ? changes : undefined;
 }
@@ -375,6 +400,30 @@ async function repairStyleEffects(item, canonical) {
   }
 }
 
+function styleEffectIdMap(item, canonical) {
+  return new Map(documents(canonical?.effects)
+    .filter(effect => getWarlordRole(effect) === 'fighting-style-effect')
+    .map(sourceEffect => {
+      const current = findStyleEffect(item, sourceEffect);
+      return [
+        documentId(sourceEffect),
+        documentId(current) ?? documentId(sourceEffect)
+      ];
+    }));
+}
+
+function styleMigrationChanges(item, canonical, effectIdMap) {
+  const changes = activityChanges(item, canonical, effectIdMap);
+  const sourceLevel = canonical?.system?.prerequisites?.level;
+  if (
+    sourceLevel !== undefined
+    && !sameData(item?.system?.prerequisites?.level, sourceLevel)
+  ) {
+    changes['system.prerequisites.level'] = structuredClone(sourceLevel);
+  }
+  return changes;
+}
+
 function numericRange(activity) {
   const raw = activity?.range?.value;
   if (raw === null || raw === undefined || raw === '') return undefined;
@@ -451,12 +500,7 @@ export async function loadWarlordExploitSourceItems(actor, {
 } = {}) {
   const ownedIdentifiers = new Set(documents(actor?.items)
     .map(getIdentifier)
-    .filter(identifier => (
-      typeof identifier === 'string'
-      && identifier.length > 0
-      && !CORE_ITEM_IDENTIFIERS.has(identifier)
-      && !STYLE_ITEM_IDENTIFIERS.has(identifier)
-    )));
+    .filter(identifier => EXPLOIT_ITEM_IDENTIFIERS.has(identifier)));
   if (!ownedIdentifiers.size) return {};
 
   const pack = packs?.get?.(`${MODULE_ID}.warlord-exploits`);
@@ -468,14 +512,63 @@ export async function loadWarlordExploitSourceItems(actor, {
   const selected = documents(index).filter(entry => (
     ownedIdentifiers.has(getIdentifier(entry))
   ));
+  const selectedIdentifiers = selected.map(getIdentifier);
+  const selectedIds = selected.map(documentId);
+  const indexedIdentifiers = new Set(selectedIdentifiers);
+  const indexedIds = new Set(selectedIds);
+  if (
+    indexedIdentifiers.size !== selectedIdentifiers.length
+    || indexedIds.size !== selectedIds.length
+  ) {
+    throw new Error(
+      'The Warlord Exploits compendium has duplicate migration sources.'
+    );
+  }
+  if (
+    Array.from(ownedIdentifiers)
+      .some(identifier => !indexedIdentifiers.has(identifier))
+  ) {
+    throw new Error(
+      'The Warlord Exploits compendium is missing a migration source.'
+    );
+  }
   const entries = await Promise.all(selected.map(async entry => {
+    const indexedIdentifier = getIdentifier(entry);
+    const indexedId = documentId(entry);
     const source = await pack.getDocument(documentId(entry));
     if (!source) {
       throw new Error('The Warlord Exploits compendium is missing a migration source.');
     }
-    return [getIdentifier(source), source];
+    const sourceIdentifier = getIdentifier(source);
+    if (
+      sourceIdentifier !== indexedIdentifier
+      || !ownedIdentifiers.has(sourceIdentifier)
+    ) {
+      throw new Error(
+        'A Warlord Exploit document identifier does not match its index entry.'
+      );
+    }
+    return [sourceIdentifier, documentId(source), indexedId, source];
   }));
-  return Object.fromEntries(entries);
+  const fetchedIdentifiers = new Set(entries.map(([identifier]) => identifier));
+  const fetchedIds = new Set(entries.map(([, id]) => id));
+  const hasStaleId = entries.some(([, sourceId, indexedId]) => (
+    sourceId !== indexedId
+  ));
+  if (
+    hasStaleId
+    || fetchedIdentifiers.size !== entries.length
+    || fetchedIds.size !== entries.length
+    || Array.from(ownedIdentifiers)
+      .some(identifier => !fetchedIdentifiers.has(identifier))
+  ) {
+    throw new Error(
+      'The Warlord Exploits compendium returned stale or duplicate migration sources.'
+    );
+  }
+  return Object.fromEntries(entries.map(([identifier, , , source]) => (
+    [identifier, source]
+  )));
 }
 
 export async function loadWarlordStyleSourceItems(actor, {
@@ -567,7 +660,8 @@ async function migrateOwnedStyleItems(actor, sources) {
   for (const canonical of Object.values(sources)) {
     const item = findOwnedItem(actor, canonical);
     if (!item || typeof item.update !== 'function') continue;
-    const changes = activityChanges(item, canonical);
+    const effectIdMap = styleEffectIdMap(item, canonical);
+    const changes = styleMigrationChanges(item, canonical, effectIdMap);
     if (Object.keys(changes).length) await item.update(changes);
     await repairStyleEffects(item, canonical);
   }

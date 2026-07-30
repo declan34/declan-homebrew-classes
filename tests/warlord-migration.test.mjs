@@ -8,6 +8,10 @@ const {
   migrateWarlordActor,
   reconcileWarlordActor
 } = await import('../scripts/warlord/migration.mjs');
+const {
+  WARLORD_EXPLOIT_IDENTIFIERS,
+  WARLORD_MIGRATION_VERSION
+} = await import('../scripts/warlord/constants.mjs');
 
 const MODULE_ID = 'declan-homebrew-classes';
 const SOURCE_IDS = {
@@ -639,6 +643,271 @@ test('loads canonical Exploit documents only for identifiers the actor owns', as
   );
 });
 
+test('defines the exact supported Warlord Exploit identifier set', () => {
+  assert.equal(WARLORD_EXPLOIT_IDENTIFIERS.length, 40);
+  assert.equal(new Set(WARLORD_EXPLOIT_IDENTIFIERS).size, 40);
+  assert.deepEqual(
+    [...WARLORD_EXPLOIT_IDENTIFIERS].sort(),
+    [
+      'attack-order',
+      'contingency-plan',
+      'crescendo-of-violence',
+      'daring-rescue',
+      'defensive-order',
+      'defensive-stance',
+      'dirty-hit',
+      'eloquent-speech',
+      'enlivening-order',
+      'exposing-strike',
+      'feint',
+      'final-strike',
+      'first-aid',
+      'heroic-fortitude',
+      'heroic-order',
+      'heroic-will',
+      'hold-the-line',
+      'honor-duel',
+      'imposing-presence',
+      'insightful-order',
+      'inspirational-speech',
+      'intimidating-command',
+      'maneuvering-order',
+      'menacing-shout',
+      'pack-tactics',
+      'parry',
+      'perilous-gambit',
+      'rejuvenating-order',
+      'resilient-order',
+      'revitalizing-order',
+      'riposte',
+      'stand-the-fallen',
+      'steadfast-order',
+      'support-order',
+      'surprise-attack',
+      'tactical-reposition',
+      'taunting-strike',
+      'victory-surge',
+      'war-cry',
+      'wild-charge'
+    ]
+  );
+});
+
+test('does not look up the Exploit pack when the actor owns no supported Exploits', async () => {
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-homebrew', identifier: 'my-unrelated-feature' })
+    ]
+  });
+
+  const loaded = await loadWarlordExploitSourceItems(actor, {
+    packs: {
+      get() {
+        throw new Error('Exploit pack must not be read');
+      }
+    }
+  });
+
+  assert.deepEqual(loaded, {});
+});
+
+test('rejects incomplete, duplicate, mismatched, and stale Exploit sources', async () => {
+  const sources = canonicalExploitSources();
+  const actor = actorFixture({
+    items: [
+      warlordClass(),
+      ownedItem({ id: 'owned-dirty', identifier: 'dirty-hit' }),
+      ownedItem({ id: 'owned-parry', identifier: 'parry' })
+    ]
+  });
+  const packsFor = pack => new Map([
+    [`${MODULE_ID}.warlord-exploits`, pack]
+  ]);
+
+  await assert.rejects(
+    loadWarlordExploitSourceItems(actor, {
+      packs: packsFor({
+        async getIndex() {
+          return [{
+            _id: sources.dirtyHit.id,
+            system: { identifier: 'dirty-hit' }
+          }];
+        },
+        async getDocument() {
+          return sources.dirtyHit;
+        }
+      })
+    }),
+    /missing a migration source/
+  );
+
+  await assert.rejects(
+    loadWarlordExploitSourceItems(actor, {
+      packs: packsFor({
+        async getIndex() {
+          return [
+            {
+              _id: sources.dirtyHit.id,
+              system: { identifier: 'dirty-hit' }
+            },
+            {
+              _id: 'DuplicateDirty01',
+              system: { identifier: 'dirty-hit' }
+            },
+            {
+              _id: sources.parry.id,
+              system: { identifier: 'parry' }
+            }
+          ];
+        },
+        async getDocument(id) {
+          return id === sources.parry.id ? sources.parry : sources.dirtyHit;
+        }
+      })
+    }),
+    /duplicate migration sources/
+  );
+
+  await assert.rejects(
+    loadWarlordExploitSourceItems(actor, {
+      packs: packsFor({
+        async getIndex() {
+          return [
+            {
+              _id: 'DuplicateIndexId',
+              system: { identifier: 'dirty-hit' }
+            },
+            {
+              _id: 'DuplicateIndexId',
+              system: { identifier: 'parry' }
+            }
+          ];
+        },
+        async getDocument() {
+          throw new Error('duplicate index ids must fail before fetching');
+        }
+      })
+    }),
+    /duplicate migration sources/
+  );
+
+  await assert.rejects(
+    loadWarlordExploitSourceItems(actor, {
+      packs: packsFor({
+        async getIndex() {
+          return [{
+            _id: sources.dirtyHit.id,
+            system: { identifier: 'dirty-hit' }
+          }, {
+            _id: sources.parry.id,
+            system: { identifier: 'parry' }
+          }];
+        },
+        async getDocument(id) {
+          return id === sources.dirtyHit.id ? sources.parry : sources.dirtyHit;
+        }
+      })
+    }),
+    /identifier does not match its index entry/
+  );
+
+  const staleDirty = clone(sources.dirtyHit);
+  staleDirty._id = 'StaleDirtyDoc01';
+  staleDirty.id = 'StaleDirtyDoc01';
+  await assert.rejects(
+    loadWarlordExploitSourceItems(actor, {
+      packs: packsFor({
+        async getIndex() {
+          return [{
+            _id: sources.dirtyHit.id,
+            system: { identifier: 'dirty-hit' }
+          }, {
+            _id: sources.parry.id,
+            system: { identifier: 'parry' }
+          }];
+        },
+        async getDocument(id) {
+          return id === sources.dirtyHit.id ? staleDirty : sources.parry;
+        }
+      })
+    }),
+    /stale or duplicate migration sources/
+  );
+
+  const duplicateIdDirty = clone(sources.dirtyHit);
+  const duplicateIdParry = clone(sources.parry);
+  duplicateIdDirty._id = duplicateIdDirty.id = 'DuplicateFetched01';
+  duplicateIdParry._id = duplicateIdParry.id = 'DuplicateFetched01';
+  await assert.rejects(
+    loadWarlordExploitSourceItems(actor, {
+      packs: packsFor({
+        async getIndex() {
+          return [{
+            _id: 'IndexedDirtyDoc01',
+            system: { identifier: 'dirty-hit' }
+          }, {
+            _id: 'IndexedParryDoc01',
+            system: { identifier: 'parry' }
+          }];
+        },
+        async getDocument(id) {
+          return id === 'IndexedDirtyDoc01'
+            ? duplicateIdDirty
+            : duplicateIdParry;
+        }
+      })
+    }),
+    /stale or duplicate migration sources/
+  );
+});
+
+test('leaves migration unflagged after an incomplete Exploit load and retries', async () => {
+  const coreSources = canonicalSources();
+  const exploitSources = canonicalExploitSources();
+  const dirtyHit = ownedItem({
+    id: 'owned-dirty',
+    identifier: 'dirty-hit'
+  });
+  const actor = actorFixture({
+    items: [warlordClass(), dirtyHit],
+    leadershipAbility: undefined
+  });
+  let complete = false;
+  const pack = {
+    async getIndex() {
+      return complete ? [{
+        _id: exploitSources.dirtyHit.id,
+        system: { identifier: 'dirty-hit' }
+      }] : [];
+    },
+    async getDocument() {
+      return exploitSources.dirtyHit;
+    }
+  };
+  const options = {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems: currentActor => loadWarlordExploitSourceItems(
+      currentActor,
+      { packs: new Map([[`${MODULE_ID}.warlord-exploits`, pack]]) }
+    ),
+    loadStyleSourceItems: async () => ({})
+  };
+
+  await assert.rejects(
+    migrateWarlordActor(actor, options),
+    /missing a migration source/
+  );
+  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, undefined);
+
+  complete = true;
+  assert.equal(await migrateWarlordActor(actor, options), true);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
+});
+
 test('loads canonical Fighting Style documents only for identifiers the actor owns', async () => {
   const sources = canonicalStyleSources();
   const index = Object.values(sources).map(item => ({
@@ -971,7 +1240,10 @@ test('selectively migrates Fighting Style activities and effects while preservin
   assert.equal(mounted.name, customMountedName);
   assert.equal(mounted.system.description.value, customMountedDescription);
   assert.deepEqual(mounted.flags.otherModule, { keep: true });
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
 
   assert.equal(await migrateWarlordActor(actor, {
     loadSourceItems: async () => {
@@ -1050,7 +1322,100 @@ test('leaves the migration flag absent until Fighting Style effects succeed and 
 
   assert.equal(await migrateWarlordActor(actor, options), true);
   assert.ok(defensive.effects.some(effect => effect._id === 'DefensiveACEff01'));
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
+});
+
+test('retains legacy Fighting Style effect ids in every repaired activity reference', async () => {
+  const coreSources = canonicalSources();
+  const styleSources = canonicalStyleSources();
+  const canonicalEffectId = 'BalFightDmgEff01';
+  const legacyEffectId = 'LegacyBalanced001';
+  const firstActivity = styleSources.balanced.system.activities.BalFightEnchant1;
+  firstActivity.effects = [{ _id: canonicalEffectId, onSave: false }];
+  const secondActivity = warlordActivity(
+    'BalFightSecond01',
+    'fighting-style-activity',
+    {
+      effects: [{ _id: canonicalEffectId, onSave: true }],
+      flags: styleMetadata(
+        'balanced-fighting',
+        'weapon-damage-secondary',
+        'fighting-style-activity'
+      )
+    }
+  );
+  styleSources.balanced.system.activities[secondActivity.id] = secondActivity;
+  styleSources.balanced.system.prerequisites = {
+    level: 2,
+    repeatable: false,
+    custom: 'canonical value'
+  };
+
+  const legacyEffect = {
+    ...clone(styleSources.balanced.effects[0]),
+    _id: legacyEffectId,
+    id: legacyEffectId,
+    name: 'My legacy effect',
+    changes: []
+  };
+  const balanced = ownedItem({
+    id: 'owned-balanced',
+    identifier: 'balanced-fighting',
+    activities: [
+      staleActivity(firstActivity, {
+        effects: [{ _id: 'MissingOldEffect1', onSave: false }]
+      }),
+      staleActivity(secondActivity, {
+        effects: [{ _id: 'MissingOldEffect2', onSave: false }]
+      })
+    ],
+    effects: [legacyEffect]
+  });
+  balanced.system.prerequisites = {
+    level: 4,
+    repeatable: true,
+    custom: 'keep my value'
+  };
+  const actor = actorFixture({
+    items: [warlordClass(), balanced],
+    leadershipAbility: undefined
+  });
+  const options = {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems: async () => ({}),
+    loadStyleSourceItems: async () => ({ balanced: styleSources.balanced })
+  };
+
+  assert.equal(await migrateWarlordActor(actor, options), true);
+  for (const activityId of ['BalFightEnchant1', 'BalFightSecond01']) {
+    assert.deepEqual(
+      balanced.system.activities[activityId].effects.map(effect => effect._id),
+      [legacyEffectId]
+    );
+    assert.ok(
+      balanced.effects.some(effect => (
+        effect._id === balanced.system.activities[activityId].effects[0]._id
+      ))
+    );
+  }
+  assert.equal(
+    balanced.effects.some(effect => effect._id === canonicalEffectId),
+    false
+  );
+  assert.equal(balanced.system.prerequisites.level, 2);
+  assert.equal(balanced.system.prerequisites.repeatable, true);
+  assert.equal(balanced.system.prerequisites.custom, 'keep my value');
+
+  const updateCount = balanced.updateCalls.length;
+  const effectUpdateCount = balanced.embeddedUpdateCalls.length;
+  actor.flags[MODULE_ID].warlord.migrationVersion =
+    WARLORD_MIGRATION_VERSION - 1;
+  assert.equal(await migrateWarlordActor(actor, options), true);
+  assert.equal(balanced.updateCalls.length, updateCount);
+  assert.equal(balanced.embeddedUpdateCalls.length, effectUpdateCount);
 });
 
 test('selectively migrates owned Tier A, B, and C Exploits and configures every canonical save', async () => {
@@ -1142,7 +1507,7 @@ test('selectively migrates owned Tier A, B, and C Exploits and configures every 
   );
   assert.equal(
     dirtyHit.effects.find(effect => effect._id === 'DirtyHitProne01A').name,
-    'Dirty Hit — Prone'
+    'Stale prone effect'
   );
   assert.ok(dirtyHit.effects.some(effect => effect._id === 'DirtyNoReact01AB'));
   assert.equal(
@@ -1161,7 +1526,95 @@ test('selectively migrates owned Tier A, B, and C Exploits and configures every 
   for (const reference of dirtyHit.system.activities.DirtyHitAct01ABC.effects) {
     assert.ok(dirtyHit.effects.some(effect => effect._id === reference._id));
   }
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
+});
+
+test('repairs only module-owned Exploit effect mechanics and preserves player fields', async () => {
+  const coreSources = canonicalSources();
+  const exploitSources = canonicalExploitSources();
+  for (const sourceEffect of exploitSources.dirtyHit.effects) {
+    sourceEffect.transfer = true;
+    sourceEffect.type = 'base';
+    sourceEffect.flags[MODULE_ID] = {
+      warlord: {
+        role: 'exploit-effect',
+        exploit: 'dirty-hit',
+        mechanic: sourceEffect._id
+      }
+    };
+  }
+  const existingEffects = exploitSources.dirtyHit.effects.map(
+    (sourceEffect, index) => ({
+      _id: sourceEffect._id,
+      id: sourceEffect._id,
+      name: `My effect name ${index}`,
+      img: `icons/custom-${index}.webp`,
+      description: `<p>My effect notes ${index}.</p>`,
+      disabled: index === 0,
+      system: { custom: `keep-${index}` },
+      changes: [{ key: 'stale', mode: 2, value: '1' }],
+      statuses: ['stale'],
+      duration: { rounds: 99 },
+      transfer: false,
+      type: 'legacy',
+      flags: {
+        foreignModule: { keep: index },
+        dnd5e: { keep: `dnd5e-${index}` },
+        [MODULE_ID]: {
+          keepSibling: `module-${index}`,
+          warlord: { stale: true }
+        }
+      }
+    })
+  );
+  const dirtyHit = ownedItem({
+    id: 'owned-dirty',
+    identifier: 'dirty-hit',
+    effects: existingEffects
+  });
+  const actor = actorFixture({
+    items: [warlordClass(), dirtyHit],
+    leadershipAbility: undefined
+  });
+
+  assert.equal(await migrateWarlordActor(actor, {
+    loadSourceItems: async () => coreSources,
+    loadExploitSourceItems: async () => ({ dirtyHit: exploitSources.dirtyHit }),
+    loadStyleSourceItems: async () => ({})
+  }), true);
+
+  for (const [index, sourceEffect] of exploitSources.dirtyHit.effects.entries()) {
+    const migrated = dirtyHit.effects.find(effect => (
+      effect._id === sourceEffect._id
+    ));
+    assert.equal(migrated.name, `My effect name ${index}`);
+    assert.equal(migrated.img, `icons/custom-${index}.webp`);
+    assert.equal(migrated.description, `<p>My effect notes ${index}.</p>`);
+    assert.equal(migrated.disabled, index === 0);
+    assert.deepEqual(migrated.system, { custom: `keep-${index}` });
+    assert.deepEqual(migrated.flags.foreignModule, { keep: index });
+    assert.deepEqual(migrated.flags.dnd5e, { keep: `dnd5e-${index}` });
+    assert.equal(
+      migrated.flags[MODULE_ID].keepSibling,
+      `module-${index}`
+    );
+    assert.deepEqual(
+      migrated.flags[MODULE_ID].warlord,
+      sourceEffect.flags[MODULE_ID].warlord
+    );
+    for (const field of [
+      'changes',
+      'statuses',
+      'duration',
+      'transfer',
+      'type'
+    ]) {
+      assert.deepEqual(migrated[field], sourceEffect[field]);
+    }
+  }
 });
 
 test('Tactical Superiority doubles only canonical 15 and 30 foot Exploit ranges', async () => {
@@ -1264,7 +1717,10 @@ test('selectively migrates Warlord structures while preserving presentation and 
   assert.equal(await migrateWarlordActor(actor, {
     loadSourceItems: async () => sources
   }), true);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
   assert.equal(actor.inspiring.system.uses.spent, 2);
   assert.equal(actor.inspiring.name, 'My Rallying Words');
   assert.equal(actor.inspiring.system.description.value, '<p>Keep my prose.</p>');
@@ -1356,12 +1812,40 @@ test('leaves the migration flag absent after a partial failure and repairs the r
   assert.equal(await migrateWarlordActor(actor, {
     loadSourceItems: async () => sources
   }), true);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
   assert.equal(rally.system.activities.RallyingCryAct01.type, 'utility');
   assert.ok(inspiring.updateCalls.length >= completedInspiringUpdates);
   assert.equal(
     inspiring.system.activities.InspiringLaunch1.name,
     'My Canonical inspiring-word-launcher'
+  );
+});
+
+test('runs migration version 4 for an actor previously migrated through version 3', async () => {
+  const sources = canonicalSources();
+  const actor = actorFixture({
+    items: [warlordClass()],
+    leadershipAbility: undefined
+  });
+  actor.flags[MODULE_ID].warlord.migrationVersion = 3;
+  let coreLoads = 0;
+
+  assert.equal(await migrateWarlordActor(actor, {
+    loadSourceItems: async () => {
+      coreLoads += 1;
+      return sources;
+    },
+    loadExploitSourceItems: async () => ({}),
+    loadStyleSourceItems: async () => ({})
+  }), true);
+
+  assert.equal(coreLoads, 1);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
   );
 });
 
@@ -1394,7 +1878,10 @@ test('sets no migration flag until Exploit repair succeeds and retries safely', 
     loadExploitSourceItems: async () => exploitSources
   }), true);
   assert.ok(dirtyHit.system.activities.DirtyHitAct01ABC);
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
 });
 
 test('sets no migration flag until embedded Exploit effects succeed and retries safely', async () => {
@@ -1430,7 +1917,10 @@ test('sets no migration flag until embedded Exploit effects succeed and retries 
     dirtyHit.effects.map(effect => effect._id).sort(),
     ['DirtyHitProne01A', 'DirtyNoReact01AB'].sort()
   );
-  assert.equal(actor.flags[MODULE_ID].warlord.migrationVersion, 3);
+  assert.equal(
+    actor.flags[MODULE_ID].warlord.migrationVersion,
+    WARLORD_MIGRATION_VERSION
+  );
 });
 
 test('reconciliation reapplies canonical base values after a level reduction', async () => {
