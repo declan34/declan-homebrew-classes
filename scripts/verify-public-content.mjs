@@ -33,12 +33,19 @@ function findYamlFiles(directory) {
 
 function findForbiddenPaths(repositoryRoot) {
   const paths = [];
-  const excludedDirectories = new Set(['.git', '.worktrees', 'packs']);
+  const excludedDirectories = new Set(['.git', '.worktrees']);
+
+  function isCompiledLevelDbInternal(path, entry) {
+    const relativePath = relative(repositoryRoot, path).split(/[\\/]/);
+    const isPackFile = relativePath[0] === 'packs' && entry.isFile();
+    return isPackFile && /^(?:CURRENT|LOCK|LOG(?:\.old)?|MANIFEST-\d+|\d+\.(?:ldb|log))$/.test(entry.name);
+  }
 
   function walk(directory) {
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
       if (excludedDirectories.has(entry.name)) continue;
       const path = join(directory, entry.name);
+      if (isCompiledLevelDbInternal(path, entry)) continue;
       const segments = relative(repositoryRoot, path).split(/[\\/]/);
       if (segments.some(segment => FORBIDDEN_PUBLIC_SEGMENTS.has(segment))) {
         paths.push(relative(repositoryRoot, path));

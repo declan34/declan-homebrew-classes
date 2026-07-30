@@ -135,10 +135,13 @@ test('rejects spells without system.source metadata', async () => {
 
 test('rejects private artifacts and forbidden public paths', async () => {
   await withTemporaryRepository(async root => {
-    mkdirSync(join(root, 'private-spells'), { recursive: true });
-    writeFileSync(join(root, 'private-spells', 'spell.yml'), 'type: spell\n');
+    mkdirSync(join(root, 'packs', 'private-spells'), { recursive: true });
+    writeFileSync(
+      join(root, 'packs', 'private-spells', 'README.md'),
+      'private spell documentation\n'
+    );
     const result = await verifyPublicContent({ repositoryRoot: root, loadYaml });
     assert.equal(result.ok, false);
-    assert.match(result.errors.join('\n'), /private-spells/);
+    assert.match(result.errors.join('\n'), /packs\/private-spells/);
   });
 });
