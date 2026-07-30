@@ -156,27 +156,27 @@ compendium sources, Node.js built-in test runner, `js-yaml`,
 - Create: `tests/vessel-archon-lifecycle.test.mjs`
 - Modify: `tests/vessel-mantle.test.mjs`
 
-- [ ] Write failing tests for start time, expiry, source actor UUID, selected
+- [x] Write failing tests for start time, expiry, source actor UUID, selected
   profile, free/slot payment, active status, form-only effect tagging, and
   idempotent cleanup.
-- [ ] Prepare native Transform usage by filtering the activity's offered
+- [x] Prepare native Transform usage by filtering the activity's offered
   profiles to the actor's subclass and affinity, applying the shared
   transformation settings, and validating permission/source/profile before the
   native activity consumes anything.
-- [ ] On successful native transformation, mark the resulting actor with
+- [x] On successful native transformation, mark the resulting actor with
   lifecycle state, activate Spirit Mantle, apply the profile's AC bonus to the
   module-owned Ethereal Armor minimum, and confirm form temp HP is twice Vessel
   level without reducing a higher unrelated temp-HP value.
-- [ ] Preserve both the original actor's languages and the profile languages via
+- [x] Preserve both the original actor's languages and the profile languages via
   module-owned transform preparation because dnd5e has no native language merge.
-- [ ] Revert only through `Actor#revertOriginalForm`; afterward clear form temp
+- [x] Revert only through `Actor#revertOriginalForm`; afterward clear form temp
   HP, remove only module-tagged form effects/state, and reconcile Spirit Mantle
   on the restored actor without touching unrelated effects.
-- [ ] Extend expiry by exactly 600 seconds only after dnd5e successfully
+- [x] Extend expiry by exactly 600 seconds only after dnd5e successfully
   consumes the Extend activity's Vessel-slot attribute target.
 - [ ] Handle linked and unlinked token actors using public dnd5e transform/revert
   hooks plus normal create/update hooks where the native hook surface differs.
-- [ ] Run:
+- [x] Run:
   `node --test tests/vessel-archon-lifecycle.test.mjs tests/vessel-mantle.test.mjs`.
 
 ## Task 5: Wire activity routing and safe rule-boundary prompts
