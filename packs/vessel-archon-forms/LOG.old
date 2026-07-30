@@ -1,0 +1,5 @@
+2026/07/29-21:23:46.341790 16f8cf000 Delete type=3 #1
+2026/07/29-21:23:46.343806 16f95b000 Level-0 table #5: started
+2026/07/29-21:23:46.344663 16f95b000 Level-0 table #5: 12268 bytes OK
+2026/07/29-21:23:46.344799 16f95b000 Delete type=0 #3
+2026/07/29-21:23:46.344990 16f95b000 Manual compaction at level-0 from '!actors!hbrAirArchon0001' @ 72057594037927935 : 1 .. '!folders!hbrArchonForms01' @ 0 : 0; will stop at (end)

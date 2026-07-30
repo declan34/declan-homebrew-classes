@@ -268,12 +268,20 @@ test('registers only public Foundry and dnd5e hooks', () => {
     once(name, handler) { once.push([name, handler]); }
   });
   assert.deepEqual(on.map(([name]) => name).sort(), [
+    'createActiveEffect',
+    'createActor',
     'createItem',
     'deleteActiveEffect',
     'deleteItem',
     'dnd5e.postUseActivity',
     'dnd5e.preUseActivity',
-    'updateItem'
+    'dnd5e.renderChatMessage',
+    'dnd5e.transformActorV2',
+    'preUpdateActor',
+    'updateActiveEffect',
+    'updateActor',
+    'updateItem',
+    'updateWorldTime'
   ]);
   assert.deepEqual(once.map(([name]) => name), ['ready']);
 });
