@@ -63,7 +63,7 @@ function canonicalItem(id, identifier, activities, uses = {}) {
 }
 
 function canonicalSources() {
-  return {
+  const sources = {
     leadership: canonicalItem(
       SOURCE_IDS.leadership,
       'leadership-style',
@@ -126,6 +126,10 @@ function canonicalSources() {
       []
     )
   };
+  sources.inspiring.flags.dnd5e = {
+    riders: { activity: ['InspiringHelp01', 'InspiringHelp02'] }
+  };
+  return sources;
 }
 
 function setPath(target, path, value) {
@@ -256,6 +260,37 @@ test('loads all five canonical Warlord items from the homebrew class pack by sta
   );
 });
 
+test('retries canonical source loading after a transient pack failure', async () => {
+  const { loadWarlordSourceItems: loadFreshSources } = await import(
+    '../scripts/warlord/migration.mjs?transient-source-retry'
+  );
+  const sources = canonicalSources();
+  const byId = new Map(Object.values(sources).map(item => [item.id, item]));
+  let transientFailure = true;
+  let requests = 0;
+  const packs = new Map([[`${MODULE_ID}.homebrew-classes`, {
+    async getDocument(id) {
+      requests += 1;
+      if (transientFailure && id === SOURCE_IDS.leadership) {
+        throw new Error('temporary pack read failure');
+      }
+      return byId.get(id);
+    }
+  }]]);
+
+  await assert.rejects(
+    loadFreshSources({ packs }),
+    /temporary pack read failure/
+  );
+  const failedRequests = requests;
+  transientFailure = false;
+
+  const loaded = await loadFreshSources({ packs });
+
+  assert.ok(requests > failedRequests);
+  assert.equal(loaded.leadership.id, SOURCE_IDS.leadership);
+});
+
 test('selectively migrates Warlord structures while preserving presentation and user data', async () => {
   const sources = canonicalSources();
   const inspiringSource = sources.inspiring.system.activities;
@@ -275,6 +310,9 @@ test('selectively migrates Warlord structures while preserving presentation and 
     spent: 2,
     activities: [customLauncher, customHelper, userActivity]
   });
+  inspiring.flags.dnd5e = {
+    riders: { activity: ['foreignRider001', 'InspiringHelp01'] }
+  };
   const rally = ownedItem({
     id: 'owned-rally',
     identifier: 'rallying-cry',
@@ -291,6 +329,11 @@ test('selectively migrates Warlord structures while preserving presentation and 
   assert.equal(actor.inspiring.system.description.value, '<p>Keep my prose.</p>');
   assert.ok(actor.inspiring.system.activities.userActivityId);
   assert.deepEqual(actor.inspiring.flags.otherModule, { keep: true });
+  assert.deepEqual(actor.inspiring.flags.dnd5e.riders.activity, [
+    'foreignRider001',
+    'InspiringHelp01',
+    'InspiringHelp02'
+  ]);
   assert.deepEqual(actor.inspiring.effects, [{ id: 'user-effect', name: 'Keep me' }]);
 
   const launcher = actor.inspiring.system.activities.InspiringLaunch1;
@@ -443,4 +486,49 @@ test('reconciliation does not coerce a canonical null range to zero', async () =
 
   assert.equal(tactical.system.activities.TacticalSkill001.range.value, null);
   assert.equal(tactical.updateCalls.length, 0);
+});
+
+test('concurrent reconciliations finish at the latest Warlord level', async () => {
+  const sources = canonicalSources();
+  const warlord = warlordClass(11);
+  const inspiring = ownedItem({
+    id: 'owned-inspiring',
+    identifier: 'inspiring-word',
+    activities: [staleActivity(sources.inspiring.system.activities.InspiringHelp01, {
+      range: { units: 'ft', value: 30 }
+    })]
+  });
+  inspiring.system.uses.recovery = [{ period: 'sr', type: 'recoverAll' }];
+  const applyUpdate = inspiring.update.bind(inspiring);
+  let updateAttempts = 0;
+  let releaseOlder;
+  let signalOlderStarted;
+  const olderStarted = new Promise(resolve => { signalOlderStarted = resolve; });
+  const olderRelease = new Promise(resolve => { releaseOlder = resolve; });
+  inspiring.update = async changes => {
+    updateAttempts += 1;
+    if (updateAttempts === 1) {
+      signalOlderStarted();
+      await olderRelease;
+    }
+    await applyUpdate(changes);
+  };
+  const actor = actorFixture({ items: [warlord, inspiring], leadershipAbility: undefined });
+
+  const older = reconcileWarlordActor(actor, {
+    loadSourceItems: async () => sources
+  });
+  await olderStarted;
+  warlord.system.levels = 5;
+  const newer = reconcileWarlordActor(actor, {
+    loadSourceItems: async () => sources
+  });
+  await Promise.resolve();
+  releaseOlder();
+  await Promise.all([older, newer]);
+
+  assert.equal(inspiring.system.activities.InspiringHelp01.range.value, 30);
+  assert.deepEqual(inspiring.system.uses.recovery, [
+    { period: 'sr', type: 'recoverAll' }
+  ]);
 });

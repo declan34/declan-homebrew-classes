@@ -39,6 +39,7 @@ const RECOVERY_ITEM_IDENTIFIERS = new Set([
 ]);
 
 let sourceItemsPromise;
+const reconciliationQueues = new WeakMap();
 
 function documents(collection) {
   if (!collection) return [];
@@ -186,11 +187,12 @@ function migrationChanges(item, canonical) {
   }
 
   const sourceRiders = canonical?.flags?.dnd5e?.riders?.activity;
-  if (
-    sourceRiders
-    && !sameData(item?.flags?.dnd5e?.riders?.activity, sourceRiders)
-  ) {
-    changes['flags.dnd5e.riders.activity'] = structuredClone(sourceRiders);
+  if (Array.isArray(sourceRiders)) {
+    const currentRiders = item?.flags?.dnd5e?.riders?.activity ?? [];
+    const riders = [...new Set([...currentRiders, ...sourceRiders])];
+    if (!sameData(currentRiders, riders)) {
+      changes['flags.dnd5e.riders.activity'] = riders;
+    }
   }
   return changes;
 }
@@ -242,7 +244,9 @@ function reconciliationChanges(item, canonical, superior) {
 export async function loadWarlordSourceItems({
   packs = globalThis.game?.packs
 } = {}) {
-  sourceItemsPromise ??= (async () => {
+  if (sourceItemsPromise) return sourceItemsPromise;
+
+  const pending = (async () => {
     const pack = packs?.get?.(`${MODULE_ID}.homebrew-classes`);
     if (!pack) throw new Error('The Homebrew Classes compendium is unavailable.');
 
@@ -254,10 +258,16 @@ export async function loadWarlordSourceItems({
     }
     return Object.fromEntries(entries);
   })();
-  return sourceItemsPromise;
+  sourceItemsPromise = pending;
+  try {
+    return await pending;
+  } catch (error) {
+    if (sourceItemsPromise === pending) sourceItemsPromise = undefined;
+    throw error;
+  }
 }
 
-export async function reconcileWarlordActor(actor, {
+async function reconcileWarlordActorNow(actor, {
   loadSourceItems = loadWarlordSourceItems,
   sourceItems,
   configureLeadership = configureLeadershipItems
@@ -275,6 +285,24 @@ export async function reconcileWarlordActor(actor, {
 
   const ability = getLeadershipAbility(actor);
   if (ability) await configureLeadership(actor, ability);
+}
+
+export async function reconcileWarlordActor(actor, options = {}) {
+  if (!actor?.isOwner || !actorHasWarlordClass(actor)) return;
+
+  const previous = reconciliationQueues.get(actor) ?? Promise.resolve();
+  const pending = previous
+    .catch(() => {})
+    .then(() => reconcileWarlordActorNow(actor, options));
+  reconciliationQueues.set(actor, pending);
+
+  try {
+    await pending;
+  } finally {
+    if (reconciliationQueues.get(actor) === pending) {
+      reconciliationQueues.delete(actor);
+    }
+  }
 }
 
 export async function migrateWarlordActor(actor, {
