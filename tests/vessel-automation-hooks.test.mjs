@@ -299,6 +299,13 @@ test('only the document-hook initiating client reconciles create update and dele
     identifier: 'leather-armor',
     system: { identifier: 'leather-armor' }
   };
+  const aspect = {
+    id: 'AetherWings00001',
+    type: 'feat',
+    actor: target,
+    identifier: 'aether-wings',
+    system: { identifier: 'aether-wings' }
+  };
   const effect = {
     id: 'MantleEffect0001',
     flags: role('mantle-ac'),
@@ -323,11 +330,14 @@ test('only the document-hook initiating client reconciles create update and dele
       OWNER_USER_A_ID
     );
     client.on.get('deleteItem')(equipment, {}, OWNER_USER_A_ID);
+    client.on.get('createItem')(aspect, {}, OWNER_USER_A_ID);
+    client.on.get('updateItem')(aspect, {name: 'Aether Wings'}, {}, OWNER_USER_A_ID);
+    client.on.get('deleteItem')(aspect, {}, OWNER_USER_A_ID);
     client.on.get('deleteActiveEffect')(effect, {}, OWNER_USER_A_ID);
   }
   await new Promise(resolve => setImmediate(resolve));
 
-  assert.equal(reconciledA.length, 4);
+  assert.equal(reconciledA.length, 7);
   assert.equal(reconciledB.length, 0);
 });
 

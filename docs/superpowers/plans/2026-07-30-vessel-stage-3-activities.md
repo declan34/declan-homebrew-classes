@@ -580,7 +580,7 @@ git -c commit.gpgSign=false commit -m \
   `prepareStage3Activity(activity, usageConfig): boolean`,
   `handleStage3ActorUpdate(actor, changes): Promise<void>`.
 
-- [ ] **Step 1: Write failing hook tests**
+- [x] **Step 1: Write failing hook tests**
 
 Cover:
 
@@ -596,14 +596,14 @@ only unlocked damage types; Cataclysmic Eruption receives only the saved
 affinity type. Assert pre-use rejection occurs before native consumption and
 ordinary activity roles are untouched.
 
-- [ ] **Step 2: Verify failure**
+- [x] **Step 2: Verify failure**
 
 ```bash
 node --test tests/vessel-stage3-hooks.test.mjs \
   tests/vessel-automation-hooks.test.mjs
 ```
 
-- [ ] **Step 3: Implement routing without resolution**
+- [x] **Step 3: Implement routing without resolution**
 
 Add Stage 3 routing after existing Archon/Mantle routing:
 
@@ -618,7 +618,7 @@ state. It must not call `activity.use()`, update HP, apply damage, or consume a
 slot. Reconcile passive effects from public actor/effect/item hooks using the
 existing responsible-client election.
 
-- [ ] **Step 4: Run hook and lifecycle regression tests**
+- [x] **Step 4: Run hook and lifecycle regression tests**
 
 ```bash
 node --test tests/vessel-stage3-hooks.test.mjs \
@@ -626,7 +626,7 @@ node --test tests/vessel-stage3-hooks.test.mjs \
   tests/vessel-archon-hooks.test.mjs
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/vessel/hooks.mjs scripts/vessel/operations.mjs \
