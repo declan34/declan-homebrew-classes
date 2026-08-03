@@ -17,6 +17,15 @@ const mantle = yaml.load(
     'utf8'
   )
 );
+const strikes = yaml.load(
+  readFileSync(
+    new URL(
+      '../src/vessel/class-features/iridescent-strikes.yml',
+      import.meta.url
+    ),
+    'utf8'
+  )
+);
 
 function role(document) {
   return document.flags?.['declan-homebrew-classes']?.vessel?.role;
@@ -38,36 +47,50 @@ test('Vessel defines the Iridescent Strike damage scale', () => {
   });
 });
 
-test('Spirit Mantle exposes one toggle and two native Strikes', () => {
+test('Vessel grants Spirit Mantle and Iridescent Strikes at level 1', () => {
+  const grant = vessel.system.advancement.find(
+    advancement => advancement.type === 'ItemGrant' && advancement.level === 1
+  );
+  assert.deepEqual(
+    grant.configuration.items.map(entry => entry.uuid),
+    [
+      'Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvespnPw2Da1c3',
+      'Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesIriStrike1'
+    ]
+  );
+});
+
+test('Spirit Mantle exposes only its native toggle', () => {
   const activities = Object.values(mantle.system.activities);
   assert.deepEqual(
-    activities.map(activity => role(activity)).sort(),
-    ['iridescent-strike', 'iridescent-strike', 'mantle-toggle']
+    activities.map(activity => role(activity)),
+    ['mantle-toggle']
   );
 
-  const toggle = activities.find(activity => role(activity) === 'mantle-toggle');
+  const toggle = activities[0];
   assert.equal(toggle.type, 'utility');
   assert.equal(toggle.activation.type, 'bonus');
   assert.deepEqual(toggle.consumption.targets, []);
+});
 
-  const strikes = activities.filter(
-    activity => role(activity) === 'iridescent-strike'
+test('Iridescent Strikes exposes one flexible native Strike', () => {
+  assert.equal(strikes._id, 'hbrvesIriStrike1');
+  assert.equal(strikes.system.identifier, 'iridescent-strikes');
+  const activities = Object.values(strikes.system.activities);
+  assert.equal(activities.length, 1);
+  const strike = activities[0];
+  assert.equal(strike._id, 'IriStrikeAct0001');
+  assert.equal(role(strike), 'iridescent-strike');
+  assert.equal(strike.type, 'attack');
+  assert.equal(strike.activation.type, 'special');
+  assert.equal(strike.attack.ability, 'cha');
+  assert.equal(strike.attack.type.value, 'melee');
+  assert.equal(strike.attack.type.classification, 'unarmed');
+  assert.equal(
+    strike.damage.parts[0].custom.formula,
+    '@scale.vessel.iridescent-strike + @mod'
   );
-  assert.deepEqual(
-    strikes.map(activity => activity.activation.type).sort(),
-    ['action', 'bonus']
-  );
-  for (const strike of strikes) {
-    assert.equal(strike.type, 'attack');
-    assert.equal(strike.attack.ability, 'cha');
-    assert.equal(strike.attack.type.value, 'melee');
-    assert.equal(strike.attack.type.classification, 'unarmed');
-    assert.equal(
-      strike.damage.parts[0].custom.formula,
-      '@scale.vessel.iridescent-strike + @mod'
-    );
-    assert.deepEqual(strike.damage.parts[0].types, ['radiant']);
-  }
+  assert.deepEqual(strike.damage.parts[0].types, ['radiant']);
 });
 
 test('Spirit Mantle includes an inactive native AC effect template', () => {

@@ -1,0 +1,120 @@
+_id: hbrvesIriStrike1
+name: Iridescent Strikes
+type: feat
+folder: mtTG296Rg5dmybKM
+img: systems/dnd5e/icons/svg/activity/attack.svg
+system:
+  description:
+    value: '<p><strong>Iridescent Strikes.</strong> Spiritual energies empower you. You can use your Charisma, in place of Strength, for your unarmed strike attack rolls. On hit, these unarmed strikes deal radiant damage equal to 1d6 + your Charisma modifier. Also, whenever you take the Attack action, you can make an unarmed strike as a bonus action. At certain Vessel levels, the damage die of these Iridescent Strikes increases: at 5th (d8), 11th (d10), and 17th level (d12).</p>'
+    chat: ''
+  source:
+    custom: ''
+    rules: '2024'
+    revision: 1
+    license: proprietary
+    book: ''
+  uses:
+    max: ''
+    spent: 0
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 1
+    repeatable: false
+  properties: []
+  requirements: ''
+  activities:
+    IriStrikeAct0001:
+      _id: IriStrikeAct0001
+      type: attack
+      name: Iridescent Strike
+      sort: 0
+      activation:
+        type: special
+        value: null
+        override: false
+        condition: When you make an Iridescent Strike.
+      consumption:
+        scaling:
+          allowed: false
+          max: ''
+        spellSlot: true
+        targets: []
+      description:
+        chatFlavor: ''
+      duration:
+        units: inst
+        concentration: false
+        override: false
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel:
+            role: iridescent-strike
+      range:
+        override: false
+        units: self
+        special: ''
+      target:
+        template:
+          contiguous: false
+          units: ft
+          type: ''
+        affects:
+          choice: false
+          count: '1'
+          type: creature
+          special: ''
+        override: false
+        prompt: true
+      uses:
+        spent: 0
+        recovery: []
+        max: ''
+      attack:
+        critical:
+          threshold: null
+        flat: false
+        type:
+          value: melee
+          classification: unarmed
+        ability: cha
+        bonus: ''
+      damage:
+        critical:
+          bonus: ''
+        includeBase: true
+        parts:
+          - custom:
+              enabled: true
+              formula: '@scale.vessel.iridescent-strike + @mod'
+            number: null
+            denomination: 0
+            bonus: ''
+            types:
+              - radiant
+            scaling:
+              number: 1
+  enchant: {}
+  identifier: iridescent-strikes
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrvesIriStrike1'

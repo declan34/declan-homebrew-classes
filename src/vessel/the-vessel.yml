@@ -64,6 +64,8 @@ system:
       items:
       - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvespnPw2Da1c3
         optional: false
+      - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrvesIriStrike1
+        optional: false
       optional: false
       spell: null
     value: {}
