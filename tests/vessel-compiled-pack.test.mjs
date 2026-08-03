@@ -31,6 +31,15 @@ const mantleSource = yaml.load(
     'utf8'
   )
 );
+const strikesSource = yaml.load(
+  readFileSync(
+    new URL(
+      '../src/vessel/class-features/iridescent-strikes.yml',
+      import.meta.url
+    ),
+    'utf8'
+  )
+);
 const archonControlSources = [
   'the-ascended',
   'the-cataclysm',
@@ -79,8 +88,10 @@ test('committed compiled pack preserves Vessel automation source structures', as
       .map(path => yaml.load(readFileSync(path, 'utf8')));
     const compiledVessel = documents.find(document => document?._id === vesselSource._id);
     const compiledMantle = documents.find(document => document?._id === mantleSource._id);
+    const compiledStrikes = documents.find(document => document?._id === strikesSource._id);
     assert.ok(compiledVessel);
     assert.ok(compiledMantle);
+    assert.ok(compiledStrikes);
 
     const expectedScale = vesselSource.system.advancement.find(
       advancement => advancement.configuration?.identifier === 'iridescent-strike'
@@ -90,11 +101,14 @@ test('committed compiled pack preserves Vessel automation source structures', as
     );
     assert.deepEqual(compiledScale, expectedScale);
 
-    const expectedActivities = Object.values(mantleSource.system.activities)
-      .filter(activity => ['mantle-toggle', 'iridescent-strike'].includes(role(activity)));
-    const compiledActivities = Object.values(compiledMantle.system.activities)
-      .filter(activity => ['mantle-toggle', 'iridescent-strike'].includes(role(activity)));
-    assert.deepEqual(compiledActivities, expectedActivities);
+    assert.deepEqual(
+      compiledMantle.system.activities,
+      mantleSource.system.activities
+    );
+    assert.deepEqual(
+      compiledStrikes.system.activities,
+      strikesSource.system.activities
+    );
 
     const expectedEffect = mantleSource.effects.find(effect => role(effect) === 'mantle-ac');
     const compiledEffect = compiledMantle.effects.find(effect => role(effect) === 'mantle-ac');
