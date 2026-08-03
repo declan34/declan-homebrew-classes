@@ -3,7 +3,7 @@ import {
   PRIVATE_SPELL_COMPENDIUM_SETTING
 } from './constants.mjs';
 
-const registeredSettings = new WeakSet();
+const registeredSettings = new WeakMap();
 
 export function buildItemPackChoices(packs) {
   const itemPacks = Array.from(packs?.values?.() ?? packs ?? [])
@@ -35,7 +35,7 @@ export function registerPrivateSpellCompendiumSetting({ settings, packs, onChang
   if (!settings?.register) return false;
   if (registeredSettings.has(settings)) return true;
 
-  settings.register(MODULE_ID, PRIVATE_SPELL_COMPENDIUM_SETTING, {
+  const configuration = {
     name: 'Private Spell Compendium',
     hint: 'Optional Item compendium used to resolve Vessel Sealed Magic spells.',
     scope: 'world',
@@ -45,7 +45,21 @@ export function registerPrivateSpellCompendiumSetting({ settings, packs, onChang
     choices: buildItemPackChoices(packs),
     default: '',
     onChange
-  });
-  registeredSettings.add(settings);
+  };
+  settings.register(MODULE_ID, PRIVATE_SPELL_COMPENDIUM_SETTING, configuration);
+  registeredSettings.set(settings, configuration);
+  return true;
+}
+
+export function refreshPrivateSpellCompendiumChoices({ settings, packs }) {
+  const key = `${MODULE_ID}.${PRIVATE_SPELL_COMPENDIUM_SETTING}`;
+  const configuration = settings?.settings?.get?.(key)
+    ?? registeredSettings.get(settings);
+  if (!configuration) return false;
+
+  const refreshed = buildItemPackChoices(packs);
+  const choices = configuration.choices ??= {};
+  for (const collection of Object.keys(choices)) delete choices[collection];
+  Object.assign(choices, refreshed);
   return true;
 }

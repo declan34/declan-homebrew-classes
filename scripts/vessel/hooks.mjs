@@ -4,6 +4,7 @@ import {
   MODULE_ID
 } from './constants.mjs';
 import {
+  activateArchonForm,
   clearArchonPending,
   extendArchonForm,
   finalizeArchonTransformation,
@@ -441,13 +442,14 @@ export async function performArchonTransformation(
   results,
   {
     resolveUuid = globalThis.fromUuid,
+    activateArchonForm: activateArchon = activateArchonForm,
     stageArchonTransformation: stageArchon = stageArchonTransformation,
     clearArchonPending: clearPending = clearArchonPending
   } = {}
 ) {
   const actor = activity?.item?.actor;
-  if (!actor || typeof actor.transformInto !== 'function') {
-    throw new Error('The Archon Form activity is not owned by a transformable Actor.');
+  if (!actor) {
+    throw new Error('The Archon Form activity is not owned by an Actor.');
   }
   if (transformingArchons.has(actor)) {
     throw new Error(
@@ -469,9 +471,8 @@ export async function performArchonTransformation(
       );
     }
     await stageArchon(actor, pending);
-    let transformed;
     try {
-      transformed = await actor.transformInto(profileActor, activity.settings);
+      return await activateArchon(actor, profileActor, pending);
     } catch (error) {
       try {
         await clearPending(
@@ -487,17 +488,6 @@ export async function performArchonTransformation(
       }
       throw error;
     }
-    if (transformed === null) {
-      await clearPending(
-        actor,
-        pending.profileUuid,
-        pending.transformationId
-      );
-      throw new Error(
-        'Foundry did not allow this Archon Form transformation. Use the chat card Refund action, then retry.'
-      );
-    }
-    return transformed;
   } finally {
     transformingArchons.delete(actor);
   }

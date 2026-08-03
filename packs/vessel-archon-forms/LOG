@@ -1,15 +1,15 @@
-2026/07/30-08:51:39.797050 173967000 Recovering log #8
-2026/07/30-08:51:39.799342 173967000 Delete type=3 #6
-2026/07/30-08:51:39.799574 173967000 Delete type=0 #8
-2026/07/30-08:51:39.802802 1741ff000 Level-0 table #14: started
-2026/07/30-08:51:39.804264 1741ff000 Level-0 table #14: 18840 bytes OK
-2026/07/30-08:51:39.804592 1741ff000 Delete type=0 #12
-2026/07/30-08:51:39.804936 1741ff000 Manual compaction at level-0 from '!actors!hbrAirArchon0001' @ 72057594037927935 : 1 .. '!folders!hbrArchonForms01' @ 0 : 0; will stop at (end)
-2026/07/30-08:51:39.805163 1741ff000 Manual compaction at level-1 from '!actors!hbrAirArchon0001' @ 72057594037927935 : 1 .. '!folders!hbrArchonForms01' @ 0 : 0; will stop at '!folders!hbrArchonForms01' @ 65 : 1
-2026/07/30-08:51:39.805251 1741ff000 Compacting 1@1 + 1@2 files
-2026/07/30-08:51:39.808232 1741ff000 Generated table #15@1: 35 keys, 18840 bytes
-2026/07/30-08:51:39.808335 1741ff000 Compacted 1@1 + 1@2 files => 18840 bytes
-2026/07/30-08:51:39.808466 1741ff000 compacted to: files[ 0 0 1 0 0 0 0 ]
-2026/07/30-08:51:39.808570 1741ff000 Delete type=2 #14
-2026/07/30-08:51:39.808814 1741ff000 Delete type=2 #10
-2026/07/30-08:51:39.809038 1741ff000 Manual compaction at level-1 from '!folders!hbrArchonForms01' @ 65 : 1 .. '!folders!hbrArchonForms01' @ 0 : 0; will stop at (end)
+2026/08/02-23:10:35.638603 1712c3000 Recovering log #13
+2026/08/02-23:10:35.643677 1712c3000 Delete type=0 #13
+2026/08/02-23:10:35.643924 1712c3000 Delete type=3 #11
+2026/08/02-23:10:35.647420 171b5b000 Level-0 table #19: started
+2026/08/02-23:10:35.648355 171b5b000 Level-0 table #19: 18970 bytes OK
+2026/08/02-23:10:35.648719 171b5b000 Delete type=0 #17
+2026/08/02-23:10:35.649049 171b5b000 Manual compaction at level-0 from '!actors!hbrAirArchon0001' @ 72057594037927935 : 1 .. '!folders!hbrArchonForms01' @ 0 : 0; will stop at (end)
+2026/08/02-23:10:35.649427 171b5b000 Manual compaction at level-1 from '!actors!hbrAirArchon0001' @ 72057594037927935 : 1 .. '!folders!hbrArchonForms01' @ 0 : 0; will stop at '!folders!hbrArchonForms01' @ 100 : 1
+2026/08/02-23:10:35.649763 171b5b000 Compacting 1@1 + 1@2 files
+2026/08/02-23:10:35.651869 171b5b000 Generated table #20@1: 35 keys, 18970 bytes
+2026/08/02-23:10:35.651944 171b5b000 Compacted 1@1 + 1@2 files => 18970 bytes
+2026/08/02-23:10:35.652048 171b5b000 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/08/02-23:10:35.652153 171b5b000 Delete type=2 #15
+2026/08/02-23:10:35.652600 171b5b000 Delete type=2 #19
+2026/08/02-23:10:35.652815 171b5b000 Manual compaction at level-1 from '!folders!hbrArchonForms01' @ 100 : 1 .. '!folders!hbrArchonForms01' @ 0 : 0; will stop at (end)

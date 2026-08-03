@@ -13,6 +13,18 @@ const require = createRequire(
 const yaml = require('js-yaml');
 const sourceDirectory = new URL('../archon-src/', import.meta.url);
 
+const APPROVED_TOKEN_ART = Object.freeze({
+  ascended: 'systems/dnd5e/tokens/celestial/Solar.webp',
+  'cataclysm-air': 'systems/dnd5e/tokens/elemental/WindElemental.webp',
+  'cataclysm-earth': 'systems/dnd5e/tokens/elemental/EarthElemental.webp',
+  'cataclysm-fire': 'systems/dnd5e/tokens/elemental/FireElemental.webp',
+  'cataclysm-water': 'systems/dnd5e/tokens/elemental/WaterElemental.webp',
+  cursed: 'systems/dnd5e/tokens/fiend/PitFiend.webp',
+  fallen: 'systems/dnd5e/tokens/fiend/FallenArchangelSwordSpear.webp',
+  formless: 'systems/dnd5e/tokens/ooze/OchreJelly.webp',
+  trickster: 'systems/dnd5e/tokens/monstrosity/Doppelganger.webp'
+});
+
 const EXPECTED = {
   ascended: {
     id: 'hbrAscArchon0001',
@@ -198,6 +210,16 @@ test('the source pack inventories exactly the nine published Archon profiles', (
     new Set(Object.keys(EXPECTED))
   );
   assert.equal(new Set(profiles.map(profile => profile._id)).size, 9);
+});
+
+test('every Archon profile uses its approved built-in dnd5e token artwork', () => {
+  const byProfile = new Map(loadProfiles().map(profile => [
+    profile.flags?.['declan-homebrew-classes']?.vessel?.archon?.profile,
+    profile
+  ]));
+  for (const [profile, img] of Object.entries(APPROVED_TOKEN_ART)) {
+    assert.equal(byProfile.get(profile)?.img, img, profile);
+  }
 });
 
 test('Archon profile sources encode only the published form statistics', () => {

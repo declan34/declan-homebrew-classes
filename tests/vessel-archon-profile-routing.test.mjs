@@ -5,6 +5,7 @@ import {
   findArchonFormItem,
   prepareArchonActivityUse,
   requestArchonActivityPreparation,
+  resolveVesselSpellSlotPool,
   resolveArchonProfileSources
 } from '../scripts/vessel/archon-profiles.mjs';
 import { ARCHON_PROFILES } from '../scripts/vessel/rules.mjs';
@@ -179,6 +180,68 @@ test('slot Transform and Extend preflight the Vessel pool without spending it', 
   }
 });
 
+test('slot-backed activities follow the registered Vessel spellcasting model to its prepared pool', async () => {
+  const host = actor({ slots: undefined });
+  delete host.system.spells.vessel;
+  host.items.push(item('vessel', 'class', {
+    levels: 6,
+    spellcasting: { progression: 'vessel' }
+  }));
+  host.items.at(-1).spellcasting = { type: 'vessel' };
+  host.system.spells.archonMagic = {
+    type: 'vessel',
+    label: 'Vessel Magic',
+    value: 2,
+    max: 2,
+    level: 2
+  };
+  const spellcasting = {
+    vessel: { getSpellSlotKey: () => 'archonMagic' }
+  };
+
+  assert.deepEqual(resolveVesselSpellSlotPool(host, { spellcasting }), {
+    key: 'archonMagic',
+    pool: host.system.spells.archonMagic,
+    target: 'spells.archonMagic.value'
+  });
+
+  for (const role of ['archon-transform-slot', 'archon-extend']) {
+    const subject = activity(
+      role,
+      host,
+      role === 'archon-transform-slot' ? profilesFor('the-ascended') : []
+    );
+    await prepare(subject, { transform: {} }, { spellcasting });
+    assert.equal(host.system.spells.archonMagic.value, 2);
+    assert.equal(
+      subject.consumption.targets[0].target,
+      'spells.archonMagic.value'
+    );
+  }
+});
+
+test('dynamic Vessel pool validation reports exhaustion from the resolved pool', async () => {
+  const host = actor({ slots: undefined });
+  delete host.system.spells.vessel;
+  host.items.push(item('vessel', 'class', {
+    levels: 6,
+    spellcasting: { progression: 'vessel' }
+  }));
+  host.items.at(-1).spellcasting = { type: 'vessel' };
+  host.system.spells.archonMagic = { type: 'vessel', value: 0, max: 2 };
+  const subject = activity('archon-extend', host);
+
+  await assert.rejects(
+    prepare(subject, {}, {
+      spellcasting: {
+        vessel: { getSpellSlotKey: () => 'archonMagic' }
+      }
+    }),
+    error => error instanceof ArchonPreparationError
+      && error.code === 'vessel-slots-exhausted'
+  );
+});
+
 test('slot-backed activities reject a missing or exhausted Vessel pool', async () => {
   for (const slots of [0, undefined]) {
     const host = actor({ slots });
@@ -300,7 +363,7 @@ test('saved Cataclysm affinity does not permit a cross-subclass selection', asyn
   );
 });
 
-test('rejects non-owners and users without native transform permission', async () => {
+test('rejects non-owners but allows owners without native polymorph permission', async () => {
   const nonOwner = actor({ owner: false });
   await assert.rejects(
     prepare(
@@ -315,21 +378,19 @@ test('rejects non-owners and users without native transform permission', async (
   );
 
   const host = actor();
-  await assert.rejects(
-    prepare(
-      activity(
-        'archon-transform-slot',
-        host,
-        profilesFor('the-ascended')
-      ),
-      { transform: {} },
-      {
-        user: { isGM: false, can: () => false },
-        allowPolymorphing: false
-      }
+  const result = await prepare(
+    activity(
+      'archon-transform-slot',
+      host,
+      profilesFor('the-ascended')
     ),
-    error => error.code === 'transform-permission'
+    { transform: {} },
+    {
+      user: { isGM: false, can: () => false },
+      allowPolymorphing: false
+    }
   );
+  assert.equal(result.handled, true);
 });
 
 test('reports missing profile packs and evicts failed cache entries for retry', async () => {

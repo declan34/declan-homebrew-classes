@@ -68,26 +68,45 @@ function validateOwner(activity, actor) {
   }
 }
 
-function validateTransformPermission({
-  activity,
-  user,
-  allowPolymorphing
-}) {
-  if (!TRANSFORM_ROLES.has(role(activity)) || !user) return;
-  const canCreateActor = typeof user.can !== 'function'
-    || user.can('ACTOR_CREATE');
-  const polymorphingAllowed = user.isGM
-    || allowPolymorphing === true;
-  if (!canCreateActor || !polymorphingAllowed) {
-    throw error(
-      'transform-permission',
-      'Your Foundry user cannot create transformed Actors. Ask the GM to enable polymorphing permissions.'
+function vesselClass(actor) {
+  return actor?.classes?.vessel
+    ?? documents(actor?.items).find(candidate =>
+      candidate?.type === 'class' && identifier(candidate) === 'vessel'
     );
-  }
 }
 
-function validateVesselSlots(actor) {
-  const pool = actor?.system?.spells?.vessel;
+export function resolveVesselSpellSlotPool(actor, {
+  spellcasting = globalThis.CONFIG?.DND5E?.spellcasting,
+  spellProgression = globalThis.CONFIG?.DND5E?.spellProgression
+} = {}) {
+  const cls = vesselClass(actor);
+  const progression = cls?.system?.spellcasting?.progression;
+  const methodKey = cls?.spellcasting?.type
+    ?? spellProgression?.[progression]?.type
+    ?? progression;
+  const model = methodKey ? spellcasting?.[methodKey] : undefined;
+  const modelKey = model?.getSpellSlotKey?.();
+  const pools = actor?.system?.spells ?? {};
+  const candidates = [modelKey, methodKey, progression, 'vessel']
+    .filter((key, index, keys) => key && keys.indexOf(key) === index);
+
+  let key = candidates.find(candidate => pools[candidate]);
+  if (!key && methodKey) {
+    const matching = Object.entries(pools)
+      .filter(([, pool]) => pool?.type === methodKey);
+    if (matching.length === 1) [key] = matching[0];
+  }
+  if (!key) return;
+  return {
+    key,
+    pool: pools[key],
+    target: `spells.${key}.value`
+  };
+}
+
+function prepareVesselSlotUse(activity, actor, options) {
+  const resolved = resolveVesselSpellSlotPool(actor, options);
+  const pool = resolved?.pool;
   if (!pool) {
     throw error(
       'missing-vessel-slots',
@@ -100,6 +119,20 @@ function validateVesselSlots(actor) {
       'No Vessel Magic spell slots remain.'
     );
   }
+  const consumption = objectData(activity.consumption ?? {});
+  const target = consumption.targets?.find(candidate =>
+    candidate.type === 'attribute'
+      && /^spells\.[^.]+\.value$/.test(candidate.target ?? '')
+  );
+  if (!target) {
+    throw error(
+      'missing-vessel-slot-target',
+      'This Archon Form activity has no Vessel spell-slot consumption target.'
+    );
+  }
+  target.target = resolved.target;
+  updateActivity(activity, { consumption });
+  return resolved;
 }
 
 function updateActivity(activity, changes) {
@@ -263,24 +296,22 @@ function prepareFreeUse(activity, actor) {
 }
 
 export async function prepareArchonActivityUse(activity, usageConfig = {}, {
-  user = globalThis.game?.user,
-  allowPolymorphing = user?.isGM
-    || globalThis.game?.settings?.get?.('dnd5e', 'allowPolymorphing'),
   resolveUuid = globalThis.fromUuid,
-  cache
+  cache,
+  spellcasting = globalThis.CONFIG?.DND5E?.spellcasting,
+  spellProgression = globalThis.CONFIG?.DND5E?.spellProgression
 } = {}) {
   const activityRole = role(activity);
   if (!ARCHON_ROLES.has(activityRole)) return { handled: false };
 
   const actor = activity?.item?.actor;
   validateOwner(activity, actor);
-  validateTransformPermission({ activity, user, allowPolymorphing });
 
   let resourceItem;
   if (activityRole === AUTOMATION_ROLES.ARCHON_TRANSFORM_FREE) {
     resourceItem = prepareFreeUse(activity, actor);
   } else if (SLOT_ROLES.has(activityRole)) {
-    validateVesselSlots(actor);
+    prepareVesselSlotUse(activity, actor, { spellcasting, spellProgression });
   }
 
   let profileSources = [];

@@ -53,6 +53,186 @@ function clone(value) {
   return value == null ? value : structuredClone(value);
 }
 
+function documentSource(document) {
+  return document?.toObject ? document.toObject() : clone(document);
+}
+
+function documentId(document) {
+  return document?.id ?? document?._id;
+}
+
+function activeTokenDocuments(actor) {
+  const tokens = actor?.getActiveTokens?.(true, true) ?? [];
+  const documents = tokens.map(token => token?.document ?? token).filter(Boolean);
+  if (actor?.isToken && actor?.token && !documents.includes(actor.token)) {
+    documents.push(actor.token);
+  }
+  return [...new Map(documents.map(token => [token.uuid ?? token.id, token])).values()];
+}
+
+function archonSnapshot(actor) {
+  return {
+    actor: {
+      img: actor?.img,
+      prototypeTokenTextureSrc: actor?.prototypeToken?.texture?.src,
+      movement: clone(actor?.system?.attributes?.movement),
+      senses: clone(actor?.system?.attributes?.senses),
+      skills: clone(actor?.system?.skills),
+      traits: clone(actor?.system?.traits),
+      tempHP: currentTempHP(actor)
+    },
+    tokens: activeTokenDocuments(actor).map(token => ({
+      uuid: token.uuid,
+      id: token.id,
+      textureSrc: token.texture?.src
+    }))
+  };
+}
+
+function mergeProfileSkills(current, profile) {
+  const merged = clone(current) ?? {};
+  for (const [key, skill] of Object.entries(profile ?? {})) {
+    const existing = merged[key];
+    if (!existing || Number(skill?.value) > Number(existing?.value)) {
+      merged[key] = clone(skill);
+    }
+  }
+  return merged;
+}
+
+function mergeProfileLanguages(current, profile) {
+  const values = new Set([
+    ...languageValues({ system: { traits: { languages: current } } }),
+    ...languageValues({ system: { traits: { languages: profile } } })
+  ]);
+  const custom = new Set([
+    ...customLanguageValues({ system: { traits: { languages: current } } }),
+    ...customLanguageValues({ system: { traits: { languages: profile } } })
+  ]);
+  return {
+    ...clone(profile ?? current ?? {}),
+    value: current?.value instanceof Set || profile?.value instanceof Set
+      ? new Set(values)
+      : [...values],
+    custom: [...custom].sort((left, right) => left.localeCompare(right)).join('; ')
+  };
+}
+
+function profileActorUpdates(actor, profileActor) {
+  const profile = profileActor?.system ?? {};
+  const currentTraits = actor?.system?.traits ?? {};
+  const traits = clone(currentTraits);
+  for (const key of ['size', 'di', 'dr', 'dv', 'dm', 'ci']) {
+    if (profile.traits?.[key] !== undefined) {
+      traits[key] = clone(profile.traits[key]);
+    }
+  }
+  traits.languages = mergeProfileLanguages(
+    currentTraits.languages,
+    profile.traits?.languages
+  );
+  const updates = {
+    img: profileActor.img,
+    'prototypeToken.texture.src': profileActor.img,
+    'system.attributes.hp.temp': Math.max(
+      currentTempHP(actor),
+      getArchonTempHP(actor)
+    )
+  };
+  if (profile.attributes?.movement) {
+    updates['system.attributes.movement'] = clone(profile.attributes.movement);
+  }
+  if (profile.attributes?.senses) {
+    updates['system.attributes.senses'] = clone(profile.attributes.senses);
+  }
+  if (profile.skills) {
+    updates['system.skills'] = mergeProfileSkills(actor?.system?.skills, profile.skills);
+  }
+  if (traits) updates['system.traits'] = traits;
+  return updates;
+}
+
+function temporaryMetadata(state) {
+  return {
+    transformationId: state.transformationId,
+    profile: state.profile
+  };
+}
+
+function temporarySource(document, state) {
+  const source = documentSource(document);
+  delete source._id;
+  delete source._key;
+  delete source.folder;
+  delete source.ownership;
+  delete source._stats;
+  source.flags ??= {};
+  source.flags[MODULE_ID] ??= {};
+  source.flags[MODULE_ID].vessel ??= {};
+  source.flags[MODULE_ID].vessel.archon ??= {};
+  source.flags[MODULE_ID].vessel.archon.temporary = temporaryMetadata(state);
+  return source;
+}
+
+function temporaryTransformationId(document) {
+  return document?.getFlag?.(MODULE_ID, 'vessel.archon.temporary.transformationId')
+    ?? document?.flags?.[MODULE_ID]?.vessel?.archon?.temporary?.transformationId;
+}
+
+async function updateActiveTokenArt(actor, src) {
+  for (const token of activeTokenDocuments(actor)) {
+    await token.update({ 'texture.src': src });
+  }
+}
+
+async function restoreActiveTokenArt(actor, state, {
+  resolveUuid = globalThis.fromUuid
+} = {}) {
+  const current = new Map(activeTokenDocuments(actor).map(token => [
+    token.uuid ?? token.id,
+    token
+  ]));
+  for (const snapshot of state?.snapshot?.tokens ?? []) {
+    let token = current.get(snapshot.uuid ?? snapshot.id);
+    if (!token && snapshot.uuid && typeof resolveUuid === 'function') {
+      token = await resolveUuid(snapshot.uuid);
+    }
+    if (token?.update) await token.update({ 'texture.src': snapshot.textureSrc });
+  }
+}
+
+async function deleteTemporaryDocuments(actor, state) {
+  const transformationId = state?.transformationId;
+  if (!transformationId) return;
+  const itemIds = documents(actor?.items)
+    .filter(item => temporaryTransformationId(item) === transformationId)
+    .map(documentId)
+    .filter(Boolean);
+  const effectIds = documents(actor?.effects)
+    .filter(effect => temporaryTransformationId(effect) === transformationId)
+    .map(documentId)
+    .filter(Boolean);
+  if (effectIds.length) {
+    await actor.deleteEmbeddedDocuments('ActiveEffect', effectIds);
+  }
+  if (itemIds.length) await actor.deleteEmbeddedDocuments('Item', itemIds);
+}
+
+async function restoreArchonSnapshot(actor, state, options = {}) {
+  const snapshot = state?.snapshot?.actor;
+  if (!snapshot) return;
+  await actor.update({
+    img: snapshot.img,
+    'prototypeToken.texture.src': snapshot.prototypeTokenTextureSrc,
+    'system.attributes.movement': clone(snapshot.movement),
+    'system.attributes.senses': clone(snapshot.senses),
+    'system.skills': clone(snapshot.skills),
+    'system.traits': clone(snapshot.traits),
+    'system.attributes.hp.temp': Math.max(0, Number(snapshot.tempHP) || 0)
+  });
+  await restoreActiveTokenArt(actor, state, options);
+}
+
 function languageValues(actorOrSource) {
   const value = actorOrSource?.system?.traits?.languages?.value;
   if (value instanceof Set) return [...value];
@@ -146,16 +326,22 @@ async function finalizeUnlocked(actor, {
 }
 
 async function cleanupRestoredActor(actor, state, {
-  sourceItem
+  sourceItem,
+  resolveUuid
 } = {}) {
   requireActorOwner(actor);
 
-  const beforeTransform = Math.max(
-    0,
-    Number(state?.tempHPBeforeTransform) || 0
-  );
-  if (currentTempHP(actor) !== beforeTransform) {
-    await setTempHP(actor, beforeTransform);
+  await deleteTemporaryDocuments(actor, state);
+  if (state?.snapshot) {
+    await restoreArchonSnapshot(actor, state, { resolveUuid });
+  } else {
+    const beforeTransform = Math.max(
+      0,
+      Number(state?.tempHPBeforeTransform) || 0
+    );
+    if (currentTempHP(actor) !== beforeTransform) {
+      await setTempHP(actor, beforeTransform);
+    }
   }
 
   await deleteFormOnlyEffects(actor);
@@ -219,6 +405,113 @@ export async function clearArchonPending(
   }
   await actor.unsetFlag(MODULE_ID, ARCHON_PENDING_FLAG);
   return true;
+}
+
+/**
+ * Apply an Archon profile to the owned Vessel without creating a new Actor.
+ * Profile Items and Effects are copied as tagged embedded documents so cleanup
+ * cannot touch unrelated owned content.
+ */
+export async function activateArchonForm(
+  document,
+  profileActor,
+  pending,
+  {
+    now = globalThis.game?.time?.worldTime ?? 0
+  } = {}
+) {
+  const actor = actorDocument(document);
+  return serializeActorOperation(actor, async () => {
+    requireActorOwner(actor);
+    if (getArchonState(actor)?.active) {
+      throw new Error('Revert your current Archon Form before transforming again.');
+    }
+    if (!profileActor || !pending?.profile || !pending?.profileUuid) {
+      throw new Error('Archon Form requires a valid selected profile.');
+    }
+    const metadata = profileMetadata(profileActor);
+    const transformationId = pending.transformationId
+      ?? `${actor.uuid}:${pending.profile}:${Date.now()}`;
+    const startedAt = Number(now) || 0;
+    let state = {
+      active: false,
+      activating: true,
+      startedAt,
+      expiresAt: startedAt + getArchonDurationSeconds(actor),
+      profile: metadata.profile ?? pending.profile,
+      profileUuid: profileActor.uuid ?? pending.profileUuid,
+      sourceActorUuid: actor.uuid,
+      payment: pending.payment ?? 'free',
+      acBonus: getArchonACBonus(metadata),
+      tempHPBeforeTransform: currentTempHP(actor),
+      transformationId,
+      temporaryItemIds: [],
+      temporaryEffectIds: [],
+      snapshot: archonSnapshot(actor)
+    };
+    await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, state);
+
+    try {
+      await actor.update(profileActorUpdates(actor, profileActor));
+      await updateActiveTokenArt(actor, profileActor.img);
+
+      const itemSources = documents(profileActor.items)
+        .map(item => temporarySource(item, state));
+      if (itemSources.length) {
+        const created = await actor.createEmbeddedDocuments('Item', itemSources);
+        state = {
+          ...state,
+          temporaryItemIds: created.map(documentId).filter(Boolean)
+        };
+        await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, state);
+      }
+
+      const effectSources = documents(profileActor.effects)
+        .map(effect => temporarySource(effect, state));
+      if (effectSources.length) {
+        const created = await actor.createEmbeddedDocuments(
+          'ActiveEffect',
+          effectSources
+        );
+        state = {
+          ...state,
+          temporaryEffectIds: created.map(documentId).filter(Boolean)
+        };
+      }
+
+      state = { ...state, active: true, activating: false };
+      await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, state);
+      await clearArchonPending(
+        actor,
+        state.profileUuid,
+        state.transformationId
+      );
+      await finalizeUnlocked(actor);
+      return actor;
+    } catch (error) {
+      const cleanupState = {
+        ...state,
+        active: false,
+        activating: false,
+        cleanupPending: true
+      };
+      await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, cleanupState);
+      try {
+        await cleanupRestoredActor(actor, cleanupState);
+        await clearArchonPending(
+          actor,
+          state.profileUuid,
+          state.transformationId
+        );
+      } catch (cleanupError) {
+        console.error(
+          "Declan's Homebrew Classes | Failed to roll back Archon Form activation.",
+          cleanupError
+        );
+      }
+      throw error;
+    }
+  });
 }
 
 export function preparePendingArchonTransformData(
@@ -373,7 +666,8 @@ export async function extendArchonForm(document) {
 }
 
 export async function revertArchonForm(document, {
-  sourceItem
+  sourceItem,
+  resolveUuid
 } = {}) {
   const actor = actorDocument(document);
   return serializeActorOperation(actor, async () => {
@@ -384,6 +678,19 @@ export async function revertArchonForm(document, {
     }
     if (!state?.active) {
       throw new Error('Archon Form is not active and cannot be reverted.');
+    }
+    if (state.snapshot) {
+      const cleanupState = {
+        ...state,
+        active: false,
+        cleanupPending: true
+      };
+      await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, cleanupState);
+      await cleanupRestoredActor(actor, cleanupState, {
+        sourceItem,
+        resolveUuid
+      });
+      return actor;
     }
     if (typeof actor.revertOriginalForm !== 'function') {
       throw new Error('This Actor cannot use Foundry’s native form reversion.');

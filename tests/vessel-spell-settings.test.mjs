@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import {
   buildItemPackChoices,
+  refreshPrivateSpellCompendiumChoices,
   registerPrivateSpellCompendiumSetting
 } from '../scripts/vessel/spell-settings.mjs';
 
@@ -12,11 +13,14 @@ function pack(collection, label, type) {
 
 function settingRegistry() {
   const registrations = [];
+  const registered = new Map();
   return {
     registrations,
     settings: {
+      settings: registered,
       register(module, key, configuration) {
         registrations.push({ module, key, ...configuration });
+        registered.set(`${module}.${key}`, configuration);
       }
     }
   };
@@ -126,4 +130,25 @@ test('forwards changes to the supplied onChange callback', () => {
   registrations[0].onChange('private.spells');
 
   assert.deepEqual(changed, ['private.spells']);
+});
+
+test('refreshes a setting registered before Item compendiums are available', () => {
+  const { settings, registrations } = settingRegistry();
+  const packs = [];
+  registerPrivateSpellCompendiumSetting({ settings, packs });
+  assert.deepEqual(registrations[0].choices, { '': 'None' });
+
+  packs.push(pack(
+    'declan-private-spells.private-spells',
+    'Private Campaign Spells',
+    'Item'
+  ));
+  assert.equal(
+    refreshPrivateSpellCompendiumChoices({ settings, packs }),
+    true
+  );
+  assert.deepEqual(registrations[0].choices, {
+    '': 'None',
+    'declan-private-spells.private-spells': 'Private Campaign Spells'
+  });
 });

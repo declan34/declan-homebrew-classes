@@ -1,7 +1,7 @@
 _id: hbrFalArchon0001
 name: Fallen Archon
 type: npc
-img: icons/svg/mystery-man.svg
+img: systems/dnd5e/tokens/fiend/FallenArchangelSwordSpear.webp
 system:
   abilities:
     str: {value: 10, proficient: 0}

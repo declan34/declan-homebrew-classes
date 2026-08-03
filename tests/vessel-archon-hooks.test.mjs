@@ -144,15 +144,11 @@ test('Archon pre-use delegates to async preparation while unrelated activities r
   assert.equal(handlePreUseActivity(unrelated), undefined);
 });
 
-test('successful Transform use binds the native transform to its source actor', async () => {
+test('successful Transform use binds the in-place switch to its source actor', async () => {
   const target = actor();
   const transform = activity('archon-transform-slot', target);
   const profile = { uuid: 'Compendium.test.Actor.cursed' };
-  const transformed = [];
-  target.transformInto = async (source, settings) => {
-    transformed.push({ source, settings });
-  };
-  transform.settings = { keep: new Set(['class']) };
+  const switched = [];
   const message = {
     id: 'message-transform-one',
     getFlag(scope, key) {
@@ -167,11 +163,15 @@ test('successful Transform use binds the native transform to its source actor', 
 
   handlePostUseActivity(transform, {
     resolveUuid: async uuid => uuid === profile.uuid ? profile : undefined,
+    performArchonTransformation: async (used, pending) => {
+      switched.push({ used, pending });
+      return target;
+    },
     reportError: error => { throw error; }
   }, {}, { message });
   await tick();
 
-  assert.deepEqual(getArchonPending(target), {
+  assert.deepEqual(switched[0].pending, {
     activityId: transform.id,
     itemId: transform.item.id,
     payment: 'slot',
@@ -180,19 +180,22 @@ test('successful Transform use binds the native transform to its source actor', 
     stagedAt: 0,
     transformationId: 'message-transform-one'
   });
-  assert.deepEqual(transformed, [{ source: profile, settings: transform.settings }]);
+  assert.equal(switched[0].used, transform);
 });
 
 test('Transform use resolves the selected activity profile before its chat flag is persisted', async () => {
   const target = actor();
   const profileUuid = 'Compendium.test.Actor.cursed';
   const transform = activity('archon-transform-slot', target, { profileUuid });
-  const transformed = [];
+  const switched = [];
   const errors = [];
-  target.transformInto = async source => transformed.push(source.uuid);
 
   handlePostUseActivity(transform, {
     resolveUuid: async uuid => uuid === profileUuid ? { uuid } : undefined,
+    performArchonTransformation: async (_used, pending) => {
+      switched.push(pending.profileUuid);
+      return target;
+    },
     reportError: error => errors.push(error)
   }, {
     transform: { profile: 'profile-choice' }
@@ -205,7 +208,7 @@ test('Transform use resolves the selected activity profile before its chat flag 
   await tick();
 
   assert.deepEqual(errors, []);
-  assert.deepEqual(transformed, [profileUuid]);
+  assert.deepEqual(switched, [profileUuid]);
 });
 
 test('owner-bound transform ignores unrelated controlled scene targets', async () => {
@@ -214,8 +217,6 @@ test('owner-bound transform ignores unrelated controlled scene targets', async (
   const transform = activity('archon-transform-free', owner);
   transform.settings = { keep: new Set(['class']) };
   const calls = [];
-  owner.transformInto = async source => calls.push(['owner', source.uuid]);
-  unrelated.transformInto = async source => calls.push(['unrelated', source.uuid]);
   const profile = { uuid: 'Compendium.test.Actor.cursed' };
   const previousCanvas = globalThis.canvas;
   globalThis.canvas = { tokens: { controlled: [{ actor: unrelated }] } };
@@ -228,13 +229,44 @@ test('owner-bound transform ignores unrelated controlled scene targets', async (
     }, {
       message: { async unsetFlag() {} }
     }, {
-      resolveUuid: async () => profile
+      resolveUuid: async () => profile,
+      activateArchonForm: async (target, source) => {
+        calls.push([target === owner ? 'owner' : 'unrelated', source.uuid]);
+        return target;
+      }
     });
   } finally {
     globalThis.canvas = previousCanvas;
   }
 
   assert.deepEqual(calls, [['owner', profile.uuid]]);
+});
+
+test('Archon post-use activates the selected profile in place without native polymorphing', async () => {
+  const target = actor();
+  const transform = activity('archon-transform-slot', target);
+  const profile = { uuid: 'Compendium.test.Actor.cursed' };
+  const calls = [];
+  target.transformInto = async () => assert.fail('native transform must not run');
+
+  const result = await performArchonTransformation(transform, {
+    payment: 'slot',
+    profile: 'cursed',
+    profileUuid: profile.uuid,
+    transformationId: 'message-in-place'
+  }, {}, {
+    resolveUuid: async () => profile,
+    activateArchonForm: async (actorDocument, profileDocument, pending) => {
+      calls.push([actorDocument, profileDocument, pending]);
+      return actorDocument;
+    }
+  });
+
+  assert.equal(result, target);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0][0], target);
+  assert.equal(calls[0][1], profile);
+  assert.equal(calls[0][2].transformationId, 'message-in-place');
 });
 
 test('Archon chat cards suppress Foundry’s generic selected-target transform button', () => {
@@ -457,33 +489,31 @@ test('Transform is rejected while Archon Form is already active', () => {
   assert.equal(prepared, 0);
 });
 
-test('failed and rejected native transforms clear only their matching pending state', async () => {
-  for (const failure of ['throw', 'null']) {
-    const target = actor({ id: `failed-${failure}` });
-    const transform = activity('archon-transform-free', target);
-    transform.settings = {};
-    target.transformInto = async () => {
-      if (failure === 'throw') throw new Error('native transform failed');
-      return null;
-    };
-    const pending = {
-      payment: 'free',
-      profile: 'cursed',
-      profileUuid: 'Compendium.test.Actor.cursed',
-      transformationId: `message-${failure}`
-    };
+test('failed in-place activation clears only its matching pending state', async () => {
+  const target = actor({ id: 'failed-in-place' });
+  const transform = activity('archon-transform-free', target);
+  const pending = {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    transformationId: 'message-failed-in-place'
+  };
 
-    await assert.rejects(
-      performArchonTransformation(
-        transform,
-        pending,
-        {},
-        { resolveUuid: async () => ({ uuid: pending.profileUuid }) }
-      ),
-      failure === 'throw' ? /native transform failed/ : /did not allow/
-    );
-    assert.equal(getArchonPending(target), undefined);
-  }
+  await assert.rejects(
+    performArchonTransformation(
+      transform,
+      pending,
+      {},
+      {
+        resolveUuid: async () => ({ uuid: pending.profileUuid }),
+        activateArchonForm: async () => {
+          throw new Error('in-place activation failed');
+        }
+      }
+    ),
+    /in-place activation failed/
+  );
+  assert.equal(getArchonPending(target), undefined);
 });
 
 test('Equipment Preference saves either native equipment policy and never posts an activity card', async () => {

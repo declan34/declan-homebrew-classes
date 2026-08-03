@@ -1,5 +1,8 @@
 import { registerVesselAutomationHooks } from './vessel/hooks.mjs';
-import { registerPrivateSpellCompendiumSetting } from './vessel/spell-settings.mjs';
+import {
+  refreshPrivateSpellCompendiumChoices,
+  registerPrivateSpellCompendiumSetting
+} from './vessel/spell-settings.mjs';
 import { invalidateSpellProviderCache } from './vessel/spell-provider.mjs';
 
 Hooks.once('init', () => {
@@ -9,4 +12,11 @@ Hooks.once('init', () => {
     onChange: invalidateSpellProviderCache
   });
   registerVesselAutomationHooks(Hooks);
+});
+
+Hooks.once('ready', () => {
+  refreshPrivateSpellCompendiumChoices({
+    settings: game.settings,
+    packs: game.packs
+  });
 });

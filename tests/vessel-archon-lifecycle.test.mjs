@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  activateArchonForm,
   extendArchonForm,
   finalizeArchonTransformation,
   getArchonState,
@@ -61,11 +62,14 @@ function mockActor({
   isToken = false
 } = {}) {
   let nextEffect = 0;
+  let nextItem = 0;
   const target = {
     id,
     uuid: isToken ? `Scene.scene0000000001.Token.${id}` : `Actor.${id}`,
     documentName: 'Actor',
     type: 'character',
+    img: 'icons/original-portrait.webp',
+    prototypeToken: { texture: { src: 'icons/original-token.webp' } },
     isOwner: owner,
     isToken,
     flags: state ? {
@@ -82,11 +86,14 @@ function mockActor({
         languages: {
           value: new Set(languages),
           custom: customLanguages
-        }
+        },
+        weaponProf: { value: new Set(['simpleM']), custom: 'Moonblade' }
       },
       attributes: {
         ac: { calc: 'default' },
-        hp: { value: 20, max: 20, temp }
+        hp: { value: 20, max: 20, temp },
+        movement: { walk: 30, fly: null, units: 'ft', hover: false },
+        senses: { units: 'ft', ranges: { darkvision: 60 } }
       }
     },
     operations: [],
@@ -114,18 +121,31 @@ function mockActor({
     },
     async update(changes) {
       this.operations.push(['update', structuredClone(changes)]);
-      if (Object.hasOwn(changes, 'system.attributes.hp.temp')) {
-        this.system.attributes.hp.temp = changes['system.attributes.hp.temp'];
+      for (const [path, value] of Object.entries(changes)) {
+        const segments = path.split('.');
+        let current = this;
+        for (const segment of segments.slice(0, -1)) {
+          current = current[segment] ??= {};
+        }
+        current[segments.at(-1)] = structuredClone(value);
       }
     },
     async createEmbeddedDocuments(type, rows) {
-      assert.equal(type, 'ActiveEffect');
       this.operations.push(['createEmbeddedDocuments', structuredClone(rows)]);
-      const created = rows.map(row => effect({
-        ...structuredClone(row),
-        _id: `created-effect-${++nextEffect}`
-      }));
-      this.effects.push(...created);
+      const created = rows.map(row => {
+        const createdRow = {
+          ...structuredClone(row),
+          _id: type === 'ActiveEffect'
+            ? `created-effect-${++nextEffect}`
+            : `created-item-${++nextItem}`
+        };
+        createdRow.id = createdRow._id;
+        createdRow.toObject = effect(createdRow).toObject;
+        return createdRow;
+      });
+      if (type === 'ActiveEffect') this.effects.push(...created);
+      else if (type === 'Item') this.items.push(...created);
+      else assert.fail(`Unexpected embedded document type ${type}`);
       return created;
     },
     async updateEmbeddedDocuments(type, rows) {
@@ -139,14 +159,159 @@ function mockActor({
       }
     },
     async deleteEmbeddedDocuments(type, ids) {
-      assert.equal(type, 'ActiveEffect');
       this.operations.push(['deleteEmbeddedDocuments', structuredClone(ids)]);
-      this.effects = this.effects.filter(candidate => !ids.includes(candidate._id));
+      if (type === 'ActiveEffect') {
+        this.effects = this.effects.filter(candidate => !ids.includes(candidate._id));
+      } else if (type === 'Item') {
+        this.items = this.items.filter(candidate => !ids.includes(candidate._id));
+      } else assert.fail(`Unexpected embedded document type ${type}`);
     }
   };
   if (!target.items.length) target.items.push(spiritMantleItem());
   return target;
 }
+
+function switchProfile() {
+  return {
+    uuid: 'Compendium.test.Actor.cursed',
+    img: 'systems/dnd5e/tokens/fiend/PitFiend.webp',
+    flags: {
+      [MODULE_ID]: {
+        vessel: { archon: { profile: 'cursed', acBonus: 1 } }
+      }
+    },
+    system: {
+      attributes: {
+        movement: { walk: 40, fly: 40, units: 'ft', hover: false },
+        senses: { units: 'ft', ranges: { darkvision: 120 } }
+      },
+      traits: {
+        languages: { value: new Set(['infernal']), custom: '' },
+        dr: { value: new Set(['fire']), custom: '' }
+      }
+    },
+    items: [{
+      _id: 'profile-attack-id',
+      name: 'Infernal Drain',
+      type: 'feat',
+      system: { identifier: 'infernal-drain', activities: {} },
+      flags: {}
+    }],
+    effects: [{
+      _id: 'profile-effect-id',
+      name: 'Cursed Aura',
+      disabled: false,
+      changes: [],
+      flags: {}
+    }]
+  };
+}
+
+test('in-place activation keeps the original Actor and tags copied profile documents', async () => {
+  const target = mockActor({ level: 6, temp: 3 });
+  const token = {
+    uuid: 'Scene.scene.Token.vessel',
+    texture: { src: 'icons/live-token.webp' },
+    updates: [],
+    async update(changes) {
+      this.updates.push(structuredClone(changes));
+      this.texture.src = changes['texture.src'];
+    }
+  };
+  target.getActiveTokens = () => [{ document: token }];
+  target.transformInto = async () => assert.fail('native transform must not run');
+  const pending = {
+    payment: 'slot',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    transformationId: 'chat-message-one'
+  };
+
+  const result = await activateArchonForm(target, switchProfile(), pending, {
+    now: 100
+  });
+
+  assert.equal(result, target);
+  assert.equal(target.img, 'systems/dnd5e/tokens/fiend/PitFiend.webp');
+  assert.equal(
+    target.prototypeToken.texture.src,
+    'systems/dnd5e/tokens/fiend/PitFiend.webp'
+  );
+  assert.equal(token.texture.src, 'systems/dnd5e/tokens/fiend/PitFiend.webp');
+  assert.equal(target.system.attributes.movement.fly, 40);
+  assert.equal(target.system.attributes.hp.temp, 12);
+  assert.deepEqual(
+    target.system.traits.weaponProf,
+    { value: new Set(['simpleM']), custom: 'Moonblade' }
+  );
+
+  const temporaryItem = target.items.find(item =>
+    item.system?.identifier === 'infernal-drain'
+  );
+  const temporaryEffect = target.effects.find(effect => effect.name === 'Cursed Aura');
+  for (const document of [temporaryItem, temporaryEffect]) {
+    assert.deepEqual(
+      document.flags[MODULE_ID].vessel.archon.temporary,
+      { transformationId: 'chat-message-one', profile: 'cursed' }
+    );
+  }
+  const state = getArchonState(target);
+  assert.equal(state.active, true);
+  assert.equal(state.sourceActorUuid, target.uuid);
+  assert.deepEqual(state.temporaryItemIds, [temporaryItem.id]);
+  assert.deepEqual(state.temporaryEffectIds, [temporaryEffect.id]);
+  assert.equal(state.snapshot.actor.img, 'icons/original-portrait.webp');
+  assert.equal(state.snapshot.tokens[0].textureSrc, 'icons/live-token.webp');
+});
+
+test('in-place reversion restores snapshots and removes only matching temporary documents', async () => {
+  const unrelatedItem = {
+    _id: 'unrelated-item',
+    id: 'unrelated-item',
+    name: 'Keep Me',
+    type: 'feat',
+    system: { identifier: 'keep-me' },
+    flags: { other: { keep: true } }
+  };
+  const target = mockActor({ level: 6, temp: 4, items: [
+    spiritMantleItem(),
+    unrelatedItem
+  ], effects: [{
+    _id: 'unrelated-effect',
+    name: 'Keep This Effect',
+    flags: { other: { keep: true } }
+  }] });
+  const token = {
+    uuid: 'Scene.scene.Token.vessel',
+    texture: { src: 'icons/live-token.webp' },
+    async update(changes) { this.texture.src = changes['texture.src']; }
+  };
+  target.getActiveTokens = () => [{ document: token }];
+  await activateArchonForm(target, switchProfile(), {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    transformationId: 'chat-message-two'
+  }, { now: 200 });
+
+  const result = await revertArchonForm(target);
+
+  assert.equal(result, target);
+  assert.equal(getArchonState(target), undefined);
+  assert.equal(target.img, 'icons/original-portrait.webp');
+  assert.equal(target.prototypeToken.texture.src, 'icons/original-token.webp');
+  assert.equal(token.texture.src, 'icons/live-token.webp');
+  assert.equal(target.system.attributes.movement.walk, 30);
+  assert.equal(target.system.attributes.movement.fly, null);
+  assert.equal(target.system.attributes.hp.temp, 4);
+  assert.ok(target.items.includes(unrelatedItem));
+  assert.equal(target.items.some(item => item.system?.identifier === 'infernal-drain'), false);
+  assert.equal(
+    target.effects.some(effect => effect.name === 'Keep This Effect'),
+    true
+  );
+  assert.equal(target.effects.some(effect => effect.name === 'Cursed Aura'), false);
+});
 
 function profile({
   profile = 'cursed',
