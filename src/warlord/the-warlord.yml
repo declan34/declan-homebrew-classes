@@ -2,7 +2,7 @@ _id: kuo71tTNo7d6mmLQ
 name: The Warlord
 type: class
 folder: zWQLRrWKJyaRIlBG
-img: systems/dnd5e/icons/classes/vessel.webp
+img: systems/dnd5e/icons/svg/items/class.svg
 system:
   description:
     value: <p>Warlords are inspiring leaders and brilliant tacticians who empower their allies and command the battlefield.</p>

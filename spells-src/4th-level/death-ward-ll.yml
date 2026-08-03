@@ -91,7 +91,7 @@ system:
   identifier: death-ward-ll
 _id: DYnT8DgELwcPsNNd
 type: spell
-img: icons/magic/defensive/shield-glowing-blue.webp
+img: systems/dnd5e/icons/svg/checked-shield.svg
 effects: []
 folder: YcTkda5HcE9nftx3
 sort: 1900000

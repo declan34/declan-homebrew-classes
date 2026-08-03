@@ -115,10 +115,10 @@ system:
   identifier: flame-whip-ll
 _id: AvzLl3qCkrQC9Tw3
 type: spell
-img: icons/magic/fire/whip-flame-blue.webp
+img: systems/dnd5e/icons/svg/damage/fire.svg
 effects:
 - name: Grappled by Flame Whip
-  img: icons/magic/fire/whip-flame-blue.webp
+  img: systems/dnd5e/icons/svg/damage/fire.svg
   origin: Compendium.dnd5e.spells24.Item.hbrvesFlameWhipLL
   transfer: false
   _id: zwks0mAqBHGZC1Pk

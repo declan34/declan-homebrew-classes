@@ -183,6 +183,31 @@ test('successful Transform use binds the native transform to its source actor', 
   assert.deepEqual(transformed, [{ source: profile, settings: transform.settings }]);
 });
 
+test('Transform use resolves the selected activity profile before its chat flag is persisted', async () => {
+  const target = actor();
+  const profileUuid = 'Compendium.test.Actor.cursed';
+  const transform = activity('archon-transform-slot', target, { profileUuid });
+  const transformed = [];
+  const errors = [];
+  target.transformInto = async source => transformed.push(source.uuid);
+
+  handlePostUseActivity(transform, {
+    resolveUuid: async uuid => uuid === profileUuid ? { uuid } : undefined,
+    reportError: error => errors.push(error)
+  }, {
+    transform: { profile: 'profile-choice' }
+  }, {
+    message: {
+      id: 'message-transform-flag-race',
+      getFlag() { return undefined; }
+    }
+  });
+  await tick();
+
+  assert.deepEqual(errors, []);
+  assert.deepEqual(transformed, [profileUuid]);
+});
+
 test('owner-bound transform ignores unrelated controlled scene targets', async () => {
   const owner = actor();
   const unrelated = actor({ id: 'unrelated' });

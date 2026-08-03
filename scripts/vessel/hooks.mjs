@@ -189,7 +189,13 @@ function archonProfileFromUuid(uuid) {
   return Object.values(ARCHON_PROFILES).find(profile => profile.uuid === uuid);
 }
 
-function messageTransformUuid(results) {
+function selectedTransformUuid(activity, usageConfig, results) {
+  const selectedProfileId = usageConfig?.transform?.profile;
+  const selectedProfile = documents(activity?.profiles).find(profile =>
+    (profile?.id ?? profile?._id) === selectedProfileId
+  );
+  if (selectedProfile?.uuid) return selectedProfile.uuid;
+
   const message = results?.message;
   return readFlag(message, 'dnd5e', 'transform.uuid')
     ?? message?.flags?.dnd5e?.transform?.uuid
@@ -504,11 +510,11 @@ export function handlePostUseActivity(activity, {
   extendArchonForm: extendArchon = extendArchonForm,
   revertArchonForm: revertArchon = revertArchonForm,
   reportError: onError = reportError
-} = {}, _usageConfig = {}, results = {}) {
+} = {}, usageConfig = {}, results = {}) {
   const activityRole = getAutomationRole(activity);
   const actor = activity?.item?.actor;
   if (ARCHON_TRANSFORM_ROLES.has(activityRole)) {
-    const profileUuid = messageTransformUuid(results);
+    const profileUuid = selectedTransformUuid(activity, usageConfig, results);
     const profile = archonProfileFromUuid(profileUuid)
       ?? { profile: String(profileUuid ?? '').split('.').at(-1), uuid: profileUuid };
     const pending = {

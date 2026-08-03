@@ -2,7 +2,7 @@ _id: hbrves4NAQOTE286
 name: The Vessel
 type: class
 folder: zMeVHWGKnwMncHUb
-img: systems/dnd5e/icons/classes/vessel.webp
+img: systems/dnd5e/icons/svg/items/class.svg
 system:
   description:
     value: ''
