@@ -9,6 +9,10 @@ const moduleId = 'declan-homebrew-classes';
 const {migrateVesselActor} = await import('../scripts/vessel/migration.mjs');
 
 const vesselSource = yaml.load(readFileSync(new URL('../src/vessel/the-vessel.yml', import.meta.url), 'utf8'));
+const strikesSource = yaml.load(readFileSync(
+  new URL('../src/vessel/class-features/iridescent-strikes.yml', import.meta.url),
+  'utf8'
+));
 const aspectSource = yaml.load(readFileSync(new URL('../aspects-src/shimmering-lance.yml', import.meta.url), 'utf8'));
 const condemnationSource = yaml.load(readFileSync(
   new URL('../src/vessel/subclass-features/the-fallen/condemnation.yml', import.meta.url),
@@ -89,17 +93,18 @@ function actorWithLegacyAspect() {
   };
 }
 
-test('version 3 repairs owned Stage 3 activities and preserves player data', async () => {
+test('version 4 repairs owned Stage 3 activities and preserves player data', async () => {
   const actor = actorWithLegacyAspect();
   await migrateVesselActor(actor, {
     loadSourceItems: async () => ({
       vessel: item(vesselSource),
       mantle: null,
+      strikes: item(strikesSource),
       controls: {'the-fallen': item(fallenControlSource)}
     }),
     loadStage3Items: async () => new Map([['shimmering-lance', item(aspectSource)]])
   });
-  assert.equal(actor.flags[moduleId].vessel.migrationVersion, 3);
+  assert.equal(actor.flags[moduleId].vessel.migrationVersion, 4);
   assert.equal(actor.legacy.name, 'My Spirit Bolt');
   assert.equal(actor.legacy.img, 'custom/bolt.webp');
   assert.equal(actor.legacy.system.activities.get('PlayerActivity01').name, 'Keep Me');
@@ -108,12 +113,17 @@ test('version 3 repairs owned Stage 3 activities and preserves player data', asy
   ));
 });
 
-test('version 3 records no completion when a Stage 3 repair fails', async () => {
+test('version 4 records no completion when a Stage 3 repair fails', async () => {
   const actor = actorWithLegacyAspect();
   actor.legacy.update = async () => { throw new Error('stage3 update failed'); };
   await assert.rejects(
     migrateVesselActor(actor, {
-      loadSourceItems: async () => ({vessel: item(vesselSource), mantle: null, controls: {}}),
+      loadSourceItems: async () => ({
+        vessel: item(vesselSource),
+        mantle: null,
+        strikes: item(strikesSource),
+        controls: {}
+      }),
       loadStage3Items: async () => new Map([['shimmering-lance', item(aspectSource)]])
     }),
     /stage3 update failed/
@@ -121,7 +131,7 @@ test('version 3 records no completion when a Stage 3 repair fails', async () => 
   assert.equal(actor.flags[moduleId].vessel.migrationVersion, 2);
 });
 
-test('version 3 grants missing Condemnation to an existing level-6 Fallen', async () => {
+test('version 4 grants missing Condemnation to an existing level-6 Fallen', async () => {
   const actor = actorWithLegacyAspect();
   const subclass = item({
     _id: 'LegacyFallen0001',
@@ -135,6 +145,7 @@ test('version 3 grants missing Condemnation to an existing level-6 Fallen', asyn
     loadSourceItems: async () => ({
       vessel: item(vesselSource),
       mantle: null,
+      strikes: item(strikesSource),
       controls: {'the-fallen': item(fallenControlSource)}
     }),
     loadStage3Items: async () => new Map([

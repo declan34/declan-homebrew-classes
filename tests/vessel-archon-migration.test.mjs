@@ -38,6 +38,7 @@ function load(path) {
 
 const vesselSource = load('../src/vessel/the-vessel.yml');
 const mantleSource = load('../src/vessel/class-features/spirit-mantle.yml');
+const strikesSource = load('../src/vessel/class-features/iridescent-strikes.yml');
 const archonSource = load('../src/vessel/class-features/archon-form.yml');
 const controlSources = Object.fromEntries(CONTROL_PATHS.map(subclass => [
   subclass,
@@ -114,6 +115,7 @@ function sourceItems() {
   return {
     vessel: item(vesselSource),
     mantle: item(mantleSource),
+    strikes: item(strikesSource),
     archon: item(archonSource),
     controls: Object.fromEntries(
       Object.entries(controlSources).map(([key, value]) => [key, item(value)])
@@ -173,11 +175,12 @@ function activityByRole(control, role) {
   );
 }
 
-test('Vessel migration v3 retains all Stage 2 canonical Items and retries a rejected cache', async () => {
-  assert.equal(VESSEL_MIGRATION_VERSION, 3);
+test('Vessel migration v4 retains all earlier canonical Items and retries a rejected cache', async () => {
+  assert.equal(VESSEL_MIGRATION_VERSION, 4);
   const ids = [
     vesselSource._id,
     mantleSource._id,
+    strikesSource._id,
     archonSource._id,
     ...Object.values(controlSources).map(source => source._id)
   ];
@@ -186,6 +189,7 @@ test('Vessel migration v3 retains all Stage 2 canonical Items and retries a reje
   const sourcesById = new Map([
     [vesselSource._id, item(vesselSource)],
     [mantleSource._id, item(mantleSource)],
+    [strikesSource._id, item(strikesSource)],
     [archonSource._id, item(archonSource)],
     ...Object.values(controlSources).map(source => [source._id, item(source)])
   ]);
@@ -216,7 +220,7 @@ test('Vessel migration v3 retains all Stage 2 canonical Items and retries a reje
   assert.equal(calls.length, callsAfterSuccess);
 });
 
-test('v3 creates the determinable missing subclass control and preserves Archon resource presentation and spent use', async () => {
+test('v4 creates the determinable missing subclass control and preserves Archon resource presentation and spent use', async () => {
   const resource = item({
     ...archonSource,
     name: 'My Archon Awakening',
@@ -258,10 +262,10 @@ test('v3 creates the determinable missing subclass control and preserves Archon 
     resource.system.activities.get('CustomResource01').name,
     'My Resource Note'
   );
-  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 3);
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 4);
 });
 
-test('v3 creates a level-3 subclass control even when the legacy Archon resource is missing', async () => {
+test('v4 creates a level-3 subclass control even when the legacy Archon resource is missing', async () => {
   const target = actor({
     subclass: 'the-fallen',
     archon: null
@@ -276,7 +280,7 @@ test('v3 creates a level-3 subclass control even when the legacy Archon resource
   ));
 });
 
-test('v3 repairs all module control mechanics while preserving custom presentation and unrelated activities', async () => {
+test('v4 repairs all module control mechanics while preserving custom presentation and unrelated activities', async () => {
   const broken = structuredClone(controlSources['the-cursed']);
   broken.name = 'My Cursed Shape';
   broken.img = 'icons/custom-shape.webp';
@@ -324,7 +328,7 @@ test('v3 repairs all module control mechanics while preserving custom presentati
   assert.equal(migrated.system.activities.get('CustomActivity01').name, 'User Activity');
 });
 
-test('v3 records no flag after a partial control failure and repairs cleanly on retry', async () => {
+test('v4 records no flag after a partial control failure and repairs cleanly on retry', async () => {
   const broken = item(controlSources['the-cursed']);
   broken.system.activities.delete('hbrArcEquipCfg01');
   const target = actor({ control: broken });
@@ -345,7 +349,7 @@ test('v3 records no flag after a partial control failure and repairs cleanly on 
   assert.equal(await migrateVesselActor(target, {
     loadSourceItems: async () => sourceItems()
   }), true);
-  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 3);
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 4);
   const operations = target.operations.length + broken.operations.length;
   assert.equal(await migrateVesselActor(target, {
     loadSourceItems: async () => {

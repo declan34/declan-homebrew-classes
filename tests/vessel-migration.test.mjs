@@ -17,11 +17,9 @@ const MODULE_ID = 'declan-homebrew-classes';
 const MIGRATION_FLAG = 'vessel.migrationVersion';
 const SCALE_ID = 'ZReRcAXx7wv1xOTO';
 const EFFECT_ID = '9VejV6Hl6RdY5Gzt';
-const ACTIVITY_IDS = [
-  '0I7T8AlyrNTKpU0h',
-  'gDrrUixnPXPLBDHB',
-  'dWCAZNHBAwxBjUw7'
-];
+const MANTLE_TOGGLE_ID = '0I7T8AlyrNTKpU0h';
+const STRIKE_ACTIVITY_ID = 'IriStrikeAct0001';
+const LEGACY_STRIKE_IDS = ['gDrrUixnPXPLBDHB', 'dWCAZNHBAwxBjUw7'];
 
 const vesselSource = yaml.load(
   readFileSync(new URL('../src/vessel/the-vessel.yml', import.meta.url), 'utf8')
@@ -29,6 +27,15 @@ const vesselSource = yaml.load(
 const mantleSource = yaml.load(
   readFileSync(
     new URL('../src/vessel/class-features/spirit-mantle.yml', import.meta.url),
+    'utf8'
+  )
+);
+const strikesSource = yaml.load(
+  readFileSync(
+    new URL(
+      '../src/vessel/class-features/iridescent-strikes.yml',
+      import.meta.url
+    ),
     'utf8'
   )
 );
@@ -59,6 +66,21 @@ function ownedItem(data) {
     },
     effects: mapping(source.effects ?? []),
     operations: [],
+    toObject() {
+      return structuredClone({
+        ...source,
+        system: {
+          ...source.system,
+          advancement: [...this.system.advancement.values()]
+            .map(entry => entry.toObject()),
+          activities: Object.fromEntries(
+            [...this.system.activities.entries()]
+              .map(([id, entry]) => [id, entry.toObject()])
+          )
+        },
+        effects: [...this.effects.values()].map(entry => entry.toObject())
+      });
+    },
     async update(update) {
       this.operations.push(['update', structuredClone(update)]);
       for (const [path, value] of Object.entries(update)) {
@@ -67,6 +89,11 @@ function ownedItem(data) {
           throw new Error(
             'legacy advancement mappings require the dnd5e advancement API'
           );
+        }
+        const deletion = path.match(/^system\.activities\.-=([^.]+)$/);
+        if (deletion) {
+          this.system.activities.delete(deletion[1]);
+          continue;
         }
         const activity = path.match(/^system\.activities\.([^.]+)$/);
         if (activity) {
@@ -107,11 +134,28 @@ function ownedItem(data) {
 function sourceItems() {
   return {
     vessel: ownedItem(vesselSource),
-    mantle: ownedItem(mantleSource)
+    mantle: ownedItem(mantleSource),
+    strikes: ownedItem(strikesSource)
   };
 }
 
-function legacyActor({ vessel, mantle } = {}) {
+function legacyStrike(id, name) {
+  const strike = structuredClone(
+    strikesSource.system.activities[STRIKE_ACTIVITY_ID]
+  );
+  strike._id = id;
+  strike.name = name;
+  strike.activation.type = name.startsWith('Bonus') ? 'bonus' : 'action';
+  return strike;
+}
+
+function legacyActor({
+  vessel,
+  mantle,
+  strikes,
+  migrationVersion = 0,
+  failItemCreation = false
+} = {}) {
   const vesselItem = vessel ?? ownedItem({
     ...vesselSource,
     system: {
@@ -126,6 +170,15 @@ function legacyActor({ vessel, mantle } = {}) {
     system: {
       ...mantleSource.system,
       activities: {
+        [MANTLE_TOGGLE_ID]: mantleSource.system.activities[MANTLE_TOGGLE_ID],
+        [LEGACY_STRIKE_IDS[0]]: legacyStrike(
+          LEGACY_STRIKE_IDS[0],
+          'Iridescent Strike'
+        ),
+        [LEGACY_STRIKE_IDS[1]]: legacyStrike(
+          LEGACY_STRIKE_IDS[1],
+          'Bonus Iridescent Strike'
+        ),
         CustomActivity01: {
           _id: 'CustomActivity01',
           type: 'utility',
@@ -137,14 +190,20 @@ function legacyActor({ vessel, mantle } = {}) {
   });
   const items = new Map([
     [vesselItem._id, vesselItem],
-    [mantleItem._id, mantleItem]
+    [mantleItem._id, mantleItem],
+    ...(strikes ? [[strikes._id, strikes]] : [])
   ]);
 
   return {
     isOwner: true,
     items,
-    flags: {},
+    flags: migrationVersion ? {
+      [MODULE_ID]: { vessel: { migrationVersion } }
+    } : {},
     operations: [],
+    itemsByIdentifier(value) {
+      return [...this.items.values()].filter(item => item.identifier === value);
+    },
     getFlag(scope, key) {
       if (scope !== MODULE_ID || key !== MIGRATION_FLAG) return undefined;
       return this.flags?.[MODULE_ID]?.vessel?.migrationVersion;
@@ -154,6 +213,17 @@ function legacyActor({ vessel, mantle } = {}) {
       this.flags[scope] ??= {};
       this.flags[scope].vessel ??= {};
       this.flags[scope].vessel.migrationVersion = value;
+    },
+    async createEmbeddedDocuments(type, rows, options) {
+      assert.equal(type, 'Item');
+      assert.deepEqual(options, { keepId: true });
+      this.operations.push(['createEmbeddedDocuments', structuredClone(rows)]);
+      if (failItemCreation) return [];
+      return rows.map(row => {
+        const item = ownedItem(row);
+        this.items.set(item._id, item);
+        return item;
+      });
     }
   };
 }
@@ -176,11 +246,17 @@ test('migrates legacy actor-owned Vessel automation without replacing custom str
     17: { number: null, faces: 12, modifiers: [] }
   });
 
-  for (const id of ACTIVITY_IDS) assert.ok(mantleItem.system.activities.has(id));
+  assert.ok(mantleItem.system.activities.has(MANTLE_TOGGLE_ID));
+  for (const id of LEGACY_STRIKE_IDS) {
+    assert.equal(mantleItem.system.activities.has(id), false);
+  }
   assert.equal(
     mantleItem.system.activities.get('CustomActivity01').name,
     'User Activity'
   );
+  const strikesItems = target.itemsByIdentifier('iridescent-strikes');
+  assert.equal(strikesItems.length, 1);
+  assert.ok(strikesItems[0].system.activities.has(STRIKE_ACTIVITY_ID));
   assert.deepEqual(
     mantleItem.effects.get(EFFECT_ID).changes,
     [{
@@ -207,7 +283,13 @@ test('repairs module-owned fields, preserves customization and state, and is ide
   scale.configuration.identifier = 'broken';
 
   const mantleData = structuredClone(mantleSource);
-  const strike = mantleData.system.activities.gDrrUixnPXPLBDHB;
+  mantleData.system.activities.CustomActivity01 = {
+    _id: 'CustomActivity01',
+    type: 'utility',
+    name: 'User Activity'
+  };
+  const strikesData = structuredClone(strikesSource);
+  const strike = strikesData.system.activities[STRIKE_ACTIVITY_ID];
   strike.name = 'My Spirit Punch';
   strike.description.chatFlavor = 'Custom flavor';
   strike.uses.spent = 3;
@@ -228,7 +310,9 @@ test('repairs module-owned fields, preserves customization and state, and is ide
 
   const target = legacyActor({
     vessel: ownedItem(vesselData),
-    mantle: ownedItem(mantleData)
+    mantle: ownedItem(mantleData),
+    strikes: ownedItem(strikesData),
+    migrationVersion: 3
   });
   const vesselItem = target.items.get(vesselSource._id);
   const mantleItem = target.items.get(mantleSource._id);
@@ -243,7 +327,8 @@ test('repairs module-owned fields, preserves customization and state, and is ide
   assert.equal(migratedScale.hint, 'Keep this note');
   assert.deepEqual(migratedScale.value, { 5: 'd20' });
 
-  const migratedStrike = mantleItem.system.activities.get('gDrrUixnPXPLBDHB');
+  const strikesItem = target.itemsByIdentifier('iridescent-strikes')[0];
+  const migratedStrike = strikesItem.system.activities.get(STRIKE_ACTIVITY_ID);
   assert.equal(migratedStrike.name, 'My Spirit Punch');
   assert.equal(migratedStrike.description.chatFlavor, 'Custom flavor');
   assert.equal(migratedStrike.uses.spent, 3);
@@ -254,6 +339,8 @@ test('repairs module-owned fields, preserves customization and state, and is ide
   );
   assert.deepEqual(migratedStrike.damage.parts[0].types, ['fire']);
   assert.deepEqual(migratedStrike.flags.custom, { keep: true });
+  assert.equal(target.itemsByIdentifier('iridescent-strikes').length, 1);
+  assert.equal(mantleItem.system.activities.has('CustomActivity01'), true);
 
   const migratedEffect = mantleItem.effects.get(EFFECT_ID);
   assert.equal(migratedEffect.name, 'My Armor Label');
@@ -271,14 +358,33 @@ test('repairs module-owned fields, preserves customization and state, and is ide
 
   const operationCount = target.operations.length
     + vesselItem.operations.length
-    + mantleItem.operations.length;
+    + mantleItem.operations.length + strikesItem.operations.length;
   assert.equal(await migrateVesselActor(target, {
     loadSourceItems: async () => {
       throw new Error('an idempotent migration must not load the pack again');
     }
   }), false);
   assert.equal(
-    target.operations.length + vesselItem.operations.length + mantleItem.operations.length,
+    target.operations.length + vesselItem.operations.length
+      + mantleItem.operations.length + strikesItem.operations.length,
     operationCount
   );
+});
+
+test('failed Iridescent Strikes creation leaves version 3 and retries cleanly', async () => {
+  const target = legacyActor({ migrationVersion: 3, failItemCreation: true });
+
+  await assert.rejects(
+    migrateVesselActor(target, { loadSourceItems: async () => sourceItems() }),
+    /missing Iridescent Strikes Item/
+  );
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 3);
+  assert.equal(target.itemsByIdentifier('iridescent-strikes').length, 0);
+
+  const retry = legacyActor({ migrationVersion: 3 });
+  assert.equal(await migrateVesselActor(retry, {
+    loadSourceItems: async () => sourceItems()
+  }), true);
+  assert.equal(retry.itemsByIdentifier('iridescent-strikes').length, 1);
+  assert.equal(retry.getFlag(MODULE_ID, MIGRATION_FLAG), 4);
 });

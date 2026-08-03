@@ -1,6 +1,7 @@
 import {
   ARCHON_FORM_ITEM_ID,
   AUTOMATION_ROLES,
+  IRIDESCENT_STRIKES_ITEM_ID,
   MODULE_ID,
   SPIRIT_MANTLE_ITEM_ID,
   VESSEL_CLASS_IDENTIFIER,
@@ -484,12 +485,9 @@ async function migrateVesselItem(item, canonical) {
 
 async function migrateMantleItem(item, canonical) {
   const sourceActivities = documents(canonical?.system?.activities).filter(
-    activity => [
-      AUTOMATION_ROLES.MANTLE_TOGGLE,
-      AUTOMATION_ROLES.IRIDESCENT_STRIKE
-    ].includes(getAutomationRole(activity))
+    activity => getAutomationRole(activity) === AUTOMATION_ROLES.MANTLE_TOGGLE
   );
-  if (sourceActivities.length !== 3) {
+  if (sourceActivities.length !== 1) {
     throw new Error('The Spirit Mantle compendium Item is missing its automation activities.');
   }
 
@@ -504,6 +502,15 @@ async function migrateMantleItem(item, canonical) {
           repaired
       });
     }
+  }
+
+  for (const activity of documents(item.system?.activities)) {
+    if (getAutomationRole(activity) !== AUTOMATION_ROLES.IRIDESCENT_STRIKE) {
+      continue;
+    }
+    await item.update({
+      [`system.activities.-=${documentId(activity)}`]: null
+    });
   }
 
   const sourceEffect = documents(canonical.effects).find(
@@ -529,6 +536,29 @@ async function migrateMantleItem(item, canonical) {
   }
 }
 
+async function migrateIridescentStrikesItem(item, canonical) {
+  const sourceActivities = documents(canonical?.system?.activities).filter(
+    activity => getAutomationRole(activity) === AUTOMATION_ROLES.IRIDESCENT_STRIKE
+  );
+  if (sourceActivities.length !== 1) {
+    throw new Error(
+      'The Iridescent Strikes compendium Item is missing its attack activity.'
+    );
+  }
+
+  const source = sourceActivities[0];
+  const current = documents(item.system?.activities).find(activity =>
+    documentId(activity) === documentId(source)
+      || getAutomationRole(activity) === AUTOMATION_ROLES.IRIDESCENT_STRIKE
+  );
+  const repaired = repairActivity(current, source);
+  if (!current || !sameData(objectData(current), repaired)) {
+    await item.update({
+      [`system.activities.${documentId(current) ?? documentId(source)}`]: repaired
+    });
+  }
+}
+
 export async function loadVesselSourceItems({
   packs = globalThis.game?.packs
 } = {}) {
@@ -540,6 +570,7 @@ export async function loadVesselSourceItems({
     const ids = [
       VESSEL_ITEM_ID,
       SPIRIT_MANTLE_ITEM_ID,
+      IRIDESCENT_STRIKES_ITEM_ID,
       ARCHON_FORM_ITEM_ID,
       ...Object.values(ARCHON_CONTROL_IDS)
     ];
@@ -547,14 +578,14 @@ export async function loadVesselSourceItems({
     if (documents.some(document => !document)) {
       throw new Error('The Homebrew Classes compendium is missing Vessel migration sources.');
     }
-    const [vessel, mantle, archon, ...controlItems] = documents;
+    const [vessel, mantle, strikes, archon, ...controlItems] = documents;
     const controls = Object.fromEntries(
       Object.keys(ARCHON_CONTROL_IDS).map((subclass, index) => [
         subclass,
         controlItems[index]
       ])
     );
-    return { vessel, mantle, archon, controls };
+    return { vessel, mantle, strikes, archon, controls };
   })();
   sourceItemsPromise = request;
   try {
@@ -611,6 +642,21 @@ export async function migrateVesselActor(actor, {
   const mantleItems = items.filter(item => identifier(item) === 'spirit-mantle');
   const source = await loadSourceItems();
   for (const item of vesselItems) await migrateVesselItem(item, source.vessel);
+
+  let strikesItem = items.find(item => identifier(item) === 'iridescent-strikes');
+  if (!strikesItem) {
+    const created = await actor.createEmbeddedDocuments(
+      'Item',
+      [ownedItemSource(source.strikes)],
+      { keepId: true }
+    );
+    strikesItem = created?.[0];
+    if (!strikesItem) {
+      throw new Error('Foundry did not create the missing Iridescent Strikes Item.');
+    }
+  }
+  await migrateIridescentStrikesItem(strikesItem, source.strikes);
+
   for (const item of mantleItems) await migrateMantleItem(item, source.mantle);
 
   const archonItems = items.filter(item =>
