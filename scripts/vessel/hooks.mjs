@@ -55,6 +55,7 @@ const ELDER_REMINDER_HISTORY_LIMIT = 256;
 const pendingRulePrompts = new WeakMap();
 const pendingSealedMagicReconciliations = new WeakMap();
 const pendingStrikingPresencePrompts = new WeakMap();
+const attemptedStrikingPresencePrompts = new Set();
 
 const ARCHON_TRANSFORM_ROLES = new Set([
   AUTOMATION_ROLES.ARCHON_TRANSFORM_FREE,
@@ -199,9 +200,22 @@ function requestEquipmentPrompt(activity, prompt, onError) {
   if (actor) pendingEquipmentPrompts.set(actor, tracked);
 }
 
-function requestStrikingPresenceConfiguration(item, configure, onError) {
+function strikingPresencePromptKey(item) {
+  const actor = item?.actor;
+  const actorIdentity = actor?.uuid ?? actor?.id ?? actor?._id;
+  const itemIdentity = item?.id ?? item?._id ?? item?.uuid;
+  if (!actorIdentity || !itemIdentity) return;
+  return `${actorIdentity}:${itemIdentity}`;
+}
+
+function requestStrikingPresenceConfiguration(item, configure, onError, {
+  automatic = false
+} = {}) {
   if (!item?.isOwner || getStrikingPresenceSkill(item)) return;
+  const key = automatic && strikingPresencePromptKey(item);
+  if (key && attemptedStrikingPresencePrompts.has(key)) return;
   if (pendingStrikingPresencePrompts.has(item)) return;
+  if (key) attemptedStrikingPresencePrompts.add(key);
 
   const tracked = Promise.resolve()
     .then(() => configure(item))
@@ -965,7 +979,9 @@ export function registerVesselAutomationHooks(hooks, {
     queueActorSealedMagicReconciliation(actor);
     for (const item of documents(actor?.items)) {
       if (isStrikingPresence(item)) {
-        requestStrikingPresenceConfiguration(item, configurePresence, reportError);
+        requestStrikingPresenceConfiguration(item, configurePresence, reportError, {
+          automatic: true
+        });
       }
     }
   });

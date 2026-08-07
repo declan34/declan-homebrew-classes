@@ -174,7 +174,11 @@ test('queues one missing Striking Presence configuration without blocking actor 
   const item = aspect({ skill: 'ath' });
   item.id = 'StrikingPresenceB';
   item.identifier = 'striking-presence';
-  const actor = { isOwner: true, items: new Map([[item.id, item]]) };
+  const actor = {
+    id: 'ActorStrikingPresenceA',
+    isOwner: true,
+    items: new Map([[item.id, item]])
+  };
   item.actor = actor;
   let configured = 0;
   let release;
@@ -196,6 +200,101 @@ test('queues one missing Striking Presence configuration without blocking actor 
   assert.equal(configured, 1);
   release();
   await new Promise(resolve => setImmediate(resolve));
+  render({ actor });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(configured, 1);
+});
+
+test('attempts every unconfigured Striking Presence copy once after automatic cancellation', async () => {
+  const registry = hookRegistry();
+  const deception = aspect();
+  deception.id = 'StrikingPresenceCancelA';
+  deception.identifier = 'striking-presence';
+  const persuasion = aspect();
+  persuasion.id = 'StrikingPresenceCancelB';
+  persuasion.identifier = 'striking-presence';
+  const actor = {
+    id: 'ActorStrikingPresenceB',
+    isOwner: true,
+    items: new Map([[deception.id, deception], [persuasion.id, persuasion]])
+  };
+  deception.actor = actor;
+  persuasion.actor = actor;
+  const configured = [];
+
+  registerVesselAutomationHooks(registry.hooks, {
+    configureStrikingPresence: async item => { configured.push(item.id); }
+  });
+  const render = registry.on.get('renderActorSheet');
+
+  render({ actor });
+  await new Promise(resolve => setImmediate(resolve));
+  render({ actor });
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.deepEqual(configured.sort(), [deception.id, persuasion.id]);
+});
+
+test('does not retry an automatic Striking Presence prompt after it rejects', async () => {
+  const registry = hookRegistry();
+  const item = aspect();
+  item.id = 'StrikingPresenceReject';
+  item.identifier = 'striking-presence';
+  const actor = {
+    id: 'ActorStrikingPresenceReject',
+    isOwner: true,
+    items: new Map([[item.id, item]])
+  };
+  item.actor = actor;
+  let configured = 0;
+  const previousError = console.error;
+  console.error = () => {};
+
+  try {
+    registerVesselAutomationHooks(registry.hooks, {
+      configureStrikingPresence: async () => {
+        configured += 1;
+        throw new Error('dismissed dialog');
+      }
+    });
+    const render = registry.on.get('renderActorSheet');
+
+    render({ actor });
+    await new Promise(resolve => setImmediate(resolve));
+    render({ actor });
+    await new Promise(resolve => setImmediate(resolve));
+  } finally {
+    console.error = previousError;
+  }
+
+  assert.equal(configured, 1);
+});
+
+test('keeps manual Striking Presence configuration available after an automatic cancellation', async () => {
+  const registry = hookRegistry();
+  const item = aspect();
+  item.id = 'StrikingPresenceManual';
+  item.identifier = 'striking-presence';
+  const actor = {
+    id: 'ActorStrikingPresenceC',
+    isOwner: true,
+    items: new Map([[item.id, item]])
+  };
+  item.actor = actor;
+  let configured = 0;
+
+  const configure = async () => { configured += 1; };
+  registerVesselAutomationHooks(registry.hooks, {
+    configureStrikingPresence: configure
+  });
+  registry.on.get('renderActorSheet')({ actor });
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.equal(handlePreUseActivity(configurationActivity(item), {
+    configureStrikingPresence: configure
+  }), false);
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(configured, 2);
 });
 
 test('ships one role-tagged utility activity for configuring Striking Presence', () => {
