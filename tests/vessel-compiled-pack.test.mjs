@@ -49,8 +49,32 @@ const vesselMagicSource = yaml.load(
     'utf8'
   )
 );
+const hellfireSource = yaml.load(
+  readFileSync(
+    new URL(
+      '../src/vessel/subclass-features/the-cursed/hellfire.yml',
+      import.meta.url
+    ),
+    'utf8'
+  )
+);
+const malignantAuraSource = yaml.load(
+  readFileSync(
+    new URL(
+      '../src/vessel/subclass-features/the-cursed/malignant-aura.yml',
+      import.meta.url
+    ),
+    'utf8'
+  )
+);
 const direStatureSource = yaml.load(
   readFileSync(new URL('../aspects-src/dire-stature.yml', import.meta.url), 'utf8')
+);
+const strikingPresenceSource = yaml.load(
+  readFileSync(new URL('../aspects-src/striking-presence.yml', import.meta.url), 'utf8')
+);
+const uncannyStrengthSource = yaml.load(
+  readFileSync(new URL('../aspects-src/uncanny-strength.yml', import.meta.url), 'utf8')
 );
 const archonControlSources = [
   'the-ascended',
@@ -104,10 +128,18 @@ test('committed compiled pack preserves Vessel automation source structures', as
     const compiledVesselMagic = documents.find(
       document => document?._id === vesselMagicSource._id
     );
+    const compiledHellfire = documents.find(
+      document => document?._id === hellfireSource._id
+    );
+    const compiledMalignantAura = documents.find(
+      document => document?._id === malignantAuraSource._id
+    );
     assert.ok(compiledVessel);
     assert.ok(compiledMantle);
     assert.ok(compiledStrikes);
     assert.ok(compiledVesselMagic);
+    assert.ok(compiledHellfire);
+    assert.ok(compiledMalignantAura);
 
     assert.deepEqual(
       compiledVessel.system.primaryAbility,
@@ -130,6 +162,16 @@ test('committed compiled pack preserves Vessel automation source structures', as
     assert.deepEqual(
       compiledVesselMagic.system.uses,
       vesselMagicSource.system.uses
+    );
+    assert.equal(
+      compiledHellfire.system.description.value,
+      hellfireSource.system.description.value,
+      'Hellfire description'
+    );
+    assert.equal(
+      compiledMalignantAura.system.description.value,
+      malignantAuraSource.system.description.value,
+      'Malignant Aura description'
     );
 
     const expectedScale = vesselSource.system.advancement.find(
@@ -188,7 +230,7 @@ test('committed compiled pack preserves Vessel automation source structures', as
   }
 });
 
-test('committed Vessel Aspect pack preserves the Dire Stature effect template', async () => {
+test('committed Vessel Aspect pack preserves passive Aspect activities, flags, and effect templates', async () => {
   const temporary = mkdtempSync(join(tmpdir(), 'vessel-dire-stature-pack-'));
   const pack = join(temporary, 'pack');
   const extracted = join(temporary, 'extracted');
@@ -197,11 +239,41 @@ test('committed Vessel Aspect pack preserves the Dire Stature effect template', 
     cpSync(vesselAspectsCompiledPack, pack, { recursive: true });
     await extractPack(pack, extracted, { yaml: true, recursive: true });
 
-    const compiled = findYamlFiles(extracted)
-      .map(path => yaml.load(readFileSync(path, 'utf8')))
-      .find(document => document?._id === direStatureSource._id);
-    assert.ok(compiled, 'dire-stature');
-    assert.deepEqual(compiled.effects, direStatureSource.effects);
+    const documents = findYamlFiles(extracted)
+      .map(path => yaml.load(readFileSync(path, 'utf8')));
+    const compiledDireStature = documents.find(
+      document => document?._id === direStatureSource._id
+    );
+    const compiledStrikingPresence = documents.find(
+      document => document?._id === strikingPresenceSource._id
+    );
+    const compiledUncannyStrength = documents.find(
+      document => document?._id === uncannyStrengthSource._id
+    );
+    assert.ok(compiledDireStature, 'dire-stature');
+    assert.ok(compiledStrikingPresence, 'striking-presence');
+    assert.ok(compiledUncannyStrength, 'uncanny-strength');
+    assert.deepEqual(compiledDireStature.effects, direStatureSource.effects);
+    assert.deepEqual(
+      compiledStrikingPresence.system.activities,
+      strikingPresenceSource.system.activities,
+      'Striking Presence configure activity and flags'
+    );
+    assert.deepEqual(
+      compiledStrikingPresence.flags,
+      strikingPresenceSource.flags,
+      'Striking Presence item flags'
+    );
+    assert.deepEqual(
+      compiledUncannyStrength.effects,
+      uncannyStrengthSource.effects,
+      'Uncanny Strength transfer proficiency effect'
+    );
+    assert.deepEqual(
+      compiledUncannyStrength.flags,
+      uncannyStrengthSource.flags,
+      'Uncanny Strength item flags'
+    );
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }
