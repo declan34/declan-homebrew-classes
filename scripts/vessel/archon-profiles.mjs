@@ -75,6 +75,14 @@ function vesselClass(actor) {
     );
 }
 
+function spellPoolEntries(pools) {
+  if (!pools) return [];
+  if (typeof pools.entries === 'function') {
+    return Array.from(pools.entries());
+  }
+  return Object.entries(pools);
+}
+
 export function resolveVesselSpellSlotPool(actor, {
   spellcasting = globalThis.CONFIG?.DND5E?.spellcasting,
   spellProgression = globalThis.CONFIG?.DND5E?.spellProgression
@@ -86,20 +94,29 @@ export function resolveVesselSpellSlotPool(actor, {
     ?? progression;
   const model = methodKey ? spellcasting?.[methodKey] : undefined;
   const modelKey = model?.getSpellSlotKey?.();
-  const pools = actor?.system?.spells ?? {};
-  const candidates = [modelKey, methodKey, progression, 'vessel']
+  const entries = spellPoolEntries(actor?.system?.spells);
+  const candidates = [
+    modelKey,
+    model?.type,
+    model?.progression,
+    methodKey,
+    progression,
+    'vessel'
+  ]
     .filter((key, index, keys) => key && keys.indexOf(key) === index);
 
-  let key = candidates.find(candidate => pools[candidate]);
-  if (!key && methodKey) {
-    const matching = Object.entries(pools)
-      .filter(([, pool]) => pool?.type === methodKey);
-    if (matching.length === 1) [key] = matching[0];
+  let resolved = entries.find(([key]) => candidates.includes(key));
+  if (!resolved) {
+    const matching = entries.filter(([, pool]) =>
+      candidates.includes(pool?.type)
+    );
+    if (matching.length === 1) resolved = matching[0];
   }
-  if (!key) return;
+  if (!resolved) return;
+  const [key, pool] = resolved;
   return {
     key,
-    pool: pools[key],
+    pool,
     target: `spells.${key}.value`
   };
 }
@@ -110,7 +127,12 @@ function prepareVesselSlotUse(activity, actor, options) {
   if (!pool) {
     throw error(
       'missing-vessel-slots',
-      'This actor does not have a Vessel Magic spell-slot pool.'
+      'This actor does not have a Vessel Magic spell-slot pool.',
+      {
+        availablePoolKeys: spellPoolEntries(actor?.system?.spells)
+          .map(([key]) => key)
+          .filter(key => typeof key === 'string')
+      }
     );
   }
   if (!(Number(pool.value) > 0)) {

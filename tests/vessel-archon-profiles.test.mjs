@@ -6,6 +6,11 @@ import {
   readdirSync
 } from 'node:fs';
 import { createRequire } from 'node:module';
+import {
+  ArchonPreparationError,
+  prepareArchonActivityUse,
+  resolveVesselSpellSlotPool
+} from '../scripts/vessel/archon-profiles.mjs';
 
 const require = createRequire(
   new URL('../../dnd5e-pdf-importer/emit/package.json', import.meta.url)
@@ -343,4 +348,97 @@ test('all Archon source document IDs and modification-user IDs are Foundry-safe'
   for (const profile of profiles) {
     assert.equal(profile._key, `!actors!${profile._id}`);
   }
+});
+
+test('resolves a model-provided Vessel slot key from a plain spell-pool object', () => {
+  const host = {
+    classes: {
+      vessel: {
+        system: { spellcasting: { progression: 'vessel' } },
+        spellcasting: { type: 'vessel' }
+      }
+    },
+    system: {
+      spells: {
+        archonMagic: { type: 'vessel', value: 2, max: 2 }
+      }
+    }
+  };
+
+  assert.deepEqual(resolveVesselSpellSlotPool(host, {
+    spellcasting: {
+      vessel: { getSpellSlotKey: () => 'archonMagic' }
+    }
+  }), {
+    key: 'archonMagic',
+    pool: host.system.spells.archonMagic,
+    target: 'spells.archonMagic.value'
+  });
+});
+
+test('resolves a Vessel-typed Map pool whose actual key differs from progression', () => {
+  const host = {
+    classes: {
+      vessel: {
+        system: { spellcasting: { progression: 'vessel' } }
+      }
+    },
+    system: {
+      spells: new Map([
+        ['archonMagic', { type: 'vessel', value: 2, max: 2 }]
+      ])
+    }
+  };
+
+  assert.deepEqual(resolveVesselSpellSlotPool(host), {
+    key: 'archonMagic',
+    pool: { type: 'vessel', value: 2, max: 2 },
+    target: 'spells.archonMagic.value'
+  });
+});
+
+test('missing Vessel slots expose only the available pool keys in error details', async () => {
+  const host = {
+    isOwner: true,
+    classes: {
+      vessel: {
+        system: { spellcasting: { progression: 'vessel' } }
+      }
+    },
+    system: {
+      spells: new Map([
+        ['otherMagic', { type: 'other', value: 2, max: 2 }]
+      ])
+    }
+  };
+  const subject = {
+    item: { actor: host, isOwner: true },
+    flags: {
+      'declan-homebrew-classes': {
+        vessel: { role: 'archon-extend' }
+      }
+    },
+    consumption: {
+      targets: [{
+        type: 'attribute',
+        target: 'spells.vessel.value',
+        value: '1',
+        scaling: {}
+      }]
+    }
+  };
+
+  await assert.rejects(
+    prepareArchonActivityUse(subject),
+    error => {
+      assert.ok(error instanceof ArchonPreparationError);
+      assert.equal(error.code, 'missing-vessel-slots');
+      assert.equal(
+        error.message,
+        'This actor does not have a Vessel Magic spell-slot pool.'
+      );
+      assert.deepEqual(error.details, { availablePoolKeys: ['otherMagic'] });
+      return true;
+    }
+  );
 });
