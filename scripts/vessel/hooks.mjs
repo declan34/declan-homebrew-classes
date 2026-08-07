@@ -25,6 +25,8 @@ import {
   toggleSpiritMantle
 } from './mantle.mjs';
 import { migrateVesselActor } from './migration.mjs';
+import { sealedMagicEntriesForActor } from './sealed-magic-manifest.mjs';
+import { reconcileSealedMagic } from './sealed-magic-reconciler.mjs';
 import { reconcileStage3Effects } from './stage3-effects.mjs';
 import {
   ARCHON_PROFILES,
@@ -47,6 +49,7 @@ const transformingArchons = new WeakSet();
 const remindedElderTransformations = new Set();
 const ELDER_REMINDER_HISTORY_LIMIT = 256;
 const pendingRulePrompts = new WeakMap();
+const pendingSealedMagicReconciliations = new WeakMap();
 
 const ARCHON_TRANSFORM_ROLES = new Set([
   AUTOMATION_ROLES.ARCHON_TRANSFORM_FREE,
@@ -80,6 +83,19 @@ function warn(message) {
 
 function isVesselActor(actor) {
   return getVesselLevel(actor) > 0;
+}
+
+function itemIdentifier(item, changes) {
+  return changes?.system?.identifier
+    ?? changes?.identifier
+    ?? item?.identifier
+    ?? item?.system?.identifier;
+}
+
+function isVesselProgressionItem(item, changes) {
+  if (!item?.actor?.isOwner) return false;
+  if (item.type === 'class') return itemIdentifier(item, changes) === 'vessel';
+  return item.type === 'subclass' && isVesselActor(item.actor);
 }
 
 function documents(collection) {
@@ -828,6 +844,38 @@ export function getResponsibleUser(actor, users) {
     ?? activeUsers.find(user => actor?.testUserPermission?.(user, 'OWNER'));
 }
 
+function sealedMagicWarning(actor, unresolved) {
+  const names = new Map(sealedMagicEntriesForActor(actor).map(entry => [
+    entry.key, entry.name
+  ]));
+  const spells = unresolved.map(entry => names.get(entry.key) ?? entry.key);
+  return `Unable to grant Sealed Magic spell${spells.length === 1 ? '' : 's'}: ${spells.join(', ')}.`;
+}
+
+function queueSealedMagicReconciliation(actor, {
+  users,
+  currentUserId,
+  reconcileSealedMagic: reconcile,
+  warn: notify,
+  reportError: onError
+}) {
+  if (!actor?.isOwner || !responsibleHere(actor, users(), currentUserId())) return;
+  if (pendingSealedMagicReconciliations.has(actor)) return;
+
+  const pending = Promise.resolve()
+    .then(async () => {
+      const result = await reconcile(actor);
+      if (result?.unresolved?.length) notify(sealedMagicWarning(actor, result.unresolved));
+    })
+    .catch(onError)
+    .finally(() => {
+      if (pendingSealedMagicReconciliations.get(actor) === pending) {
+        pendingSealedMagicReconciliations.delete(actor);
+      }
+    });
+  pendingSealedMagicReconciliations.set(actor, pending);
+}
+
 export function registerVesselAutomationHooks(hooks, {
   actors = defaultActors,
   users = () => globalThis.game?.users ?? [],
@@ -835,11 +883,33 @@ export function registerVesselAutomationHooks(hooks, {
   migrateActor: migrate = migrateVesselActor,
   reconcileActor: reconcile = reconcileVesselActor,
   deactivateSpiritMantle: deactivate = deactivateSpiritMantle,
+  reconcileSealedMagic: reconcileMagic = reconcileSealedMagic,
   finalizeArchon = finalizeArchonTransformation,
   promptArchonExpiry = promptForArchonExpiry,
   promptArchonReversion = promptForArchonReversion,
-  remindElderArchon: elderReminder = remindElderArchon
+  remindElderArchon: elderReminder = remindElderArchon,
+  warn: warnSealedMagic = warn
 } = {}) {
+  const requestSealedMagicReconciliation = () => {
+    for (const actor of actors()) {
+      queueSealedMagicReconciliation(actor, {
+        users,
+        currentUserId,
+        reconcileSealedMagic: reconcileMagic,
+        warn: warnSealedMagic,
+        reportError
+      });
+    }
+  };
+  const queueActorSealedMagicReconciliation = actor => {
+    queueSealedMagicReconciliation(actor, {
+      users,
+      currentUserId,
+      reconcileSealedMagic: reconcileMagic,
+      warn: warnSealedMagic,
+      reportError
+    });
+  };
   hooks.on('dnd5e.preUseActivity', (activity, usageConfig) =>
     handlePreUseActivity(activity, {}, usageConfig)
   );
@@ -849,6 +919,9 @@ export function registerVesselAutomationHooks(hooks, {
   hooks.on('dnd5e.renderChatMessage', handleRenderArchonChatMessage);
   hooks.on('dnd5e.transformActorV2', handleLinkedArchonTransform);
   hooks.on('preUpdateActor', handlePreUpdateArchonActor);
+  hooks.on('renderActorSheet', sheet => {
+    queueActorSealedMagicReconciliation(sheet?.actor ?? sheet?.document);
+  });
   hooks.on('createActor', (actor, _options, userId) => {
     if (userId !== currentUserId()) return;
     if (finalizingArchons.has(actor)) return;
@@ -913,6 +986,9 @@ export function registerVesselAutomationHooks(hooks, {
   });
 
   hooks.on('updateItem', (item, changes, _options, userId) => {
+    if (isVesselProgressionItem(item, changes)) {
+      queueActorSealedMagicReconciliation(item.actor);
+    }
     if (userId !== currentUserId()) return;
     if (
       (item.type === 'equipment' && affectsEquipment(changes))
@@ -922,12 +998,18 @@ export function registerVesselAutomationHooks(hooks, {
     }
   });
   hooks.on('createItem', (item, _options, userId) => {
+    if (isVesselProgressionItem(item)) {
+      queueActorSealedMagicReconciliation(item.actor);
+    }
     if (userId !== currentUserId()) return;
     if (item.type === 'equipment' || isStage3PassiveAspect(item)) {
       void reconcile(item.actor).catch(reportError);
     }
   });
   hooks.on('deleteItem', (item, _options, userId) => {
+    if (isVesselProgressionItem(item)) {
+      queueActorSealedMagicReconciliation(item.actor);
+    }
     if (userId !== currentUserId()) return;
     if (item.type === 'equipment' || isStage3PassiveAspect(item)) {
       void reconcile(item.actor).catch(reportError);
@@ -954,8 +1036,11 @@ export function registerVesselAutomationHooks(hooks, {
             reportError(error);
           }
           await reconcile(actor);
+          queueActorSealedMagicReconciliation(actor);
         })().catch(reportError);
       }
     }
   });
+
+  return { reconcileSealedMagic: requestSealedMagicReconciliation };
 }

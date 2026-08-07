@@ -278,6 +278,7 @@ test('registers only public Foundry and dnd5e hooks', () => {
     'dnd5e.renderChatMessage',
     'dnd5e.transformActorV2',
     'preUpdateActor',
+    'renderActorSheet',
     'updateActiveEffect',
     'updateActor',
     'updateItem',

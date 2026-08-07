@@ -6,12 +6,15 @@ import {
 import { invalidateSpellProviderCache } from './vessel/spell-provider.mjs';
 
 Hooks.once('init', () => {
+  const vesselHooks = registerVesselAutomationHooks(Hooks);
   registerPrivateSpellCompendiumSetting({
     settings: game.settings,
     packs: game.packs,
-    onChange: invalidateSpellProviderCache
+    onChange: () => {
+      invalidateSpellProviderCache();
+      vesselHooks.reconcileSealedMagic();
+    }
   });
-  registerVesselAutomationHooks(Hooks);
 });
 
 Hooks.once('ready', () => {
