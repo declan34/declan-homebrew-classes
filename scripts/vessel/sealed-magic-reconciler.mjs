@@ -107,6 +107,22 @@ function affinityManualReview(actor) {
   return review;
 }
 
+function entryRemainsEligible(actor, entry, entriesForActor) {
+  if (getVesselSubclassIdentifier(actor) !== entry.subclass) return false;
+  if (getVesselLevel(actor) < entry.vesselLevel) return false;
+  if (
+    entry.affinity
+    && actorAffinity(actor) !== normalizeElementalAffinity(entry.affinity)
+  ) return false;
+  if (!documents(entriesForActor(actor)).some(candidate =>
+    candidate?.key === entry.key
+  )) return false;
+
+  const current = existingSpellIdentities(actor);
+  return !current.keys.has(entry.key)
+    && !current.names.has(normalizeSpellName(entry.name));
+}
+
 async function reconcileSealedMagicUnlocked(actor, dependencies) {
   const result = {
     created: [],
@@ -155,6 +171,11 @@ async function reconcileSealedMagicUnlocked(actor, dependencies) {
     }
     if (!source || source.type !== 'spell' || typeof source.toObject !== 'function') {
       result.unresolved.push(unresolved(entry.key, 'source-unavailable'));
+      continue;
+    }
+
+    if (!entryRemainsEligible(actor, entry, dependencies.entriesForActor)) {
+      result.skipped.push(entry.key);
       continue;
     }
 

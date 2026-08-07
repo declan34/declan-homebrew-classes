@@ -269,7 +269,7 @@ test('uses the manifest actor filter so a Cataclysm actor receives only its affi
     serialize: directOperation
   });
 
-  assert.deepEqual(observedActors, [target]);
+  assert.equal(observedActors.every(usedActor => usedActor === target), true);
   assert.deepEqual(result.created, [shared.key, fire.key]);
   assert.equal(target.createCalls.some(spell => spell.name === water.name), false);
 });
@@ -464,6 +464,41 @@ test('coalesces a level event during reconciliation into one trailing pass', asy
   assert.deepEqual(observedLevels, [3, 5]);
 });
 
+test('requeues a request arriving at the native Promise settlement boundary', async () => {
+  const target = actor();
+  target.testUserPermission = user => user.id === 'owner';
+  const registry = hookRegistry();
+  let resolveFirst;
+  const firstPass = new Promise(resolve => { resolveFirst = resolve; });
+  let reconciled = 0;
+
+  const registration = registerVesselAutomationHooks(registry.hooks, {
+    actors: () => [target],
+    users: () => [{id: 'owner', active: true, isGM: false}],
+    currentUserId: () => 'owner',
+    reconcileSealedMagic: () => {
+      reconciled += 1;
+      if (reconciled === 1) return firstPass;
+      return Promise.resolve({
+        created: [], skipped: [], unresolved: [], manualReview: []
+      });
+    }
+  });
+
+  registration.reconcileSealedMagic();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(reconciled, 1);
+
+  resolveFirst({
+    created: [], skipped: [], unresolved: [], manualReview: []
+  });
+  queueMicrotask(() => registration.reconcileSealedMagic());
+  await new Promise(resolve => setImmediate(resolve));
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.equal(reconciled, 2);
+});
+
 test('schedules Sealed Magic after actor creation finalization', async () => {
   const target = actor();
   target.testUserPermission = user => user.id === 'owner';
@@ -515,6 +550,80 @@ test('schedules Sealed Magic when Elemental Affinity changes', async () => {
   await new Promise(resolve => setImmediate(resolve));
 
   assert.deepEqual(reconciled, [target]);
+});
+
+test('skips a stale Fire grant and creates Water after affinity changes during resolution', async () => {
+  const fire = entry(
+    'cataclysm-fire-3-control-flame',
+    'Control Flame',
+    3,
+    'fire'
+  );
+  const water = entry(
+    'cataclysm-water-3-shape-water',
+    'Shape Water',
+    3,
+    'water'
+  );
+  const target = actor({affinity: 'fire'});
+  target.testUserPermission = user => user.id === 'owner';
+  const registry = hookRegistry();
+  let releaseFire;
+  const fireResolution = new Promise(resolve => { releaseFire = resolve; });
+  let resolvingFire = false;
+
+  const entriesForActor = usedActor =>
+    usedActor.flags[MODULE_ID].vessel.elementalAffinity === 'fire'
+      ? [fire]
+      : [water];
+  registerVesselAutomationHooks(registry.hooks, {
+    users: () => [{id: 'owner', active: true, isGM: false}],
+    currentUserId: () => 'owner',
+    reconcileSealedMagic: usedActor => reconcileSealedMagic(usedActor, {
+      entriesForActor,
+      resolveEntry: async requested => {
+        if (requested.key === fire.key) {
+          resolvingFire = true;
+          await fireResolution;
+        }
+        return {
+          status: 'resolved',
+          spellKey: requested.key,
+          sourceUuid: `Compendium.test.spells.Item.${requested.key}`,
+          provider: 'homebrew'
+        };
+      },
+      fromUuid: async uuid => sourceItem(
+        uuid.endsWith(fire.key) ? fire.name : water.name
+      ),
+      serialize: directOperation
+    })
+  });
+
+  registry.on.get('renderActorSheet')({actor: target});
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(resolvingFire, true);
+
+  target.flags[MODULE_ID].vessel.elementalAffinity = 'water';
+  registry.on.get('updateActor')(
+    target,
+    {flags: {[MODULE_ID]: {vessel: {elementalAffinity: 'water'}}}},
+    {},
+    'owner'
+  );
+  releaseFire();
+  await new Promise(resolve => setImmediate(resolve));
+  await new Promise(resolve => setImmediate(resolve));
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.deepEqual(
+    target.createCalls.map(spell => spell.name),
+    ['Shape Water']
+  );
+  assert.equal(
+    target.createCalls[0].flags[MODULE_ID].vessel.sealedMagic.key,
+    water.key
+  );
 });
 
 test('warns the responsible user once per pass for all affinity reviews', async () => {

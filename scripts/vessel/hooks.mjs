@@ -954,9 +954,17 @@ function queueSealedMagicReconciliation(actor, {
     })
     .catch(onError)
     .finally(() => {
-      if (pendingSealedMagicReconciliations.get(actor) === request) {
-        pendingSealedMagicReconciliations.delete(actor);
-      }
+      if (pendingSealedMagicReconciliations.get(actor) !== request) return;
+      const requeue = request.dirty;
+      pendingSealedMagicReconciliations.delete(actor);
+      if (!requeue) return;
+      queueSealedMagicReconciliation(actor, {
+        users,
+        currentUserId,
+        reconcileSealedMagic: reconcile,
+        warn: notify,
+        reportError: onError
+      });
     });
   pendingSealedMagicReconciliations.set(actor, request);
 }
