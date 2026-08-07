@@ -5,7 +5,8 @@ import {
 } from './constants.mjs';
 import {
   configureStrikingPresence,
-  getStrikingPresenceSkill
+  getStrikingPresenceSkill,
+  reconcileStrikingPresence
 } from './striking-presence.mjs';
 import {
   activateArchonForm,
@@ -885,6 +886,7 @@ export async function reconcileVesselActor(actor) {
   if (mantle) await reconcileSpiritMantle(actor, { sourceItem: mantle });
   else if (isSpiritMantleActive(actor)) await deactivateSpiritMantle(actor);
   else await reconcileSpiritMantle(actor);
+  await reconcileStrikingPresence(actor);
   await reconcileStage3Effects(actor);
 }
 
@@ -1056,6 +1058,7 @@ export function registerVesselAutomationHooks(hooks, {
     if (
       (item.type === 'equipment' && affectsEquipment(changes))
       || isStage3PassiveAspect(item)
+      || isStrikingPresence(item)
     ) {
       void reconcile(item.actor).catch(reportError);
     }
@@ -1065,7 +1068,11 @@ export function registerVesselAutomationHooks(hooks, {
       queueActorSealedMagicReconciliation(item.actor);
     }
     if (userId !== currentUserId()) return;
-    if (item.type === 'equipment' || isStage3PassiveAspect(item)) {
+    if (
+      item.type === 'equipment'
+      || isStage3PassiveAspect(item)
+      || isStrikingPresence(item)
+    ) {
       void reconcile(item.actor).catch(reportError);
     }
   });
@@ -1074,7 +1081,11 @@ export function registerVesselAutomationHooks(hooks, {
       queueActorSealedMagicReconciliation(item.actor);
     }
     if (userId !== currentUserId()) return;
-    if (item.type === 'equipment' || isStage3PassiveAspect(item)) {
+    if (
+      item.type === 'equipment'
+      || isStage3PassiveAspect(item)
+      || isStrikingPresence(item)
+    ) {
       void reconcile(item.actor).catch(reportError);
     }
     if (item.identifier === 'spirit-mantle' || item.system?.identifier === 'spirit-mantle') {

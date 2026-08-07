@@ -8,7 +8,11 @@ const require = createRequire(
 );
 const yaml = require('js-yaml');
 
-const { configureStrikingPresence, getStrikingPresenceSkill } = await import(
+const {
+  configureStrikingPresence,
+  getStrikingPresenceSkill,
+  reconcileStrikingPresence
+} = await import(
   '../scripts/vessel/striking-presence.mjs'
 );
 const {
@@ -61,6 +65,210 @@ function hookRegistry() {
     }
   };
 }
+
+function configuredPresence({ id, skill, uuid } = {}) {
+  const item = aspect({ skill });
+  item.id = id;
+  item.uuid = uuid;
+  item.identifier = 'striking-presence';
+  return item;
+}
+
+function reconciliationActor({ mantle = false, items = [] } = {}) {
+  let nextEffect = 0;
+  const target = {
+    isOwner: true,
+    flags: {
+      [MODULE_ID]: { vessel: { mantle: { active: mantle } } }
+    },
+    items: new Map(items.map(item => [item.id, item])),
+    effects: [],
+    operations: [],
+    getFlag(scope, key) {
+      if (scope === MODULE_ID && key === 'vessel.mantle.active') {
+        return this.flags[MODULE_ID].vessel.mantle.active;
+      }
+    },
+    async createEmbeddedDocuments(type, rows) {
+      assert.equal(type, 'ActiveEffect');
+      this.operations.push(['create', structuredClone(rows)]);
+      const created = rows.map(row => ({
+        ...structuredClone(row),
+        _id: `striking-effect-${++nextEffect}`
+      }));
+      this.effects.push(...created);
+      return created;
+    },
+    async deleteEmbeddedDocuments(type, ids) {
+      assert.equal(type, 'ActiveEffect');
+      this.operations.push(['delete', [...ids]]);
+      this.effects = this.effects.filter(effect => !ids.includes(effect._id));
+    },
+    async updateEmbeddedDocuments(type, rows) {
+      assert.equal(type, 'ActiveEffect');
+      this.operations.push(['update', structuredClone(rows)]);
+      for (const row of rows) {
+        Object.assign(
+          this.effects.find(effect => effect._id === row._id),
+          structuredClone(row)
+        );
+      }
+    }
+  };
+  for (const item of items) item.actor = target;
+  return target;
+}
+
+function strikingEffects(target, type) {
+  return target.effects.filter(effect =>
+    effect.flags?.[MODULE_ID]?.vessel?.strikingPresence?.type === type
+  );
+}
+
+test('reconciles an uncloaked configured copy into a permanent proficiency effect', async () => {
+  const presence = configuredPresence({
+    id: 'striking-presence-dec',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceDec',
+    skill: 'dec'
+  });
+  const target = reconciliationActor({ items: [presence] });
+
+  await reconcileStrikingPresence(target);
+
+  const [proficiency] = strikingEffects(target, 'proficiency');
+  assert.equal(strikingEffects(target, 'advantage').length, 0);
+  assert.deepEqual(proficiency.changes, [{
+    key: 'system.skills.dec.value', mode: 4, value: '1', priority: 20
+  }]);
+  assert.deepEqual(proficiency.flags[MODULE_ID].vessel.strikingPresence, {
+    type: 'proficiency',
+    sourceItemId: presence.id,
+    sourceItemUuid: presence.uuid
+  });
+});
+
+test('reconciles a cloaked configured copy into a separate advantage effect', async () => {
+  const presence = configuredPresence({
+    id: 'striking-presence-itm',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceItm',
+    skill: 'itm'
+  });
+  const target = reconciliationActor({ mantle: true, items: [presence] });
+
+  await reconcileStrikingPresence(target);
+
+  const [advantage] = strikingEffects(target, 'advantage');
+  assert.deepEqual(advantage.changes, [{
+    key: 'system.skills.itm.roll.mode', mode: 2, value: '1', priority: 20
+  }]);
+  assert.deepEqual(advantage.flags[MODULE_ID].vessel.strikingPresence, {
+    type: 'advantage',
+    sourceItemId: presence.id,
+    sourceItemUuid: presence.uuid
+  });
+  assert.equal(strikingEffects(target, 'proficiency').length, 1);
+});
+
+test('uncloaking deletes only the matching Striking Presence advantage effect', async () => {
+  const presence = configuredPresence({
+    id: 'striking-presence-per',
+    uuid: 'Actor.Vessel.Item.StrikingPresencePer',
+    skill: 'per'
+  });
+  const target = reconciliationActor({ mantle: true, items: [presence] });
+  await reconcileStrikingPresence(target);
+  target.effects.push({
+    _id: 'unrelated-advantage',
+    changes: [{ key: 'system.skills.per.roll.mode', mode: 2, value: '1' }],
+    flags: { otherModule: { persistent: true } }
+  });
+  target.flags[MODULE_ID].vessel.mantle.active = false;
+
+  await reconcileStrikingPresence(target);
+
+  assert.equal(strikingEffects(target, 'advantage').length, 0);
+  assert.equal(strikingEffects(target, 'proficiency').length, 1);
+  assert.ok(target.effects.some(effect => effect._id === 'unrelated-advantage'));
+});
+
+test('keeps two configured Striking Presence copies keyed by their exact source IDs', async () => {
+  const first = configuredPresence({
+    id: 'striking-presence-first',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceFirst',
+    skill: 'dec'
+  });
+  const second = configuredPresence({
+    id: 'striking-presence-second',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceSecond',
+    skill: 'dec'
+  });
+  const target = reconciliationActor({ mantle: true, items: [first, second] });
+
+  await reconcileStrikingPresence(target);
+
+  for (const type of ['proficiency', 'advantage']) {
+    assert.deepEqual(
+      strikingEffects(target, type).map(effect =>
+        effect.flags[MODULE_ID].vessel.strikingPresence.sourceItemId
+      ).sort(),
+      [first.id, second.id].sort()
+    );
+  }
+});
+
+test('reconciliation refreshes effects when a configured copy changes skill', async () => {
+  const presence = configuredPresence({
+    id: 'striking-presence-reconfigured',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceReconfigured',
+    skill: 'dec'
+  });
+  const target = reconciliationActor({ mantle: true, items: [presence] });
+  await reconcileStrikingPresence(target);
+  presence.flags[MODULE_ID].vessel.strikingPresence.skill = 'per';
+
+  await reconcileStrikingPresence(target);
+
+  assert.deepEqual(strikingEffects(target, 'proficiency')[0].changes, [{
+    key: 'system.skills.per.value', mode: 4, value: '1', priority: 20
+  }]);
+  assert.deepEqual(strikingEffects(target, 'advantage')[0].changes, [{
+    key: 'system.skills.per.roll.mode', mode: 2, value: '1', priority: 20
+  }]);
+});
+
+test('reconciles Striking Presence after its item and Mantle state change', async () => {
+  const registry = hookRegistry();
+  const presence = configuredPresence({
+    id: 'striking-presence-hook',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceHook',
+    skill: 'dec'
+  });
+  const target = reconciliationActor({ items: [presence] });
+  const reconciled = [];
+
+  registerVesselAutomationHooks(registry.hooks, {
+    currentUserId: () => 'current-user',
+    reconcileActor: async actor => { reconciled.push(actor); }
+  });
+
+  registry.on.get('createItem')(presence, {}, 'current-user');
+  registry.on.get('updateItem')(
+    presence,
+    { flags: { [MODULE_ID]: { vessel: { strikingPresence: { skill: 'dec' } } } } },
+    {},
+    'current-user'
+  );
+  registry.on.get('deleteItem')(presence, {}, 'current-user');
+  registry.on.get('updateActor')(
+    target,
+    { flags: { [MODULE_ID]: { vessel: { mantle: { active: true } } } } },
+    {},
+    'current-user'
+  );
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.deepEqual(reconciled, [target, target, target, target]);
+});
 
 test('stores the first Striking Presence choice on its owned Item', async () => {
   const item = aspect();
