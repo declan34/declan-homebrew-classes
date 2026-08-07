@@ -119,6 +119,13 @@ function mockActor({
       for (const segment of path.slice(0, -1)) current = current?.[segment];
       if (current) delete current[path.at(-1)];
     },
+    toObject() {
+      return {
+        img: this.img,
+        prototypeToken: structuredClone(this.prototypeToken),
+        system: structuredClone(this.system)
+      };
+    },
     async update(changes) {
       this.operations.push(['update', structuredClone(changes)]);
       for (const [path, value] of Object.entries(changes)) {
@@ -311,6 +318,94 @@ test('in-place reversion restores snapshots and removes only matching temporary 
     true
   );
   assert.equal(target.effects.some(effect => effect.name === 'Cursed Aura'), false);
+});
+
+test('JSON round-tripped snapshots restore traits and token geometry', async () => {
+  const target = mockActor({
+    level: 6,
+    languages: new Set(['common', 'celestial']),
+    customLanguages: 'Trade Cant',
+    temp: 0
+  });
+  target.system.traits.dr = {
+    value: new Set(['cold']),
+    custom: 'Moon-touched'
+  };
+  const token = {
+    uuid: 'Scene.scene.Token.nonstandard',
+    texture: { src: 'icons/original-live-token.webp' },
+    width: 2,
+    height: 3,
+    async update(changes) {
+      if (changes['texture.src'] !== undefined) {
+        this.texture.src = changes['texture.src'];
+      }
+      if (changes.width !== undefined) this.width = changes.width;
+      if (changes.height !== undefined) this.height = changes.height;
+    }
+  };
+  target.getActiveTokens = () => [{ document: token }];
+
+  await activateArchonForm(target, switchProfile(), {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    transformationId: 'round-trip-snapshot'
+  }, { now: 300 });
+
+  target.flags = JSON.parse(JSON.stringify(target.flags));
+  token.texture.src = 'icons/changed-live-token.webp';
+  token.width = 1;
+  token.height = 1;
+
+  await revertArchonForm(target);
+
+  assert.deepEqual(target.system.traits.languages, {
+    value: ['common', 'celestial'],
+    custom: 'Trade Cant'
+  });
+  assert.deepEqual(target.system.traits.weaponProf, {
+    value: ['simpleM'],
+    custom: 'Moonblade'
+  });
+  assert.deepEqual(target.system.traits.dr, {
+    value: ['cold'],
+    custom: 'Moon-touched'
+  });
+  assert.equal(target.system.attributes.hp.temp, 0);
+  assert.equal(token.texture.src, 'icons/original-live-token.webp');
+  assert.equal(token.width, 2);
+  assert.equal(token.height, 3);
+});
+
+test('reversion restores temporary HP from 0 through Archon Form back to 0', async () => {
+  const target = mockActor({ level: 6, temp: 0 });
+
+  await activateArchonForm(target, switchProfile(), {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    transformationId: 'restore-zero-temp-hp'
+  }, { now: 400 });
+
+  assert.equal(target.system.attributes.hp.temp, 12);
+  await revertArchonForm(target);
+  assert.equal(target.system.attributes.hp.temp, 0);
+});
+
+test('reversion restores temporary HP from 4 through Archon Form back to 4', async () => {
+  const target = mockActor({ level: 6, temp: 4 });
+
+  await activateArchonForm(target, switchProfile(), {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    transformationId: 'restore-four-temp-hp'
+  }, { now: 500 });
+
+  assert.equal(target.system.attributes.hp.temp, 12);
+  await revertArchonForm(target);
+  assert.equal(target.system.attributes.hp.temp, 4);
 });
 
 function profile({

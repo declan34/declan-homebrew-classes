@@ -57,6 +57,32 @@ function documentSource(document) {
   return document?.toObject ? document.toObject() : clone(document);
 }
 
+function serializationSafe(value) {
+  if (value instanceof Set) return [...value].map(serializationSafe);
+  if (Array.isArray(value)) return value.map(serializationSafe);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [key, serializationSafe(entry)])
+    );
+  }
+  return value;
+}
+
+function actorSnapshotSource(actor) {
+  return actor?.toObject?.() ?? actor?._source ?? actor ?? {};
+}
+
+function tokenSnapshot(token) {
+  const source = token?.toObject?.() ?? token?._source ?? token ?? {};
+  return {
+    uuid: token?.uuid ?? source.uuid,
+    id: token?.id ?? source.id ?? source._id,
+    textureSrc: source.texture?.src ?? token?.texture?.src,
+    width: source.width ?? token?.width,
+    height: source.height ?? token?.height
+  };
+}
+
 function documentId(document) {
   return document?.id ?? document?._id;
 }
@@ -71,21 +97,20 @@ function activeTokenDocuments(actor) {
 }
 
 function archonSnapshot(actor) {
+  const source = actorSnapshotSource(actor);
+  const system = source.system ?? actor?.system ?? {};
+  const prototypeToken = source.prototypeToken ?? actor?.prototypeToken;
   return {
     actor: {
-      img: actor?.img,
-      prototypeTokenTextureSrc: actor?.prototypeToken?.texture?.src,
-      movement: clone(actor?.system?.attributes?.movement),
-      senses: clone(actor?.system?.attributes?.senses),
-      skills: clone(actor?.system?.skills),
-      traits: clone(actor?.system?.traits),
+      img: source.img ?? actor?.img,
+      prototypeTokenTextureSrc: prototypeToken?.texture?.src,
+      movement: serializationSafe(system?.attributes?.movement),
+      senses: serializationSafe(system?.attributes?.senses),
+      skills: serializationSafe(system?.skills),
+      traits: serializationSafe(system?.traits),
       tempHP: currentTempHP(actor)
     },
-    tokens: activeTokenDocuments(actor).map(token => ({
-      uuid: token.uuid,
-      id: token.id,
-      textureSrc: token.texture?.src
-    }))
+    tokens: activeTokenDocuments(actor).map(tokenSnapshot)
   };
 }
 
@@ -197,7 +222,12 @@ async function restoreActiveTokenArt(actor, state, {
     if (!token && snapshot.uuid && typeof resolveUuid === 'function') {
       token = await resolveUuid(snapshot.uuid);
     }
-    if (token?.update) await token.update({ 'texture.src': snapshot.textureSrc });
+    if (token?.update) {
+      const changes = { 'texture.src': snapshot.textureSrc };
+      if (snapshot.width !== undefined) changes.width = snapshot.width;
+      if (snapshot.height !== undefined) changes.height = snapshot.height;
+      await token.update(changes);
+    }
   }
 }
 
