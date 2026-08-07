@@ -49,6 +49,38 @@ function spiritMantleItem() {
   };
 }
 
+function direStatureItem() {
+  return {
+    id: 'owned-dire-stature',
+    uuid: 'Actor.formactor0000001.Item.owned-dire-stature',
+    type: 'feat',
+    system: {identifier: 'dire-stature'},
+    effects: [effect({
+      _id: 'dire-stature-template',
+      name: 'Dire Stature',
+      disabled: true,
+      transfer: false,
+      changes: [{
+        key: 'system.attributes.ac.bonus', mode: 2, value: '1', priority: 20
+      }, {
+        key: 'system.bonuses.mwak.damage', mode: 2, value: '1d4', priority: 20
+      }, {
+        key: 'system.bonuses.msak.damage', mode: 2, value: '1d4', priority: 20
+      }],
+      description: '<p>Increase your melee reach while grown.</p>',
+      flags: {
+        [MODULE_ID]: {
+          vessel: {
+            role: 'dire-stature-effect',
+            stage3Binding: 'archon',
+            stage3Source: 'dire-stature'
+          }
+        }
+      }
+    })]
+  };
+}
+
 function mockActor({
   id = 'formactor0000001',
   level = 6,
@@ -406,6 +438,141 @@ test('reversion restores temporary HP from 4 through Archon Form back to 4', asy
   assert.equal(target.system.attributes.hp.temp, 12);
   await revertArchonForm(target);
   assert.equal(target.system.attributes.hp.temp, 4);
+});
+
+test('Dire Stature grows only temporary Archon attacks and restores its exact effect and geometry', async () => {
+  const unrelatedItem = {
+    _id: 'unrelated-ranged-item',
+    id: 'unrelated-ranged-item',
+    type: 'feat',
+    system: {
+      identifier: 'unrelated-ranged-item',
+      activities: {
+        RangedAttack: {
+          _id: 'RangedAttack',
+          type: 'attack',
+          attack: {type: {value: 'ranged'}},
+          range: {value: '30', units: 'ft'}
+        }
+      }
+    }
+  };
+  const foreignDireEffect = {
+    _id: 'foreign-dire-effect',
+    flags: {
+      [MODULE_ID]: {
+        vessel: {
+          archon: {temporary: {transformationId: 'another-transformation'}}
+        }
+      }
+    }
+  };
+  const target = mockActor({
+    items: [spiritMantleItem(), direStatureItem(), unrelatedItem],
+    effects: [foreignDireEffect]
+  });
+  const token = {
+    uuid: 'Scene.scene.Token.dire',
+    texture: {src: 'icons/original-live-token.webp'},
+    width: 1,
+    height: 1,
+    async update(changes) {
+      if (changes['texture.src'] !== undefined) this.texture.src = changes['texture.src'];
+      if (changes.width !== undefined) this.width = changes.width;
+      if (changes.height !== undefined) this.height = changes.height;
+    }
+  };
+  target.getActiveTokens = () => [{document: token}];
+  const profile = switchProfile();
+  profile.items = [{
+    _id: 'profile-melee-attack',
+    type: 'feat',
+    system: {
+      identifier: 'profile-melee-attack',
+      activities: {
+        MeleeAttack: {
+          _id: 'MeleeAttack',
+          type: 'attack',
+          attack: {type: {value: 'melee'}},
+          range: {value: '5', units: 'ft'}
+        }
+      }
+    },
+    flags: {}
+  }];
+
+  await activateArchonForm(target, profile, {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: profile.uuid,
+    growthCategories: 1,
+    transformationId: 'dire-large-transform'
+  });
+
+  const temporaryAttack = target.items.find(item =>
+    item.system?.identifier === 'profile-melee-attack'
+  );
+  const direEffect = target.effects.find(candidate =>
+    candidate.flags?.[MODULE_ID]?.vessel?.role === 'dire-stature-effect'
+  );
+  assert.equal(target.system.traits.size, 'lg');
+  assert.equal(token.width, 2);
+  assert.equal(token.height, 2);
+  assert.equal(temporaryAttack.system.activities.MeleeAttack.range.value, '10');
+  assert.equal(unrelatedItem.system.activities.RangedAttack.range.value, '30');
+  assert.ok(direEffect);
+  assert.deepEqual(direEffect.changes, [{
+    key: 'system.attributes.ac.bonus', mode: 2, value: '1', priority: 20
+  }, {
+    key: 'system.bonuses.mwak.damage', mode: 2, value: '1d4', priority: 20
+  }, {
+    key: 'system.bonuses.msak.damage', mode: 2, value: '1d4', priority: 20
+  }]);
+
+  await revertArchonForm(target);
+
+  assert.equal(target.system.traits.size, undefined);
+  assert.equal(token.width, 1);
+  assert.equal(token.height, 1);
+  assert.equal(target.effects.some(candidate =>
+    candidate._id === foreignDireEffect._id
+  ), true);
+  assert.equal(target.effects.some(candidate =>
+    candidate.flags?.[MODULE_ID]?.vessel?.archon?.temporary?.transformationId
+      === 'dire-large-transform'
+  ), false);
+});
+
+test('a failed Dire Stature activation rolls back its exact effect and geometry', async () => {
+  const target = mockActor({items: [direStatureItem()]});
+  const token = {
+    uuid: 'Scene.scene.Token.failed-dire',
+    texture: {src: 'icons/original-live-token.webp'},
+    width: 1,
+    height: 1,
+    async update(changes) {
+      if (changes['texture.src'] !== undefined) this.texture.src = changes['texture.src'];
+      if (changes.width !== undefined) this.width = changes.width;
+      if (changes.height !== undefined) this.height = changes.height;
+    }
+  };
+  target.getActiveTokens = () => [{document: token}];
+
+  await assert.rejects(activateArchonForm(target, switchProfile(), {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    growthCategories: 2,
+    transformationId: 'failed-dire-transform'
+  }), /Spirit Mantle/);
+
+  assert.equal(target.system.traits.size, undefined);
+  assert.equal(token.width, 1);
+  assert.equal(token.height, 1);
+  assert.equal(target.effects.some(candidate =>
+    candidate.flags?.[MODULE_ID]?.vessel?.archon?.temporary?.transformationId
+      === 'failed-dire-transform'
+  ), false);
 });
 
 function profile({

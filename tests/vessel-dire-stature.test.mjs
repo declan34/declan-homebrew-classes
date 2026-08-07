@@ -1,5 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+
+const require = createRequire(
+  new URL('../../dnd5e-pdf-importer/emit/package.json', import.meta.url)
+);
+const yaml = require('js-yaml');
 
 const {
   getDireGrowthBonuses,
@@ -70,4 +77,29 @@ test('maps growth categories to normal, Large, and Huge bonuses with a Huge cap'
     meleeDamage: '2d4',
     reachBonus: 10
   });
+});
+
+test('Dire Stature supplies an Archon-bound native AC and melee-damage effect', () => {
+  const source = yaml.load(readFileSync(
+    new URL('../aspects-src/dire-stature.yml', import.meta.url),
+    'utf8'
+  ));
+  const effect = source.effects.find(candidate =>
+    candidate.flags?.['declan-homebrew-classes']?.vessel?.role
+      === 'dire-stature-effect'
+  );
+
+  assert.ok(effect);
+  assert.equal(
+    effect.flags['declan-homebrew-classes'].vessel.stage3Binding,
+    'archon'
+  );
+  assert.deepEqual(effect.changes, [{
+    key: 'system.attributes.ac.bonus', mode: 2, value: '1', priority: 20
+  }, {
+    key: 'system.bonuses.mwak.damage', mode: 2, value: '1d4', priority: 20
+  }, {
+    key: 'system.bonuses.msak.damage', mode: 2, value: '1d4', priority: 20
+  }]);
+  assert.match(effect.description, /reach/i);
 });

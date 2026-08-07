@@ -9,6 +9,7 @@ import {
   getArchonACBonus,
   getArchonDurationSeconds,
   getArchonTempHP,
+  getDireGrowthBonuses,
   getAutomationRole
 } from './rules.mjs';
 import {
@@ -19,6 +20,7 @@ import {
   requireActorOwner,
   serializeActorOperation
 } from './operations.mjs';
+import { reconcileStage3EffectsUnlocked } from './stage3-effects.mjs';
 
 function actorDocument(document) {
   if (!document) return undefined;
@@ -32,6 +34,13 @@ function documents(collection) {
   if (!collection) return [];
   if (Array.isArray(collection)) return collection;
   return Array.from(collection.values?.() ?? collection);
+}
+
+function activities(collection) {
+  if (!collection) return [];
+  if (Array.isArray(collection)) return collection;
+  if (typeof collection.values === 'function') return Array.from(collection.values());
+  return Object.values(collection);
 }
 
 function identifier(item) {
@@ -207,6 +216,28 @@ function temporaryTransformationId(document) {
 async function updateActiveTokenArt(actor, src) {
   for (const token of activeTokenDocuments(actor)) {
     await token.update({ 'texture.src': src });
+  }
+}
+
+async function applyDireStatureGeometry(actor, growth) {
+  if (!growth.size) return;
+  await actor.update({'system.traits.size': growth.size});
+  for (const token of activeTokenDocuments(actor)) {
+    await token.update({width: growth.width, height: growth.height});
+  }
+}
+
+function applyDireStatureReach(itemSource, reachBonus) {
+  if (!reachBonus) return;
+  for (const activity of activities(itemSource?.system?.activities)) {
+    if (
+      activity?.type !== 'attack'
+      || activity?.attack?.type?.value !== 'melee'
+    ) continue;
+    const range = Number(activity?.range?.value);
+    if (!Number.isFinite(range)) continue;
+    activity.range ??= {};
+    activity.range.value = String(range + reachBonus);
   }
 }
 
@@ -463,6 +494,11 @@ export async function activateArchonForm(
     const transformationId = pending.transformationId
       ?? `${actor.uuid}:${pending.profile}:${Date.now()}`;
     const startedAt = Number(now) || 0;
+    const growthCategories = Math.min(
+      2,
+      Math.max(0, Math.trunc(Number(pending.growthCategories) || 0))
+    );
+    const growth = getDireGrowthBonuses(growthCategories);
     let state = {
       active: false,
       activating: true,
@@ -473,6 +509,7 @@ export async function activateArchonForm(
       sourceActorUuid: actor.uuid,
       payment: pending.payment ?? 'free',
       acBonus: getArchonACBonus(metadata),
+      growthCategories,
       tempHPBeforeTransform: currentTempHP(actor),
       transformationId,
       temporaryItemIds: [],
@@ -484,9 +521,14 @@ export async function activateArchonForm(
     try {
       await actor.update(profileActorUpdates(actor, profileActor));
       await updateActiveTokenArt(actor, profileActor.img);
+      await applyDireStatureGeometry(actor, growth);
 
       const itemSources = documents(profileActor.items)
-        .map(item => temporarySource(item, state));
+        .map(item => {
+          const source = temporarySource(item, state);
+          applyDireStatureReach(source, growth.reachBonus);
+          return source;
+        });
       if (itemSources.length) {
         const created = await actor.createEmbeddedDocuments('Item', itemSources);
         state = {
@@ -510,6 +552,15 @@ export async function activateArchonForm(
       }
 
       state = { ...state, active: true, activating: false };
+      await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, state);
+      await reconcileStage3EffectsUnlocked(actor);
+      state = {
+        ...state,
+        temporaryEffectIds: documents(actor.effects)
+          .filter(effect => temporaryTransformationId(effect) === transformationId)
+          .map(documentId)
+          .filter(Boolean)
+      };
       await actor.setFlag(MODULE_ID, ARCHON_STATE_FLAG, state);
       await clearArchonPending(
         actor,

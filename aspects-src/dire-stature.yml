@@ -27,7 +27,29 @@ system:
   activities: {}
   enchant: {}
   identifier: dire-stature
-effects: []
+effects:
+  - _id: DireStatureEff01
+    name: Dire Stature
+    img: icons/magic/control/silhouette-hold-beam-blue.webp
+    origin: null
+    transfer: false
+    disabled: true
+    type: base
+    system: {}
+    changes:
+      - {key: system.attributes.ac.bonus, mode: 2, value: '1', priority: 20}
+      - {key: system.bonuses.mwak.damage, mode: 2, value: 1d4, priority: 20}
+      - {key: system.bonuses.msak.damage, mode: 2, value: 1d4, priority: 20}
+    duration: {startTime: null, seconds: null, combat: null, rounds: null, turns: null, startRound: null, startTurn: null}
+    description: <p>While you are in a grown Archon Form, your Armor Class increases and your melee weapon and spell attacks deal bonus damage. Your melee attacks gain 5-foot reach for each size category you grow.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      declan-homebrew-classes:
+        vessel: {role: dire-stature-effect, stage3Binding: archon, stage3Source: dire-stature}
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!d0jLTdstSCgBiLXH.DireStatureEff01'
 flags:
   dnd5e:
     riders:
