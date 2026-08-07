@@ -379,6 +379,50 @@ test('repairs canonical Vessel spell progression and removes only the Vessel Mag
   assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), VESSEL_MIGRATION_VERSION);
 });
 
+test('version 4 actors run only the new Vessel spell-track repair', async () => {
+  const vesselData = structuredClone(vesselSource);
+  vesselData.system.primaryAbility.value = ['int'];
+  vesselData.system.spellcasting.ability = 'int';
+  const vesselMagicData = structuredClone(vesselMagicSource);
+  vesselMagicData.system.uses.max = '2';
+  const target = legacyActor({
+    vessel: ownedItem(vesselData),
+    vesselMagic: ownedItem(vesselMagicData),
+    migrationVersion: 4
+  });
+  const mantleItem = target.items.get(mantleSource._id);
+
+  assert.equal(await migrateVesselActor(target, {
+    loadSourceItems: async () => ({
+      vessel: ownedItem(vesselSource),
+      vesselMagic: ownedItem(vesselMagicSource)
+    }),
+    loadStage3Items: async () => {
+      throw new Error('version 4 actors must not load Stage 3 migration sources');
+    }
+  }), true);
+
+  assert.deepEqual(
+    target.items.get(vesselSource._id).system.primaryAbility.value,
+    ['cha']
+  );
+  assert.equal(
+    target.items.get(vesselSource._id).system.spellcasting.ability,
+    'cha'
+  );
+  assert.equal(
+    'uses' in target.items.get(vesselMagicSource._id).system,
+    false
+  );
+  assert.equal(mantleItem.operations.length, 0);
+  assert.equal(target.itemsByIdentifier('iridescent-strikes').length, 0);
+  assert.equal(
+    target.operations.some(([operation]) => operation === 'createEmbeddedDocuments'),
+    false
+  );
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), VESSEL_MIGRATION_VERSION);
+});
+
 test('repairs module-owned fields, preserves customization and state, and is idempotent', async () => {
   const vesselData = structuredClone(vesselSource);
   const scale = vesselData.system.advancement.find(

@@ -480,7 +480,7 @@ function repairEffect(current, canonical) {
   return repaired;
 }
 
-async function migrateVesselItem(item, canonical) {
+async function migrateVesselSpellTrack(item, canonical) {
   const sourceSpellcasting = canonical?.system?.spellcasting;
   const sourcePrimaryAbility = canonical?.system?.primaryAbility;
   if (!sourceSpellcasting || !sourcePrimaryAbility) {
@@ -513,28 +513,6 @@ async function migrateVesselItem(item, canonical) {
   }
   if (Object.keys(updates).length) await item.update(updates);
 
-  const source = sourceScale(canonical);
-  if (!source) {
-    throw new Error('The Vessel compendium Item is missing its Iridescent Strike scale.');
-  }
-
-  const current = documents(item.system?.advancement).find(
-    advancement => documentId(advancement) === IRIDESCENT_SCALE_ID
-      || advancement.configuration?.identifier === 'iridescent-strike'
-  );
-  const repaired = repairScale(current, source);
-  if (!current) {
-    if (typeof item.createAdvancement !== 'function') {
-      throw new Error('This dnd5e Item cannot create the Iridescent Strike scale.');
-    }
-    await item.createAdvancement(source.type, repaired, { renderSheet: false });
-  } else if (!sameData(objectData(current), repaired)) {
-    if (typeof item.updateAdvancement !== 'function') {
-      throw new Error('This dnd5e Item cannot repair the Iridescent Strike scale.');
-    }
-    await item.updateAdvancement(documentId(current), repaired);
-  }
-
   for (const progressionScale of sourceSpellProgressionScales(canonical)) {
     const currentProgressionScale = documents(item.system?.advancement).find(
       advancement => documentId(advancement) === documentId(progressionScale)
@@ -566,6 +544,30 @@ async function migrateVesselItem(item, canonical) {
         repairedProgressionScale
       );
     }
+  }
+}
+
+async function migrateVesselItem(item, canonical) {
+  const source = sourceScale(canonical);
+  if (!source) {
+    throw new Error('The Vessel compendium Item is missing its Iridescent Strike scale.');
+  }
+
+  const current = documents(item.system?.advancement).find(
+    advancement => documentId(advancement) === IRIDESCENT_SCALE_ID
+      || advancement.configuration?.identifier === 'iridescent-strike'
+  );
+  const repaired = repairScale(current, source);
+  if (!current) {
+    if (typeof item.createAdvancement !== 'function') {
+      throw new Error('This dnd5e Item cannot create the Iridescent Strike scale.');
+    }
+    await item.createAdvancement(source.type, repaired, { renderSheet: false });
+  } else if (!sameData(objectData(current), repaired)) {
+    if (typeof item.updateAdvancement !== 'function') {
+      throw new Error('This dnd5e Item cannot repair the Iridescent Strike scale.');
+    }
+    await item.updateAdvancement(documentId(current), repaired);
   }
 }
 
@@ -727,7 +729,8 @@ export async function migrateVesselActor(actor, {
   if (!actor?.isOwner) {
     throw new Error('You do not have permission to migrate this Vessel.');
   }
-  if (currentMigrationVersion(actor) >= VESSEL_MIGRATION_VERSION) return false;
+  const startingMigrationVersion = currentMigrationVersion(actor);
+  if (startingMigrationVersion >= VESSEL_MIGRATION_VERSION) return false;
 
   const items = documents(actor.items);
   const vesselItems = items.filter(
@@ -735,16 +738,22 @@ export async function migrateVesselActor(actor, {
   );
   if (!vesselItems.length) return false;
 
-  const mantleItems = items.filter(item => identifier(item) === 'spirit-mantle');
   const source = await loadSourceItems();
-  for (const item of vesselItems) await migrateVesselItem(item, source.vessel);
-
-  const vesselMagicItems = items.filter(item =>
-    item?.type === 'feat' && identifier(item) === identifier(source.vesselMagic)
-  );
-  for (const item of vesselMagicItems) {
-    await migrateVesselMagicItem(item, source.vesselMagic);
+  if (startingMigrationVersion < 5) {
+    for (const item of vesselItems) {
+      await migrateVesselSpellTrack(item, source.vessel);
+    }
+    const vesselMagicItems = items.filter(item =>
+      item?.type === 'feat' && identifier(item) === identifier(source.vesselMagic)
+    );
+    for (const item of vesselMagicItems) {
+      await migrateVesselMagicItem(item, source.vesselMagic);
+    }
   }
+
+  if (startingMigrationVersion < 4) {
+  const mantleItems = items.filter(item => identifier(item) === 'spirit-mantle');
+  for (const item of vesselItems) await migrateVesselItem(item, source.vessel);
 
   let strikesItem = items.find(item => identifier(item) === 'iridescent-strikes');
   if (!strikesItem) {
@@ -839,6 +848,7 @@ export async function migrateVesselActor(actor, {
       }
       await migrateStage3Item(item, canonical);
     }
+  }
   }
 
   await actor.setFlag(
