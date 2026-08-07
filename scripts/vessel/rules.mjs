@@ -153,6 +153,35 @@ const DAZZLING_LANCE_DICE = Object.freeze([
 ]);
 
 const WORN_ARMOR_TYPES = new Set(['light', 'medium', 'heavy', 'shield']);
+const DIRE_STATURE_IDENTIFIER = 'dire-stature';
+const COLOSSAL_ARCHON_IDENTIFIER = 'colossal-archon';
+
+const DIRE_GROWTH_BONUSES = Object.freeze([
+  Object.freeze({
+    size: undefined,
+    width: undefined,
+    height: undefined,
+    acBonus: 0,
+    meleeDamage: undefined,
+    reachBonus: 0
+  }),
+  Object.freeze({
+    size: 'lg',
+    width: 2,
+    height: 2,
+    acBonus: 1,
+    meleeDamage: '1d4',
+    reachBonus: 5
+  }),
+  Object.freeze({
+    size: 'huge',
+    width: 3,
+    height: 3,
+    acBonus: 2,
+    meleeDamage: '2d4',
+    reachBonus: 10
+  })
+]);
 
 function documents(collection) {
   if (!collection) return [];
@@ -182,6 +211,17 @@ export function getVesselLevel(actor) {
       && identifier(candidate) === VESSEL_CLASS_IDENTIFIER
     );
   return Math.max(0, Number(classItem?.system?.levels) || 0);
+}
+
+export function getDireStatureOptions(actor) {
+  const identifiers = new Set(documents(actor?.items).map(identifier));
+  if (!identifiers.has(DIRE_STATURE_IDENTIFIER)) return [0];
+  return identifiers.has(COLOSSAL_ARCHON_IDENTIFIER) ? [0, 1, 2] : [0, 1];
+}
+
+export function getDireGrowthBonuses(categories) {
+  const normalized = Math.min(2, Math.max(0, Math.trunc(Number(categories) || 0)));
+  return DIRE_GROWTH_BONUSES[normalized];
 }
 
 function levelFrom(value) {

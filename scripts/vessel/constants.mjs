@@ -27,6 +27,8 @@ export const AUTOMATION_ROLES = Object.freeze({
   ARCHON_REVERT: 'archon-revert',
   ARCHON_EQUIPMENT_PREFERENCE: 'archon-equipment-preference',
   ARCHON_FORM_EFFECT: 'archon-form-effect',
+  DIRE_STATURE_PROMPT: 'dire-stature-prompt',
+  DIRE_STATURE_EFFECT: 'dire-stature-effect',
   ARCANE_BLAST: 'arcane-blast',
   ASTRAL_STEP: 'astral-step',
   BLUSTER: 'bluster',
