@@ -39,6 +39,12 @@ const strikesSource = yaml.load(
     'utf8'
   )
 );
+const vesselMagicSource = yaml.load(
+  readFileSync(
+    new URL('../src/vessel/class-features/vessel-magic.yml', import.meta.url),
+    'utf8'
+  )
+);
 
 function document(data) {
   return {
@@ -100,6 +106,19 @@ function ownedItem(data) {
           this.system.activities.set(activity[1], document(value));
           continue;
         }
+        const systemDeletion = path.match(/^system\.-=(.+)$/);
+        if (systemDeletion) {
+          delete this.system[systemDeletion[1]];
+          continue;
+        }
+        const systemPath = path.match(/^system\.(.+)$/);
+        if (systemPath) {
+          const keys = systemPath[1].split('.');
+          let target = this.system;
+          for (const key of keys.slice(0, -1)) target = target[key] ??= {};
+          target[keys.at(-1)] = structuredClone(value);
+          continue;
+        }
         throw new Error(`Unexpected Item update path: ${path}`);
       }
     },
@@ -134,6 +153,7 @@ function ownedItem(data) {
 function sourceItems() {
   return {
     vessel: ownedItem(vesselSource),
+    vesselMagic: ownedItem(vesselMagicSource),
     mantle: ownedItem(mantleSource),
     strikes: ownedItem(strikesSource)
   };
@@ -153,6 +173,7 @@ function legacyActor({
   vessel,
   mantle,
   strikes,
+  vesselMagic,
   migrationVersion = 0,
   failItemCreation = false
 } = {}) {
@@ -190,6 +211,7 @@ function legacyActor({
   });
   const items = new Map([
     [vesselItem._id, vesselItem],
+    ...(vesselMagic ? [[vesselMagic._id, vesselMagic]] : []),
     [mantleItem._id, mantleItem],
     ...(strikes ? [[strikes._id, strikes]] : [])
   ]);
@@ -270,6 +292,91 @@ test('migrates legacy actor-owned Vessel automation without replacing custom str
     target.getFlag(MODULE_ID, MIGRATION_FLAG),
     VESSEL_MIGRATION_VERSION
   );
+});
+
+test('repairs canonical Vessel spell progression and removes only the Vessel Magic use counter', async () => {
+  const vesselData = structuredClone(vesselSource);
+  vesselData.system.description.value = '<p>My class description.</p>';
+  vesselData.system.primaryAbility = {
+    value: ['int'],
+    all: true,
+    userPreference: 'preserve'
+  };
+  vesselData.system.spellcasting = {
+    progression: 'full',
+    ability: 'int',
+    preparation: {
+      formula: '@abilities.int.mod',
+      userPreference: 'preserve'
+    },
+    userPreference: 'preserve'
+  };
+  for (const advancement of vesselData.system.advancement) {
+    if (!['cantrips-known', 'spells-known', 'spell-slots', 'slot-level'].includes(
+      advancement.configuration?.identifier
+    )) continue;
+    advancement.title = `My ${advancement.title}`;
+    advancement.hint = 'Keep this note';
+    advancement.value = { 20: 'custom' };
+    advancement.configuration.type = 'dice';
+    advancement.configuration.distance = { units: 'ft' };
+    advancement.configuration.scale = { 1: { value: 99 } };
+    advancement.configuration.userPreference = 'preserve';
+  }
+
+  const vesselMagicData = structuredClone(vesselMagicSource);
+  vesselMagicData.system.uses = {
+    max: '3',
+    spent: 1,
+    recovery: [{ period: 'sr', type: 'recoverAll' }]
+  };
+  vesselMagicData.system.userPreference = 'preserve';
+  const target = legacyActor({
+    vessel: ownedItem(vesselData),
+    vesselMagic: ownedItem(vesselMagicData),
+    migrationVersion: 4
+  });
+  const vesselItem = target.items.get(vesselSource._id);
+  const vesselMagicItem = target.items.get(vesselMagicSource._id);
+
+  assert.equal(await migrateVesselActor(target, {
+    loadSourceItems: async () => sourceItems()
+  }), true);
+
+  assert.deepEqual(vesselItem.system.primaryAbility, {
+    value: ['cha'],
+    all: false,
+    userPreference: 'preserve'
+  });
+  assert.deepEqual(vesselItem.system.spellcasting, {
+    progression: 'vessel',
+    ability: 'cha',
+    preparation: {
+      formula: '',
+      userPreference: 'preserve'
+    },
+    userPreference: 'preserve'
+  });
+  assert.equal(vesselItem.system.description.value, '<p>My class description.</p>');
+
+  for (const source of vesselSource.system.advancement.filter(advancement =>
+    ['cantrips-known', 'spells-known', 'spell-slots', 'slot-level'].includes(
+      advancement.configuration?.identifier
+    )
+  )) {
+    const migrated = vesselItem.system.advancement.get(source._id);
+    assert.deepEqual(migrated.configuration, {
+      ...source.configuration,
+      userPreference: 'preserve'
+    });
+    assert.equal(migrated.title, `My ${source.title}`);
+    assert.equal(migrated.hint, 'Keep this note');
+    assert.deepEqual(migrated.value, { 20: 'custom' });
+  }
+
+  assert.equal('uses' in vesselMagicItem.system, false);
+  assert.equal(vesselMagicItem.system.userPreference, 'preserve');
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), VESSEL_MIGRATION_VERSION);
 });
 
 test('repairs module-owned fields, preserves customization and state, and is idempotent', async () => {
@@ -386,5 +493,8 @@ test('failed Iridescent Strikes creation leaves version 3 and retries cleanly', 
     loadSourceItems: async () => sourceItems()
   }), true);
   assert.equal(retry.itemsByIdentifier('iridescent-strikes').length, 1);
-  assert.equal(retry.getFlag(MODULE_ID, MIGRATION_FLAG), 4);
+  assert.equal(
+    retry.getFlag(MODULE_ID, MIGRATION_FLAG),
+    VESSEL_MIGRATION_VERSION
+  );
 });

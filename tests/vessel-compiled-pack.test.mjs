@@ -40,6 +40,12 @@ const strikesSource = yaml.load(
     'utf8'
   )
 );
+const vesselMagicSource = yaml.load(
+  readFileSync(
+    new URL('../src/vessel/class-features/vessel-magic.yml', import.meta.url),
+    'utf8'
+  )
+);
 const archonControlSources = [
   'the-ascended',
   'the-cataclysm',
@@ -89,9 +95,36 @@ test('committed compiled pack preserves Vessel automation source structures', as
     const compiledVessel = documents.find(document => document?._id === vesselSource._id);
     const compiledMantle = documents.find(document => document?._id === mantleSource._id);
     const compiledStrikes = documents.find(document => document?._id === strikesSource._id);
+    const compiledVesselMagic = documents.find(
+      document => document?._id === vesselMagicSource._id
+    );
     assert.ok(compiledVessel);
     assert.ok(compiledMantle);
     assert.ok(compiledStrikes);
+    assert.ok(compiledVesselMagic);
+
+    assert.deepEqual(
+      compiledVessel.system.primaryAbility,
+      vesselSource.system.primaryAbility
+    );
+    assert.deepEqual(
+      compiledVessel.system.spellcasting,
+      vesselSource.system.spellcasting
+    );
+    for (const source of vesselSource.system.advancement.filter(advancement =>
+      ['cantrips-known', 'spells-known', 'spell-slots', 'slot-level'].includes(
+        advancement.configuration?.identifier
+      )
+    )) {
+      const compiled = compiledVessel.system.advancement.find(
+        advancement => advancement._id === source._id
+      );
+      assert.deepEqual(compiled, source, source.configuration.identifier);
+    }
+    assert.deepEqual(
+      compiledVesselMagic.system.uses,
+      vesselMagicSource.system.uses
+    );
 
     const expectedScale = vesselSource.system.advancement.find(
       advancement => advancement.configuration?.identifier === 'iridescent-strike'

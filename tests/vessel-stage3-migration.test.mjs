@@ -6,7 +6,10 @@ import { createRequire } from 'node:module';
 const require = createRequire(new URL('../../dnd5e-pdf-importer/emit/package.json', import.meta.url));
 const yaml = require('js-yaml');
 const moduleId = 'declan-homebrew-classes';
-const {migrateVesselActor} = await import('../scripts/vessel/migration.mjs');
+const {
+  VESSEL_MIGRATION_VERSION,
+  migrateVesselActor
+} = await import('../scripts/vessel/migration.mjs');
 
 const vesselSource = yaml.load(readFileSync(new URL('../src/vessel/the-vessel.yml', import.meta.url), 'utf8'));
 const strikesSource = yaml.load(readFileSync(
@@ -93,7 +96,7 @@ function actorWithLegacyAspect() {
   };
 }
 
-test('version 4 repairs owned Stage 3 activities and preserves player data', async () => {
+test('current migration repairs owned Stage 3 activities and preserves player data', async () => {
   const actor = actorWithLegacyAspect();
   await migrateVesselActor(actor, {
     loadSourceItems: async () => ({
@@ -104,7 +107,10 @@ test('version 4 repairs owned Stage 3 activities and preserves player data', asy
     }),
     loadStage3Items: async () => new Map([['shimmering-lance', item(aspectSource)]])
   });
-  assert.equal(actor.flags[moduleId].vessel.migrationVersion, 4);
+  assert.equal(
+    actor.flags[moduleId].vessel.migrationVersion,
+    VESSEL_MIGRATION_VERSION
+  );
   assert.equal(actor.legacy.name, 'My Spirit Bolt');
   assert.equal(actor.legacy.img, 'custom/bolt.webp');
   assert.equal(actor.legacy.system.activities.get('PlayerActivity01').name, 'Keep Me');
@@ -113,7 +119,7 @@ test('version 4 repairs owned Stage 3 activities and preserves player data', asy
   ));
 });
 
-test('version 4 records no completion when a Stage 3 repair fails', async () => {
+test('current migration records no completion when a Stage 3 repair fails', async () => {
   const actor = actorWithLegacyAspect();
   actor.legacy.update = async () => { throw new Error('stage3 update failed'); };
   await assert.rejects(
@@ -131,7 +137,7 @@ test('version 4 records no completion when a Stage 3 repair fails', async () => 
   assert.equal(actor.flags[moduleId].vessel.migrationVersion, 2);
 });
 
-test('version 4 grants missing Condemnation to an existing level-6 Fallen', async () => {
+test('current migration grants missing Condemnation to an existing level-6 Fallen', async () => {
   const actor = actorWithLegacyAspect();
   const subclass = item({
     _id: 'LegacyFallen0001',

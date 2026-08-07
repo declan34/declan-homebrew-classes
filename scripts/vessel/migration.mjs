@@ -6,6 +6,7 @@ import {
   SPIRIT_MANTLE_ITEM_ID,
   VESSEL_CLASS_IDENTIFIER,
   VESSEL_ITEM_ID,
+  VESSEL_MAGIC_ITEM_ID,
   VESSEL_MIGRATION_FLAG,
   VESSEL_MIGRATION_VERSION
 } from './constants.mjs';
@@ -17,6 +18,12 @@ import {
 } from './rules.mjs';
 
 const IRIDESCENT_SCALE_ID = 'ZReRcAXx7wv1xOTO';
+const VESSEL_SPELL_PROGRESSION_SCALES = new Set([
+  'cantrips-known',
+  'spells-known',
+  'spell-slots',
+  'slot-level'
+]);
 const ARCHON_CONTROL_IDS = Object.freeze({
   'the-ascended': 'hbrAscCtrlForm01',
   'the-cataclysm': 'hbrCatCtrlForm01',
@@ -137,6 +144,20 @@ function sourceScale(sourceVessel) {
       || advancement._id === IRIDESCENT_SCALE_ID
       || advancement.configuration?.identifier === 'iridescent-strike'
   );
+}
+
+function sourceSpellProgressionScales(sourceVessel) {
+  const scales = documents(sourceVessel?.system?.advancement).filter(
+    advancement => VESSEL_SPELL_PROGRESSION_SCALES.has(
+      advancement.configuration?.identifier
+    )
+  );
+  if (scales.length !== VESSEL_SPELL_PROGRESSION_SCALES.size) {
+    throw new Error(
+      'The Vessel compendium Item is missing its spell progression scales.'
+    );
+  }
+  return scales;
 }
 
 function repairScale(current, canonical) {
@@ -460,6 +481,38 @@ function repairEffect(current, canonical) {
 }
 
 async function migrateVesselItem(item, canonical) {
+  const sourceSpellcasting = canonical?.system?.spellcasting;
+  const sourcePrimaryAbility = canonical?.system?.primaryAbility;
+  if (!sourceSpellcasting || !sourcePrimaryAbility) {
+    throw new Error(
+      'The Vessel compendium Item is missing its spellcasting configuration.'
+    );
+  }
+
+  const updates = {};
+  if (!sameData(item.system?.primaryAbility?.value, sourcePrimaryAbility.value)) {
+    updates['system.primaryAbility.value'] = structuredClone(
+      sourcePrimaryAbility.value
+    );
+  }
+  if (item.system?.primaryAbility?.all !== sourcePrimaryAbility.all) {
+    updates['system.primaryAbility.all'] = sourcePrimaryAbility.all;
+  }
+  if (item.system?.spellcasting?.progression !== sourceSpellcasting.progression) {
+    updates['system.spellcasting.progression'] = sourceSpellcasting.progression;
+  }
+  if (item.system?.spellcasting?.ability !== sourceSpellcasting.ability) {
+    updates['system.spellcasting.ability'] = sourceSpellcasting.ability;
+  }
+  if (
+    item.system?.spellcasting?.preparation?.formula
+      !== sourceSpellcasting.preparation?.formula
+  ) {
+    updates['system.spellcasting.preparation.formula'] =
+      sourceSpellcasting.preparation?.formula;
+  }
+  if (Object.keys(updates).length) await item.update(updates);
+
   const source = sourceScale(canonical);
   if (!source) {
     throw new Error('The Vessel compendium Item is missing its Iridescent Strike scale.');
@@ -480,6 +533,48 @@ async function migrateVesselItem(item, canonical) {
       throw new Error('This dnd5e Item cannot repair the Iridescent Strike scale.');
     }
     await item.updateAdvancement(documentId(current), repaired);
+  }
+
+  for (const progressionScale of sourceSpellProgressionScales(canonical)) {
+    const currentProgressionScale = documents(item.system?.advancement).find(
+      advancement => documentId(advancement) === documentId(progressionScale)
+        || advancement.configuration?.identifier
+          === progressionScale.configuration?.identifier
+    );
+    const repairedProgressionScale = repairScale(
+      currentProgressionScale,
+      progressionScale
+    );
+    if (!currentProgressionScale) {
+      if (typeof item.createAdvancement !== 'function') {
+        throw new Error('This dnd5e Item cannot create Vessel spell progression scales.');
+      }
+      await item.createAdvancement(
+        progressionScale.type,
+        repairedProgressionScale,
+        { renderSheet: false }
+      );
+    } else if (!sameData(
+      objectData(currentProgressionScale),
+      repairedProgressionScale
+    )) {
+      if (typeof item.updateAdvancement !== 'function') {
+        throw new Error('This dnd5e Item cannot repair Vessel spell progression scales.');
+      }
+      await item.updateAdvancement(
+        documentId(currentProgressionScale),
+        repairedProgressionScale
+      );
+    }
+  }
+}
+
+async function migrateVesselMagicItem(item, canonical) {
+  if (identifier(canonical) !== 'vessel-magic') {
+    throw new Error('The Homebrew Classes compendium is missing Vessel Magic.');
+  }
+  if (Object.hasOwn(item.system ?? {}, 'uses')) {
+    await item.update({ 'system.-=uses': null });
   }
 }
 
@@ -569,6 +664,7 @@ export async function loadVesselSourceItems({
 
     const ids = [
       VESSEL_ITEM_ID,
+      VESSEL_MAGIC_ITEM_ID,
       SPIRIT_MANTLE_ITEM_ID,
       IRIDESCENT_STRIKES_ITEM_ID,
       ARCHON_FORM_ITEM_ID,
@@ -578,14 +674,14 @@ export async function loadVesselSourceItems({
     if (documents.some(document => !document)) {
       throw new Error('The Homebrew Classes compendium is missing Vessel migration sources.');
     }
-    const [vessel, mantle, strikes, archon, ...controlItems] = documents;
+    const [vessel, vesselMagic, mantle, strikes, archon, ...controlItems] = documents;
     const controls = Object.fromEntries(
       Object.keys(ARCHON_CONTROL_IDS).map((subclass, index) => [
         subclass,
         controlItems[index]
       ])
     );
-    return { vessel, mantle, strikes, archon, controls };
+    return { vessel, vesselMagic, mantle, strikes, archon, controls };
   })();
   sourceItemsPromise = request;
   try {
@@ -642,6 +738,13 @@ export async function migrateVesselActor(actor, {
   const mantleItems = items.filter(item => identifier(item) === 'spirit-mantle');
   const source = await loadSourceItems();
   for (const item of vesselItems) await migrateVesselItem(item, source.vessel);
+
+  const vesselMagicItems = items.filter(item =>
+    item?.type === 'feat' && identifier(item) === identifier(source.vesselMagic)
+  );
+  for (const item of vesselMagicItems) {
+    await migrateVesselMagicItem(item, source.vesselMagic);
+  }
 
   let strikesItem = items.find(item => identifier(item) === 'iridescent-strikes');
   if (!strikesItem) {
