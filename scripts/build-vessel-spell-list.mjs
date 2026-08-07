@@ -83,7 +83,7 @@ function validateAndSortProfiles(profiles) {
     names.add(normalizedName);
   }
   return [...profiles].sort((first, second) => first.level - second.level
-    || first.name.localeCompare(second.name, 'en-US'));
+    || normalizeSpellName(first.name).localeCompare(normalizeSpellName(second.name), 'en-US'));
 }
 
 export function buildVesselSpellListDocument({

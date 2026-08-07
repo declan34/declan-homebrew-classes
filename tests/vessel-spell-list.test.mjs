@@ -72,7 +72,7 @@ function expectedProfiles() {
       uuid: `Compendium.dnd5e.spells.Item.${profile.id}`
     }))
   ].sort((first, second) => first.level - second.level
-    || first.name.localeCompare(second.name, 'en-US'));
+    || normalizeName(first.name).localeCompare(normalizeName(second.name), 'en-US'));
 }
 
 test('Vessel spell-list pack is compiled', () => {
@@ -113,6 +113,22 @@ test('Vessel spell-list builder rejects duplicate normalized spell names', async
   }), /duplicate normalized spell name/i);
 });
 
+test('Vessel spell-list builder sorts equal-level profiles by normalized name', async () => {
+  const { buildVesselSpellListDocument } = await import('../scripts/build-vessel-spell-list.mjs');
+  const document = buildVesselSpellListDocument({
+    homebrewProfiles: [
+      { name: 'a   Zebra', level: 1, uuid: 'Compendium.example.Item.aaaaaaaaaaaaaaaa' },
+      { name: 'A apple', level: 1, uuid: 'Compendium.example.Item.bbbbbbbbbbbbbbbb' }
+    ],
+    srdProfiles: []
+  });
+
+  assert.deepEqual(document.pages[0].system.spells, [
+    'Compendium.example.Item.bbbbbbbbbbbbbbbb',
+    'Compendium.example.Item.aaaaaaaaaaaaaaaa'
+  ]);
+});
+
 test('module registers the native Vessel spell list with a dnd5e table-of-contents pack', () => {
   const module = JSON.parse(readFileSync(modulePath, 'utf8'));
   const pack = module.packs.find(candidate => candidate.name === 'vessel-spell-lists');
@@ -149,4 +165,17 @@ test('compiled Vessel spell-list pack preserves the registered JournalEntry page
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }
+});
+
+test('compiled Vessel spell-list pack has strict source validation and no generated LOCK', async () => {
+  const { verifyPack } = await import(
+    new URL('../../dnd5e-pdf-importer/emit/verify.mjs', import.meta.url)
+  );
+  const result = await verifyPack(join(repositoryRoot, 'spell-lists-src'), {
+    packName: 'vessel-spell-lists'
+  });
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.errors, []);
+  assert.equal(existsSync(join(compiledPack, 'LOCK')), false);
 });
