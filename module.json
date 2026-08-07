@@ -33,6 +33,13 @@
     "scripts/vessel-automation.mjs",
     "scripts/warlord-automation.mjs"
   ],
+  "flags": {
+    "dnd5e": {
+      "spellLists": [
+        "Compendium.declan-homebrew-classes.vessel-spell-lists.JournalEntry.78f74d87f88742fb.JournalEntryPage.3f9cadbf1a0eaba5"
+      ]
+    }
+  },
   "packs": [
     {
       "name": "homebrew-classes",
@@ -51,6 +58,18 @@
       "path": "packs/homebrew-spells",
       "type": "Item",
       "system": "dnd5e"
+    },
+    {
+      "name": "vessel-spell-lists",
+      "label": "Vessel Spell List",
+      "path": "packs/vessel-spell-lists",
+      "type": "JournalEntry",
+      "system": "dnd5e",
+      "flags": {
+        "dnd5e": {
+          "display": "table-of-contents"
+        }
+      }
     },
     {
       "name": "vessel-aspects",
