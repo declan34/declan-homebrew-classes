@@ -535,7 +535,10 @@ export function handlePostUseActivity(activity, {
       transformationId: results?.message?.id
         ?? results?.message?._id
         ?? `${actor?.uuid ?? 'Actor.unknown'}:${activity.id}:${Date.now()}`,
-      ...(profile.acBonus == null ? {} : { acBonus: profile.acBonus })
+      ...(profile.acBonus == null ? {} : { acBonus: profile.acBonus }),
+      ...(usageConfig?.growthCategories == null
+        ? {}
+        : { growthCategories: usageConfig.growthCategories })
     };
     void performArchon(activity, pending, results, { resolveUuid }).catch(onError);
     return;

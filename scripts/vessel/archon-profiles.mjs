@@ -4,7 +4,8 @@ import {
 } from './constants.mjs';
 import {
   getAllowedArchonProfilesForActor,
-  getArchonProfilesForActor
+  getArchonProfilesForActor,
+  getDireStatureOptions
 } from './rules.mjs';
 
 const ARCHON_ROLES = new Set([
@@ -184,6 +185,49 @@ export function findArchonFormItem(actor) {
   );
 }
 
+export async function promptForDireStature(actor, {
+  dialog = globalThis.foundry?.applications?.api?.DialogV2,
+  getOptions = getDireStatureOptions
+} = {}) {
+  const options = getOptions(actor);
+  if (options.length === 1) return options[0];
+  if (!actor?.isOwner || typeof dialog?.wait !== 'function') return null;
+
+  const buttons = [
+    {
+      action: 'normal',
+      label: 'Normal',
+      callback: () => 0
+    },
+    {
+      action: 'large',
+      label: 'Large',
+      callback: () => 1
+    }
+  ];
+  if (options.includes(2)) {
+    buttons.push({
+      action: 'huge',
+      label: 'Huge',
+      callback: () => 2
+    });
+  }
+  buttons.push({
+    action: 'cancel',
+    label: 'Cancel',
+    callback: () => null
+  });
+  return dialog.wait({
+    window: { title: 'Dire Stature' },
+    content: [
+      '<p>Choose the size of your Archon Form.</p>',
+      '<p>Confirm that there is room for your Archon Form to grow before choosing Large or Huge.</p>'
+    ].join(''),
+    buttons,
+    close: () => null
+  });
+}
+
 export async function resolveArchonProfileSources(profiles, {
   resolveUuid = globalThis.fromUuid,
   cache
@@ -320,6 +364,7 @@ function prepareFreeUse(activity, actor) {
 export async function prepareArchonActivityUse(activity, usageConfig = {}, {
   resolveUuid = globalThis.fromUuid,
   cache,
+  promptForDireStature: chooseDireStature = promptForDireStature,
   spellcasting = globalThis.CONFIG?.DND5E?.spellcasting,
   spellProgression = globalThis.CONFIG?.DND5E?.spellProgression
 } = {}) {
@@ -328,6 +373,12 @@ export async function prepareArchonActivityUse(activity, usageConfig = {}, {
 
   const actor = activity?.item?.actor;
   validateOwner(activity, actor);
+
+  if (TRANSFORM_ROLES.has(activityRole)) {
+    const growthCategories = await chooseDireStature(actor);
+    if (growthCategories == null) return { handled: true, cancelled: true };
+    usageConfig.growthCategories = growthCategories;
+  }
 
   let resourceItem;
   if (activityRole === AUTOMATION_ROLES.ARCHON_TRANSFORM_FREE) {
@@ -375,7 +426,8 @@ function preparedPayload(activity, usageConfig) {
   return {
     profiles: activityProfiles(activity).map(objectData),
     consumption: objectData(activity.consumption ?? {}),
-    selectedProfile: usageConfig?.transform?.profile
+    selectedProfile: usageConfig?.transform?.profile,
+    growthCategories: usageConfig?.growthCategories
   };
 }
 
@@ -387,6 +439,9 @@ function applyPreparedPayload(activity, usageConfig, payload) {
   if (payload.selectedProfile) {
     usageConfig.transform ??= {};
     usageConfig.transform.profile = payload.selectedProfile;
+  }
+  if (payload.growthCategories != null) {
+    usageConfig.growthCategories = payload.growthCategories;
   }
 }
 
@@ -423,8 +478,12 @@ export function requestArchonActivityPreparation(activity, usageConfig = {}, {
   entries.set(key, entry);
   entry.promise = Promise.resolve()
     .then(() => prepareUse(activity, usageConfig, prepareOptions))
-    .then(() => {
+    .then(result => {
       if (entries.get(key) !== entry) return;
+      if (result?.cancelled) {
+        entries.delete(key);
+        return;
+      }
       entry.status = 'ready';
       entry.payload = preparedPayload(activity, usageConfig);
       return retry?.(activity);

@@ -183,6 +183,28 @@ test('successful Transform use binds the in-place switch to its source actor', a
   assert.equal(switched[0].used, transform);
 });
 
+test('Transform use copies the prepared Dire Stature category into pending state', async () => {
+  const target = actor();
+  const transform = activity('archon-transform-free', target);
+  const switched = [];
+
+  handlePostUseActivity(transform, {
+    performArchonTransformation: async (_used, pending) => {
+      switched.push(pending);
+      return target;
+    },
+    reportError: error => { throw error; }
+  }, {
+    transform: { profile: 'profile-choice' },
+    growthCategories: 1
+  }, {
+    message: { id: 'message-dire-growth' }
+  });
+  await tick();
+
+  assert.equal(switched[0].growthCategories, 1);
+});
+
 test('Transform use resolves the selected activity profile before its chat flag is persisted', async () => {
   const target = actor();
   const profileUuid = 'Compendium.test.Actor.cursed';

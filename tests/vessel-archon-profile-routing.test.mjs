@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {
+import * as archonProfiles from '../scripts/vessel/archon-profiles.mjs';
+const {
   ArchonPreparationError,
   findArchonFormItem,
   prepareArchonActivityUse,
   requestArchonActivityPreparation,
   resolveVesselSpellSlotPool,
   resolveArchonProfileSources
-} from '../scripts/vessel/archon-profiles.mjs';
+} = archonProfiles;
 import { ARCHON_PROFILES } from '../scripts/vessel/rules.mjs';
 
 const MODULE_ID = 'declan-homebrew-classes';
@@ -24,6 +25,7 @@ function item(identifier, type = 'feat', system = {}) {
 function actor({
   subclass = 'the-ascended',
   affinity,
+  aspects = [],
   freeSpent = 0,
   slots = 1,
   owner = true
@@ -35,6 +37,7 @@ function actor({
     isOwner: owner,
     items: [
       item(subclass, 'subclass'),
+      ...aspects,
       resource
     ],
     system: { spells: { vessel: { value: slots, max: 2 } } },
@@ -434,6 +437,47 @@ test('ignores unrelated activities without mutating their data', async () => {
   assert.deepEqual(subject.consumption, before.consumption);
 });
 
+test('skips the Dire Stature dialog and keeps normal stature without the Aspect', async () => {
+  assert.equal(typeof archonProfiles.promptForDireStature, 'function');
+
+  const host = actor();
+  await assert.doesNotReject(async () => {
+    const choice = await archonProfiles.promptForDireStature(host, {
+      dialog: { wait: () => assert.fail('normal stature must not open a dialog') }
+    });
+    assert.equal(choice, 0);
+  });
+});
+
+test('cancelling the Dire Stature preflight does not retry or consume a free use', async () => {
+  const host = actor({ aspects: [item('dire-stature')] });
+  const subject = activity(
+    'archon-transform-free',
+    host,
+    profilesFor('the-ascended')
+  );
+  const errors = [];
+  let prompts = 0;
+  let retries = 0;
+
+  assert.equal(requestArchonActivityPreparation(subject, { transform: {} }, {
+    state: new WeakMap(),
+    promptForDireStature: async () => {
+      prompts += 1;
+      return null;
+    },
+    retry: async () => { retries += 1; },
+    onError: error => errors.push(error),
+    resolveUuid: async uuid => profileDocument(uuid)
+  }), false);
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.equal(prompts, 1);
+  assert.equal(retries, 0);
+  assert.equal(errors.length, 0);
+  assert.equal(host.items.find(candidate => candidate.identifier === 'archon-form').system.uses.spent, 0);
+});
+
 test('two-phase preparation cancels once, resolves asynchronously, then applies on retry', async () => {
   const host = actor({
     subclass: 'the-cataclysm',
@@ -507,6 +551,47 @@ test('two-phase preparation cancels once, resolves asynchronously, then applies 
       profile.uuid === ARCHON_PROFILES['cataclysm-water'].uuid
     )._id
   );
+});
+
+test('guarded retry reuses the selected Dire Stature category without another prompt', async () => {
+  const host = actor({ aspects: [item('dire-stature')] });
+  const initial = activity(
+    'archon-transform-free',
+    host,
+    profilesFor('the-ascended')
+  );
+  const state = new WeakMap();
+  let prompts = 0;
+  let retryUsage;
+  let retryResult;
+  const options = {
+    state,
+    promptForDireStature: async () => {
+      prompts += 1;
+      return 1;
+    },
+    resolveUuid: async uuid => profileDocument(uuid),
+    retry: async () => {
+      const retry = activity(
+        'archon-transform-free',
+        host,
+        profilesFor('the-ascended')
+      );
+      retryUsage = { transform: {} };
+      retryResult = requestArchonActivityPreparation(retry, retryUsage, options);
+    },
+    onError: assert.fail
+  };
+
+  assert.equal(
+    requestArchonActivityPreparation(initial, { transform: {} }, options),
+    false
+  );
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.equal(retryResult, undefined);
+  assert.equal(prompts, 1);
+  assert.equal(retryUsage.growthCategories, 1);
 });
 
 test('two-phase preparation reports failure without retrying or leaving a guard', async () => {
