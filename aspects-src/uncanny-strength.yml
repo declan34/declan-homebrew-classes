@@ -27,7 +27,25 @@ system:
   activities: {}
   enchant: {}
   identifier: uncanny-strength
-effects: []
+effects:
+  - _id: UncannyStrEff01
+    name: Uncanny Strength — Athletics Proficiency
+    img: icons/svg/upgrade.svg
+    origin: null
+    transfer: true
+    disabled: false
+    type: base
+    system: {}
+    changes:
+      - {key: system.skills.ath.value, mode: 4, value: '1', priority: 20}
+    duration: {startTime: null, seconds: null, combat: null, rounds: null, turns: null, startRound: null, startTurn: null}
+    description: <p>You gain proficiency in Athletics.</p>
+    tint: '#ffffff'
+    statuses: []
+    sort: 0
+    flags:
+      dnd5e: {riders: {statuses: []}}
+    _key: '!items.effects!igT40LQUSt17fe0g.UncannyStrEff01'
 flags:
   dnd5e:
     riders:

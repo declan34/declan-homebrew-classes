@@ -8,6 +8,7 @@ import {
   getStrikingPresenceSkill,
   reconcileStrikingPresence
 } from './striking-presence.mjs';
+import { prepareUncannyAthleticsRoll } from './uncanny-strength.mjs';
 import {
   activateArchonForm,
   clearArchonPending,
@@ -969,6 +970,9 @@ export function registerVesselAutomationHooks(hooks, {
     handlePreUseActivity(activity, {
       configureStrikingPresence: configurePresence
     }, usageConfig)
+  );
+  hooks.on('dnd5e.preRollSkill', config =>
+    prepareUncannyAthleticsRoll(config, config?.subject, config?.skill)
   );
   hooks.on('dnd5e.postUseActivity', (activity, usageConfig, results) =>
     handlePostUseActivity(activity, {}, usageConfig, results)

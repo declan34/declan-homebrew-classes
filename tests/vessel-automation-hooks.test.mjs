@@ -274,6 +274,7 @@ test('registers only public Foundry and dnd5e hooks', () => {
     'deleteActiveEffect',
     'deleteItem',
     'dnd5e.postUseActivity',
+    'dnd5e.preRollSkill',
     'dnd5e.preUseActivity',
     'dnd5e.renderChatMessage',
     'dnd5e.transformActorV2',
