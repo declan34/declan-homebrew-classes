@@ -484,8 +484,15 @@ export async function activateArchonForm(
   const actor = actorDocument(document);
   return serializeActorOperation(actor, async () => {
     requireActorOwner(actor);
-    if (getArchonState(actor)?.active) {
+    const existingState = getArchonState(actor);
+    if (existingState?.active) {
       throw new Error('Revert your current Archon Form before transforming again.');
+    }
+    if (existingState?.activating) {
+      throw new Error('An Archon Form transformation is already underway.');
+    }
+    if (existingState?.cleanupPending) {
+      throw new Error('Archon Form cleanup is pending. Revert to retry cleanup before transforming again.');
     }
     if (!profileActor || !pending?.profile || !pending?.profileUuid) {
       throw new Error('Archon Form requires a valid selected profile.');

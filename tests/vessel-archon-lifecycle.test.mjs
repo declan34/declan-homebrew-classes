@@ -303,6 +303,68 @@ test('in-place activation keeps the original Actor and tags copied profile docum
   assert.equal(state.snapshot.tokens[0].textureSrc, 'icons/live-token.webp');
 });
 
+test('reactivation preserves an activating or cleanup-pending transformation exactly', async () => {
+  for (const phase of ['activating', 'cleanupPending']) {
+    const transformationId = `original-${phase}`;
+    const temporaryItem = {
+      _id: `temporary-item-${phase}`,
+      id: `temporary-item-${phase}`,
+      type: 'feat',
+      system: {identifier: `temporary-${phase}`},
+      flags: {
+        [MODULE_ID]: {
+          vessel: {archon: {temporary: {transformationId, profile: 'cursed'}}}
+        }
+      }
+    };
+    const temporaryEffect = {
+      _id: `temporary-effect-${phase}`,
+      id: `temporary-effect-${phase}`,
+      flags: {
+        [MODULE_ID]: {
+          vessel: {archon: {temporary: {transformationId, profile: 'cursed'}}}
+        }
+      }
+    };
+    const state = {
+      active: false,
+      [phase]: true,
+      profile: 'cursed',
+      profileUuid: 'Compendium.test.Actor.cursed',
+      transformationId,
+      temporaryItemIds: [temporaryItem.id],
+      temporaryEffectIds: [temporaryEffect.id],
+      snapshot: {
+        actor: {img: 'icons/original-portrait.webp'},
+        tokens: [{uuid: 'Scene.scene.Token.original'}]
+      }
+    };
+    const target = mockActor({
+      state,
+      items: [spiritMantleItem(), temporaryItem],
+      effects: [temporaryEffect]
+    });
+
+    await assert.rejects(
+      activateArchonForm(target, switchProfile(), {
+        payment: 'slot',
+        profile: 'cursed',
+        profileUuid: 'Compendium.test.Actor.cursed',
+        transformationId: `attempted-${phase}`
+      }),
+      /Archon Form/u
+    );
+
+    assert.deepEqual(getArchonState(target), state);
+    assert.deepEqual(target.items.map(item => item.id), [
+      'owned-spirit-mantle',
+      temporaryItem.id
+    ]);
+    assert.deepEqual(target.effects.map(effect => effect.id), [temporaryEffect.id]);
+    assert.equal(target.operations.length, 0);
+  }
+});
+
 test('in-place reversion restores snapshots and removes only matching temporary documents', async () => {
   const unrelatedItem = {
     _id: 'unrelated-item',

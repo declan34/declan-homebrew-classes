@@ -3,15 +3,23 @@ import { sealedMagicEntriesForActor } from './sealed-magic-manifest.mjs';
 import { resolveSealedMagicEntry } from './sealed-magic-provider.mjs';
 import { serializeActorOperation } from './operations.mjs';
 import { normalizeSpellName } from './spell-provider.mjs';
-import { getVesselLevel } from './rules.mjs';
+import {
+  getVesselLevel,
+  getVesselSubclassIdentifier,
+  normalizeElementalAffinity
+} from './rules.mjs';
 
 function documents(collection) {
   if (!collection) return [];
   return Array.from(collection.values?.() ?? collection);
 }
 
+function sealedMagicGrant(item) {
+  return item?.flags?.[MODULE_ID]?.vessel?.sealedMagic;
+}
+
 function sealedMagicKey(item) {
-  return item?.flags?.[MODULE_ID]?.vessel?.sealedMagic?.key;
+  return sealedMagicGrant(item)?.key;
 }
 
 function existingSpellIdentities(actor) {
@@ -37,7 +45,7 @@ function cleanSource(source) {
   return cleaned;
 }
 
-function grantSource(source, entry, sourceUuid) {
+function grantSource(source, entry, resolution) {
   const grant = cleanSource(source);
   const flags = grant.flags ?? {};
   const moduleFlags = flags[MODULE_ID] ?? {};
@@ -53,7 +61,8 @@ function grantSource(source, entry, sourceUuid) {
           subclass: entry.subclass,
           vesselLevel: entry.vesselLevel,
           ...(entry.affinity ? { affinity: entry.affinity } : {}),
-          sourceUuid
+          sourceUuid: resolution.sourceUuid,
+          ...(resolution.provider ? {provider: resolution.provider} : {})
         }
       }
     }
@@ -65,8 +74,46 @@ function unresolved(key, status) {
   return { key, status };
 }
 
+function actorAffinity(actor) {
+  return normalizeElementalAffinity(
+    actor?.getFlag?.(MODULE_ID, 'vessel.elementalAffinity')
+      ?? actor?.flags?.[MODULE_ID]?.vessel?.elementalAffinity
+  );
+}
+
+function affinityManualReview(actor) {
+  if (getVesselSubclassIdentifier(actor) !== 'the-cataclysm') return [];
+  const currentAffinity = actorAffinity(actor);
+  if (!currentAffinity) return [];
+
+  const review = [];
+  for (const item of documents(actor?.items)) {
+    if (item?.type !== 'spell') continue;
+    const grant = sealedMagicGrant(item);
+    const recordedAffinity = normalizeElementalAffinity(grant?.affinity);
+    if (
+      grant?.subclass !== 'the-cataclysm'
+      || !grant?.key
+      || !recordedAffinity
+      || recordedAffinity === currentAffinity
+    ) continue;
+    review.push({
+      key: grant.key,
+      name: item.name ?? grant.key,
+      recordedAffinity,
+      currentAffinity
+    });
+  }
+  return review;
+}
+
 async function reconcileSealedMagicUnlocked(actor, dependencies) {
-  const result = { created: [], skipped: [], unresolved: [] };
+  const result = {
+    created: [],
+    skipped: [],
+    unresolved: [],
+    manualReview: affinityManualReview(actor)
+  };
   const entries = dependencies.entriesForActor(actor);
   const level = getVesselLevel(actor);
   const existing = existingSpellIdentities(actor);
@@ -113,7 +160,7 @@ async function reconcileSealedMagicUnlocked(actor, dependencies) {
 
     try {
       const [created] = await actor.createEmbeddedDocuments('Item', [
-        grantSource(source.toObject(), entry, resolution.sourceUuid)
+        grantSource(source.toObject(), entry, resolution)
       ]);
       if (!created) throw new Error('Foundry did not create the Sealed Magic spell.');
       existing.keys.add(entry.key);
@@ -136,7 +183,9 @@ export async function reconcileSealedMagic(actor, {
   fromUuid = globalThis.fromUuid,
   serialize = serializeActorOperation
 } = {}) {
-  if (!actor?.isOwner) return { created: [], skipped: [], unresolved: [] };
+  if (!actor?.isOwner) {
+    return { created: [], skipped: [], unresolved: [], manualReview: [] };
+  }
   if (typeof serialize !== 'function') {
     throw new TypeError('Sealed Magic reconciliation requires an actor operation serializer.');
   }

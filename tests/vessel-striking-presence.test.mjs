@@ -47,7 +47,8 @@ function aspect({ isOwner = true, skill } = {}) {
 }
 
 function configurationActivity(item) {
-  const actor = { isOwner: item.isOwner, items: new Map([[item.id, item]]) };
+  const actor = item.actor
+    ?? { isOwner: item.isOwner, items: new Map([[item.id, item]]) };
   item.actor = actor;
   return {
     flags: { [MODULE_ID]: { vessel: { role: 'striking-presence-configure' } } },
@@ -375,6 +376,66 @@ test('routes the Configure activity through one per-item Striking Presence promp
   }), false);
   await new Promise(resolve => setImmediate(resolve));
   assert.deepEqual(configured, [item]);
+});
+
+test('manual Configure replaces a valid Striking Presence choice and reconciles its effects', async () => {
+  const registry = hookRegistry();
+  const presence = configuredPresence({
+    id: 'StrikingPresenceConfigured',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceConfigured',
+    skill: 'dec'
+  });
+  const target = reconciliationActor({mantle: true, items: [presence]});
+  await reconcileStrikingPresence(target);
+  let configured = 0;
+
+  registerVesselAutomationHooks(registry.hooks, {
+    configureStrikingPresence: async item => {
+      configured += 1;
+      await item.setFlag(
+        MODULE_ID,
+        'vessel.strikingPresence.skill',
+        'per'
+      );
+      return 'per';
+    },
+    reconcileActor: reconcileStrikingPresence
+  });
+
+  assert.equal(
+    registry.on.get('dnd5e.preUseActivity')(configurationActivity(presence)),
+    false
+  );
+  await new Promise(resolve => setImmediate(resolve));
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.equal(configured, 1);
+  assert.deepEqual(strikingEffects(target, 'proficiency')[0].changes, [{
+    key: 'system.skills.per.value', mode: 4, value: '1', priority: 20
+  }]);
+  assert.deepEqual(strikingEffects(target, 'advantage')[0].changes, [{
+    key: 'system.skills.per.roll.mode', mode: 2, value: '1', priority: 20
+  }]);
+});
+
+test('automatic Striking Presence configuration skips an existing valid choice', async () => {
+  const registry = hookRegistry();
+  const presence = configuredPresence({
+    id: 'StrikingPresenceAutomaticConfigured',
+    uuid: 'Actor.Vessel.Item.StrikingPresenceAutomaticConfigured',
+    skill: 'itm'
+  });
+  const target = reconciliationActor({items: [presence]});
+  let configured = 0;
+
+  registerVesselAutomationHooks(registry.hooks, {
+    configureStrikingPresence: async () => { configured += 1; }
+  });
+  registry.on.get('renderActorSheet')({actor: target});
+  await new Promise(resolve => setImmediate(resolve));
+
+  assert.equal(configured, 0);
+  assert.equal(getStrikingPresenceSkill(presence), 'itm');
 });
 
 test('queues one missing Striking Presence configuration without blocking actor sheet rendering', async () => {

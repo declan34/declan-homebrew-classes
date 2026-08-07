@@ -511,6 +511,35 @@ test('Transform is rejected while Archon Form is already active', () => {
   assert.equal(prepared, 0);
 });
 
+test('Transform is rejected during activation or cleanup while Revert can retry cleanup', () => {
+  let prepared = 0;
+  for (const state of [
+    {
+      active: false,
+      activating: true,
+      transformationId: 'activation-in-progress'
+    },
+    {
+      active: false,
+      cleanupPending: true,
+      transformationId: 'cleanup-in-progress'
+    }
+  ]) {
+    const target = actor({ state });
+    for (const role of ['archon-transform-free', 'archon-transform-slot']) {
+      assert.equal(handlePreUseActivity(activity(role, target), {
+        requestArchonActivityPreparation: () => { prepared += 1; }
+      }), false);
+    }
+
+    const revert = activity('archon-revert', target);
+    assert.equal(handlePreUseActivity(revert, {
+      requestArchonActivityPreparation: () => { prepared += 1; }
+    }), state.cleanupPending ? undefined : false);
+  }
+  assert.equal(prepared, 1);
+});
+
 test('failed in-place activation clears only its matching pending state', async () => {
   const target = actor({ id: 'failed-in-place' });
   const transform = activity('archon-transform-free', target);

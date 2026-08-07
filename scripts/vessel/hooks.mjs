@@ -213,7 +213,10 @@ function strikingPresencePromptKey(item) {
 function requestStrikingPresenceConfiguration(item, configure, onError, {
   automatic = false
 } = {}) {
-  if (!item?.isOwner || getStrikingPresenceSkill(item)) return;
+  if (
+    !item?.isOwner
+    || (automatic && getStrikingPresenceSkill(item))
+  ) return;
   const key = automatic && strikingPresencePromptKey(item);
   if (key && attemptedStrikingPresencePrompts.has(key)) return;
   if (pendingStrikingPresencePrompts.has(item)) return;
@@ -465,17 +468,25 @@ export function handlePreUseActivity(activity, {
   }
   if (ARCHON_ACTIVITY_ROLES.has(activityRole)) {
     const actor = activity?.item?.actor;
+    const state = getArchonState(actor);
     if (
       ARCHON_TRANSFORM_ROLES.has(activityRole)
-      && isArchonFormActive(actor)
+      && (state?.active || state?.activating || state?.cleanupPending)
     ) {
       warn('Revert your current Archon Form before transforming again.');
       return false;
     }
     if (
-      [AUTOMATION_ROLES.ARCHON_EXTEND, AUTOMATION_ROLES.ARCHON_REVERT]
-        .includes(activityRole)
-      && !isArchonFormActive(actor)
+      activityRole === AUTOMATION_ROLES.ARCHON_EXTEND
+      && !state?.active
+    ) {
+      warn('Archon Form is not active.');
+      return false;
+    }
+    if (
+      activityRole === AUTOMATION_ROLES.ARCHON_REVERT
+      && !state?.active
+      && !state?.cleanupPending
     ) {
       warn('Archon Form is not active.');
       return false;
@@ -907,6 +918,12 @@ function sealedMagicWarning(actor, unresolved) {
   return `Unable to grant Sealed Magic spell${spells.length === 1 ? '' : 's'}: ${spells.join(', ')}.`;
 }
 
+function sealedMagicReviewWarning(manualReview) {
+  const spells = manualReview.map(entry => entry.name ?? entry.key);
+  const verb = spells.length === 1 ? 'requires' : 'require';
+  return `Sealed Magic spell${spells.length === 1 ? '' : 's'} ${spells.join(', ')} ${verb} manual review after the Elemental Affinity change.`;
+}
+
 function queueSealedMagicReconciliation(actor, {
   users,
   currentUserId,
@@ -915,20 +932,33 @@ function queueSealedMagicReconciliation(actor, {
   reportError: onError
 }) {
   if (!actor?.isOwner || !responsibleHere(actor, users(), currentUserId())) return;
-  if (pendingSealedMagicReconciliations.has(actor)) return;
+  const current = pendingSealedMagicReconciliations.get(actor);
+  if (current) {
+    current.dirty = true;
+    return;
+  }
 
-  const pending = Promise.resolve()
+  const request = {dirty: false};
+  Promise.resolve()
     .then(async () => {
-      const result = await reconcile(actor);
-      if (result?.unresolved?.length) notify(sealedMagicWarning(actor, result.unresolved));
+      do {
+        request.dirty = false;
+        const result = await reconcile(actor);
+        if (result?.unresolved?.length) {
+          notify(sealedMagicWarning(actor, result.unresolved));
+        }
+        if (result?.manualReview?.length) {
+          notify(sealedMagicReviewWarning(result.manualReview));
+        }
+      } while (request.dirty);
     })
     .catch(onError)
     .finally(() => {
-      if (pendingSealedMagicReconciliations.get(actor) === pending) {
+      if (pendingSealedMagicReconciliations.get(actor) === request) {
         pendingSealedMagicReconciliations.delete(actor);
       }
     });
-  pendingSealedMagicReconciliations.set(actor, pending);
+  pendingSealedMagicReconciliations.set(actor, request);
 }
 
 export function registerVesselAutomationHooks(hooks, {
@@ -946,6 +976,11 @@ export function registerVesselAutomationHooks(hooks, {
   warn: warnSealedMagic = warn,
   configureStrikingPresence: configurePresence = configureStrikingPresence
 } = {}) {
+  const configureAndReconcilePresence = async item => {
+    const skill = await configurePresence(item);
+    if (skill) await reconcile(item.actor);
+    return skill;
+  };
   const requestSealedMagicReconciliation = () => {
     for (const actor of actors()) {
       queueSealedMagicReconciliation(actor, {
@@ -968,7 +1003,7 @@ export function registerVesselAutomationHooks(hooks, {
   };
   hooks.on('dnd5e.preUseActivity', (activity, usageConfig) =>
     handlePreUseActivity(activity, {
-      configureStrikingPresence: configurePresence
+      configureStrikingPresence: configureAndReconcilePresence
     }, usageConfig)
   );
   hooks.on('dnd5e.preRollSkill', config =>
@@ -985,24 +1020,32 @@ export function registerVesselAutomationHooks(hooks, {
     queueActorSealedMagicReconciliation(actor);
     for (const item of documents(actor?.items)) {
       if (isStrikingPresence(item)) {
-        requestStrikingPresenceConfiguration(item, configurePresence, reportError, {
+        requestStrikingPresenceConfiguration(item, configureAndReconcilePresence, reportError, {
           automatic: true
         });
       }
     }
   });
   hooks.on('createActor', (actor, _options, userId) => {
-    if (userId !== currentUserId()) return;
     if (finalizingArchons.has(actor)) return;
     void (async () => {
-      const result = await finalizeCreatedArchon(actor, { finalizeArchon });
-      queueElderArchonReminder(actor, result, elderReminder);
+      if (userId === currentUserId()) {
+        const result = await finalizeCreatedArchon(actor, { finalizeArchon });
+        queueElderArchonReminder(actor, result, elderReminder);
+      }
+      queueActorSealedMagicReconciliation(actor);
     })().catch(reportError);
   });
   hooks.on('updateActor', (actor, changes, _options, userId) => {
     const vesselChanges = changes?.flags?.[MODULE_ID]?.vessel;
     const archonStateChanged = Object.hasOwn(vesselChanges?.archon ?? {}, 'state');
     const mantleStateChanged = Object.hasOwn(vesselChanges ?? {}, 'mantle');
+    const elementalAffinityChanged =
+      Object.hasOwn(vesselChanges ?? {}, 'elementalAffinity')
+      || Object.hasOwn(vesselChanges ?? {}, '-=elementalAffinity');
+    if (elementalAffinityChanged) {
+      queueActorSealedMagicReconciliation(actor);
+    }
     if (
       userId === currentUserId()
       && (archonStateChanged || mantleStateChanged)
