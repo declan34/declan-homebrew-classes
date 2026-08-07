@@ -14,11 +14,9 @@ system:
     license: proprietary
     book: ''
   uses:
-    max: '1'
+    max: ''
     spent: 0
-    recovery:
-      - period: sr
-        type: recoverAll
+    recovery: []
   type:
     value: class
     subtype: ''

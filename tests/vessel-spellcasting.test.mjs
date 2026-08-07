@@ -158,6 +158,68 @@ test('Vessel class selects native Vessel Magic with Charisma', () => {
   assert.equal(vessel.system.spellcasting.ability, 'cha');
 });
 
+test('Vessel class exposes the published spellcasting scales without a Vessel Magic use counter', () => {
+  const vessel = yaml.load(
+    readFileSync(new URL('../src/vessel/the-vessel.yml', import.meta.url), 'utf8')
+  );
+  const vesselMagic = yaml.load(
+    readFileSync(
+      new URL('../src/vessel/class-features/vessel-magic.yml', import.meta.url),
+      'utf8'
+    )
+  );
+  const scales = vessel.system.advancement.filter(
+    advancement => advancement.type === 'ScaleValue'
+  ).filter(
+    advancement => [
+      'cantrips-known',
+      'spells-known',
+      'spell-slots',
+      'slot-level'
+    ].includes(advancement.configuration.identifier)
+  );
+
+  assert.deepEqual(vessel.system.primaryAbility.value, ['cha']);
+  assert.deepEqual(vesselMagic.system.uses, { max: '', spent: 0, recovery: [] });
+  assert.deepEqual(
+    Object.fromEntries(scales.map(scale => [
+      scale.configuration.identifier,
+      scale.configuration.scale
+    ])),
+    {
+      'cantrips-known': {
+        2: { value: 2 },
+        4: { value: 3 },
+        11: { value: 4 }
+      },
+      'spells-known': {
+        2: { value: 2 },
+        4: { value: 3 },
+        6: { value: 4 },
+        8: { value: 5 },
+        10: { value: 6 },
+        12: { value: 7 },
+        14: { value: 8 },
+        16: { value: 9 },
+        18: { value: 10 },
+        20: { value: 11 }
+      },
+      'spell-slots': {
+        2: { value: 2 },
+        11: { value: 3 },
+        17: { value: 4 }
+      },
+      'slot-level': {
+        2: { value: 1 },
+        5: { value: 2 },
+        9: { value: 3 },
+        13: { value: 4 },
+        17: { value: 5 }
+      }
+    }
+  );
+});
+
 test('Archon Form has one free use per rest', () => {
   const archon = yaml.load(
     readFileSync(
