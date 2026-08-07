@@ -45,6 +45,12 @@ const vesselMagicSource = yaml.load(
     'utf8'
   )
 );
+const direStatureSource = yaml.load(
+  readFileSync(
+    new URL('../aspects-src/dire-stature.yml', import.meta.url),
+    'utf8'
+  )
+);
 
 function document(data) {
   return {
@@ -155,7 +161,8 @@ function sourceItems() {
     vessel: ownedItem(vesselSource),
     vesselMagic: ownedItem(vesselMagicSource),
     mantle: ownedItem(mantleSource),
-    strikes: ownedItem(strikesSource)
+    strikes: ownedItem(strikesSource),
+    direStature: ownedItem(direStatureSource)
   };
 }
 
@@ -174,6 +181,7 @@ function legacyActor({
   mantle,
   strikes,
   vesselMagic,
+  direStature,
   migrationVersion = 0,
   failItemCreation = false
 } = {}) {
@@ -213,7 +221,8 @@ function legacyActor({
     [vesselItem._id, vesselItem],
     ...(vesselMagic ? [[vesselMagic._id, vesselMagic]] : []),
     [mantleItem._id, mantleItem],
-    ...(strikes ? [[strikes._id, strikes]] : [])
+    ...(strikes ? [[strikes._id, strikes]] : []),
+    ...(direStature ? [[direStature._id, direStature]] : [])
   ]);
 
   return {
@@ -379,7 +388,7 @@ test('repairs canonical Vessel spell progression and removes only the Vessel Mag
   assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), VESSEL_MIGRATION_VERSION);
 });
 
-test('version 4 actors run only the new Vessel spell-track repair', async () => {
+test('version 4 actors run v5 repairs without rerunning legacy migration work', async () => {
   const vesselData = structuredClone(vesselSource);
   vesselData.system.primaryAbility.value = ['int'];
   vesselData.system.spellcasting.ability = 'int';
@@ -420,6 +429,58 @@ test('version 4 actors run only the new Vessel spell-track repair', async () => 
     target.operations.some(([operation]) => operation === 'createEmbeddedDocuments'),
     false
   );
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), VESSEL_MIGRATION_VERSION);
+});
+
+test('repairs the owned Dire Stature template without replacing unrelated effects', async () => {
+  const direStatureData = structuredClone(direStatureSource);
+  const canonicalEffect = direStatureData.effects[0];
+  canonicalEffect.name = 'My Dire Stature Label';
+  canonicalEffect.changes = [];
+  canonicalEffect.flags = { custom: { keep: true } };
+  direStatureData.effects.push({
+    _id: 'UserEffect000001',
+    name: 'My unrelated effect',
+    type: 'base',
+    changes: [{
+      key: 'system.attributes.hp.tempmax',
+      mode: 2,
+      value: '3',
+      priority: 20
+    }],
+    flags: { custom: { keep: true } }
+  });
+  const target = legacyActor({
+    vessel: ownedItem(vesselSource),
+    vesselMagic: ownedItem(vesselMagicSource),
+    direStature: ownedItem(direStatureData),
+    migrationVersion: 4
+  });
+  const direStature = target.items.get(direStatureSource._id);
+
+  assert.equal(await migrateVesselActor(target, {
+    loadSourceItems: async () => sourceItems()
+  }), true);
+
+  const repaired = direStature.effects.get(canonicalEffect._id);
+  assert.equal(repaired.name, 'My Dire Stature Label');
+  assert.deepEqual(repaired.changes, direStatureSource.effects[0].changes);
+  assert.deepEqual(
+    repaired.flags[MODULE_ID],
+    direStatureSource.effects[0].flags[MODULE_ID]
+  );
+  assert.deepEqual(direStature.effects.get('UserEffect000001').toObject(), {
+    _id: 'UserEffect000001',
+    name: 'My unrelated effect',
+    type: 'base',
+    changes: [{
+      key: 'system.attributes.hp.tempmax',
+      mode: 2,
+      value: '3',
+      priority: 20
+    }],
+    flags: { custom: { keep: true } }
+  });
   assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), VESSEL_MIGRATION_VERSION);
 });
 

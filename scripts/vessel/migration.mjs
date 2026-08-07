@@ -1,6 +1,8 @@
 import {
   ARCHON_FORM_ITEM_ID,
   AUTOMATION_ROLES,
+  DIRE_STATURE_IDENTIFIER,
+  DIRE_STATURE_ITEM_ID,
   IRIDESCENT_STRIKES_ITEM_ID,
   MODULE_ID,
   SPIRIT_MANTLE_ITEM_ID,
@@ -656,13 +658,44 @@ async function migrateIridescentStrikesItem(item, canonical) {
   }
 }
 
+async function migrateDireStatureItem(item, canonical) {
+  if (!canonical) {
+    throw new Error('The Vessel Aspects compendium is missing Dire Stature.');
+  }
+  const sourceEffects = documents(canonical.effects).filter(
+    effect => getAutomationRole(effect) === AUTOMATION_ROLES.DIRE_STATURE_EFFECT
+  );
+  if (sourceEffects.length !== 1) {
+    throw new Error('The Dire Stature compendium Item is missing its effect template.');
+  }
+
+  const source = sourceEffects[0];
+  const current = documents(item.effects).find(effect =>
+    documentId(effect) === documentId(source)
+      || getAutomationRole(effect) === AUTOMATION_ROLES.DIRE_STATURE_EFFECT
+  );
+  const repaired = repairStage3Effect(current, source);
+  if (!current) {
+    await item.createEmbeddedDocuments(
+      'ActiveEffect',
+      [repaired],
+      { keepId: true }
+    );
+  } else if (!sameData(objectData(current), repaired)) {
+    await item.updateEmbeddedDocuments('ActiveEffect', [repaired]);
+  }
+}
+
 export async function loadVesselSourceItems({
   packs = globalThis.game?.packs
 } = {}) {
   if (sourceItemsPromise) return sourceItemsPromise;
   const request = (async () => {
-    const pack = packs?.get?.(`${MODULE_ID}.homebrew-classes`);
-    if (!pack) throw new Error('The Homebrew Classes compendium is unavailable.');
+    const classPack = packs?.get?.(`${MODULE_ID}.homebrew-classes`);
+    const aspectPack = packs?.get?.(`${MODULE_ID}.vessel-aspects`);
+    if (!classPack || !aspectPack) {
+      throw new Error('The Vessel migration compendiums are unavailable.');
+    }
 
     const ids = [
       VESSEL_ITEM_ID,
@@ -672,18 +705,38 @@ export async function loadVesselSourceItems({
       ARCHON_FORM_ITEM_ID,
       ...Object.values(ARCHON_CONTROL_IDS)
     ];
-    const documents = await Promise.all(ids.map(id => pack.getDocument(id)));
+    const documents = await Promise.all([
+      ...ids.map(id => classPack.getDocument(id)),
+      aspectPack.getDocument(DIRE_STATURE_ITEM_ID)
+    ]);
     if (documents.some(document => !document)) {
       throw new Error('The Homebrew Classes compendium is missing Vessel migration sources.');
     }
-    const [vessel, vesselMagic, mantle, strikes, archon, ...controlItems] = documents;
+    const [
+      vessel,
+      vesselMagic,
+      mantle,
+      strikes,
+      archon,
+      ...controlItemsAndDireStature
+    ] = documents;
+    const direStature = controlItemsAndDireStature.pop();
+    const controlItems = controlItemsAndDireStature;
     const controls = Object.fromEntries(
       Object.keys(ARCHON_CONTROL_IDS).map((subclass, index) => [
         subclass,
         controlItems[index]
       ])
     );
-    return { vessel, vesselMagic, mantle, strikes, archon, controls };
+    return {
+      vessel,
+      vesselMagic,
+      mantle,
+      strikes,
+      archon,
+      controls,
+      direStature
+    };
   })();
   sourceItemsPromise = request;
   try {
@@ -748,6 +801,12 @@ export async function migrateVesselActor(actor, {
     );
     for (const item of vesselMagicItems) {
       await migrateVesselMagicItem(item, source.vesselMagic);
+    }
+    const direStatureItems = items.filter(item =>
+      identifier(item) === DIRE_STATURE_IDENTIFIER
+    );
+    for (const item of direStatureItems) {
+      await migrateDireStatureItem(item, source.direStature);
     }
   }
 

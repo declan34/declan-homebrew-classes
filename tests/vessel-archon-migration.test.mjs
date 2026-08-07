@@ -41,6 +41,7 @@ const vesselMagicSource = load('../src/vessel/class-features/vessel-magic.yml');
 const mantleSource = load('../src/vessel/class-features/spirit-mantle.yml');
 const strikesSource = load('../src/vessel/class-features/iridescent-strikes.yml');
 const archonSource = load('../src/vessel/class-features/archon-form.yml');
+const direStatureSource = load('../aspects-src/dire-stature.yml');
 const controlSources = Object.fromEntries(CONTROL_PATHS.map(subclass => [
   subclass,
   load(`../src/vessel/subclass-features/${subclass}/archon-form-control.yml`)
@@ -118,6 +119,7 @@ function sourceItems() {
     vesselMagic: item(vesselMagicSource),
     mantle: item(mantleSource),
     strikes: item(strikesSource),
+    direStature: item(direStatureSource),
     archon: item(archonSource),
     controls: Object.fromEntries(
       Object.entries(controlSources).map(([key, value]) => [key, item(value)])
@@ -184,7 +186,8 @@ test('Vessel migration retains all earlier canonical Items and retries a rejecte
     mantleSource._id,
     strikesSource._id,
     archonSource._id,
-    ...Object.values(controlSources).map(source => source._id)
+    ...Object.values(controlSources).map(source => source._id),
+    direStatureSource._id
   ];
   let fail = true;
   const calls = [];
@@ -203,7 +206,16 @@ test('Vessel migration retains all earlier canonical Items and retries a rejecte
       return sourcesById.get(id);
     }
   };
-  const packs = new Map([[`${MODULE_ID}.homebrew-classes`, pack]]);
+  const aspectPack = {
+    async getDocument(id) {
+      calls.push(id);
+      return id === direStatureSource._id ? item(direStatureSource) : undefined;
+    }
+  };
+  const packs = new Map([
+    [`${MODULE_ID}.homebrew-classes`, pack],
+    [`${MODULE_ID}.vessel-aspects`, aspectPack]
+  ]);
 
   await assert.rejects(
     loadVesselSourceItems({ packs }),

@@ -22,6 +22,9 @@ const { extractPack } = await import(pathToFileURL(cliEntry));
 const compiledPack = fileURLToPath(
   new URL('../packs/homebrew-classes/', import.meta.url)
 );
+const vesselAspectsCompiledPack = fileURLToPath(
+  new URL('../packs/vessel-aspects/', import.meta.url)
+);
 const vesselSource = yaml.load(
   readFileSync(new URL('../src/vessel/the-vessel.yml', import.meta.url), 'utf8')
 );
@@ -45,6 +48,9 @@ const vesselMagicSource = yaml.load(
     new URL('../src/vessel/class-features/vessel-magic.yml', import.meta.url),
     'utf8'
   )
+);
+const direStatureSource = yaml.load(
+  readFileSync(new URL('../aspects-src/dire-stature.yml', import.meta.url), 'utf8')
 );
 const archonControlSources = [
   'the-ascended',
@@ -177,6 +183,25 @@ test('committed compiled pack preserves Vessel automation source structures', as
         `${source.system.identifier} module flags`
       );
     }
+  } finally {
+    rmSync(temporary, { recursive: true, force: true });
+  }
+});
+
+test('committed Vessel Aspect pack preserves the Dire Stature effect template', async () => {
+  const temporary = mkdtempSync(join(tmpdir(), 'vessel-dire-stature-pack-'));
+  const pack = join(temporary, 'pack');
+  const extracted = join(temporary, 'extracted');
+
+  try {
+    cpSync(vesselAspectsCompiledPack, pack, { recursive: true });
+    await extractPack(pack, extracted, { yaml: true, recursive: true });
+
+    const compiled = findYamlFiles(extracted)
+      .map(path => yaml.load(readFileSync(path, 'utf8')))
+      .find(document => document?._id === direStatureSource._id);
+    assert.ok(compiled, 'dire-stature');
+    assert.deepEqual(compiled.effects, direStatureSource.effects);
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }

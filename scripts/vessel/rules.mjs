@@ -1,6 +1,7 @@
 import {
   ARCHON_PROFILE_PACK,
   AUTOMATION_ROLES,
+  DIRE_STATURE_IDENTIFIER,
   ELEMENTAL_AFFINITY_FLAG,
   MODULE_ID,
   VESSEL_CLASS_IDENTIFIER
@@ -153,7 +154,6 @@ const DAZZLING_LANCE_DICE = Object.freeze([
 ]);
 
 const WORN_ARMOR_TYPES = new Set(['light', 'medium', 'heavy', 'shield']);
-const DIRE_STATURE_IDENTIFIER = 'dire-stature';
 const COLOSSAL_ARCHON_IDENTIFIER = 'colossal-archon';
 
 const DIRE_GROWTH_BONUSES = Object.freeze([
