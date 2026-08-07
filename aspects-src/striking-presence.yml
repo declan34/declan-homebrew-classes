@@ -24,7 +24,28 @@ system:
     repeatable: false
   properties: []
   requirements: ''
-  activities: {}
+  activities:
+    StrkPresCfg00001:
+      _id: StrkPresCfg00001
+      type: utility
+      name: Configure Striking Presence
+      sort: 0
+      activation: {type: special, value: null, override: false, condition: ''}
+      consumption: {scaling: {allowed: false, max: ''}, spellSlot: true, targets: []}
+      description: {chatFlavor: Choose Deception, Intimidation, or Persuasion for this copy of Striking Presence.}
+      duration: {units: inst, concentration: false, override: false}
+      effects: []
+      flags:
+        declan-homebrew-classes:
+          vessel: {role: striking-presence-configure}
+      range: {override: false, units: self, special: ''}
+      target:
+        template: {contiguous: false, units: ft, type: ''}
+        affects: {choice: false, count: '', type: self, special: ''}
+        override: false
+        prompt: false
+      uses: {spent: 0, recovery: [], max: ''}
+      roll: {formula: '', name: '', prompt: false, visible: false}
   enchant: {}
   identifier: striking-presence
 effects: []

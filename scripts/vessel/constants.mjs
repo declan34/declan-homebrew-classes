@@ -17,6 +17,7 @@ export const ARCHON_PENDING_FLAG = 'vessel.archon.pending';
 export const ARCHON_KEEP_EQUIPMENT_FLAG = 'vessel.archon.keepEquipment';
 export const ARCHON_PROFILE_PACK =
   'declan-homebrew-classes.vessel-archon-forms';
+export const STRIKING_PRESENCE_SKILLS = Object.freeze(['dec', 'itm', 'per']);
 
 export const AUTOMATION_ROLES = Object.freeze({
   MANTLE_TOGGLE: 'mantle-toggle',
@@ -31,6 +32,7 @@ export const AUTOMATION_ROLES = Object.freeze({
   ARCHON_FORM_EFFECT: 'archon-form-effect',
   DIRE_STATURE_PROMPT: 'dire-stature-prompt',
   DIRE_STATURE_EFFECT: 'dire-stature-effect',
+  STRIKING_PRESENCE_CONFIGURE: 'striking-presence-configure',
   ARCANE_BLAST: 'arcane-blast',
   ASTRAL_STEP: 'astral-step',
   BLUSTER: 'bluster',

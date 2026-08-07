@@ -4,6 +4,10 @@ import {
   MODULE_ID
 } from './constants.mjs';
 import {
+  configureStrikingPresence,
+  getStrikingPresenceSkill
+} from './striking-presence.mjs';
+import {
   activateArchonForm,
   clearArchonPending,
   extendArchonForm,
@@ -50,6 +54,7 @@ const remindedElderTransformations = new Set();
 const ELDER_REMINDER_HISTORY_LIMIT = 256;
 const pendingRulePrompts = new WeakMap();
 const pendingSealedMagicReconciliations = new WeakMap();
+const pendingStrikingPresencePrompts = new WeakMap();
 
 const ARCHON_TRANSFORM_ROLES = new Set([
   AUTOMATION_ROLES.ARCHON_TRANSFORM_FREE,
@@ -192,6 +197,26 @@ function requestEquipmentPrompt(activity, prompt, onError) {
       }
     });
   if (actor) pendingEquipmentPrompts.set(actor, tracked);
+}
+
+function requestStrikingPresenceConfiguration(item, configure, onError) {
+  if (!item?.isOwner || getStrikingPresenceSkill(item)) return;
+  if (pendingStrikingPresencePrompts.has(item)) return;
+
+  const tracked = Promise.resolve()
+    .then(() => configure(item))
+    .catch(onError)
+    .finally(() => {
+      if (pendingStrikingPresencePrompts.get(item) === tracked) {
+        pendingStrikingPresencePrompts.delete(item);
+      }
+    });
+  pendingStrikingPresencePrompts.set(item, tracked);
+}
+
+function isStrikingPresence(item) {
+  return item?.identifier === 'striking-presence'
+    || item?.system?.identifier === 'striking-presence';
 }
 
 function readFlag(document, scope, key) {
@@ -395,6 +420,7 @@ export async function promptForArchonEquipmentPreference(activity, {
 
 export function handlePreUseActivity(activity, {
   promptToActivateAndRetry: prompt = promptToActivateAndRetry,
+  configureStrikingPresence: configurePresence = configureStrikingPresence,
   promptArchonEquipmentPreference: promptEquipment =
     promptForArchonEquipmentPreference,
   persistIridescentStrikeAndRetry: persist = persistIridescentStrikeAndRetry,
@@ -403,6 +429,15 @@ export function handlePreUseActivity(activity, {
   reportError: onError = reportError
 } = {}, usageConfig = {}) {
   const activityRole = getAutomationRole(activity);
+  if (activityRole === AUTOMATION_ROLES.STRIKING_PRESENCE_CONFIGURE) {
+    const item = sourceItem(activity);
+    if (!item?.isOwner) {
+      warn('You do not own this Vessel and cannot configure Striking Presence.');
+      return false;
+    }
+    requestStrikingPresenceConfiguration(item, configurePresence, onError);
+    return false;
+  }
   if (activityRole === AUTOMATION_ROLES.ARCHON_EQUIPMENT_PREFERENCE) {
     const actor = activity?.item?.actor;
     if (!actor?.isOwner) {
@@ -891,7 +926,8 @@ export function registerVesselAutomationHooks(hooks, {
   promptArchonExpiry = promptForArchonExpiry,
   promptArchonReversion = promptForArchonReversion,
   remindElderArchon: elderReminder = remindElderArchon,
-  warn: warnSealedMagic = warn
+  warn: warnSealedMagic = warn,
+  configureStrikingPresence: configurePresence = configureStrikingPresence
 } = {}) {
   const requestSealedMagicReconciliation = () => {
     for (const actor of actors()) {
@@ -914,7 +950,9 @@ export function registerVesselAutomationHooks(hooks, {
     });
   };
   hooks.on('dnd5e.preUseActivity', (activity, usageConfig) =>
-    handlePreUseActivity(activity, {}, usageConfig)
+    handlePreUseActivity(activity, {
+      configureStrikingPresence: configurePresence
+    }, usageConfig)
   );
   hooks.on('dnd5e.postUseActivity', (activity, usageConfig, results) =>
     handlePostUseActivity(activity, {}, usageConfig, results)
@@ -923,7 +961,13 @@ export function registerVesselAutomationHooks(hooks, {
   hooks.on('dnd5e.transformActorV2', handleLinkedArchonTransform);
   hooks.on('preUpdateActor', handlePreUpdateArchonActor);
   hooks.on('renderActorSheet', sheet => {
-    queueActorSealedMagicReconciliation(sheet?.actor ?? sheet?.document);
+    const actor = sheet?.actor ?? sheet?.document;
+    queueActorSealedMagicReconciliation(actor);
+    for (const item of documents(actor?.items)) {
+      if (isStrikingPresence(item)) {
+        requestStrikingPresenceConfiguration(item, configurePresence, reportError);
+      }
+    }
   });
   hooks.on('createActor', (actor, _options, userId) => {
     if (userId !== currentUserId()) return;
