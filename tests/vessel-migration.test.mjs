@@ -51,6 +51,36 @@ const direStatureSource = yaml.load(
     'utf8'
   )
 );
+const strikingPresenceSource = yaml.load(
+  readFileSync(
+    new URL('../aspects-src/striking-presence.yml', import.meta.url),
+    'utf8'
+  )
+);
+const uncannyStrengthSource = yaml.load(
+  readFileSync(
+    new URL('../aspects-src/uncanny-strength.yml', import.meta.url),
+    'utf8'
+  )
+);
+const hellfireSource = yaml.load(
+  readFileSync(
+    new URL(
+      '../src/vessel/subclass-features/the-cursed/hellfire.yml',
+      import.meta.url
+    ),
+    'utf8'
+  )
+);
+const malignantAuraSource = yaml.load(
+  readFileSync(
+    new URL(
+      '../src/vessel/subclass-features/the-cursed/malignant-aura.yml',
+      import.meta.url
+    ),
+    'utf8'
+  )
+);
 
 function document(data) {
   return {
@@ -125,6 +155,14 @@ function ownedItem(data) {
           target[keys.at(-1)] = structuredClone(value);
           continue;
         }
+        const flagsPath = path.match(/^flags\.(.+)$/);
+        if (flagsPath) {
+          const keys = flagsPath[1].split('.');
+          let target = this.flags ??= {};
+          for (const key of keys.slice(0, -1)) target = target[key] ??= {};
+          target[keys.at(-1)] = structuredClone(value);
+          continue;
+        }
         throw new Error(`Unexpected Item update path: ${path}`);
       }
     },
@@ -162,7 +200,11 @@ function sourceItems() {
     vesselMagic: ownedItem(vesselMagicSource),
     mantle: ownedItem(mantleSource),
     strikes: ownedItem(strikesSource),
-    direStature: ownedItem(direStatureSource)
+    direStature: ownedItem(direStatureSource),
+    strikingPresence: ownedItem(strikingPresenceSource),
+    uncannyStrength: ownedItem(uncannyStrengthSource),
+    hellfire: ownedItem(hellfireSource),
+    malignantAura: ownedItem(malignantAuraSource)
   };
 }
 
@@ -182,6 +224,10 @@ function legacyActor({
   strikes,
   vesselMagic,
   direStature,
+  strikingPresence = [],
+  uncannyStrength,
+  hellfire,
+  malignantAura,
   migrationVersion = 0,
   failItemCreation = false
 } = {}) {
@@ -222,7 +268,11 @@ function legacyActor({
     ...(vesselMagic ? [[vesselMagic._id, vesselMagic]] : []),
     [mantleItem._id, mantleItem],
     ...(strikes ? [[strikes._id, strikes]] : []),
-    ...(direStature ? [[direStature._id, direStature]] : [])
+    ...(direStature ? [[direStature._id, direStature]] : []),
+    ...strikingPresence.map(item => [item._id, item]),
+    ...(uncannyStrength ? [[uncannyStrength._id, uncannyStrength]] : []),
+    ...(hellfire ? [[hellfire._id, hellfire]] : []),
+    ...(malignantAura ? [[malignantAura._id, malignantAura]] : [])
   ]);
 
   return {
@@ -581,6 +631,106 @@ test('repairs module-owned fields, preserves customization and state, and is ide
       + mantleItem.operations.length + strikesItem.operations.length,
     operationCount
   );
+});
+
+test('repairs owned passive templates and Cursed text without touching per-copy choices or user data', async () => {
+  const firstPresenceData = structuredClone(strikingPresenceSource);
+  firstPresenceData.system.description.value = '<p>Broken Striking Presence.</p>';
+  firstPresenceData.system.activities = {
+    UserActivity: {
+      _id: 'UserActivity', type: 'utility', name: 'My unrelated activity'
+    }
+  };
+  firstPresenceData.system.userPreference = 'keep this field';
+  firstPresenceData.flags = {
+    [MODULE_ID]: {vessel: {strikingPresence: {skill: 'dec'}}},
+    custom: {keep: true}
+  };
+  const secondPresenceData = structuredClone(firstPresenceData);
+  secondPresenceData._id = 'SecondStrikingCopy';
+  secondPresenceData.flags[MODULE_ID].vessel.strikingPresence.skill = 'per';
+
+  const uncannyData = structuredClone(uncannyStrengthSource);
+  uncannyData.effects = [{
+    _id: 'UserUncannyEffect',
+    name: 'My unrelated effect',
+    type: 'base',
+    changes: [{key: 'system.attributes.hp.tempmax', mode: 2, value: '3'}],
+    flags: {custom: {keep: true}}
+  }];
+  uncannyData.system.userPreference = 'keep uncanny field';
+
+  const hellfireData = structuredClone(hellfireSource);
+  hellfireData.system.description.value = '<p>Corrupted Hellfire Cursed Archon text.</p>';
+  hellfireData.system.userPreference = 'keep hellfire field';
+  const malignantAuraData = structuredClone(malignantAuraSource);
+  malignantAuraData.system.description.value = '<p>Corrupted Malignant Aura Cursed Archon text.</p>';
+  malignantAuraData.system.userPreference = 'keep aura field';
+
+  const target = legacyActor({
+    vessel: ownedItem(vesselSource),
+    vesselMagic: ownedItem(vesselMagicSource),
+    strikingPresence: [
+      ownedItem(firstPresenceData),
+      ownedItem(secondPresenceData)
+    ],
+    uncannyStrength: ownedItem(uncannyData),
+    hellfire: ownedItem(hellfireData),
+    malignantAura: ownedItem(malignantAuraData),
+    migrationVersion: 4
+  });
+
+  assert.equal(await migrateVesselActor(target, {
+    loadSourceItems: async () => sourceItems()
+  }), true);
+
+  const presences = target.itemsByIdentifier('striking-presence');
+  assert.equal(presences.length, 2);
+  assert.deepEqual(
+    presences.map(item =>
+      item.flags[MODULE_ID].vessel.strikingPresence.skill
+    ).sort(),
+    ['dec', 'per']
+  );
+  for (const presence of presences) {
+    assert.equal(
+      presence.system.description.value,
+      strikingPresenceSource.system.description.value
+    );
+    assert.deepEqual(
+      presence.system.activities.get('StrkPresCfg00001').toObject(),
+      strikingPresenceSource.system.activities.StrkPresCfg00001
+    );
+    assert.equal(presence.system.activities.get('UserActivity').name, 'My unrelated activity');
+    assert.equal(presence.system.userPreference, 'keep this field');
+    assert.deepEqual(presence.flags.custom, {keep: true});
+  }
+
+  const uncanny = target.itemsByIdentifier('uncanny-strength')[0];
+  const {_key: uncannyEffectKey, ...canonicalUncannyEffect} =
+    uncannyStrengthSource.effects[0];
+  assert.deepEqual(
+    uncanny.effects.get('UncannyStrEff01').toObject(),
+    canonicalUncannyEffect
+  );
+  assert.deepEqual(uncanny.effects.get('UserUncannyEffect').toObject(), {
+    _id: 'UserUncannyEffect',
+    name: 'My unrelated effect',
+    type: 'base',
+    changes: [{key: 'system.attributes.hp.tempmax', mode: 2, value: '3'}],
+    flags: {custom: {keep: true}}
+  });
+  assert.equal(uncanny.system.userPreference, 'keep uncanny field');
+
+  const hellfire = target.itemsByIdentifier('hellfire')[0];
+  const malignantAura = target.itemsByIdentifier('malignant-aura')[0];
+  assert.equal(hellfire.system.description.value, hellfireSource.system.description.value);
+  assert.equal(
+    malignantAura.system.description.value,
+    malignantAuraSource.system.description.value
+  );
+  assert.equal(hellfire.system.userPreference, 'keep hellfire field');
+  assert.equal(malignantAura.system.userPreference, 'keep aura field');
 });
 
 test('failed Iridescent Strikes creation leaves version 3 and retries cleanly', async () => {

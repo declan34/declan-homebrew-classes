@@ -3,9 +3,13 @@ import {
   AUTOMATION_ROLES,
   DIRE_STATURE_IDENTIFIER,
   DIRE_STATURE_ITEM_ID,
+  HELLFIRE_ITEM_ID,
+  MALIGNANT_AURA_ITEM_ID,
   IRIDESCENT_STRIKES_ITEM_ID,
   MODULE_ID,
   SPIRIT_MANTLE_ITEM_ID,
+  STRIKING_PRESENCE_ITEM_ID,
+  UNCANNY_STRENGTH_ITEM_ID,
   VESSEL_CLASS_IDENTIFIER,
   VESSEL_ITEM_ID,
   VESSEL_MAGIC_ITEM_ID,
@@ -58,6 +62,7 @@ const ARCHON_ACTIVITY_FIELDS = [
 
 let sourceItemsPromise;
 let stage3SourceItemsPromise;
+let passiveSourceItemsPromise;
 
 const STAGE3_CLASS_SOURCE_IDS = Object.freeze([
   'hbrvesLGlYzPTrpS',
@@ -686,6 +691,111 @@ async function migrateDireStatureItem(item, canonical) {
   }
 }
 
+function syncCanonicalFields(current, canonical) {
+  const repaired = structuredClone(current ?? {});
+  for (const [key, value] of Object.entries(canonical ?? {})) {
+    if (
+      value
+      && typeof value === 'object'
+      && !Array.isArray(value)
+      && repaired[key]
+      && typeof repaired[key] === 'object'
+      && !Array.isArray(repaired[key])
+    ) {
+      repaired[key] = syncCanonicalFields(repaired[key], value);
+    } else {
+      repaired[key] = structuredClone(value);
+    }
+  }
+  return repaired;
+}
+
+function repairPassiveModuleFlags(item, canonical) {
+  const sourceFlags = canonical?.flags?.[MODULE_ID];
+  if (!sourceFlags) return undefined;
+
+  const currentFlags = item.flags?.[MODULE_ID] ?? {};
+  const repaired = syncCanonicalFields(currentFlags, sourceFlags);
+  const strikingPresenceSkill =
+    currentFlags?.vessel?.strikingPresence?.skill;
+  if (strikingPresenceSkill !== undefined) {
+    repaired.vessel ??= {};
+    repaired.vessel.strikingPresence ??= {};
+    repaired.vessel.strikingPresence.skill = strikingPresenceSkill;
+  }
+  return sameData(currentFlags, repaired) ? undefined : repaired;
+}
+
+function repairPassiveActivity(current, canonical) {
+  const source = objectData(canonical);
+  const repaired = structuredClone(source);
+  repaired._id = documentId(current) ?? documentId(source);
+  delete repaired._key;
+  return repaired;
+}
+
+function moduleEffectRole(effect) {
+  return effect?.flags?.[MODULE_ID]?.vessel?.role;
+}
+
+function repairPassiveEffect(current, canonical) {
+  const source = objectData(canonical);
+  const repaired = structuredClone(source);
+  repaired._id = documentId(current) ?? documentId(source);
+  delete repaired._key;
+  return repaired;
+}
+
+async function migratePassiveItem(item, canonical) {
+  if (!canonical) return;
+  const source = objectData(canonical);
+  const updates = {};
+  if (item.system?.description?.value !== source.system?.description?.value) {
+    updates['system.description.value'] = source.system?.description?.value;
+  }
+  const repairedModuleFlags = repairPassiveModuleFlags(item, source);
+  if (repairedModuleFlags) {
+    updates[`flags.${MODULE_ID}`] = repairedModuleFlags;
+  }
+  if (Object.keys(updates).length) await item.update(updates);
+
+  for (const sourceActivity of documents(canonical.system?.activities)) {
+    const current = documents(item.system?.activities).find(activity =>
+      documentId(activity) === documentId(sourceActivity)
+        || (
+          getAutomationRole(activity)
+          && getAutomationRole(activity) === getAutomationRole(sourceActivity)
+        )
+    );
+    const repaired = repairPassiveActivity(current, sourceActivity);
+    if (!current || !sameData(objectData(current), repaired)) {
+      await item.update({
+        [`system.activities.${documentId(current) ?? documentId(sourceActivity)}`]: repaired
+      });
+    }
+  }
+
+  for (const sourceEffect of documents(canonical.effects)) {
+    const current = documents(item.effects).find(effect =>
+      documentId(effect) === documentId(sourceEffect)
+        || (
+          moduleEffectRole(sourceEffect)
+          && moduleEffectRole(effect) === moduleEffectRole(sourceEffect)
+        )
+    );
+    const repaired = repairPassiveEffect(current, sourceEffect);
+    if (!current) {
+      await item.createEmbeddedDocuments(
+        'ActiveEffect',
+        [repaired],
+        { keepId: true }
+      );
+    } else if (!sameData(objectData(current), repaired)) {
+      await item.updateEmbeddedDocuments('ActiveEffect', [repaired]);
+    }
+  }
+}
+
 export async function loadVesselSourceItems({
   packs = globalThis.game?.packs
 } = {}) {
@@ -747,6 +857,37 @@ export async function loadVesselSourceItems({
   }
 }
 
+export async function loadVesselPassiveSourceItems({
+  packs = globalThis.game?.packs
+} = {}) {
+  if (passiveSourceItemsPromise) return passiveSourceItemsPromise;
+  const request = (async () => {
+    const classPack = packs?.get?.(`${MODULE_ID}.homebrew-classes`);
+    const aspectPack = packs?.get?.(`${MODULE_ID}.vessel-aspects`);
+    if (!classPack || !aspectPack) {
+      throw new Error('The Vessel passive migration compendiums are unavailable.');
+    }
+    const [strikingPresence, uncannyStrength, hellfire, malignantAura] =
+      await Promise.all([
+        aspectPack.getDocument(STRIKING_PRESENCE_ITEM_ID),
+        aspectPack.getDocument(UNCANNY_STRENGTH_ITEM_ID),
+        classPack.getDocument(HELLFIRE_ITEM_ID),
+        classPack.getDocument(MALIGNANT_AURA_ITEM_ID)
+      ]);
+    if (![strikingPresence, uncannyStrength, hellfire, malignantAura].every(Boolean)) {
+      throw new Error('The Vessel passive migration compendiums are missing sources.');
+    }
+    return {strikingPresence, uncannyStrength, hellfire, malignantAura};
+  })();
+  passiveSourceItemsPromise = request;
+  try {
+    return await request;
+  } catch (error) {
+    if (passiveSourceItemsPromise === request) passiveSourceItemsPromise = undefined;
+    throw error;
+  }
+}
+
 export async function loadStage3SourceItems({
   packs = globalThis.game?.packs
 } = {}) {
@@ -777,6 +918,7 @@ export async function loadStage3SourceItems({
 
 export async function migrateVesselActor(actor, {
   loadSourceItems = loadVesselSourceItems,
+  loadPassiveItems = loadVesselPassiveSourceItems,
   loadStage3Items = loadStage3SourceItems
 } = {}) {
   if (!actor?.isOwner) {
@@ -807,6 +949,30 @@ export async function migrateVesselActor(actor, {
     );
     for (const item of direStatureItems) {
       await migrateDireStatureItem(item, source.direStature);
+    }
+    const passiveItems = items.filter(item => [
+      'striking-presence',
+      'uncanny-strength',
+      'hellfire',
+      'malignant-aura'
+    ].includes(identifier(item)));
+    if (passiveItems.length) {
+      const passiveSource = source.strikingPresence
+        && source.uncannyStrength
+        && source.hellfire
+        && source.malignantAura
+        ? source
+        : await loadPassiveItems();
+      const passiveSources = new Map([
+        ['striking-presence', passiveSource.strikingPresence],
+        ['uncanny-strength', passiveSource.uncannyStrength],
+        ['hellfire', passiveSource.hellfire],
+        ['malignant-aura', passiveSource.malignantAura]
+      ]);
+      for (const item of passiveItems) {
+        const canonical = passiveSources.get(identifier(item));
+        if (canonical) await migratePassiveItem(item, canonical);
+      }
     }
   }
 
