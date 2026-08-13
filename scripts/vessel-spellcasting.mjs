@@ -12,7 +12,7 @@ function vesselSpellcastingConfiguration() {
     label: 'Vessel Magic',
     type: 'single',
     cantrips: true,
-    prepares: true,
+    prepares: false,
     order: 15,
     img: 'icons/magic/unholy/silhouette-robe-evil-power.webp',
     table: Object.fromEntries(Object.entries(VESSEL_SLOT_TABLE).map(

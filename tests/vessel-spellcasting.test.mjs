@@ -66,6 +66,12 @@ test('registers the exact Vessel slot table for levels 1 through 20', () => {
   }
 });
 
+test('registers Vessel Magic as a spells-known casting method', () => {
+  const config = makeConfig();
+  assert.equal(registerVesselSpellcasting(config), true);
+  assert.equal(config.spellcasting.vessel.prepares, false);
+});
+
 test('registers mutable configuration for dnd5e model conversion', () => {
   const config = makeConfig();
   registerVesselSpellcasting(config);
