@@ -1,5 +1,9 @@
 _id: 78f74d87f88742fb
 name: Vessel Spell List
+flags:
+  dnd5e:
+    type: chapter
+    showPages: true
 pages:
   - _id: 3f9cadbf1a0eaba5
     name: Vessel Spells

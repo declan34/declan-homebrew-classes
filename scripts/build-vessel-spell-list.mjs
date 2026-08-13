@@ -101,6 +101,9 @@ export function buildVesselSpellListDocument({
   return {
     _id: entryId,
     name: 'Vessel Spell List',
+    flags: {
+      dnd5e: { type: 'chapter', showPages: true }
+    },
     pages: [{
       _id: pageId,
       name: 'Vessel Spells',

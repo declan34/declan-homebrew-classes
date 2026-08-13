@@ -85,6 +85,9 @@ test('Vessel spell-list source contains one ordered profile per authorized publi
   const expected = expectedProfiles();
 
   assert.equal(source._id.length, 16);
+  assert.deepEqual(source.flags, {
+    dnd5e: { type: 'chapter', showPages: true }
+  });
   assert.equal(page._id.length, 16);
   assert.equal(page.type, 'spells');
   assert.equal(page.system.identifier, 'vessel');
@@ -161,6 +164,7 @@ test('compiled Vessel spell-list pack preserves the registered JournalEntry page
     const compiled = documents.find(document => document?._id === source._id);
 
     assert.ok(compiled);
+    assert.deepEqual(compiled.flags, source.flags);
     assert.deepEqual(compiled.pages, source.pages);
   } finally {
     rmSync(temporary, { recursive: true, force: true });
