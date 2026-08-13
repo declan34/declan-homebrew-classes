@@ -119,7 +119,7 @@ img: systems/dnd5e/icons/svg/damage/fire.svg
 effects:
 - name: Grappled by Flame Whip
   img: systems/dnd5e/icons/svg/damage/fire.svg
-  origin: Compendium.dnd5e.spells24.Item.hbrvesFlameWhipLL
+  origin: null
   transfer: false
   _id: zwks0mAqBHGZC1Pk
   type: base

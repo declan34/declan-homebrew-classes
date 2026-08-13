@@ -123,6 +123,8 @@ test('creates every eligible Sealed Magic spell from clean actor-owned sources',
     assert.equal(spell.collection, undefined);
     assert.equal(spell.sort, undefined);
     assert.equal(spell._stats, undefined);
+    assert.equal(spell.system.method, 'vessel');
+    assert.equal(spell.system.sourceItem, 'class:vessel');
     assert.equal(spell.flags[MODULE_ID].vessel.sealedMagic.key,
       spell.name === 'Misty Step'
         ? 'cataclysm-fire-5-misty-step'

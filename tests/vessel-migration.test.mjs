@@ -228,6 +228,7 @@ function legacyActor({
   uncannyStrength,
   hellfire,
   malignantAura,
+  spells = [],
   migrationVersion = 0,
   failItemCreation = false
 } = {}) {
@@ -272,7 +273,8 @@ function legacyActor({
     ...strikingPresence.map(item => [item._id, item]),
     ...(uncannyStrength ? [[uncannyStrength._id, uncannyStrength]] : []),
     ...(hellfire ? [[hellfire._id, hellfire]] : []),
-    ...(malignantAura ? [[malignantAura._id, malignantAura]] : [])
+    ...(malignantAura ? [[malignantAura._id, malignantAura]] : []),
+    ...spells.map(item => [item._id, item])
   ]);
 
   return {
@@ -351,6 +353,57 @@ test('migrates legacy actor-owned Vessel automation without replacing custom str
     target.getFlag(MODULE_ID, MIGRATION_FLAG),
     VESSEL_MIGRATION_VERSION
   );
+});
+
+test('version 5 actors relink only Vessel class spells to Vessel Magic', async () => {
+  const sealed = ownedItem({
+    _id: 'SealedSpell000001',
+    name: 'Misty Step',
+    type: 'spell',
+    system: { identifier: 'misty-step', method: 'spell', sourceItem: '' },
+    effects: [],
+    flags: {
+      [MODULE_ID]: {
+        vessel: { sealedMagic: { key: 'cataclysm-fire-5-misty-step' } }
+      }
+    }
+  });
+  const unlinked = ownedItem({
+    _id: 'UnlinkedSpell0001',
+    name: 'Flame Whip',
+    type: 'spell',
+    system: { identifier: 'flame-whip', method: 'spell', sourceItem: '' },
+    effects: [],
+    flags: {}
+  });
+  const innate = ownedItem({
+    _id: 'InnateSpell000001',
+    name: 'Hellish Rebuke',
+    type: 'spell',
+    system: {
+      identifier: 'hellish-rebuke',
+      method: 'innate',
+      sourceItem: 'class:vessel'
+    },
+    effects: [],
+    flags: {}
+  });
+  const target = legacyActor({
+    vessel: ownedItem(vesselSource),
+    spells: [sealed, unlinked, innate],
+    migrationVersion: 5
+  });
+
+  assert.equal(await migrateVesselActor(target, {
+    loadSourceItems: async () => sourceItems()
+  }), true);
+  assert.equal(VESSEL_MIGRATION_VERSION, 6);
+  assert.equal(sealed.system.method, 'vessel');
+  assert.equal(sealed.system.sourceItem, 'class:vessel');
+  assert.equal(unlinked.system.method, 'vessel');
+  assert.equal(unlinked.system.sourceItem, 'class:vessel');
+  assert.equal(innate.system.method, 'innate');
+  assert.equal(innate.system.sourceItem, 'class:vessel');
 });
 
 test('repairs canonical Vessel spell progression and removes only the Vessel Magic use counter', async () => {

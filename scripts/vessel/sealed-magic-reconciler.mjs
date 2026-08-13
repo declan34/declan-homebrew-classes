@@ -47,6 +47,9 @@ function cleanSource(source) {
 
 function grantSource(source, entry, resolution) {
   const grant = cleanSource(source);
+  grant.system ??= {};
+  grant.system.method = 'vessel';
+  grant.system.sourceItem = 'class:vessel';
   const flags = grant.flags ?? {};
   const moduleFlags = flags[MODULE_ID] ?? {};
   const vesselFlags = moduleFlags.vessel ?? {};

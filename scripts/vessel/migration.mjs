@@ -554,6 +554,37 @@ async function migrateVesselSpellTrack(item, canonical) {
   }
 }
 
+async function migrateVesselSpellMethods(items, vesselItems) {
+  const spellcastingClasses = items.filter(item =>
+    item?.type === 'class'
+      && item.system?.spellcasting?.progression
+      && item.system.spellcasting.progression !== 'none'
+  );
+  const vesselOnly = spellcastingClasses.length === vesselItems.length
+    && vesselItems.length > 0;
+
+  for (const item of items) {
+    if (item?.type !== 'spell') continue;
+    const sealedMagic = item.flags?.[MODULE_ID]?.vessel?.sealedMagic;
+    const classSpellMethod = ['', 'spell', 'vessel'].includes(
+      item.system?.method ?? ''
+    );
+    const linkedToVessel = item.system?.sourceItem === 'class:vessel'
+      && classSpellMethod;
+    const unlinkedClassSpell = vesselOnly
+      && !item.system?.sourceItem
+      && ['', 'spell'].includes(item.system?.method ?? '');
+    if (!sealedMagic && !linkedToVessel && !unlinkedClassSpell) continue;
+
+    const updates = {};
+    if (item.system?.method !== 'vessel') updates['system.method'] = 'vessel';
+    if (item.system?.sourceItem !== 'class:vessel') {
+      updates['system.sourceItem'] = 'class:vessel';
+    }
+    if (Object.keys(updates).length) await item.update(updates);
+  }
+}
+
 async function migrateVesselItem(item, canonical) {
   const source = sourceScale(canonical);
   if (!source) {
@@ -932,6 +963,10 @@ export async function migrateVesselActor(actor, {
     item => item?.type === 'class' && identifier(item) === VESSEL_CLASS_IDENTIFIER
   );
   if (!vesselItems.length) return false;
+
+  if (startingMigrationVersion < 6) {
+    await migrateVesselSpellMethods(items, vesselItems);
+  }
 
   const source = await loadSourceItems();
   if (startingMigrationVersion < 5) {

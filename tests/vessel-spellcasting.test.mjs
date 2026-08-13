@@ -16,6 +16,7 @@ globalThis.Hooks = {
 };
 
 const {
+  ensureVesselSpellcastingModel,
   registerVesselSpellcasting
 } = await import('../scripts/vessel-spellcasting.mjs');
 await import('../scripts/vessel-automation.mjs');
@@ -62,6 +63,64 @@ test('registers the exact Vessel slot table for levels 1 through 20', () => {
   for (let level = 1; level <= 20; level += 1) {
     if (table[level]) current = table[level];
     assert.deepEqual(current, expectedByLevel[level]);
+  }
+});
+
+test('registers mutable configuration for dnd5e model conversion', () => {
+  const config = makeConfig();
+  registerVesselSpellcasting(config);
+
+  assert.equal(Object.isFrozen(config.spellcasting.vessel), false);
+  assert.equal(Object.isFrozen(config.spellcasting.vessel.table), false);
+  assert.equal(Object.isFrozen(config.spellcasting.vessel.table[2]), false);
+});
+
+test('repairs a missing Vessel model after dnd5e converts spellcasting configuration', () => {
+  assert.equal(typeof ensureVesselSpellcastingModel, 'function');
+
+  class SingleLevelSpellcasting {
+    constructor(configuration, { key }) {
+      Object.assign(this, structuredClone(configuration));
+      this.key = key;
+      this.slots = true;
+    }
+  }
+  const config = {
+    ...makeConfig(),
+    spellProgression: { none: { label: 'None' } }
+  };
+  const api = {
+    dataModels: { spellcasting: { SingleLevelSpellcasting } }
+  };
+
+  assert.equal(ensureVesselSpellcastingModel(config, api), true);
+  assert.ok(config.spellcasting.vessel instanceof SingleLevelSpellcasting);
+  assert.equal(config.spellcasting.vessel.key, 'vessel');
+  assert.deepEqual(config.spellProgression.vessel, {
+    label: 'Vessel Magic',
+    divisor: 1,
+    type: 'vessel'
+  });
+});
+
+test('post-conversion repair does not overwrite another module Vessel model', () => {
+  class SingleLevelSpellcasting {}
+  const existing = { key: 'vessel', slots: true, label: 'Another Module' };
+  const config = {
+    ...makeConfig(),
+    spellcasting: { vessel: existing },
+    spellProgression: { none: { label: 'None' } }
+  };
+  const originalError = console.error;
+  console.error = () => {};
+  try {
+    assert.equal(ensureVesselSpellcastingModel(config, {
+      dataModels: { spellcasting: { SingleLevelSpellcasting } }
+    }), false);
+    assert.equal(config.spellcasting.vessel, existing);
+    assert.equal(config.spellProgression.vessel, undefined);
+  } finally {
+    console.error = originalError;
   }
 });
 
