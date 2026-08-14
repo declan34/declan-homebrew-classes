@@ -397,13 +397,41 @@ test('version 5 actors relink only Vessel class spells to Vessel Magic', async (
   assert.equal(await migrateVesselActor(target, {
     loadSourceItems: async () => sourceItems()
   }), true);
-  assert.equal(VESSEL_MIGRATION_VERSION, 6);
+  assert.equal(VESSEL_MIGRATION_VERSION, 7);
   assert.equal(sealed.system.method, 'vessel');
   assert.equal(sealed.system.sourceItem, 'class:vessel');
   assert.equal(unlinked.system.method, 'vessel');
   assert.equal(unlinked.system.sourceItem, 'class:vessel');
   assert.equal(innate.system.method, 'innate');
   assert.equal(innate.system.sourceItem, 'class:vessel');
+});
+
+test('version 6 actors remove the stray Hellfire long-rest counter', async () => {
+  const hellfireData = structuredClone(hellfireSource);
+  hellfireData.system.uses = {
+    max: '2',
+    spent: 1,
+    recovery: [{period: 'lr', type: 'recoverAll'}]
+  };
+  hellfireData.system.userPreference = 'keep hellfire field';
+  const target = legacyActor({
+    vessel: ownedItem(vesselSource),
+    hellfire: ownedItem(hellfireData),
+    migrationVersion: 6
+  });
+
+  assert.equal(await migrateVesselActor(target, {
+    loadSourceItems: async () => sourceItems()
+  }), true);
+
+  const hellfire = target.itemsByIdentifier('hellfire')[0];
+  assert.deepEqual(hellfire.system.uses, {
+    max: '',
+    spent: 0,
+    recovery: []
+  });
+  assert.equal(hellfire.system.userPreference, 'keep hellfire field');
+  assert.equal(target.getFlag(MODULE_ID, MIGRATION_FLAG), 7);
 });
 
 test('repairs canonical Vessel spell progression and removes only the Vessel Magic use counter', async () => {

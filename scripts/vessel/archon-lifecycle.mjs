@@ -97,7 +97,7 @@ function documentId(document) {
 }
 
 function activeTokenDocuments(actor) {
-  const tokens = actor?.getActiveTokens?.(true, true) ?? [];
+  const tokens = actor?.getActiveTokens?.(false, true) ?? [];
   const documents = tokens.map(token => token?.document ?? token).filter(Boolean);
   if (actor?.isToken && actor?.token && !documents.includes(actor.token)) {
     documents.push(actor.token);

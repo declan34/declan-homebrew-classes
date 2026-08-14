@@ -827,6 +827,16 @@ async function migratePassiveItem(item, canonical) {
   }
 }
 
+async function migrateHellfireUses(item, canonical) {
+  if (identifier(canonical) !== 'hellfire') {
+    throw new Error('The Homebrew Classes compendium is missing Hellfire.');
+  }
+  const uses = objectData(canonical)?.system?.uses;
+  if (!sameData(item.system?.uses, uses)) {
+    await item.update({'system.uses': structuredClone(uses)});
+  }
+}
+
 export async function loadVesselSourceItems({
   packs = globalThis.game?.packs
 } = {}) {
@@ -969,6 +979,16 @@ export async function migrateVesselActor(actor, {
   }
 
   const source = await loadSourceItems();
+  if (startingMigrationVersion < 7) {
+    const hellfireItems = items.filter(item => identifier(item) === 'hellfire');
+    if (hellfireItems.length) {
+      const canonical = source.hellfire
+        ?? (await loadPassiveItems()).hellfire;
+      for (const item of hellfireItems) {
+        await migrateHellfireUses(item, canonical);
+      }
+    }
+  }
   if (startingMigrationVersion < 5) {
     for (const item of vesselItems) {
       await migrateVesselSpellTrack(item, source.vessel);

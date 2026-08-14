@@ -22,6 +22,14 @@ test('Hellfire contains only its published 6th-level feature description', () =>
   assert.equal(hellfire.system.description.value, HELLFIRE_DESCRIPTION);
 });
 
+test('Hellfire is passive and has no limited-use counter', () => {
+  assert.deepEqual(hellfire.system.uses, {
+    max: '',
+    spent: 0,
+    recovery: []
+  });
+});
+
 test('Cursed feature descriptions exclude adjacent subclass contamination', () => {
   assert.equal(malignantAura.system.description.value, MALIGNANT_AURA_DESCRIPTION);
 

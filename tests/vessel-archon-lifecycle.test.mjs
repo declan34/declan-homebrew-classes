@@ -605,6 +605,43 @@ test('Dire Stature grows only temporary Archon attacks and restores its exact ef
   ), false);
 });
 
+test('Dire Stature restores an unlinked token on the current canvas', async () => {
+  const target = mockActor({items: [spiritMantleItem(), direStatureItem()]});
+  const token = {
+    uuid: 'Scene.scene.Token.unlinked-dire',
+    texture: {src: 'icons/original-unlinked-token.webp'},
+    width: 1,
+    height: 1,
+    async update(changes) {
+      if (changes['texture.src'] !== undefined) this.texture.src = changes['texture.src'];
+      if (changes.width !== undefined) this.width = changes.width;
+      if (changes.height !== undefined) this.height = changes.height;
+    }
+  };
+  target.getActiveTokens = (linked, document) => {
+    assert.equal(document, true);
+    return linked ? [] : [token];
+  };
+
+  await activateArchonForm(target, switchProfile(), {
+    payment: 'free',
+    profile: 'cursed',
+    profileUuid: 'Compendium.test.Actor.cursed',
+    growthCategories: 1,
+    transformationId: 'unlinked-dire-transform'
+  });
+
+  assert.equal(token.width, 2);
+  assert.equal(token.height, 2);
+  assert.equal(token.texture.src, 'systems/dnd5e/tokens/fiend/PitFiend.webp');
+
+  await revertArchonForm(target);
+
+  assert.equal(token.width, 1);
+  assert.equal(token.height, 1);
+  assert.equal(token.texture.src, 'icons/original-unlinked-token.webp');
+});
+
 test('a failed Dire Stature activation rolls back its exact effect and geometry', async () => {
   const target = mockActor({items: [direStatureItem()]});
   const token = {
