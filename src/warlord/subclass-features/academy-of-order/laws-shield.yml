@@ -1,0 +1,48 @@
+_id: hbrwarilnm9ZaOJ5
+name: Law's Shield
+type: feat
+folder: HbRv6KRN2QdEl3bx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>It is your duty to uphold the law and defend the weak. When a creature you can see within 15 feet is hit by an attack, you can use your reaction to issue it a defensive order, imposing disadvantage on the triggering attack, possibly turning a hit into a miss. You can use this reaction a number of times equal to your Leadership modifier (minimum of once), and you regain all expended uses when you finish a long rest. When you have no uses, you can expend an Inspiring Word to use it again.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Order)
+  activities: {}
+  enchant: {}
+  identifier: laws-shield
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarilnm9ZaOJ5'

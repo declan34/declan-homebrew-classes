@@ -1,0 +1,19 @@
+name: Academy of Claws
+sorting: a
+folder: efsjy6fm1I3scc8z
+type: Item
+_id: oyFxTFdP2MG4kQW6
+description: ''
+sort: 0
+color: null
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+_key: '!folders!oyFxTFdP2MG4kQW6'

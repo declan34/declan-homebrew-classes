@@ -1,0 +1,48 @@
+_id: hbrwarsMstlnKc8S
+name: Parley
+type: feat
+folder: oiAbyP6HOxO3A0XN
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Without established authority to turn to on the sea you have become a shrewd negotiator. As an action, you can expend a use of Inspiring Word and speak to a creature within 15 feet that can see, hear, and understand you, improving its attitude toward you by one. For example, a Hostile creature becomes Indifferent, and an Indifferent creature becomes Friendly. Once you use this feature on a creature it is immune to its effects for 24 hours. You cannot use this feature on a creature that you or your allies have attacked within the last 24 hours.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Navigators)
+  activities: {}
+  enchant: {}
+  identifier: parley
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarsMstlnKc8S'

@@ -1,0 +1,48 @@
+_id: hbrwaro5Lr75TEs5
+name: Divine Mandate
+type: feat
+folder: AkoFVuCXoEzM6057
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You have been divinely appointed to lead others in war. You know the attack order Exploit. It does not count against your total number of Exploits Known, and it cannot be replaced. You also gain proficiency in Religion. Whenever you make a Religion check, add your Leadership modifier to your roll. Talk to your DM about choosing a Divine Domain from those available to the Cleric for your Warlord. Whenever you learn a Zeal spell, you can choose to learn spells from that list of Domain Spells.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Zeal)
+  activities: {}
+  enchant: {}
+  identifier: divine-mandate
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwaro5Lr75TEs5'

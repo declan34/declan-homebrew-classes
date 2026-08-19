@@ -1,0 +1,48 @@
+_id: hbrwar7PXq8AKkLv
+name: Anointed Magic
+type: feat
+folder: AkoFVuCXoEzM6057
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>When you join this Academy of War, you learn to call on divine power in the form of spells, using the rules below: Cantrips. You learn two Cantrips of your choice from the Zeal spell list at the end of this Academy of War description, and you learn an additional Zeal Cantrip at 10th level. Spell Slots. The Zeal Spellcasting table shows how many spell slots you have, and the level of those spell slots. All of your spell slots from this feature are the same level. To cast one of the Zeal spells you know of 1st-level and higher, you must expend one of these spell slots. You regain all of your spell slots each time you finish a short or long rest. For example, at 7th level, you have two 2nd-level spell slots. To cast the 1st-level spell command, you must spend one of those slots, and command is cast at 2nd-level. Spells Known of 1st-Level and Higher. You learn two 1st-level spells of your choice from the Zeal spell list. The Spells Known column of the Zeal Spellcasting table here shows when you learn additional Zeal spells of 1st-level or higher. A spell you choose must be of a level no higher than what&#x27;s shown in the table&#x27;s Slot Level column for your level. When you gain a level, you can choose one Zeal spell you know and replace it with another spell from the Zeal spell list, which must be of a level for which you have spell slots. Spellcasting Focus. You must use a Holy Symbol as the Spellcasting Focus for your Zeal spells. If you emblazon your Holy Symbol upon a shield, you can use it as a Spellcasting Focus for your Zeal spells while you are wielding it. Spellcasting Ability. Use your Leadership modifier when setting the saving throw DC or making a spell attack roll for any Zeal spells you know through this feature: Spell save DC = 8 + your Proficiency Bonus + your Leadership modifier Spell attack modifier = your Proficiency Bonus + your Leadership modifier</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Zeal)
+  activities: {}
+  enchant: {}
+  identifier: anointed-magic
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwar7PXq8AKkLv'

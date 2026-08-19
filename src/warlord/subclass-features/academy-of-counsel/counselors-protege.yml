@@ -1,0 +1,48 @@
+_id: hbrwarPiBOTwrN0g
+name: Counselor's Protege
+type: feat
+folder: P8WDmaiksCxajabw
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>You have adopted a student to educate in the ways of warfare, your Protege. You determine their appearance, race, and size (either Small or Medium). Proteges are always inexperienced, and often young, but they are eager to learn from you. Your Protege uses the following rules: Statistics. Your Protege is Friendly to you and to your allies. They are fiercely loyal, following orders to the best of their abilities, and never acting outside of your directions. They use the Protege stat block below, which uses your Proficiency Bonus (PB), Leadership modifier, and Exploit save DC. Weapons &amp; Armor. Your Protege is proficient in light and medium armor, shields, and simple weapons. They are equipped with leather armor, a shield, a shortbow and a dagger, but you can give them other equipment. Combat. In combat, your Protege acts during your turn. They can move and use their reaction on their own, but they will only take the Dodge action unless you use your bonus action to command them to take an action from their stat block, or another action. If you are Incapacitated, your Protege acts on their own, and will defend you to the best of their ability. Dying. If your Protege is reduced to 0 hit points, they make death saving throws like a player character. When they are at 0 hit points, you can use your action to touch them and expend one Exploit Die to instantly stabilize them. Recruiting a New Protege. If your Protege dies, you can spend 8 hours seeking out a worthy Humanoid to serve you as a new Protege, so long as a willing student can be found. This Humanoid then uses the Protege stat block. Your Protege &amp; Other Features. Your Protege is a blank slate that you will use your knowledge to educate. To have a Protege better represent their heritage, talk with your DM about adding racial features, a background, or other similar features to your Protege&#x27;s stat block. However, any additional features added to your Protege will increase their power and should be done cautiously.</p><p>@UUID[Compendium.declan-homebrew-classes.warlord-companions.Actor.hbrwarwdbWDwGHWW]{Open Protege}</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Counsel)
+  activities: {}
+  enchant: {}
+  identifier: counselors-protege
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarPiBOTwrN0g'

@@ -1,0 +1,48 @@
+_id: hbrwarIYguUyKwci
+name: Words of Zeal
+type: feat
+folder: AkoFVuCXoEzM6057
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your voice has been infused with divine authority. When you use Inspiring Word, the target regains the maximum number of hit points, in place of rolling its Hit Die. Moreover, when you target a creature with an attack order, it can choose for its weapon attacks on that following turn to deal radiant damage in place of its normal damage type.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: 14th-level Warlord (Academy of Zeal)
+  activities: {}
+  enchant: {}
+  identifier: words-of-zeal
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarIYguUyKwci'

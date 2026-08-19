@@ -1,0 +1,90 @@
+_id: hbrwaraFKzX3pmTX
+name: Academy of Order
+type: subclass
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/svg/items/subclass.svg
+system:
+  description:
+    value: <p>Civilization thrives within the bounds of lawful society, and you are a defender of that principle. You employ your talent for leadership in the upholding of law and the enforcement of order. You are a thorn in the side of villians, and a shield for all those who live within the bounds of just laws.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  identifier: academy-of-order
+  classIdentifier: warlord
+  advancement:
+    - _id: hbrwarvLF6lsBiSD
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarcjqdCwYXO9
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarxXd2zMMLW6
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarilnm9ZaOJ5
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrwarNC5DtOwCN8
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwaraVYqs5GGxr
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwar1IGOOAWc11
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrwarFGKw4goxaJ
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarqNFwu0DHvn
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarsBPHET1uoP
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
+    - _id: hbrwardR64X3fZIX
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarknaZ1SFhvJ
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 18
+      title: Features
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwaraFKzX3pmTX'

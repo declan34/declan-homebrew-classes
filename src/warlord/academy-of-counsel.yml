@@ -1,0 +1,84 @@
+_id: hbrwarGWaQb8IiSJ
+name: Academy of Counsel
+type: subclass
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/svg/items/subclass.svg
+system:
+  description:
+    value: <p>You have learned much from the battlefield, and it is time to pass that knowledge on to the next generation of heroes. As a member of the Academy of Counsel, you have dedicated your life to the education of your Protege, a successor who you will train to take your place on the field of battle.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  identifier: academy-of-counsel
+  classIdentifier: warlord
+  advancement:
+    - _id: hbrwarhkeE3z0wCB
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarPiBOTwrN0g
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarWch1uiNijl
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrwarmtAJU2Hhj5
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarsi1cSeTvT4
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrwar2guuXc6tdO
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarXa7uuKDl2R
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
+    - _id: hbrwarjj5PWIeiRx
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarY1XfkecPMu
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 18
+      title: Features
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarGWaQb8IiSJ'

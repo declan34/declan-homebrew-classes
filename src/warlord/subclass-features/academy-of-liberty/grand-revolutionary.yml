@@ -1,0 +1,48 @@
+_id: hbrwarsqorlQTVyb
+name: Grand Revolutionary
+type: feat
+folder: fM1cfMaihDJW6VdX
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You are destined to upset the status quo wherever you take up the mantle of leadership. The range of Band Together and Strength in Numbers includes creatures within 30 feet. Finally, whenever you use Inspiring Word or Rallying Cry, you can target up to three creatures within range, instead of one. For Rallying Cry, all creatures must have failed the same</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 18
+    repeatable: false
+  properties: []
+  requirements: 18th-level Warlord (Academy of Liberty)
+  activities: {}
+  enchant: {}
+  identifier: grand-revolutionary
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarsqorlQTVyb'

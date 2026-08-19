@@ -1,0 +1,48 @@
+_id: hbrwarsi1cSeTvT4
+name: Invigorating Orders
+type: feat
+folder: P8WDmaiksCxajabw
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your words inspire your Protege to acts of heroism. When you target your Protege with an Exploit, they have advantage on their next ability check, attack roll, or saving throw. Your Protege&#x27;s skills have increased. They gain proficiency in Wisdom saving throws, heavy armor and martial weapons.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: 6th-level Warlord (Academy of Counsel)
+  activities: {}
+  enchant: {}
+  identifier: invigorating-orders
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarsi1cSeTvT4'

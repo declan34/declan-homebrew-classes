@@ -1,0 +1,48 @@
+_id: hbrwarknaZ1SFhvJ
+name: High Authority
+type: feat
+folder: HbRv6KRN2QdEl3bx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You are the highest authority of the law, only superseded by monarchs and divine agents. You always exude the effects of hold the line to creatures of your choice within 15 feet of you, but you can move and act as normal.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 18
+    repeatable: false
+  properties: []
+  requirements: 18th-level Warlord (Academy of Order)
+  activities: {}
+  enchant: {}
+  identifier: high-authority
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarknaZ1SFhvJ'

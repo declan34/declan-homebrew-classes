@@ -1,0 +1,48 @@
+_id: hbrwarY1XfkecPMu
+name: Legendary Tandem
+type: feat
+folder: P8WDmaiksCxajabw
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your knowledge of your Protege and their understanding of you are such that you fight as one mind on the field of battle. While you and your Protege are within 30 feet of each other, you both have advantage on your saving throws, and neither of you can have disadvantage on attack rolls. Finally, your Protege can use their Heroic Determination Trait once between each short or long rest. At 20th level, replacing an attack roll with this Trait makes it an automatic critical hit.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 18
+    repeatable: false
+  properties: []
+  requirements: 18th-level Warlord (Academy of Counsel)
+  activities: {}
+  enchant: {}
+  identifier: legendary-tandem
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarY1XfkecPMu'

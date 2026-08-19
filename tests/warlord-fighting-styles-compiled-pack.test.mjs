@@ -54,19 +54,19 @@ function valueAt(document, path) {
 }
 
 function assertClosedPack(sources, compiled) {
-  assert.equal(sources.length, 7, 'expected seven source Fighting Style items');
-  assert.equal(compiled.length, 7, 'expected seven compiled Fighting Style items');
+  assert.equal(sources.length, 14, 'expected fourteen source Fighting Style items');
+  assert.equal(compiled.length, 14, 'expected fourteen compiled Fighting Style items');
 
   const sourceIds = sources.map(source => source?._id);
   const compiledIds = compiled.map(document => document?._id);
   assert.equal(
     new Set(sourceIds).size,
-    7,
+    14,
     'source Fighting Style IDs must be unique'
   );
   assert.equal(
     new Set(compiledIds).size,
-    7,
+    14,
     'compiled Fighting Style IDs must be unique'
   );
   assert.deepEqual(
@@ -77,7 +77,7 @@ function assertClosedPack(sources, compiled) {
 }
 
 test('pack closure rejects extra and duplicate documents before ID mapping', () => {
-  const sources = Array.from({ length: 7 }, (_, index) => ({
+  const sources = Array.from({ length: 14 }, (_, index) => ({
     _id: `source-${index}`
   }));
   const compiled = structuredClone(sources);
@@ -85,11 +85,11 @@ test('pack closure rejects extra and duplicate documents before ID mapping', () 
   assert.doesNotThrow(() => assertClosedPack(sources, compiled));
   assert.throws(
     () => assertClosedPack([...sources, { _id: 'extra-source' }], compiled),
-    /seven source/
+    /fourteen source/
   );
   assert.throws(
     () => assertClosedPack(sources, [...compiled, { _id: 'extra-compiled' }]),
-    /seven compiled/
+    /fourteen compiled/
   );
   assert.throws(
     () => assertClosedPack(sources, [
@@ -100,7 +100,7 @@ test('pack closure rejects extra and duplicate documents before ID mapping', () 
   );
 });
 
-test('committed Fighting Style pack preserves all seven source documents', async () => {
+test('committed Fighting Style pack preserves all fourteen source documents', async () => {
   const sources = readdirSync(sourceDirectory, { withFileTypes: true })
     .filter(entry =>
       entry.isFile()

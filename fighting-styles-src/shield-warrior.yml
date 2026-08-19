@@ -1,0 +1,48 @@
+_id: hbrwarcyCG9Vm81W
+name: Shield Warrior
+type: feat
+folder: HDG4WMrhAuWDbHh1
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You gain proficiency with shields as martial melee weapons. For you, shields deal 2d4 bludgeoning damage on hit. While you are wielding a shield and no other weapons, you gain a +1 bonus to your Armor Class and to shield attack rolls.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: fightingStyle
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: Strength of 13 or higher
+  activities: {}
+  enchant: {}
+  identifier: shield-warrior
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarcyCG9Vm81W'

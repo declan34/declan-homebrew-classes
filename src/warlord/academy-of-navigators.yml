@@ -1,0 +1,88 @@
+_id: hbrwarWfRParwKXq
+name: Academy of Navigators
+type: subclass
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/svg/items/subclass.svg
+system:
+  description:
+    value: <p>You have trained to lead others on the high seas, far from the rules of established society. You use your skills to keep order, motivate your crew to persevere through hardship, and drive them to new discovery. However, your skills are not limited to the deck of a ship and will serve you well on any battlefield.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  identifier: academy-of-navigators
+  classIdentifier: warlord
+  advancement:
+    - _id: hbrwarruLmJDV9K6
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarXUtJmuY62p
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarsMstlnKc8S
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarROKDXjpIvO
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrwarh1AmtMZoV1
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrward30TWySlpy
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarqCKg3CLfEA
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrwarIJObgJ71en
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwar5Q2q5rir3L
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
+    - _id: hbrwarfJUyDfoPFs
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwar7xEaigbj8j
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 18
+      title: Features
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarWfRParwKXq'

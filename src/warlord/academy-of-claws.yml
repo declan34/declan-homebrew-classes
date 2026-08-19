@@ -1,0 +1,84 @@
+_id: hbrwarD7sQtIGUiU
+name: Academy of Claws
+type: subclass
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/svg/items/subclass.svg
+system:
+  description:
+    value: <p>You put your tactical knowledge and leadership skill to use in taming of exotic monsters for use in battle. Known for their Monstrous Minions, Warlords of the Claw can exert their will to dominate even the most wild creatures. Some even say the most powerful of these Warlords bring mythical monsters to heel, commanding them as they would a normal soldier.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  identifier: academy-of-claws
+  classIdentifier: warlord
+  advancement:
+    - _id: hbrwarGg72OXvcsG
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwar4bYHZXqUJL
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarpc2lauVuHD
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrwar9SPTU0dukh
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarL2FzDe92wZ
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrwarSrMW3ZAaUR
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarScQnofExol
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
+    - _id: hbrwarje9VjmxHtX
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarDdLBLjAdkK
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 18
+      title: Features
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarD7sQtIGUiU'

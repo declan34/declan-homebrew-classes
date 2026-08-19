@@ -1,0 +1,48 @@
+_id: hbrwarDK8UskCDOZ
+name: Versatile Fighting
+type: feat
+folder: HDG4WMrhAuWDbHh1
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>While wielding a single versatile weapon and no shield, you gain a +1 bonus to your attack rolls with that weapon. While Listed below are additional Tactical Exploits available to the Warlord class. Each time you gain a level, you can replace one Exploit you know with another Exploit of your choice.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: fightingStyle
+    subtype: ''
+  prerequisites:
+    level: 2
+    repeatable: false
+  properties: []
+  requirements: Strength or Dexterity of 11 or higher
+  activities: {}
+  enchant: {}
+  identifier: versatile-fighting
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarDK8UskCDOZ'

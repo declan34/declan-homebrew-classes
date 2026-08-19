@@ -1,0 +1,48 @@
+_id: hbrwarScQnofExol
+name: Monstrous Menagerie
+type: feat
+folder: oyFxTFdP2MG4kQW6
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your impressive will allows you to tame fearsome monsters. You can target Aberrations, Dragons, Giants, Oozes, Plants, and Undead with Monstrous Minion, so long as their CR is within the normal Challenge Rating guidelines. Also, once a creature has been your Minion for at least 24 hours, it remains Friendly to you indefinitely unless you give it a reason to become hostile toward you again.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: 14th-level Warlord (Academy of Claws)
+  activities: {}
+  enchant: {}
+  identifier: monstrous-menagerie
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarScQnofExol'

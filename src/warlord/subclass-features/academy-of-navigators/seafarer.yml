@@ -1,0 +1,48 @@
+_id: hbrwarROKDXjpIvO
+name: Seafarer
+type: feat
+folder: oiAbyP6HOxO3A0XN
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your experience on the high seas has made you an excellent sailor. You gain proficiency with Navigator&#x27;s Tools, Water Vehicles, and in Perception. You use your Leadership Ability for all ability checks with these skills. You also gain the Mariner Fighting Style, and it can&#x27;t be replaced. If you already know this Fighting Style you learn a different Warlord Fighting Style.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Navigators)
+  activities: {}
+  enchant: {}
+  identifier: seafarer
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarROKDXjpIvO'

@@ -1,0 +1,48 @@
+_id: hbrwar5Q2q5rir3L
+name: First Mate
+type: feat
+folder: oiAbyP6HOxO3A0XN
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You inspire loyalty in the most dastardly scallywags. When you use recruit mercenary, you can designate them as your First Mate. When you do, you can regain your Exploit Die as normal, the Mercenary gains the benefits of Seafarer and is part of your Crew without counting against your total Crew. You can only have one First Mate at a time. In place of designating a Mercenary, you can designate a different member of your Crew as First Mate. They gain the benefits of Seafarer and don&#x27;t count against your total Crew.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: 14th-level Warlord (Academy of Navigators)
+  activities: {}
+  enchant: {}
+  identifier: first-mate
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwar5Q2q5rir3L'

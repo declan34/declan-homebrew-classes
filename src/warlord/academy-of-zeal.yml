@@ -1,0 +1,84 @@
+_id: hbrwarRN52rterSO
+name: Academy of Zeal
+type: subclass
+folder: zWQLRrWKJyaRIlBG
+img: systems/dnd5e/icons/svg/items/subclass.svg
+system:
+  description:
+    value: <p>You have been chosen to lead the armies of your deity in battle against their unholy foes. You lead by a mix of strategy and faith, inspiring comrades with both word and spell. Invoking your divine right to lead, you must stand as a paragon of your faith.</p><h2>Zeal Spellcasting</h2><p>Warlord Level Spells Known Spell SlotsSlot Level 3rd 2 1 1st 4th 2 2 1st 5th 3 2 1st 6th 3 2 1st 7th 4 2 2nd 8th 4 2 2nd 9th 5 2 2nd 10th 5 2 2nd 11th 6 2 2nd 12th 6 2 2nd 13th 7 2 3rd 14th 7 2 3rd 15th 8 2 3rd 16th 8 2 3rd 17th 9 2 3rd 18th 9 2 3rd 19th 10 2 4th</p><h2>Zeal Spell List</h2><p>Below are the spells available to the Academy of Zeal. They can be found in the Player&#x27;s Handbook, Xanathar&#x27;s Guide to Everything *, and Tasha&#x27;s Cauldron of Everything **. Spells marked ll are found in laserllama&#x27;s Compendium of Spells, which includes both new and alternate spells. Cantrips (0-Level) 2nd-Level blade ward aid booming blade blindness/deafness green-flame blade branding smite light darkness message find steed resistance magic weapon sacred flame restoration spare the dying spiritual weapon sword burst warding bond thaumaturgy zone of truth toll the dead 3rd-Level true strike aura of vitality 1st-Level beacon of hope bless blinding smite command conjure volley compelled duel crusader&#x27;s mantle cure wounds flame arrows divine favor protection from energy ethereal anchor remove curse guiding bolt revivify heroism spirit guardians inflict wounds 4th-Level jump aura of life protection from good &amp; evil aura of purity sanctuary banishment searing smite death ward shield of faith guardian of faith thunderous smite staggering smite wrathful smite</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  identifier: academy-of-zeal
+  classIdentifier: warlord
+  advancement:
+    - _id: hbrwarotoK4b5F5h
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwar7PXq8AKkLv
+            optional: false
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwaro5Lr75TEs5
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 3
+      title: Features
+    - _id: hbrwarQX9CuylZAQ
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarHT4YWdRjS7
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 6
+      title: Features
+    - _id: hbrwarhUZ7iRPmIN
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarIYguUyKwci
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 14
+      title: Features
+    - _id: hbrwar42nrgjOP0t
+      type: ItemGrant
+      configuration:
+        items:
+          - uuid: Compendium.declan-homebrew-classes.homebrew-classes.Item.hbrwarsnCMjd8gUH
+            optional: false
+        optional: false
+        spell: null
+      value: {}
+      level: 18
+      title: Features
+  spellcasting:
+    progression: none
+    ability: ''
+    preparation:
+      formula: ''
+    source: ''
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarRN52rterSO'

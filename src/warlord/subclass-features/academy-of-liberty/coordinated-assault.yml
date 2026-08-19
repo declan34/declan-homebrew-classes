@@ -1,0 +1,48 @@
+_id: hbrwarG6tdhoZ2RD
+name: Coordinated Assault
+type: feat
+folder: fM1cfMaihDJW6VdX
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>While individually you may not be a threat, together you and your comrades can triumph over any enemy. You can issue a support order as a bonus action on each of your turns.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Liberty)
+  activities: {}
+  enchant: {}
+  identifier: coordinated-assault
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarG6tdhoZ2RD'

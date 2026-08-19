@@ -1,0 +1,48 @@
+_id: hbrwarXa7uuKDl2R
+name: Exalted Protege
+type: feat
+folder: P8WDmaiksCxajabw
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your dedication and patience has paid off. Your Protege has become a hero in their own right and now uses the Exalted Protege stat block on this page. You also learn the heroic order Exploit. It does not count against your Exploits Known and it cannot be replaced. Once per long rest, you can use this Exploit targeting your Protege without counting against the once per rest use of the Exploit.</p><p>@UUID[Compendium.declan-homebrew-classes.warlord-companions.Actor.hbrwarFfiybSKxw9]{Open Exalted Protege}</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: 14th-level Warlord (Academy of Counsel)
+  activities: {}
+  enchant: {}
+  identifier: exalted-protege
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarXa7uuKDl2R'

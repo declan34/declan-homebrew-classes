@@ -1,0 +1,48 @@
+_id: hbrwarvu8xDqETBq
+name: Strength in Numbers
+type: feat
+folder: fM1cfMaihDJW6VdX
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>The more comrades you rally to your cause, the greater your leadership potential. When you roll for initiative, you regain a number of your expended Exploit Dice equal to the number of allied creatures within 15 feet of you. You also learn the equip militia Exploit. It does not count against your Exploits Known, and it cannot be replaced. You can use equip milita during a short or long rest, and once per long rest, you can use it without expending an Exploit Die.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: 14th-level Warlord (Academy of Liberty)
+  activities: {}
+  enchant: {}
+  identifier: strength-in-numbers
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarvu8xDqETBq'

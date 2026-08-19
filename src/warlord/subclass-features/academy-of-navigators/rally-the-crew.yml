@@ -1,0 +1,48 @@
+_id: hbrwarqCKg3CLfEA
+name: Rally the Crew
+type: feat
+folder: oiAbyP6HOxO3A0XN
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your presence brings the best out of your Crew. Whenever a member of your Crew is forced to make a saving throw while within 15 feet of you, they add their Proficiency Bonus to the saving throw if they aren&#x27;t already proficient. Moreover, you can use a bonus action on each of your turns to issue an Order, such as maneuvering order, to a member of your Crew that is within 15 feet of you.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: 6th-level Warlord (Academy of Navigators)
+  activities: {}
+  enchant: {}
+  identifier: rally-the-crew
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarqCKg3CLfEA'

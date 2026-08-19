@@ -1,0 +1,48 @@
+_id: hbrwaraVYqs5GGxr
+name: Halt
+type: feat
+folder: HbRv6KRN2QdEl3bx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your words carry lawful authority. When a creature you can see within 30 feet moves, you can use your reaction to spend a use of Inspiring Word and force it to make a Wisdom saving throw. The target must be able to hear and understand you. On a failed save, its speed is reduced to 0 until the start of its next turn. Once a creature succeeds on this saving throw, it is immune to this feature for the next 24 hours.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: 6th-level Warlord (Academy of Order)
+  activities: {}
+  enchant: {}
+  identifier: halt
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwaraVYqs5GGxr'

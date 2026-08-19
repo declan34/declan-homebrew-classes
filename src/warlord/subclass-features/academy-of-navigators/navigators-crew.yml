@@ -1,0 +1,48 @@
+_id: hbrward30TWySlpy
+name: Navigator's Crew
+type: feat
+folder: oiAbyP6HOxO3A0XN
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You have proven your mettle on both land and sea, convincing others to formally join your Crew. During the course of a long rest, you can form a pact with a number of creatures equal to your Leadership modifier. Creatures must be willing and able to understand you to enter this pact. These creatures become your Crew until you form a new pact, which instantly ends any previous pacts. While aboard the same seafaring vessel, your Crew adds your Leadership modifier to all ability checks related to your vessel.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: 6th-level Warlord (Academy of Navigators)
+  activities: {}
+  enchant: {}
+  identifier: navigators-crew
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrward30TWySlpy'

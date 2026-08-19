@@ -1,0 +1,48 @@
+_id: hbrwarsBPHET1uoP
+name: Unerring Eye
+type: feat
+folder: HbRv6KRN2QdEl3bx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your keen sight pierces all deceptions. You can automatically detect the presence of Illusion magic and Shapeshifters, but you are not able to see the true forms that they disguise.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 14
+    repeatable: false
+  properties: []
+  requirements: 14th-level Warlord (Academy of Order)
+  activities: {}
+  enchant: {}
+  identifier: unerring-eye
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarsBPHET1uoP'

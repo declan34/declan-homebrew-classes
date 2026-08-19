@@ -1,0 +1,48 @@
+_id: hbrwar1IGOOAWc11
+name: Stalwart Defender
+type: feat
+folder: HbRv6KRN2QdEl3bx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You are the shield that holds back the forces of lawlessness and chaos. Once per short or long rest, you can use hold the line without expending an Exploit Die.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: 6th-level Warlord (Academy of Order)
+  activities: {}
+  enchant: {}
+  identifier: stalwart-defender
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwar1IGOOAWc11'

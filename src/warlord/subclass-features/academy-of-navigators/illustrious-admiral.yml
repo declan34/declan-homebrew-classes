@@ -1,0 +1,48 @@
+_id: hbrwar7xEaigbj8j
+name: Illustrious Admiral
+type: feat
+folder: oiAbyP6HOxO3A0XN
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>Your skills rival the great sailors and explorers of legend. The range of Rally the Crew increases to 30 feet. Finally, once you speak with a creature that can hear and understand you, you can place it under the effects of Parley without expending a use of Inspiring Word to do so.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 18
+    repeatable: false
+  properties: []
+  requirements: 18th-level Warlord (Academy of Navigators)
+  activities: {}
+  enchant: {}
+  identifier: illustrious-admiral
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwar7xEaigbj8j'

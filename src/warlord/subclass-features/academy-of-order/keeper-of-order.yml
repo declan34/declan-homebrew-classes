@@ -1,0 +1,48 @@
+_id: hbrwarxXd2zMMLW6
+name: Keeper of Order
+type: feat
+folder: HbRv6KRN2QdEl3bx
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You employ your tactical training to uphold law and order in civilized society. You gain proficiency in either Insight or Investigation, and whenever you make an ability check with either of these skills, you can choose to use your Leadership Ability for the check. In addition, when you reduce a creature to 0 hit points with a non-lethal melee attack, you can use a bonus action on that turn to restrain them with a net, rope, manacles, or another similar object. The DC to escape this restraint is equal to your Exploit save DC unless its innate escape DC was already higher.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Order)
+  activities: {}
+  enchant: {}
+  identifier: keeper-of-order
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarxXd2zMMLW6'

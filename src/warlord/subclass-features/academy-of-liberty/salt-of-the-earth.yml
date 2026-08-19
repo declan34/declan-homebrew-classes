@@ -1,0 +1,48 @@
+_id: hbrwaryx88ZyNyKv
+name: Salt of the Earth
+type: feat
+folder: fM1cfMaihDJW6VdX
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: <p>You hail from the ranks of the common folk, and a life of hard work has made you tough. Your hit point maximum increases by 3, and increases by 1 again whenever you gain a level. Also, whenever you make an ability check to interact with common people, such as farmers, laborers, or foot soldiers, you gain a bonus to your roll equal to your Exploit Die.</p>
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Liberty)
+  activities: {}
+  enchant: {}
+  identifier: salt-of-the-earth
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwaryx88ZyNyKv'

@@ -1,0 +1,48 @@
+_id: hbrwarsnCMjd8gUH
+name: Favored Servant
+type: feat
+folder: AkoFVuCXoEzM6057
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>You have proven your dedication to the divine cause of your deity and been rewarded. When you take the Attack action on your turn, you can cast a Zeal spell with a casting time of one action in place of one of your attacks. Finally, whenever you expend an Anointed Magic spell slot, you regain one of the following: hit points equal to your level, one Exploit Die, or one use of Inspiring Word.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 18
+    repeatable: false
+  properties: []
+  requirements: 18th-level Warlord (Academy of Zeal)
+  activities: {}
+  enchant: {}
+  identifier: favored-servant
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarsnCMjd8gUH'

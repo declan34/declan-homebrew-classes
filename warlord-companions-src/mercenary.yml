@@ -1,0 +1,129 @@
+_id: hbrwarPLFpm75T6Y
+name: Mercenary
+type: npc
+folder: WxYVmRq8EDpiT0Wg
+img: icons/svg/mystery-man.svg
+system:
+  abilities:
+    str:
+      value: 10
+      proficient: 0
+      bonuses:
+        check: ''
+        save: ''
+    dex:
+      value: 10
+      proficient: 0
+      bonuses:
+        check: ''
+        save: ''
+    con:
+      value: 10
+      proficient: 0
+      bonuses:
+        check: ''
+        save: ''
+    int:
+      value: 10
+      proficient: 0
+      bonuses:
+        check: ''
+        save: ''
+    wis:
+      value: 10
+      proficient: 0
+      bonuses:
+        check: ''
+        save: ''
+    cha:
+      value: 10
+      proficient: 0
+      bonuses:
+        check: ''
+        save: ''
+  attributes:
+    ac:
+      flat: 18
+      calc: flat
+    hp:
+      value: 1
+      max: 1
+      temp: 0
+      tempmax: 0
+      formula: ''
+    movement:
+      burrow: 0
+      climb: 0
+      fly: 0
+      swim: 0
+      walk: 30
+      units: ft
+      hover: false
+  details:
+    biography:
+      value: |-
+        <p>Medium Humanoid AC 18 (Brute), 15 (Scout) HP 6 + five times your level Speed 30 ft.</p><section class="secret"><p>Mercenary
+        Medium Humanoid
+        AC  18 (Brute), 15 (Scout)
+        HP  6 + five times your level
+        Speed 30 ft.</p></section>
+      public: ''
+    type:
+      value: humanoid
+      subtype: Medium Humanoid
+      swarm: ''
+      custom: ''
+    alignment: ''
+    cr: 0
+    source:
+      custom: Laser Llama — Warlord Expanded
+      rules: '2024'
+      license: proprietary
+      book: ''
+  traits:
+    size: med
+    languages:
+      value: []
+      custom: ''
+    di:
+      value: []
+      custom: ''
+    dr:
+      value: []
+      custom: ''
+    dv:
+      value: []
+      custom: ''
+    ci:
+      value: []
+      custom: ''
+prototypeToken:
+  name: Mercenary
+  displayName: 20
+  actorLink: true
+  texture:
+    src: icons/svg/mystery-man.svg
+    scaleX: 1
+    scaleY: 1
+    offsetX: 0
+    offsetY: 0
+    rotation: 0
+    tint: '#ffffff'
+  width: 1
+  height: 1
+items: []
+effects: []
+flags: {}
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!actors!hbrwarPLFpm75T6Y'

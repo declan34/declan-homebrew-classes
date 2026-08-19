@@ -1,0 +1,48 @@
+_id: hbrwarHT4YWdRjS7
+name: Channel Divinity
+type: feat
+folder: AkoFVuCXoEzM6057
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>As an action, you can hold aloft your Holy Symbol to Channel the power of your deity to produce effects beyond the bounds of spells. When you Channel Divinity, you produce one of two effects: Anointed Disciple or Mantle of Command. You can Channel Divinity twice. You regain one use when you finish a short rest, and all uses when you complete a long rest. When you have no uses left, you can expend an Anointed Magic spell slot to Channel Divinity again. Anointed Disciple. As an action, you grasp a Holy Symbol and Channel Divinity to fill yourself with divine presence. For 10 minutes, you add your Exploit Die to all ability checks you make that use your Leadership Ability. Mantle of Command. As an action, hold aloft your Holy Symbol and fill yourself with divine leadership for 1 minute. For the duration, you can use a bonus action on each turn to make a weapon attack or issue one Order, like attack order.</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 6
+    repeatable: false
+  properties: []
+  requirements: 6th-level Warlord (Academy of Zeal)
+  activities: {}
+  enchant: {}
+  identifier: channel-divinity
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwarHT4YWdRjS7'

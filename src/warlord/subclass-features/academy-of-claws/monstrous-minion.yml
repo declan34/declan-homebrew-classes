@@ -1,0 +1,48 @@
+_id: hbrwar4bYHZXqUJL
+name: Monstrous Minion
+type: feat
+folder: oyFxTFdP2MG4kQW6
+img: icons/svg/item-bag.svg
+system:
+  description:
+    value: '<p>You can exert your considerable will to dominate creatures, pressing them into service as a Minion, using these rules: Subjugating a Minion. As an action, you force a creature within 10 feet that can hear you to make a Charisma saving throw. If the creature is Friendly to you, it automatically fails. On a failed save, that creature becomes your Minion. If a creature succeeds on this saving throw, it is immune to this ability for the next 24 hours and cannot be targeted. You can only have one Monstrous Minion at a time. Potential Minions. The creatures you can dominate are limited only by your willpower. You can only use this feature on a Beast or Monstrosity with a Challenge Rating equal to your Warlord level divided by three, rounded down. Minion Statistics. Your Minion obeys you with total loyalty. It continues to use its normal stat block, and it gains the benefits from short and long rests. Combat. In combat, your Minion acts during your turn. It can move and use its reaction on its own, but will only take the Dodge action unless you use a bonus action to order it to take one action from its stat block or another action. If you are Incapacitated, your Minion reverts to its wild state, normally fleeing to return to its home in the wilderness. Exploits. You can target your Minion with Exploits, and it can understand you even if it can&#x27;t speak. Duration. A creature remains a Minion until it is slain. It returns to its wild state sooner if it can&#x27;t see or hear you for 1 hour, or if you attempt to dominate another creature and turn</p>'
+    chat: ''
+  source:
+    custom: Laser Llama — Warlord Expanded
+    rules: '2024'
+    license: proprietary
+    book: ''
+  uses:
+    spent: 0
+    max: ''
+    recovery: []
+  type:
+    value: class
+    subtype: ''
+  prerequisites:
+    level: 3
+    repeatable: false
+  properties: []
+  requirements: 3th-level Warlord (Academy of Claws)
+  activities: {}
+  enchant: {}
+  identifier: monstrous-minion
+effects: []
+flags:
+  dnd5e:
+    riders:
+      activity: []
+      effect: []
+_stats:
+  duplicateSource: null
+  coreVersion: '13.344'
+  systemId: dnd5e
+  systemVersion: 5.3.3
+  createdTime: null
+  modifiedTime: null
+  lastModifiedBy: hbrbuilder000000
+  exportSource: null
+sort: 0
+ownership:
+  default: 0
+_key: '!items!hbrwar4bYHZXqUJL'
