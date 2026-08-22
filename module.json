@@ -30,13 +30,15 @@
   },
   "esmodules": [
     "scripts/vessel-spellcasting.mjs",
+    "scripts/warlord-spellcasting.mjs",
     "scripts/vessel-automation.mjs",
     "scripts/warlord-automation.mjs"
   ],
   "flags": {
     "dnd5e": {
       "spellLists": [
-        "Compendium.declan-homebrew-classes.vessel-spell-lists.JournalEntry.78f74d87f88742fb.JournalEntryPage.3f9cadbf1a0eaba5"
+        "Compendium.declan-homebrew-classes.vessel-spell-lists.JournalEntry.78f74d87f88742fb.JournalEntryPage.3f9cadbf1a0eaba5",
+        "Compendium.declan-homebrew-classes.vessel-spell-lists.JournalEntry.e07e8119e7f048f9.JournalEntryPage.6338bd872d3457c7"
       ]
     }
   },
@@ -61,7 +63,7 @@
     },
     {
       "name": "vessel-spell-lists",
-      "label": "Vessel Spell List",
+      "label": "Class Spell Lists",
       "path": "packs/vessel-spell-lists",
       "type": "JournalEntry",
       "system": "dnd5e",

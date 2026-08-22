@@ -175,6 +175,7 @@ test('module manifest loads Vessel and Warlord automation entry points', async (
   );
   assert.deepEqual(manifest.esmodules, [
     'scripts/vessel-spellcasting.mjs',
+    'scripts/warlord-spellcasting.mjs',
     'scripts/vessel-automation.mjs',
     'scripts/warlord-automation.mjs'
   ]);

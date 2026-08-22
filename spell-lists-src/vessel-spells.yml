@@ -18,27 +18,47 @@ pages:
       spells:
         - Compendium.dnd5e.spells.Item.vrN18tbTw7io5MWd
         - Compendium.dnd5e.spells.Item.CAxSzHWizrafT033
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.N18B72urKKWIfuBZ
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.t4mk0dFLZkZBI3yS
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.xwSQBWtk4dwr9yhN
         - Compendium.dnd5e.spells.Item.Utk1OQRwYkMkFRD3
         - Compendium.dnd5e.spells.Item.icZokbgV1jIMpNCv
         - Compendium.dnd5e.spells.Item.oIzA2MEHwxhtQneU
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.4wQ4j5YcYIf300pr
         - Compendium.dnd5e.spells.Item.MUO1uYN7JR1hm4dR
         - Compendium.dnd5e.spells.Item.95K2aUhAGV9qXjnf
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.tgPLvdmDwKHVPGdc
+        - Compendium.dnd5e.spells24.Item.phbsplEnsnaringS
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.cvMqEfV9CpGdYybm
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.Jj5d8OjpTyukv4qk
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.rxPZ5P9lzqVW7Vry
+        - Compendium.dnd5e.spells.Item.ZrTc23tToJ0JpH2h
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.AvzLl3qCkrQC9Tw3
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.yY7rRzdV8bVHTsOm
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.X5S20oaIjrMJtwIp
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.SGIf6Aw7kvpTb99J
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.DYnT8DgELwcPsNNd
+        - Compendium.dnd5e.spells.Item.VtCXMdyM6mAdIJZb
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.fRfTJdxhhNoem2XO
-        - Compendium.declan-homebrew-classes.homebrew-spells.Item.CfrALZOCX4k2hCt9
+        - Compendium.dnd5e.spells.Item.04nMsTWkIFvkbXlY
         - Compendium.declan-homebrew-classes.homebrew-spells.Item.jAFIFXMta2bdR7kJ
-      unlinkedSpells: []
+      unlinkedSpells:
+        - _id: 5a13b8f7a005602a
+          identifier: friends
+          name: Friends
+          system:
+            level: 0
+            school: ''
+          source:
+            custom: Player's Handbook
+        - _id: 7fd097c3ce5b9eb0
+          identifier: witch-bolt
+          name: Witch Bolt
+          system:
+            level: 1
+            school: ''
+          source:
+            custom: Player's Handbook
+        - _id: 4bb79a3435bf206c
+          identifier: hunger-of-hadar
+          name: Hunger of Hadar
+          system:
+            level: 3
+            school: ''
+          source:
+            custom: Player's Handbook
     _key: '!journal.pages!78f74d87f88742fb.3f9cadbf1a0eaba5'
 _key: '!journal!78f74d87f88742fb'

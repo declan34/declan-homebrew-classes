@@ -32,8 +32,23 @@ const APPROVED_SRD_PROFILES = [
   { name: 'Message', level: 0, id: 'icZokbgV1jIMpNCv' },
   { name: 'Minor Illusion', level: 0, id: 'oIzA2MEHwxhtQneU' },
   { name: 'Thaumaturgy', level: 0, id: 'MUO1uYN7JR1hm4dR' },
-  { name: 'Bane', level: 1, id: '95K2aUhAGV9qXjnf' }
+  { name: 'Bane', level: 1, id: '95K2aUhAGV9qXjnf' },
+  { name: 'Jump', level: 1, id: 'ZrTc23tToJ0JpH2h' },
+  { name: 'Ensnaring Strike', level: 1, id: 'phbsplEnsnaringS', pack: 'spells24' },
+  { name: 'Death Ward', level: 4, id: 'VtCXMdyM6mAdIJZb' },
+  { name: 'Polymorph', level: 4, id: '04nMsTWkIFvkbXlY' }
 ];
+
+const APPROVED_HOMEBREW_NAMES = new Set([
+  'Dire Wail (LL)',
+  'Eldritch Tentacles (LL)',
+  'Ethereal Anchor (LL)',
+  'Flame Whip (LL)',
+  'Glitterbeam (LL)',
+  'Otherworldly Grasp (LL)',
+  'Spectral Passage (LL)',
+  'Spiritual Sundering (LL)'
+].map(normalizeName));
 
 function findYamlFiles(directory) {
   const files = [];
@@ -57,6 +72,7 @@ function localSpellProfiles() {
   return findYamlFiles(join(repositoryRoot, 'spells-src'))
     .filter(path => !path.endsWith('_folder.yml'))
     .map(path => yaml.load(readFileSync(path, 'utf8')))
+    .filter(document => APPROVED_HOMEBREW_NAMES.has(normalizeName(document.name)))
     .map(document => ({
       name: document.name,
       level: document.system.level,
@@ -69,7 +85,7 @@ function expectedProfiles() {
     ...localSpellProfiles(),
     ...APPROVED_SRD_PROFILES.map(profile => ({
       ...profile,
-      uuid: `Compendium.dnd5e.spells.Item.${profile.id}`
+      uuid: `Compendium.dnd5e.${profile.pack ?? 'spells'}.Item.${profile.id}`
     }))
   ].sort((first, second) => first.level - second.level
     || normalizeName(first.name).localeCompare(normalizeName(second.name), 'en-US'));
@@ -94,12 +110,23 @@ test('Vessel spell-list source contains one ordered profile per authorized publi
   assert.equal(page.system.type, 'class');
   assert.equal(page.system.grouping, 'level');
   assert.deepEqual(page.system.spells, expected.map(profile => profile.uuid));
+  assert.deepEqual(
+    page.system.unlinkedSpells.map(spell => [spell.name, spell.system.level]),
+    [
+      ['Friends', 0],
+      ['Witch Bolt', 1],
+      ['Hunger of Hadar', 3]
+    ]
+  );
 
   const normalizedNames = expected.map(profile => normalizeName(profile.name));
   assert.equal(new Set(normalizedNames).size, normalizedNames.length);
   assert.deepEqual(
     APPROVED_SRD_PROFILES.map(profile => profile.name),
-    ['Chill Touch', 'Dancing Lights', 'Mage Hand', 'Message', 'Minor Illusion', 'Thaumaturgy', 'Bane']
+    [
+      'Chill Touch', 'Dancing Lights', 'Mage Hand', 'Message', 'Minor Illusion',
+      'Thaumaturgy', 'Bane', 'Jump', 'Ensnaring Strike', 'Death Ward', 'Polymorph'
+    ]
   );
 });
 
@@ -141,13 +168,13 @@ test('module registers the native Vessel spell list with a dnd5e table-of-conten
 
   assert.deepEqual(pack, {
     name: 'vessel-spell-lists',
-    label: 'Vessel Spell List',
+    label: 'Class Spell Lists',
     path: 'packs/vessel-spell-lists',
     type: 'JournalEntry',
     system: 'dnd5e',
     flags: { dnd5e: { display: 'table-of-contents' } }
   });
-  assert.deepEqual(module.flags?.dnd5e?.spellLists, [pageUuid]);
+  assert.ok(module.flags?.dnd5e?.spellLists.includes(pageUuid));
 });
 
 test('compiled Vessel spell-list pack preserves the registered JournalEntry page', async () => {

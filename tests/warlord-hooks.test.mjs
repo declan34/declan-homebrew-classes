@@ -484,6 +484,26 @@ test('only the initiating client reconciles a newly owned Warlord item', async (
   assert.deepEqual(reconciled, [actor]);
 });
 
+test('reconciles a newly added Academy of Zeal subclass for Leadership spellcasting', async () => {
+  const registered = registry();
+  const actor = actorFixture({ leadershipAbility: 'int' });
+  const item = {
+    type: 'subclass',
+    actor,
+    system: { identifier: 'academy-of-zeal' }
+  };
+  const reconciled = [];
+  registerWarlordHooks(registered.hooks, {
+    currentUserId: () => 'current-user',
+    reconcileActor: async usedActor => { reconciled.push(usedActor); }
+  });
+
+  registered.on.get('createItem')(item, {}, 'current-user');
+  await flushTasks();
+
+  assert.deepEqual(reconciled, [actor]);
+});
+
 test('only the initiating client reconciles a Warlord class level update', async () => {
   const registered = registry();
   const actor = actorFixture();

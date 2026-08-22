@@ -73,6 +73,14 @@ async function promptForLeadershipAbility() {
 async function configureLeadershipItemsNow(actor, ability) {
   const updates = documents(actor.items).map(async item => {
     const changes = {};
+    if (item?.type === 'subclass' && item?.system?.identifier === 'academy-of-zeal') {
+      if (item?.system?.spellcasting?.progression !== 'zeal') {
+        changes['system.spellcasting.progression'] = 'zeal';
+      }
+      if (item?.system?.spellcasting?.ability !== ability) {
+        changes['system.spellcasting.ability'] = ability;
+      }
+    }
     for (const activity of documents(item?.system?.activities)) {
       const role = getWarlordRole(activity);
       if (!role) continue;

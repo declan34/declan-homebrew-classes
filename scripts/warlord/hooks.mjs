@@ -130,6 +130,11 @@ function isWarlordClass(item) {
     && getIdentifier(item) === WARLORD_CLASS_IDENTIFIER;
 }
 
+function isZealSubclass(item) {
+  return item?.type === 'subclass'
+    && getIdentifier(item) === 'academy-of-zeal';
+}
+
 export function handleWarlordPreUse(activity, {
   useInspiringWord: useInspiring = useInspiringWord,
   chooseLeadershipAbility: chooseLeadership = chooseLeadershipAbility,
@@ -228,7 +233,7 @@ export function registerWarlordHooks(hooks, {
 
   hooks.on('createItem', (item, _options, userId) => {
     if (userId !== currentUserId() || !item?.actor) return;
-    if (isWarlordClass(item) || hasWarlordActivity(item)) {
+    if (isWarlordClass(item) || isZealSubclass(item) || hasWarlordActivity(item)) {
       void reconcile(item.actor).catch(reportError);
     }
   });

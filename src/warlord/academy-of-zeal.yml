@@ -5,7 +5,7 @@ folder: zWQLRrWKJyaRIlBG
 img: systems/dnd5e/icons/svg/items/subclass.svg
 system:
   description:
-    value: <p>You have been chosen to lead the armies of your deity in battle against their unholy foes. You lead by a mix of strategy and faith, inspiring comrades with both word and spell. Invoking your divine right to lead, you must stand as a paragon of your faith.</p><h2>Zeal Spellcasting</h2><p>Warlord Level Spells Known Spell SlotsSlot Level 3rd 2 1 1st 4th 2 2 1st 5th 3 2 1st 6th 3 2 1st 7th 4 2 2nd 8th 4 2 2nd 9th 5 2 2nd 10th 5 2 2nd 11th 6 2 2nd 12th 6 2 2nd 13th 7 2 3rd 14th 7 2 3rd 15th 8 2 3rd 16th 8 2 3rd 17th 9 2 3rd 18th 9 2 3rd 19th 10 2 4th</p><h2>Zeal Spell List</h2><p>Below are the spells available to the Academy of Zeal. They can be found in the Player&#x27;s Handbook, Xanathar&#x27;s Guide to Everything *, and Tasha&#x27;s Cauldron of Everything **. Spells marked ll are found in laserllama&#x27;s Compendium of Spells, which includes both new and alternate spells. Cantrips (0-Level) 2nd-Level blade ward aid booming blade blindness/deafness green-flame blade branding smite light darkness message find steed resistance magic weapon sacred flame restoration spare the dying spiritual weapon sword burst warding bond thaumaturgy zone of truth toll the dead 3rd-Level true strike aura of vitality 1st-Level beacon of hope bless blinding smite command conjure volley compelled duel crusader&#x27;s mantle cure wounds flame arrows divine favor protection from energy ethereal anchor remove curse guiding bolt revivify heroism spirit guardians inflict wounds 4th-Level jump aura of life protection from good &amp; evil aura of purity sanctuary banishment searing smite death ward shield of faith guardian of faith thunderous smite staggering smite wrathful smite</p>
+    value: <p>You have been chosen to lead the armies of your deity in battle against their unholy foes. You lead by a mix of strategy and faith, inspiring comrades with both word and spell. Invoking your divine right to lead, you must stand as a paragon of your faith.</p><h2>Zeal Spellcasting</h2><p>Warlord Level Spells Known Spell Slots Slot Level 3rd 2 1 1st 4th 2 2 1st 5th 3 2 1st 6th 3 2 1st 7th 4 2 2nd 8th 4 2 2nd 9th 5 2 2nd 10th 5 2 2nd 11th 6 2 2nd 12th 6 2 2nd 13th 7 2 3rd 14th 7 2 3rd 15th 8 2 3rd 16th 8 2 3rd 17th 9 2 3rd 18th 9 2 3rd 19th 10 2 4th 20th 10 2 4th.</p><h2>Zeal Spell List</h2><p>This module registers the supported Academy of Zeal spells as a native D&amp;D 5e subclass spell list. It links to standard Foundry spells when available and can be supplemented by the optional private content module.</p>
     chat: ''
   source:
     custom: Laser Llama — Warlord Expanded
@@ -61,9 +61,53 @@ system:
       value: {}
       level: 18
       title: Features
+    - _id: hbrzeaCantrips01
+      type: ScaleValue
+      configuration:
+        identifier: cantrips-known
+        type: number
+        distance:
+          units: ''
+        scale:
+          '3':
+            value: 2
+          '10':
+            value: 3
+      value: {}
+      level: 3
+      title: Cantrips Known
+    - _id: hbrzeaSpellsKn01
+      type: ScaleValue
+      configuration:
+        identifier: spells-known
+        type: number
+        distance:
+          units: ''
+        scale:
+          '3':
+            value: 2
+          '5':
+            value: 3
+          '7':
+            value: 4
+          '9':
+            value: 5
+          '11':
+            value: 6
+          '13':
+            value: 7
+          '15':
+            value: 8
+          '17':
+            value: 9
+          '19':
+            value: 10
+      value: {}
+      level: 3
+      title: Spells Known
   spellcasting:
-    progression: none
-    ability: ''
+    progression: zeal
+    ability: cha
     preparation:
       formula: ''
     source: ''
